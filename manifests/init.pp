@@ -17,6 +17,12 @@ class foreman {
     user => $foreman_user,
   }
 
+  Cron {
+    require => User["$foreman_user"],
+    user => $foreman_user,
+    environment => "RAILS_ENV=production",
+  }
+
   include foreman::import_facts
   include foreman::puppetca
   include foreman::puppetrun
@@ -40,7 +46,7 @@ class foreman {
   }
 
   user { $foreman_user:
-    shell => "/bin/false",
+    shell => "/sbin/nologin",
     comment => "Foreman",
     ensure => "present",
     home => $foreman_dir,
@@ -53,16 +59,12 @@ class foreman {
   # eventually slowing it down.
   cron{"clear_session_table":
     command  => "(cd $foreman_dir && rake db:sessions:clear)",
-    environment => "RAILS_ENV=production",
-    user => $foreman_user,
     minute => "15",
     hour => "23",
   }
 
   cron{"daily summary":
     command  => "(cd $foreman_dir && rake reports:summarize)",
-    environment => "RAILS_ENV=production",
-    user => $foreman_user,
     minute => "30",
     hour => "07",
   }
