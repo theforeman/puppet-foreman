@@ -2,7 +2,7 @@ class foreman {
 
   # default variables 
   $using_store_configs = false # true or false
-  $using_passenger     = true  # true or false
+  $using_passenger     = false  # true or false
 
   $railspath           = "/usr/share"
   $foreman_dir         = "${railspath}/foreman"
