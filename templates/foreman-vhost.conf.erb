@@ -6,14 +6,6 @@
   RailsAutoDetect On
   AddDefaultCharset UTF-8
 
-# Grant access to puppet reports
-  Alias /report /var/lib/puppet/rrd/
-  <Directory /var/lib/puppet/rrd/>
-    PassengerEnabled off
-    Options Indexes
-    Order deny,allow
-    Allow from all
-  </Directory>
 </VirtualHost>
 
 <VirtualHost <%= ipaddress %>:443>
