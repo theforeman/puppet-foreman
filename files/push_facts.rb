@@ -21,7 +21,6 @@ require 'net/http'
 require 'uri'
 
 last_run = File.exists?(stat_file) ? File.stat(stat_file).mtime.utc : Time.now - 365*60*60
-FileUtils.touch stat_file
 
 Dir["#{puppetdir}/yaml/facts/*.yaml"].each do |filename|
   last_fact = File.stat(filename).mtime.utc
@@ -35,3 +34,4 @@ Dir["#{puppetdir}/yaml/facts/*.yaml"].each do |filename|
     end
   end
 end
+FileUtils.touch stat_file
