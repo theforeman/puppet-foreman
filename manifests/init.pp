@@ -32,7 +32,7 @@ class foreman {
   include foreman::externalnodes
 
   # Current package is available for Red Hat 5
-  if $lsbmajdistrelease == "5" {
+  if $lsbmajdistrelease == "5" and $lsbdistid != "Debian" {
     include foreman::package
     # passenger setup for Red Hat 5
     include foreman::passenger
