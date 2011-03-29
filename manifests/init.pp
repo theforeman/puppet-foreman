@@ -25,9 +25,6 @@ class foreman {
   }
 
   include foreman::import_facts
-  include foreman::puppetca
-  include foreman::puppetrun
-  include foreman::tftp
   include foreman::reports
   include foreman::externalnodes
 

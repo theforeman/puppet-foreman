@@ -27,3 +27,10 @@ define myline($file, $line, $ensure = 'present') {
     }
   }
 }
+
+define link_file($source_path, $target_path) {
+  file{"$target_path/$name":
+    ensure => link,
+    target => "$source_path/$name"
+  }
+}
