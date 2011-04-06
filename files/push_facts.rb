@@ -18,6 +18,7 @@ stat_file = "/tmp/foreman_fact_importer"
 
 require 'fileutils'
 require 'net/http'
+require 'net/https'
 require 'uri'
 
 last_run = File.exists?(stat_file) ? File.stat(stat_file).mtime.utc : Time.now - 365*60*60
@@ -28,7 +29,15 @@ Dir["#{puppetdir}/yaml/facts/*.yaml"].each do |filename|
     fact = File.read(filename)
     puts "Importing #{filename}"
     begin
-      Net::HTTP.post_form(URI.parse("#{url}/fact_values/create?format=yml"), {'facts'=> fact})
+      uri = URI.parse(url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      if uri.scheme == 'https' then
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+      req = Net::HTTP::Post.new("/fact_values/create?format=yml")
+      req.set_form_data({'facts' => fact})
+      response = http.request(req)
     rescue Exception => e
       raise "Could not send facts to Foreman: #{e}"
     end
