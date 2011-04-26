@@ -18,18 +18,14 @@
 
 require "rubygems"
 require "rest_client"
-begin
-  require "json"
-  PSON=JSON
-rescue
-  require "pson"
-end
 require "uri"
+require "timeout"
+
 
 module Puppet::Parser::Functions
   newfunction(:foreman, :type => :rvalue) do |args|
     #URL to query
-    foreman_url  = "http://0.0.0.0:3000"
+    foreman_url  = "http://foreman"
     foreman_user = "admin"
     foreman_pass = "changeme"
 
@@ -42,7 +38,7 @@ module Puppet::Parser::Functions
     raise Puppet::ParseError, "Foreman: Invalid item to search on: #{item}, must be one of #{searchable_items.join(", ")}." unless searchable_items.include?(item)
 
     begin
-      PSON.parse resource[URI.escape("#{item}?search=#{search}")].get.body
+      Timeout::timeout(5) { PSON.parse resource[URI.escape("#{item}?search=#{search}")].get.body }
     rescue Exception => e
       raise Puppet::ParseError, "Failed to contact Foreman #{e}"
     end
