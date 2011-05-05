@@ -20,15 +20,4 @@ class foreman::import_facts {
     },
   }
 
-  cron{"populate_hosts":
-    command  => "(cd $foreman_dir && rake puppet:migrate:populate_hosts)",
-    environment => "RAILS_ENV=production",
-    user => $foreman_user,
-    minute => "*/30",
-    ensure => $using_store_configs ? {
-      true => "present",
-      false => "absent"
-    },
-  }
-
 }
