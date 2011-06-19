@@ -1,24 +1,95 @@
-#! /usr/bin/ruby
-# a simple script which fetches external nodes from Foreman
-# you can basically use anything that knows how to get http data, e.g. wget/curl etc.
+#! /usr/bin/env ruby
 
-# Foreman url
-foreman_url="http://foreman:3000"
-
-require 'net/http'
-
-foreman_url += "/node/#{ARGV[0]}?format=yml"
-url = URI.parse(foreman_url)
-req = Net::HTTP::Get.new(foreman_url)
-res = Net::HTTP.start(url.host, url.port) { |http|
-  http.request(req)
+SETTINGS = {
+  :url       => "http://foreman",
+  :puppetdir => "/var/lib/puppet",
+  :timeout   => 3,
 }
 
-case res
-when Net::HTTPOK
-  puts res.body
-else
-  $stderr.puts "Error retrieving node %s: %s" % [ARGV[0], res.class]
+### Do not edit below this line
+
+def url
+  SETTINGS[:url] || raise("Must provide URL - please edit file")
 end
 
+def certname
+  ARGV[0] || raise("Must provide certname as an argument")
+end
 
+def puppetdir
+  SETTINGS[:puppetdir] || raise("Must provide puppet base directory - please edit file")
+end
+
+def stat_file
+  FileUtils.mkdir_p "#{puppetdir}/yaml/foreman/"
+  "#{puppetdir}/yaml/foreman/#{certname}.yaml"
+end
+
+def tsecs
+  SETTINGS[:timeout] || 3
+end
+
+require 'net/http'
+require 'net/https' if url =~ /^https/
+require 'fileutils'
+require 'timeout'
+
+def upload_facts
+  # Temp file keeping the last run time
+  last_run = File.exists?(stat_file) ? File.stat(stat_file).mtime.utc : Time.now - 365*24*60*60
+  filename = "#{puppetdir}/yaml/facts/#{certname}.yaml"
+  last_fact = File.stat(filename).mtime.utc
+  if last_fact > last_run
+    fact = File.read(filename)
+    begin
+      Net::HTTP.post_form(URI.parse("#{url}/fact_values/create?format=yml"), {'facts'=> fact})
+    rescue => e
+      raise "Could not send facts to Foreman: #{e}"
+    end
+  end
+end
+
+def cache result
+  File.open(stat_file, 'w') {|f| f.write(result) }
+end
+
+def read_cache
+  File.read(stat_file)
+rescue => e
+  raise "Unable to read from Cache file: #{e}"
+end
+
+def enc
+  foreman_url = "#{url}/node/#{certname}?format=yml"
+  uri = URI.parse(foreman_url)
+  req = Net::HTTP::Get.new(foreman_url)
+  res = Net::HTTP.start(uri.host, uri.port) { |http| http.request(req) }
+
+  raise "Error retrieving node #{certname}: #{res.class}" unless res.code == "200"
+  res.body
+end
+
+# Actual code starts here
+begin
+  # send facts to Foreman - optional uncomment 'upload_facts' to activate.
+  # if you use this option below, make sure that you don't send facts to foreman via the rake task or push facts alternatives.
+  #
+  # upload_facts
+  #
+  # query External node
+  begin
+    result = ""
+    timeout(tsecs) do
+      result = enc
+      cache result
+    end
+  rescue TimeoutError, SocketError, Errno::EHOSTUNREACH
+    # Read from cache, we got some sort of an error.
+    result = read_cache
+  ensure
+    puts result
+  end
+rescue => e
+  warn e
+  exit 1
+end
