@@ -1,7 +1,7 @@
-class foreman::proxy::tftp {
+class foreman::proxy::tftp-deploy {
   include tftp
 
-  $syslinux_root  = "/usr/lib/syslinux"
+  $syslinux_root  = "/usr/share/syslinux"
   $syslinux_files = ["pxelinux.0","menu.c32","chain.c32"]
   $tftproot       = "/var/lib/tftpboot"
   $tftp_dir       = ["${tftproot}/pxelinux.cfg","${tftproot}/build"]
@@ -20,5 +20,6 @@ class foreman::proxy::tftp {
   link_file{$syslinux_files:
     source_path => $syslinux_root,
     target_path => $tftproot,
+    require     => Class["tftp::install"];
   }
 }

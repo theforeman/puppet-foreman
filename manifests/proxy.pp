@@ -6,7 +6,7 @@ class foreman::proxy {
 
   include foreman::proxy::puppetca
   include foreman::proxy::puppetrun
-  include foreman::proxy::tftp
+  include foreman::proxy::tftp-deploy
 
   package {"foreman-proxy": ensure => installed}
 
