@@ -12,7 +12,7 @@ class foreman::reports {
   file {"${puppet_basedir}/reports/foreman.rb":
     mode => 444,
     owner => puppet, group => puppet,
-    source => "puppet:///foreman/foreman-report.rb",
+    source => "puppet:///modules/foreman/foreman-report.rb",
   }
 
   cron{"expire_old_reports":

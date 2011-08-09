@@ -11,7 +11,7 @@ class foreman::proxy {
   package {"foreman-proxy": ensure => installed}
 
   file{"/etc/foreman-proxy/settings.yml":
-    source  => "puppet:///foreman/etc/foreman-proxy/settings.yml",
+    source  => "puppet:///modules/foreman/etc/foreman-proxy/settings.yml",
     owner   => $foreman_proxy_user,
     group   => $foreman_proxy_user,
     mode    => 644,
