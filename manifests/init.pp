@@ -3,7 +3,7 @@ class foreman {
   # default variables 
   $using_store_configs = false # true or false
   $using_passenger     = false  # true or false
-  $use_development     = true # used for initial download
+  $use_development     = false # used for initial download
 
   $railspath           = "/usr/share"
   $foreman_dir         = "${railspath}/foreman"
