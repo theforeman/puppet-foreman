@@ -1,8 +1,8 @@
 #! /usr/bin/env ruby
 
 SETTINGS = {
-  :url       => "http://foreman",
-  :puppetdir => "/var/lib/puppet",
+  :url       => "<%= scope.lookupvar('foreman::params::foreman_url')%>",
+  :puppetdir => "<%= scope.lookupvar('foreman::params::puppet_home')%>",
   :timeout   => 3,
 }
 
@@ -74,7 +74,9 @@ begin
   # send facts to Foreman - optional uncomment 'upload_facts' to activate.
   # if you use this option below, make sure that you don't send facts to foreman via the rake task or push facts alternatives.
   #
-  # upload_facts
+  <% if scope.lookupvar('foreman::params::facts') and not scope.lookupvar('foreman::params::storeconfigs') -%>
+  upload_facts
+  <% end -%>
   #
   # query External node
   begin
