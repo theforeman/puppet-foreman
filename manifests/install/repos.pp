@@ -1,6 +1,6 @@
 class foreman::install::repos {
   case $operatingsystem {
-    redhat,centos,fedora: {
+    redhat,centos,fedora,Scientific: {
       yumrepo {
         "foreman":
           descr    => "Foreman stable repository",
