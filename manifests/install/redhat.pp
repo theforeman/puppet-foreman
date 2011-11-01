@@ -1,3 +1,0 @@
-class foreman::install::redhat {
-
-}

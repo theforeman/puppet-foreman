@@ -5,6 +5,11 @@ class foreman::config::enc {
       mode    => 550,
       owner   => "puppet",
       group   => "puppet";
+    "${foreman::params::puppet_home}/yaml":
+      ensure => directory,
+      mode    => 640,
+      owner   => "puppet",
+      group   => "puppet";
     "${foreman::params::puppet_home}/yaml/foreman":
       ensure => directory,
       mode    => 640,

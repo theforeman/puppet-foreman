@@ -12,6 +12,20 @@ class foreman::config {
     require => User["$foreman::params::user"],
   }
 
+  #Configure the Debian database with some defaults
+  case $operatingsystem {
+    Debian: {
+      file {"/etc/foreman/database.yml":
+        content => template("foreman/database.yaml.erb"),
+        notify  => Class["foreman::service"],
+        owner   => $foreman::params::user,
+        require => [User["$foreman::params::user"],
+                    Package["foreman-sqlite3"]],
+      }
+    }
+    default: { }
+  }
+
   file { $foreman::params::app_root:
     ensure  => directory,
   }

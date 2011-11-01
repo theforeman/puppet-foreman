@@ -33,6 +33,10 @@ class foreman::params {
        $puppet_basedir  = "/usr/lib/ruby/site_ruby/1.8/puppet"
        $apache_conf_dir = "/etc/httpd/conf.d"
     }
+    Debian: {
+       $puppet_basedir  = "/usr/lib/ruby/1.8/puppet"
+       $apache_conf_dir = "/etc/apache2/conf.d"
+    }
     default:              {
        $puppet_basedir  = "/usr/lib/ruby/1.8/puppet"
        $apache_conf_dir = "/etc/apache2/conf.d/foreman.conf"

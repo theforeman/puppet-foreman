@@ -17,6 +17,13 @@ class foreman::install::repos {
           gpgcheck => "0",
       }
     }
+    Debian: {
+      file { "/etc/apt/sources.list.d/foreman.list": content => "deb http://deb.theforeman.org/ stable main\n" }
+      ~>
+      exec { "foreman-key": command => "/usr/bin/wget -q http://deb.theforeman.org/foreman.asc -O- | /usr/bin/apt-key add -", refreshonly => true }
+      ~>
+      exec { "update-apt": command => "/usr/bin/apt-get update", refreshonly => true }
+    }
     default: { fail("${hostname}: This module does not support operatingsystem $operatingsystem") }
   }
 }
