@@ -6,12 +6,13 @@ class foreman::config::enc {
       owner   => "puppet",
       group   => "puppet";
     "${foreman::params::puppet_home}/yaml":
-      ensure => directory,
+      ensure  => directory,
+      recurse => true,
       mode    => 640,
       owner   => "puppet",
       group   => "puppet";
     "${foreman::params::puppet_home}/yaml/foreman":
-      ensure => directory,
+      ensure  => directory,
       mode    => 640,
       owner   => "puppet",
       group   => "puppet";
