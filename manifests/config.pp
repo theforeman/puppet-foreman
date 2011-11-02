@@ -14,7 +14,7 @@ class foreman::config {
 
   #Configure the Debian database with some defaults
   case $operatingsystem {
-    Debian: {
+    Debian,Ubuntu: {
       file {"/etc/foreman/database.yml":
         content => template("foreman/database.yaml.erb"),
         notify  => Class["foreman::service"],

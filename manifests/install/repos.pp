@@ -17,7 +17,7 @@ class foreman::install::repos {
           gpgcheck => "0",
       }
     }
-    Debian: {
+    Debian,Ubuntu: {
       file { "/etc/apt/sources.list.d/foreman.list": content => "deb http://deb.theforeman.org/ stable main\n" }
       ~>
       exec { "foreman-key": command => "/usr/bin/wget -q http://deb.theforeman.org/foreman.asc -O- | /usr/bin/apt-key add -", refreshonly => true }

@@ -2,7 +2,7 @@ class foreman::install {
   include foreman::install::repos
 
   case $operatingsystem {
-    Debian:  {
+    Debian,Ubuntu:  {
       package{"foreman-sqlite3":
         ensure  => latest,
         require => Class["foreman::install::repos"],
