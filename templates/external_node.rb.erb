@@ -76,7 +76,7 @@ begin
   # send facts to Foreman - optional uncomment 'upload_facts' to activate.
   # if you use this option below, make sure that you don't send facts to foreman via the rake task or push facts alternatives.
   #
-  if ( SETTINGS['facts'] ) and not ( SETTINGS['storeconfig'] )
+  if ( SETTINGS[:facts] ) and not ( SETTINGS[:storeconfig] )
     upload_facts
   end
   #
