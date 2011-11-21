@@ -1,9 +1,11 @@
 #! /usr/bin/env ruby
 
 SETTINGS = {
-  :url       => "<%= scope.lookupvar('foreman::params::foreman_url')%>",
-  :puppetdir => "<%= scope.lookupvar('foreman::params::puppet_home')%>",
-  :timeout   => 3,
+  :url          => "<%= scope.lookupvar('foreman::params::foreman_url')%>",
+  :puppetdir    => "<%= scope.lookupvar('foreman::params::puppet_home')%>",
+  :facts        => "<%= scope.lookupvar('foreman::params::facts')%>",
+  :storeconfigs => "<%= scope.lookupvar('foreman::params::storeconfig')%>",
+  :timeout      => 3,
 }
 
 ### Do not edit below this line
@@ -74,9 +76,9 @@ begin
   # send facts to Foreman - optional uncomment 'upload_facts' to activate.
   # if you use this option below, make sure that you don't send facts to foreman via the rake task or push facts alternatives.
   #
-  <% if scope.lookupvar('foreman::params::facts') and not scope.lookupvar('foreman::params::storeconfigs') -%>
-  upload_facts
-  <% end -%>
+  if ( SETTINGS['facts'] ) and not ( SETTINGS['storeconfig'] )
+    upload_facts
+  end
   #
   # query External node
   begin
