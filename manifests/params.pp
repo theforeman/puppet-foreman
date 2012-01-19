@@ -1,7 +1,7 @@
 class foreman::params {
 
 # Basic configurations
-  $foreman_url  = "http://${fqdn}"
+  $foreman_url  = "http://${::fqdn}"
   # Should foreman act as an external node classifier (manage puppet class assignments)
   $enc          = true
   # Should foreman receive reports from puppet
@@ -22,25 +22,25 @@ class foreman::params {
 # Advance configurations - no need to change anything here by default
   # allow usage of test / RC rpms as well
   $use_testing = true
-  $railspath   = "/usr/share"
+  $railspath   = '/usr/share'
   $app_root    = "${railspath}/foreman"
-  $user        = "foreman"
-  $environment = "production"
+  $user        = 'foreman'
+  $environment = 'production'
 
   # OS specific paths
-  case $operatingsystem {
+  case $::operatingsystem {
     redhat,centos,fedora,Scientific: {
-       $puppet_basedir  = "/usr/lib/ruby/site_ruby/1.8/puppet"
-       $apache_conf_dir = "/etc/httpd/conf.d"
+      $puppet_basedir  = '/usr/lib/ruby/site_ruby/1.8/puppet'
+      $apache_conf_dir = '/etc/httpd/conf.d'
     }
     Debian,Ubuntu: {
-       $puppet_basedir  = "/usr/lib/ruby/1.8/puppet"
-       $apache_conf_dir = "/etc/apache2/conf.d"
+      $puppet_basedir  = '/usr/lib/ruby/1.8/puppet'
+      $apache_conf_dir = '/etc/apache2/conf.d'
     }
     default:              {
-       $puppet_basedir  = "/usr/lib/ruby/1.8/puppet"
-       $apache_conf_dir = "/etc/apache2/conf.d/foreman.conf"
+      $puppet_basedir  = '/usr/lib/ruby/1.8/puppet'
+      $apache_conf_dir = '/etc/apache2/conf.d/foreman.conf'
     }
   }
-  $puppet_home = "/var/lib/puppet"
+  $puppet_home = '/var/lib/puppet'
 }
