@@ -22,7 +22,7 @@ Puppet::Reports.register_report(:foreman) do
           http.use_ssl = true
           http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         end
-        req = Net::HTTP::Post.new("/reports/create?format=yml")
+        req = Net::HTTP::Post.new("#{uri.path}/reports/create?format=yml")
         req.set_form_data({'report' => to_yaml})
         response = http.request(req)
       rescue Exception => e
