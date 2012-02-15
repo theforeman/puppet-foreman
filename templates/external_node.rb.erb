@@ -65,7 +65,10 @@ def enc
   foreman_url = "#{url}/node/#{certname}?format=yml"
   uri = URI.parse(foreman_url)
   req = Net::HTTP::Get.new(foreman_url)
-  res = Net::HTTP.start(uri.host, uri.port) { |http| http.request(req) }
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = (uri.scheme == 'https')
+  http.verify_mode = OpenSSL::SSL::VERIFY_NONE if uri.scheme == 'https'
+  res = http.start { |http| http.request(req) }
 
   raise "Error retrieving node #{certname}: #{res.class}" unless res.code == "200"
   res.body
