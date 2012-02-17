@@ -44,14 +44,13 @@ def upload_facts
   if last_fact > last_run
     fact = File.read(filename)
     begin
-      # Net::HTTP.post_form(URI.parse("#{url}/fact_values/create?format=yml"), {'facts'=> fact})
-      sslurl = URI.parse("#{url}/fact_values/create?format=yml")
-      sslreq = Net::HTTP::Post.new(sslurl.path)
-      sslreq.set_form_data('facts'=> fact)
-      sslres = Net::HTTP.new(sslurl.host, sslurl.port)
-      sslres.use_ssl = true
-      sslres.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      sslres.start {|http| http.request(sslreq) }
+      uri = URI.parse("#{url}/fact_values/create?format=yml")
+      req = Net::HTTP::Post.new(uri.path)
+      req.set_form_data('facts'=> fact)
+      res = Net::HTTP.new(uri.host, uri.port)
+      res.use_ssl = (uri.scheme == 'https')
+      res.verify_mode = OpenSSL::SSL::VERIFY_NONE if uri.scheme == 'https'
+      res.start {|http| http.request(req) }
     rescue => e
       raise "Could not send facts to Foreman: #{e}"
     end
