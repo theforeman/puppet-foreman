@@ -46,11 +46,11 @@ def upload_facts
     begin
       uri = URI.parse("#{url}/fact_values/create?format=yml")
       req = Net::HTTP::Post.new(uri.path)
-      req.set_form_data('facts'=> fact)
-      res = Net::HTTP.new(uri.host, uri.port)
-      res.use_ssl = (uri.scheme == 'https')
-      res.verify_mode = OpenSSL::SSL::VERIFY_NONE if uri.scheme == 'https'
-      res.start {|http| http.request(req) }
+      req.set_form_data('facts' => fact)
+      res             = Net::HTTP.new(uri.host, uri.port)
+      res.use_ssl     = uri.scheme == 'https'
+      res.verify_mode = OpenSSL::SSL::VERIFY_NONE if res.use_ssl
+      res.start { |http| http.request(req) }
     rescue => e
       raise "Could not send facts to Foreman: #{e}"
     end
@@ -68,13 +68,13 @@ rescue => e
 end
 
 def enc
-  foreman_url = "#{url}/node/#{certname}?format=yml"
-  uri = URI.parse(foreman_url)
-  req = Net::HTTP::Get.new(foreman_url)
-  http = Net::HTTP.new(uri.host, uri.port)
-  http.use_ssl = (uri.scheme == 'https')
-  http.verify_mode = OpenSSL::SSL::VERIFY_NONE if uri.scheme == 'https'
-  res = http.start { |http| http.request(req) }
+  foreman_url      = "#{url}/node/#{certname}?format=yml"
+  uri              = URI.parse(foreman_url)
+  req              = Net::HTTP::Get.new(foreman_url)
+  http             = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl     = uri.scheme == 'https'
+  http.verify_mode = OpenSSL::SSL::VERIFY_NONE if uri.use_ssl
+  res              = http.start { |http| http.request(req) }
 
   raise "Error retrieving node #{certname}: #{res.class}" unless res.code == "200"
   res.body
