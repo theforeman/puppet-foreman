@@ -14,7 +14,7 @@ class foreman::install {
   }
 
   package {'foreman':
-    ensure  => latest,
+    ensure  => present,
     require => Class['foreman::install::repos'],
     notify  => Class['foreman::service'],
   }
