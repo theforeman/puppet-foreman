@@ -1,4 +1,6 @@
 class foreman::config::enc {
+  include foreman::params
+
   file { '/etc/puppet/node.rb':
     content => template('foreman/external_node.rb.erb'),
     mode    => '0550',
