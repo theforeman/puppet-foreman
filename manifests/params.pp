@@ -27,6 +27,9 @@ class foreman::params {
   $user        = 'foreman'
   $environment = 'production'
 
+  # Package source can be one of 'stable', 'testing', or 'nightly'
+  $package_source = stable
+
   # OS specific paths
   case $::operatingsystem {
     redhat,centos,fedora,Scientific: {
