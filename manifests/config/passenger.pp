@@ -19,14 +19,19 @@ class foreman::config::passenger {
 
   # passenger ~2.10 will not load the app if a config.ru doesn't exist in the app
   # root. Also, passenger will run as suid to the owner of the config.ru file.
-  file { "$foreman::params::app_root/config.ru":
-    ensure => link,
-    owner  => $foreman::params::user,
-    target => "${foreman::params::app_root}/vendor/rails/railties/dispatches/config.ru",
-  }
-  file { "$foreman::params::app_root/config/environment.rb":
-    owner   => $foreman::params::user,
-    require => Class['foreman::install'],
+
+  if $foreman::params::package_source == 'nightly' {
+    # Config.ru is in the package now
+  } else {
+    file { "$foreman::params::app_root/config.ru":
+      ensure => link,
+      owner  => $foreman::params::user,
+      target => "${foreman::params::app_root}/vendor/rails/railties/dispatches/config.ru",
+    }
+    file { "$foreman::params::app_root/config/environment.rb":
+      owner   => $foreman::params::user,
+      require => Class['foreman::install'],
+    }
   }
 
 }
