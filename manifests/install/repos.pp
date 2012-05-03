@@ -20,8 +20,7 @@ class foreman::install::repos {
     }
     Debian,Ubuntu: {
       file { '/etc/apt/sources.list.d/foreman.list':
-        content => "deb http://deb.theforeman.org/ stable main
-        "
+        content => "deb http://deb.theforeman.org/ $foreman::params::package_source main\n"
       }
       ~>
       exec { 'foreman-key':
