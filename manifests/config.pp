@@ -12,18 +12,22 @@ class foreman::config {
     require => User[$foreman::params::user],
   }
 
-  #Configure the Debian database with some defaults
-  case $::operatingsystem {
-    Debian,Ubuntu: {
-      file {'/etc/foreman/database.yml':
-        content => template('foreman/database.yaml.erb'),
-        notify  => Class['foreman::service'],
-        owner   => $foreman::params::user,
-        require => [User[$foreman::params::user],
-                    Package['foreman-sqlite3']],
+  if $foreman::params::package_source == 'nightly' {
+    # Database is fine in nightly
+  } else {
+    #Configure the Debian database with some defaults
+    case $::operatingsystem {
+      Debian,Ubuntu: {
+        file {'/etc/foreman/database.yml':
+          content => template('foreman/database.yaml.erb'),
+          notify  => Class['foreman::service'],
+          owner   => $foreman::params::user,
+          require => [User[$foreman::params::user],
+          Package['foreman-sqlite3']],
+        }
       }
+      default: { }
     }
-    default: { }
   }
 
   file { $foreman::params::app_root:
