@@ -53,6 +53,5 @@ class foreman::config {
   }
 
   if $foreman::params::reports { include foreman::config::reports }
-  if $foreman::params::enc     { include foreman::config::enc }
   if $foreman::params::passenger  { include foreman::config::passenger }
 }
