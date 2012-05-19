@@ -14,9 +14,17 @@ class foreman::install {
   }
 
   package {'foreman':
-    ensure  => latest,
+    ensure  => present,
     require => Class['foreman::install::repos'],
     notify  => Class['foreman::service'],
   }
 
+  package{[ "mysql-devel", "gcc", "ruby-devel" ]:
+    ensure => present,
+  }
+
+  package{"mysql":
+    provider => gem,
+    require => [ Package["mysql-devel"], Package["gcc"], Package["ruby-devel"] ],
+  }
 }
