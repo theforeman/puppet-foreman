@@ -1,8 +1,8 @@
 <VirtualHost <%= ipaddress %>:80>
   ServerName <%= fqdn %>
   ServerAlias foreman
-  DocumentRoot <%= scope.lookupvar 'foreman::params::app_root' %>/public
-  PassengerAppRoot <%= scope.lookupvar 'foreman::params::app_root' %>
+  DocumentRoot <%= scope.lookupvar 'foreman::app_root' %>/public
+  PassengerAppRoot <%= scope.lookupvar 'foreman::app_root' %>
 
   RailsAutoDetect On
   AddDefaultCharset UTF-8
@@ -14,8 +14,8 @@
   ServerAlias foreman
 
   RailsAutoDetect On
-  DocumentRoot <%= scope.lookupvar 'foreman::params::app_root' %>/public
-  PassengerAppRoot <%= scope.lookupvar 'foreman::params::app_root' %>
+  DocumentRoot <%= scope.lookupvar 'foreman::app_root' %>/public
+  PassengerAppRoot <%= scope.lookupvar 'foreman::app_root' %>
 
   # Use puppet certificates for SSL
 

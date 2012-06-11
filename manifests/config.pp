@@ -1,18 +1,18 @@
 class foreman::config {
   Cron {
-    require     => User[$foreman::params::user],
-    user        => $foreman::params::user,
-    environment => "RAILS_ENV=${foreman::params::environment}",
+    require     => User[$foreman::user],
+    user        => $foreman::user,
+    environment => "RAILS_ENV=${foreman::environment}",
   }
 
   file {'/etc/foreman/settings.yaml':
     content => template('foreman/settings.yaml.erb'),
     notify  => Class['foreman::service'],
-    owner   => $foreman::params::user,
-    require => User[$foreman::params::user],
+    owner   => $foreman::user,
+    require => User[$foreman::user],
   }
 
-  if $foreman::params::package_source == 'nightly' {
+  if $foreman::package_source == 'nightly' {
     # Database is fine in nightly
   } else {
     #Configure the Debian database with some defaults
@@ -21,8 +21,8 @@ class foreman::config {
         file {'/etc/foreman/database.yml':
           content => template('foreman/database.yaml.erb'),
           notify  => Class['foreman::service'],
-          owner   => $foreman::params::user,
-          require => [User[$foreman::params::user],
+          owner   => $foreman::user,
+          require => [User[$foreman::user],
           Package['foreman-sqlite3']],
         }
       }
@@ -30,15 +30,15 @@ class foreman::config {
     }
   }
 
-  file { $foreman::params::app_root:
+  file { $foreman::app_root:
     ensure  => directory,
   }
 
-  user { $foreman::params::user:
+  user { $foreman::user:
     ensure  => 'present',
     shell   => '/sbin/nologin',
     comment => 'Foreman',
-    home    => $foreman::params::app_root,
+    home    => $foreman::app_root,
     require => Class['foreman::install'],
   }
 
@@ -47,11 +47,11 @@ class foreman::config {
   # which can easily result with a lot of old and unrequired in your database
   # eventually slowing it down.
   cron{'clear_session_table':
-    command => "(cd ${foreman::params::app_root} && rake db:sessions:clear)",
+    command => "(cd ${foreman::app_root} && rake db:sessions:clear)",
     minute  => '15',
     hour    => '23',
   }
 
-  if $foreman::params::reports { include foreman::config::reports }
-  if $foreman::params::passenger  { include foreman::config::passenger }
+  if $foreman::reports { include foreman::config::reports }
+  if $foreman::passenger  { include foreman::config::passenger }
 }
