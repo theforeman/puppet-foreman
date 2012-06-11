@@ -1,7 +1,7 @@
-class foreman::install::repos {
+class foreman::install::repos( $use_testing = false ) {
   case $::operatingsystem {
     redhat,centos,fedora,Scientific: {
-      $repo_testing_enabled = $foreman::use_testing ? {
+      $repo_testing_enabled = $use_testing ? {
         true    => '1',
         default => '0',
       }
