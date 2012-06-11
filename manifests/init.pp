@@ -18,7 +18,7 @@ class foreman (
   $apache_conf_dir = $foreman::params::apache_conf_dir,
   $puppet_home     = $foreman::params::puppet_home
 ) inherits foreman::params {
-  include foreman::install
-  include foreman::config
-  include foreman::service
+  class { 'foreman::install': }
+  class { 'foreman::config': }
+  class { 'foreman::service': }
 }
