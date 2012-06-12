@@ -1,6 +1,5 @@
 class foreman::install {
-  include foreman::install::repos
-
+  class { '::foreman::install::repos': use_testing => $foreman::use_testing }
   case $::operatingsystem {
     Debian,Ubuntu:  {
       package {'foreman-sqlite3':

@@ -1,7 +1,7 @@
-class foreman::install::repos {
+class foreman::install::repos( $use_testing = false ) {
   case $::operatingsystem {
     redhat,centos,fedora,Scientific: {
-      $repo_testing_enabled = $foreman::params::use_testing ? {
+      $repo_testing_enabled = $use_testing ? {
         true    => '1',
         default => '0',
       }
@@ -20,7 +20,7 @@ class foreman::install::repos {
     }
     Debian,Ubuntu: {
       file { '/etc/apt/sources.list.d/foreman.list':
-        content => "deb http://deb.theforeman.org/ $foreman::params::package_source main\n"
+        content => "deb http://deb.theforeman.org/ $foreman::package_source main\n"
       }
       ~>
       exec { 'foreman-key':

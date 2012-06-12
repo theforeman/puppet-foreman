@@ -1,5 +1,5 @@
 class foreman::service {
-  case $foreman::params::passenger {
+  case $foreman::passenger {
     true: {
       $service_ensure = 'stopped'
       $service_enable = false
