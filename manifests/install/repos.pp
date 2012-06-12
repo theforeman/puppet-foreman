@@ -1,4 +1,7 @@
-class foreman::install::repos( $use_testing = false ) {
+class foreman::install::repos( 
+  $use_testing    = false,
+  $package_source = 'stable',
+) {
   case $::operatingsystem {
     redhat,centos,fedora,Scientific: {
       $repo_testing_enabled = $use_testing ? {
@@ -20,7 +23,7 @@ class foreman::install::repos( $use_testing = false ) {
     }
     Debian,Ubuntu: {
       file { '/etc/apt/sources.list.d/foreman.list':
-        content => "deb http://deb.theforeman.org/ $foreman::package_source main\n"
+        content => "deb http://deb.theforeman.org/ $package_source main\n"
       }
       ~>
       exec { 'foreman-key':
