@@ -20,6 +20,9 @@ class foreman::params {
   $ssl          = true
 
 # Advance configurations - no need to change anything here by default
+  # if set to true, no repo will be added by this module, letting you to
+  # set it to some custom location.
+  $custom_repo = false
   # allow usage of test / RC rpms as well
   $use_testing = true
   $railspath   = '/usr/share'

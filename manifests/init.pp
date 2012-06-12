@@ -8,6 +8,7 @@ class foreman (
   $authentication  = $foreman::params::authentication,
   $passenger       = $foreman::params::passenger,
   $ssl             = $foreman::params::ssl,
+  $custom_repo     = $foreman::params::custom_repo,
   $use_testing     = $foreman::params::use_testing,
   $railspath       = $foreman::params::railspath,
   $app_root        = $foreman::params::app_root,
