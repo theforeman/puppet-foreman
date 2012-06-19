@@ -1,4 +1,4 @@
-class foreman::install::repos( 
+class foreman::install::repos(
   $use_testing    = false,
   $package_source = 'stable',
 ) {
