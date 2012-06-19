@@ -1,4 +1,5 @@
-# This class includes the necessary scripts for Foreman on the puppetmaster and is intented to be added to your puppetmaster
+# This class includes the necessary scripts for Foreman on the puppetmaster and
+# is intented to be added to your puppetmaster
 class foreman::puppetmaster {
   include foreman::params
 

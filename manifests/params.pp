@@ -2,13 +2,15 @@ class foreman::params {
 
 # Basic configurations
   $foreman_url  = "http://${::fqdn}"
-  # Should foreman act as an external node classifier (manage puppet class assignments)
+  # Should foreman act as an external node classifier (manage puppet class
+  # assignments)
   $enc          = true
   # Should foreman receive reports from puppet
   $reports      = true
   # Should foreman recive facts from puppet
   $facts        = true
-  # Do you use storeconfig (and run foreman on the same database) ? (note: not required)
+  # Do you use storeconfig (and run foreman on the same database) ? (note: not
+  # required)
   $storeconfigs = false
   # should foreman manage host provisioning as well
   $unattended   = true
