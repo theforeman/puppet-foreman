@@ -1,11 +1,11 @@
 class foreman::install {
   if ! $foreman::custom_repo {
-    class { '::foreman::install::repos': use_testing => $foreman::use_testing }
+    foreman::install::repos { 'foreman': use_testing => $foreman::use_testing }
   }
 
   $repo = $foreman::custom_repo ? {
     true    => [],
-    default => Class['foreman::install::repos'],
+    default => Foreman::Install::Repos['foreman'],
   }
 
   case $::operatingsystem {

@@ -1,6 +1,6 @@
-class foreman::install::repos(
+define foreman::install::repos(
   $use_testing    = false,
-  $package_source = 'stable',
+  $package_source = 'stable'
 ) {
   case $::operatingsystem {
     redhat,centos,fedora,Scientific: {
@@ -9,12 +9,12 @@ class foreman::install::repos(
         default => '0',
       }
       yumrepo {
-        'foreman':
+        "$name":
           descr    => 'Foreman stable repository',
           baseurl  => 'http://yum.theforeman.org/stable',
           gpgcheck => '0',
           enabled  => '1';
-        'foreman-testing':
+        "$name-testing":
           descr    => 'Foreman testing repository',
           baseurl  => 'http://yum.theforeman.org/test',
           enabled  => $repo_testing_enabled,
@@ -22,16 +22,16 @@ class foreman::install::repos(
       }
     }
     Debian,Ubuntu: {
-      file { '/etc/apt/sources.list.d/foreman.list':
+      file { "/etc/apt/sources.list.d/$name.list":
         content => "deb http://deb.theforeman.org/ $package_source main\n"
       }
       ~>
-      exec { 'foreman-key':
+      exec { "foreman-key-$name":
         command     => '/usr/bin/wget -q http://deb.theforeman.org/foreman.asc -O- | /usr/bin/apt-key add -',
         refreshonly => true
       }
       ~>
-      exec { 'update-apt':
+      exec { "update-apt-$name":
         command     => '/usr/bin/apt-get update',
         refreshonly => true
       }
