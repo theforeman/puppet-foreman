@@ -33,7 +33,7 @@ class foreman::params {
   $environment = 'production'
 
   # Package source can be one of 'stable', 'testing', or 'nightly'
-  $package_source = testing
+  $package_source = 'stable'
 
   # OS specific paths
   case $::operatingsystem {

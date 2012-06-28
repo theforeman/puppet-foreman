@@ -21,7 +21,7 @@ class foreman::config::passenger {
   # app root. Also, passenger will run as suid to the owner of the config.ru
   # file.
 
-  if $foreman::package_source == 'nightly' {
+  if $foreman::package_source != 'stable' {
     # Config.ru is in the package now
   } else {
     file { "$foreman::app_root/config.ru":
