@@ -7,7 +7,7 @@ define foreman::install::repos(
       $repo_testing_enabled = $use_testing ? {
         true    => '1',
         default => '0',
-      } 
+      }
       yumrepo {
         "$name":
           descr    => 'Foreman stable repository',
