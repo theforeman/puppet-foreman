@@ -7,11 +7,11 @@ define foreman::install::repos(
       $repo_testing_enabled = $use_testing ? {
         true    => '1',
         default => '0',
-      }
+      } 
       yumrepo {
         "$name":
           descr    => 'Foreman stable repository',
-          baseurl  => 'http://yum.theforeman.org/stable',
+          baseurl  => $foreman::params::yumrepo,
           gpgcheck => '0',
           enabled  => '1';
         "$name-testing":
