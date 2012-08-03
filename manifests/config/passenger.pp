@@ -7,6 +7,7 @@ class foreman::config::passenger {
     content => template('foreman/foreman-vhost.conf.erb'),
     mode    => '0644',
     notify  => Exec['reload-apache'],
+    require => Class['foreman::install'],
   }
 
   exec {'restart_foreman':
