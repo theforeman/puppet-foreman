@@ -11,16 +11,10 @@ class foreman::install {
     default => Foreman::Install::Repos['foreman'],
   }
 
-  case $::operatingsystem {
-    Debian,Ubuntu:  {
-      package {'foreman-sqlite3':
-        ensure  => latest,
-        require => $repo,
-        notify  => [Class['foreman::service'],
-                    Package['foreman']],
-      }
-    }
-    default: {}
+  package {'foreman-sqlite3':
+    ensure  => latest,
+    require => $repo,
+    notify  => [Class['foreman::service'],Package['foreman']],
   }
 
   package {'foreman':
