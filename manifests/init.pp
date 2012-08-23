@@ -10,6 +10,7 @@ class foreman (
   $ssl             = $foreman::params::ssl,
   $custom_repo     = $foreman::params::custom_repo,
   $use_testing     = $foreman::params::use_testing,
+  $use_sqlite      = $foreman::params::use_sqlite,
   $railspath       = $foreman::params::railspath,
   $app_root        = $foreman::params::app_root,
   $user            = $foreman::params::user,
