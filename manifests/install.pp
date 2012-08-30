@@ -11,7 +11,7 @@ class foreman::install {
     default => Foreman::Install::Repos['foreman'],
   }
 
-  package {'foreman-sqlite':
+  package {'foreman-sqlite3':
     name => $osfamily ? {
       RedHat => "foreman-sqlite",
       Debian => "foreman-sqlite3"
