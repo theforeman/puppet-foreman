@@ -1,10 +1,10 @@
 #! /usr/bin/env ruby
 
 SETTINGS = {
-  :url          => "<%= scope.lookupvar('foreman::params::foreman_url')%>",
-  :puppetdir    => "<%= scope.lookupvar('foreman::params::puppet_home')%>",
-  :facts        => <%= scope.lookupvar('foreman::params::facts')%>,
-  :storeconfigs => <%= scope.lookupvar('foreman::params::storeconfigs')%>,
+  :url          => "<%= @foreman_url %>",
+  :puppetdir    => "<%= @puppet_home %>",
+  :facts        => <%= @facts %>,
+  :storeconfigs => <%= @storeconfigs %>,
   :timeout      => 3,
 }
 
