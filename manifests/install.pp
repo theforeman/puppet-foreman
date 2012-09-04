@@ -11,20 +11,24 @@ class foreman::install {
     default => Foreman::Install::Repos['foreman'],
   }
 
-  package {'foreman-sqlite3':
-    name => $osfamily ? {
-      RedHat => "foreman-sqlite",
-      Debian => "foreman-sqlite3"
-    },
-    ensure  => latest,
-    require => $repo,
-    notify  => [Class['foreman::service'],Package['foreman']],
-  }
-
   package {'foreman':
     ensure  => present,
     require => $repo,
     notify  => Class['foreman::service'],
+  }
+
+  if $foreman::use_sqlite {
+    $sqlite = $osfamily ? {
+      RedHat => "foreman-sqlite",
+      Debian => "foreman-sqlite3"
+    }
+
+    package {'foreman-sqlite3':
+      name => $sqlite
+      ensure  => latest,
+      require => $repo,
+      notify  => [Class['foreman::service'],Package['foreman']],
+    }
   }
 
 }

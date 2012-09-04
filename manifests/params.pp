@@ -31,6 +31,7 @@ class foreman::params {
   $app_root    = "${railspath}/foreman"
   $user        = 'foreman'
   $environment = 'production'
+  $use_sqlite  = true
 
   # Package source can be one of 'stable', 'testing', or 'nightly'
   $package_source = 'stable'
