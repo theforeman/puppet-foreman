@@ -14,6 +14,7 @@ class foreman::puppetmaster (
       owner    => 'puppet',
       group    => 'puppet',
       content  => template('foreman/foreman-report.rb.erb'),
+      require  => Class['::puppet::server::install'],
       # notify => Service["puppetmaster"],
     }
   }

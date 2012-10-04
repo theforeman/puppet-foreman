@@ -5,6 +5,8 @@ class foreman::config::enc (
   $puppet_home  = $foreman::params::puppet_home
 ) inherits foreman::params {
 
+  File { require => Class['::puppet::server::install'] }
+
   file { '/etc/puppet/node.rb':
     content => template('foreman/external_node.rb.erb'),
     mode    => '0550',
