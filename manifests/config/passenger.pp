@@ -10,6 +10,11 @@ class foreman::config::passenger {
     require => Class['foreman::install'],
   }
 
+  exec {'reload-apache':
+    command     => "/usr/sbin/apache2ctl restart",
+    refreshonly => true,
+    path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+  }
   exec {'restart_foreman':
     command     => "/bin/touch ${foreman::app_root}/tmp/restart.txt",
     refreshonly => true,
