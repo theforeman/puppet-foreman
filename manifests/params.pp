@@ -25,16 +25,13 @@ class foreman::params {
   # if set to true, no repo will be added by this module, letting you to
   # set it to some custom location.
   $custom_repo = false
-  # allow usage of test / RC rpms as well
+  # allow usage of testing rpm/deb packages as well
   $use_testing = true
   $railspath   = '/usr/share'
   $app_root    = "${railspath}/foreman"
   $user        = 'foreman'
   $environment = 'production'
   $use_sqlite  = true
-
-  # Package source can be one of 'stable', 'testing', or 'nightly'
-  $package_source = 'stable'
 
   # OS specific paths
   case $::operatingsystem {

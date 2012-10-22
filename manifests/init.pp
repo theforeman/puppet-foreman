@@ -15,7 +15,6 @@ class foreman (
   $app_root        = $foreman::params::app_root,
   $user            = $foreman::params::user,
   $environment     = $foreman::params::environment,
-  $package_source  = $foreman::params::package_source,
   $puppet_basedir  = $foreman::params::puppet_basedir,
   $apache_conf_dir = $foreman::params::apache_conf_dir,
   $puppet_home     = $foreman::params::puppet_home
