@@ -26,7 +26,7 @@ class foreman::params {
   # set it to some custom location.
   $custom_repo = false
   # allow usage of testing rpm/deb packages as well
-  $use_testing = true
+  $use_testing = false
   $railspath   = '/usr/share'
   $app_root    = "${railspath}/foreman"
   $user        = 'foreman'

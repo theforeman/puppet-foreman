@@ -26,7 +26,7 @@ define foreman::install::repos(
         default => 'stable',
       }
       file { "/etc/apt/sources.list.d/$name.list":
-        content => "deb http://deb.theforeman.org/ $lsbdistcodename $compnent_name\n"
+        content => "deb http://deb.theforeman.org/ $lsbdistcodename $component_name\n"
       }
       ~>
       exec { "foreman-key-$name":
