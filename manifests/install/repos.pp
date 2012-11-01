@@ -1,5 +1,5 @@
 define foreman::install::repos(
-  $use_testing    = false,
+  $use_testing    = false
 ) {
   case $::operatingsystem {
     redhat,centos,fedora,Scientific: {
