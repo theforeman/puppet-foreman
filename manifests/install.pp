@@ -17,9 +17,9 @@ class foreman::install {
   }
 
   if $foreman::use_sqlite {
-    $sqlite = $osfamily ? {
-      RedHat => "foreman-sqlite",
-      Debian => "foreman-sqlite3"
+    case $::operatingsystem {
+      Debian,Ubuntu: { $sqlite = "foreman-sqlite3" }
+      default:       { $sqlite = "foreman-sqlite" }
     }
 
     package {'foreman-sqlite3':
