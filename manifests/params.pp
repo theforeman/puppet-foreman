@@ -46,7 +46,7 @@ class foreman::params {
       }
     }
     Debian,Ubuntu: {
-      $puppet_basedir  = '/usr/lib/ruby/1.8/puppet'
+      $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
       $apache_conf_dir = '/etc/apache2/conf.d'
     }
     default:              {
