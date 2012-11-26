@@ -12,6 +12,23 @@ class foreman::config {
     require => User[$foreman::user],
   }
 
+  case $::operatingsystem {
+    Debian,Ubuntu: {
+      $init_config = "/etc/default/foreman"
+      $init_config_tmpl = "foreman.default"
+    }
+    default: {
+      $init_config = "/etc/sysconfig/foreman"
+      $init_config_tmpl = "foreman.sysconfig"
+    }
+  }
+  file { $init_config:
+    ensure  => present,
+    content => template("foreman/${init_config_tmpl}.erb"),
+    require => Class['foreman::install'],
+    before  => Class['foreman::service'],
+  }
+
   file { $foreman::app_root:
     ensure  => directory,
   }
