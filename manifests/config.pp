@@ -34,6 +34,12 @@ class foreman::config {
     hour    => '23',
   }
 
+  # collects trends data, should run to match puppet agent interval;
+  cron { 'trends':
+    command => "(cd ${foreman::app_root} && rake trends:counter)",
+    minute  => '*/30',
+  }
+
   if $foreman::reports { include foreman::config::reports }
   if $foreman::passenger  { include foreman::config::passenger }
 }
