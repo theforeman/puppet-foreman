@@ -41,14 +41,10 @@ class foreman::config {
     require => Class['foreman::install'],
   }
 
-  # cleans up the session entries in the database
-  # if you are using fact or report importers, this creates a session per
-  # request which can easily result with a lot of old and unrequired in your
-  # database eventually slowing it down.
+  # remove cron previously installed here, it's moved to the package's cron.d
+  # file
   cron{'clear_session_table':
-    command => "(cd ${foreman::app_root} && rake db:sessions:clear)",
-    minute  => '15',
-    hour    => '23',
+    ensure  => absent,
   }
 
   if $foreman::reports { include foreman::config::reports }
