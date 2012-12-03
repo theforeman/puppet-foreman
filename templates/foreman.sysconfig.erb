@@ -1,3 +1,4 @@
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
 # the location where foreman is installed
 FOREMAN_HOME=<%= scope.lookupvar('::foreman::app_root') %>
 

@@ -1,4 +1,7 @@
-#! /usr/bin/env ruby
+<% @header = ''
+   ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file))), nil, nil, "@header").result(binding) -%>
+#!/usr/bin/env ruby
+<%= @header %>
 
 SETTINGS = {
   :url          => "<%= @foreman_url %>",
