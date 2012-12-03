@@ -1,0 +1,6 @@
+.vagrant
+*.swp
+*.swo
+
+.bundle
+vendor/
