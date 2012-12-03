@@ -2,7 +2,7 @@ class foreman::service {
   case $foreman::passenger {
     true: {
       $service_ensure = 'stopped'
-      $service_enable = false
+      $service_enabled = false
     }
     default, false: {
       $service_ensure  = 'running'
