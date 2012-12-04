@@ -8,12 +8,12 @@ define foreman::install::repos(
         default => '0',
       }
       yumrepo {
-        "$name":
+        $name:
           descr    => 'Foreman stable repository',
           baseurl  => $foreman::params::yumrepo,
           gpgcheck => '0',
           enabled  => '1';
-        "$name-testing":
+        "${name}-testing":
           descr    => 'Foreman testing repository',
           baseurl  => 'http://yum.theforeman.org/test',
           enabled  => $repo_testing_enabled,
@@ -25,16 +25,16 @@ define foreman::install::repos(
         true    => 'nightly',
         default => 'stable',
       }
-      file { "/etc/apt/sources.list.d/$name.list":
-        content => "deb http://deb.theforeman.org/ $lsbdistcodename $component_name\n"
+      file { "/etc/apt/sources.list.d/${name}.list":
+        content => "deb http://deb.theforeman.org/ ${::lsbdistcodename} ${component_name}\n"
       }
       ~>
-      exec { "foreman-key-$name":
+      exec { "foreman-key-${name}":
         command     => '/usr/bin/wget -q http://deb.theforeman.org/foreman.asc -O- | /usr/bin/apt-key add -',
         refreshonly => true
       }
       ~>
-      exec { "update-apt-$name":
+      exec { "update-apt-${name}":
         command     => '/usr/bin/apt-get update',
         refreshonly => true
       }

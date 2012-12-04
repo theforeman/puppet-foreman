@@ -17,7 +17,7 @@ class foreman::config::passenger {
     path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
   }
 
-  file { ["$foreman::app_root/config.ru", "$foreman::app_root/config/environment.rb"]:
+  file { ["${foreman::app_root}/config.ru", "${foreman::app_root}/config/environment.rb"]:
     owner   => $foreman::user,
     require => Class['foreman::install'],
   }
