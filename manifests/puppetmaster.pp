@@ -9,8 +9,8 @@ class foreman::puppetmaster (
 ) inherits foreman::params {
 
   if $foreman::params::reports {   # foreman reporter
-    exec { "Create Puppet Reports dir":
-      command   => "/bin/mkdir -p ${puppet_basedir}/reports",
+    exec { 'Create Puppet Reports dir':
+      command => "/bin/mkdir -p ${puppet_basedir}/reports",
       creates => "${puppet_basedir}/reports"
     }
     file {"${puppet_basedir}/reports/foreman.rb":
@@ -18,8 +18,9 @@ class foreman::puppetmaster (
       owner    => 'puppet',
       group    => 'puppet',
       content  => template('foreman/foreman-report.rb.erb'),
-      require  => [Exec["Create Puppet Reports dir"],
-      Class['::puppet::server::install']
+      require  => [
+        Exec['Create Puppet Reports dir'],
+        Class['::puppet::server::install']
       ],
     }
   }

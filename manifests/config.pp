@@ -14,12 +14,12 @@ class foreman::config {
 
   case $::operatingsystem {
     Debian,Ubuntu: {
-      $init_config = "/etc/default/foreman"
-      $init_config_tmpl = "foreman.default"
+      $init_config = '/etc/default/foreman'
+      $init_config_tmpl = 'foreman.default'
     }
     default: {
-      $init_config = "/etc/sysconfig/foreman"
-      $init_config_tmpl = "foreman.sysconfig"
+      $init_config = '/etc/sysconfig/foreman'
+      $init_config_tmpl = 'foreman.sysconfig'
     }
   }
   file { $init_config:
