@@ -13,6 +13,7 @@ describe 'foreman', :type => :class  do
     let (:facts) do
       {
         :ipaddress => '10.0.0.1',
+        :lsbdistcodename => 'squeeze',
         :operatingsystem => 'Debian',
       }
     end
@@ -22,7 +23,12 @@ describe 'foreman', :type => :class  do
       it { should include_class('foreman::install') }
       it { should contain_package('foreman').with_ensure('present') }
       it { should contain_package('foreman-sqlite3').with_ensure('present') }
-      # TODO: Test repos and require Repo.
+
+      ## install::repos
+      it do
+        should contain_file('/etc/apt/sources.list.d/foreman.list') \
+          .with_content("deb http://deb.theforeman.org/ squeeze stable\n")
+      end
 
       ## config
       it { should include_class('foreman::config') }

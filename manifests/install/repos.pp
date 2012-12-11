@@ -1,23 +1,19 @@
 define foreman::install::repos(
-  $repo    = stable
+  $repo = stable
 ) {
+  include foreman::params
+
   case $::operatingsystem {
     redhat,centos,fedora,Scientific: {
-      $repo_testing_enabled = $use_testing ? {
-        true    => '1',
-        default => '0',
+      $repo_path = $repo ? {
+        'stable' => 'releases/latest',
+        default  => $repo,
       }
-      yumrepo {
-        $name:
-          descr    => 'Foreman stable repository',
-          baseurl  => $foreman::params::yumrepo,
+      yumrepo { $name:
+          descr    => "Foreman ${repo} repository",
+          baseurl  => "http://yum.theforeman.org/${repo_path}/${foreman::params::yumcode}/\$basearch",
           gpgcheck => '0',
           enabled  => '1';
-        "${name}-testing":
-          descr    => 'Foreman testing repository',
-          baseurl  => 'http://yum.theforeman.org/test',
-          enabled  => $repo_testing_enabled,
-          gpgcheck => '0',
       }
     }
     Debian,Ubuntu: {
