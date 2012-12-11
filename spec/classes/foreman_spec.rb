@@ -21,7 +21,7 @@ describe 'foreman', :type => :class  do
       ## install
       it { should include_class('foreman::install') }
       it { should contain_package('foreman').with_ensure('present') }
-      it { should contain_package('foreman-sqlite3').with_ensure('latest') }
+      it { should contain_package('foreman-sqlite3').with_ensure('present') }
       # TODO: Test repos and require Repo.
 
       ## config
