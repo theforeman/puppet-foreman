@@ -23,7 +23,7 @@ class foreman::install {
     }
 
     package {'foreman-sqlite3':
-      ensure  => latest,
+      ensure  => present,
       name    => $sqlite,
       require => $repo,
       notify  => [Class['foreman::service'], Package['foreman']],
