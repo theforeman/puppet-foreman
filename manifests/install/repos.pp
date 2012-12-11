@@ -1,5 +1,5 @@
 define foreman::install::repos(
-  $use_testing    = false
+  $repo    = stable
 ) {
   case $::operatingsystem {
     redhat,centos,fedora,Scientific: {
@@ -21,12 +21,8 @@ define foreman::install::repos(
       }
     }
     Debian,Ubuntu: {
-      $component_name = $use_testing ? {
-        true    => 'nightly',
-        default => 'stable',
-      }
       file { "/etc/apt/sources.list.d/${name}.list":
-        content => "deb http://deb.theforeman.org/ ${::lsbdistcodename} ${component_name}\n"
+        content => "deb http://deb.theforeman.org/ ${::lsbdistcodename} ${repo}\n"
       }
       ~>
       exec { "foreman-key-${name}":

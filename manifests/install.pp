@@ -1,7 +1,7 @@
 class foreman::install {
   if ! $foreman::custom_repo {
     foreman::install::repos { 'foreman':
-      use_testing    => $foreman::use_testing,
+      repo => $foreman::repo
     }
   }
 
