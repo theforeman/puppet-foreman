@@ -16,13 +16,11 @@ class foreman::config::enc (
   file { "${puppet_home}/yaml":
     ensure  => directory,
     recurse => true,
-    mode    => '0640',
     owner   => 'puppet',
     group   => 'puppet',
   }
   file { "${puppet_home}/yaml/foreman":
     ensure  => directory,
-    mode    => '0640',
     owner   => 'puppet',
     group   => 'puppet',
   }
