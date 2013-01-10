@@ -5,7 +5,10 @@ class foreman::puppetmaster (
   $facts          = $foreman::params::facts,
   $storeconfigs   = $foreman::params::storeconfigs,
   $puppet_home    = $foreman::params::puppet_home,
-  $puppet_basedir = $foreman::params::puppet_basedir
+  $puppet_basedir = $foreman::params::puppet_basedir,
+  $ssl_ca         = $foreman::params::client_ssl_ca,
+  $ssl_cert       = $foreman::params::client_ssl_cert,
+  $ssl_key        = $foreman::params::client_ssl_key
 ) inherits foreman::params {
 
   if $foreman::params::reports {   # foreman reporter
@@ -31,6 +34,9 @@ class foreman::puppetmaster (
       facts        => $facts,
       storeconfigs => $storeconfigs,
       puppet_home  => $puppet_home,
+      ssl_ca       => $ssl_ca,
+      ssl_cert     => $ssl_cert,
+      ssl_key      => $ssl_key
     }
   }
 }

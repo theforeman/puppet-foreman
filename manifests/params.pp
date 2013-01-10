@@ -1,7 +1,7 @@
 class foreman::params {
 
 # Basic configurations
-  $foreman_url  = "http://${::fqdn}"
+  $foreman_url  = "https://${::fqdn}"
   # Should foreman act as an external node classifier (manage puppet class
   # assignments)
   $enc          = true
@@ -65,4 +65,10 @@ class foreman::params {
     }
   }
   $puppet_home = '/var/lib/puppet'
+
+  # If CA is specified, remote Foreman host will be verified in reports/ENC scripts
+  $client_ssl_ca   = "${puppet_home}/ssl/certs/ca.pem"
+  # Used to authenticate to Foreman, required if require_ssl_puppetmasters is enabled
+  $client_ssl_cert = "${puppet_home}/ssl/certs/${fqdn}.pem"
+  $client_ssl_key  = "${puppet_home}/ssl/private_keys/${fqdn}.pem"
 }

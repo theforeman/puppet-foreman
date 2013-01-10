@@ -4,6 +4,11 @@
 
 # URL of your Foreman installation
 $foreman_url='<%= @foreman_url %>'
+# if CA is specified, remote Foreman host will be verified
+$foreman_ssl_ca = "<%= @ssl_ca -%>"
+# ssl_cert and key are required if require_ssl_puppetmasters is enabled in Foreman
+$foreman_ssl_cert = "<%= @ssl_cert -%>"
+$foreman_ssl_key = "<%= @ssl_key -%>"
 
 require 'puppet'
 require 'net/http'
@@ -18,9 +23,18 @@ Puppet::Reports.register_report(:foreman) do
       begin
         uri = URI.parse($foreman_url)
         http = Net::HTTP.new(uri.host, uri.port)
-        if uri.scheme == 'https' then
-          http.use_ssl = true
-          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        http.use_ssl     = uri.scheme == 'https'
+        if http.use_ssl?
+          if $foreman_ssl_ca
+            http.ca_file = $foreman_ssl_ca
+            http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+          else
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          end
+          if $foreman_ssl_cert
+            http.cert = OpenSSL::X509::Certificate.new(File.read($foreman_ssl_cert))
+            http.key  = OpenSSL::PKey::RSA.new(File.read($foreman_ssl_key), nil)
+          end
         end
         req = Net::HTTP::Post.new("#{uri.path}/reports/create?format=yml")
         req.set_form_data({'report' => to_yaml})
