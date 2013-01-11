@@ -15,7 +15,7 @@ class foreman::params {
   # should foreman manage host provisioning as well
   $unattended   = true
   # Enable users authentication (default user:admin pw:changeme)
-  $authentication = false
+  $authentication = true
   # configure foreman via apache and passenger
   $passenger    = true
   # force SSL (note: requires passenger)
