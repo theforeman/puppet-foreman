@@ -21,6 +21,10 @@ class foreman::params {
   # force SSL (note: requires passenger)
   $ssl          = true
 
+  # Choose whether you want to enable locations and organizations.
+  $locations_enabled      = false
+  $organizations_enabled  = false
+
 # Advance configurations - no need to change anything here by default
   # if set to true, no repo will be added by this module, letting you to
   # set it to some custom location.

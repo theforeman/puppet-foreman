@@ -6,3 +6,5 @@
 :puppetconfdir: /etc/puppet/puppet.conf
 :login: <%= scope.lookupvar("foreman::authentication") %>
 :require_ssl: <%= scope.lookupvar("foreman::ssl") %>
+:locations_enabled: <%= scope.lookupvar("foreman::locations_enabled") %>
+:organizations_enabled: <%= scope.lookupvar("foreman::organizations_enabled") %>
