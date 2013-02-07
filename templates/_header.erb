@@ -1,0 +1,6 @@
+### File managed with puppet ###
+## Served by:        '<%= scope.lookupvar('::servername') %>'
+## Module:           '<%= scope.to_hash['module_name'] %>'
+<%
+  module_paths = Puppet::Node::Environment.current[:modulepath].split(':').map{|i| File.expand_path(i) }.join('|')
+%>## Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{module_paths}"),"") %>'

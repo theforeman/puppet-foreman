@@ -1,4 +1,8 @@
---- 
+<% @header = ''
+   ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file))), nil, nil, "@header").result(binding) -%>
+---
+<%= @header %>
+
 #your default puppet server - can be overridden in the host level
 #if none specified, plain "puppet" will be used.
 #:puppet_server: puppet
