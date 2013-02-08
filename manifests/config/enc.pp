@@ -17,10 +17,11 @@ class foreman::config::enc (
     group   => 'puppet',
   }
   file { "${puppet_home}/yaml":
-    ensure  => directory,
-    recurse => true,
-    owner   => 'puppet',
-    group   => 'puppet',
+    ensure                  => directory,
+    recurse                 => true,
+    owner                   => 'puppet',
+    group                   => 'puppet',
+    selinux_ignore_defaults => true,
   }
   file { "${puppet_home}/yaml/foreman":
     ensure  => directory,
