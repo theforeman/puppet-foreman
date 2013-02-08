@@ -41,12 +41,11 @@ class foreman::config {
     require => Class['foreman::install'],
   }
 
-  # remove cron previously installed here, it's moved to the package's cron.d
-  # file
-  cron{'clear_session_table':
+  # remove crons previously installed here, they've moved to the package's
+  # cron.d file
+  cron { ['clear_session_table', 'expire_old_reports', 'daily summary']:
     ensure  => absent,
   }
 
-  if $foreman::reports { include foreman::config::reports }
   if $foreman::passenger  { include foreman::config::passenger }
 }

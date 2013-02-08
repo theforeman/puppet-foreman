@@ -35,8 +35,6 @@ describe 'foreman', :type => :class  do
       it { should contain_user('foreman') }
       it { should contain_file('/etc/foreman/settings.yaml') }
       it { should contain_cron('clear_session_table') }
-      # TODO: Check more parameters of cron.
-      it { should include_class('foreman::config::reports') }
       it { should contain_cron('expire_old_reports') }
       it { should contain_cron('daily summary') }
 
