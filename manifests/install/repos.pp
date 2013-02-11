@@ -17,8 +17,12 @@ define foreman::install::repos(
       }
     }
     Debian,Ubuntu: {
+      $_lsbdistcodename = $::lsbdistcodename ? {
+        'wheezy' => 'squeeze',
+        default  => $::lsbdistcodename,
+      }
       file { "/etc/apt/sources.list.d/${name}.list":
-        content => "deb http://deb.theforeman.org/ ${::lsbdistcodename} ${repo}\n"
+        content => "deb http://deb.theforeman.org/ ${_lsbdistcodename} ${repo}\n"
       }
       ~>
       exec { "foreman-key-${name}":
