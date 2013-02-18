@@ -131,6 +131,7 @@ rescue
 end
 
 begin
+  no_env = ARGV.delete("--no-environment")
   if ARGV.delete("--push-facts")
     # push all facts files to Foreman and don't act as an ENC
     upload_all_facts
@@ -154,7 +155,14 @@ begin
       # Read from cache, we got some sort of an error.
       result = read_cache(certname)
     ensure
-      puts result
+      if no_env
+        require 'yaml'
+        yaml = YAML.load(result)
+        yaml.delete('environment')
+        puts yaml.to_yaml
+      else
+        puts result
+      end
     end
   end
 rescue => e
