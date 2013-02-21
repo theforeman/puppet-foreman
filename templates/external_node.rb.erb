@@ -1,19 +1,18 @@
-<% @header = ''
-   ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file))), nil, nil, "@header").result(binding) -%>
 #!/usr/bin/env ruby
-<%= @header %>
+#<%= @header = ''; ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file))), nil, nil, "@header").result(binding); @header -%>
 
+# If copying this template by hand, replace the settings below including the angle brackets
 SETTINGS = {
-  :url          => "<%= @foreman_url %>",
-  :puppetdir    => "<%= @puppet_home %>",
-  :facts        => <%= @facts %>,
-  :storeconfigs => <%= @storeconfigs %>,
+  :url          => "<%= @foreman_url %>",  # e.g. https://foreman.example.com
+  :puppetdir    => "<%= @puppet_home %>",  # e.g. /var/lib/puppet
+  :facts        => <%= @facts %>,          # true/false to upload facts
+  :storeconfigs => <%= @storeconfigs %>,   # true/false if sharing ActiveRecord-storeconfigs
   :timeout      => 3,
   # if CA is specified, remote Foreman host will be verified
-  :ssl_ca       => "<%= @ssl_ca -%>",
+  :ssl_ca       => "<%= @ssl_ca -%>",      # e.g. /var/lib/puppet/ssl/certs/ca.pem
   # ssl_cert and key are required if require_ssl_puppetmasters is enabled in Foreman
-  :ssl_cert     => "<%= @ssl_cert -%>",
-  :ssl_key      => "<%= @ssl_key -%>"
+  :ssl_cert     => "<%= @ssl_cert -%>",    # e.g. /var/lib/puppet/ssl/certs/FQDN.pem
+  :ssl_key      => "<%= @ssl_key -%>"      # e.g. /var/lib/puppet/ssl/private_keys/FQDN.pem
 }
 
 # Script usually acts as an ENC for a single host, with the certname supplied as argument
