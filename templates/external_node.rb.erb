@@ -67,13 +67,13 @@ def upload_facts(certname, filename)
       res             = Net::HTTP.new(uri.host, uri.port)
       res.use_ssl     = uri.scheme == 'https'
       if res.use_ssl?
-        if SETTINGS[:ssl_ca]
+        if SETTINGS[:ssl_ca] && !SETTINGS[:ssl_ca].empty?
           res.ca_file = SETTINGS[:ssl_ca]
           res.verify_mode = OpenSSL::SSL::VERIFY_PEER
         else
           res.verify_mode = OpenSSL::SSL::VERIFY_NONE
         end
-        if SETTINGS[:ssl_cert] and SETTINGS[:ssl_key]
+        if SETTINGS[:ssl_cert] && !SETTINGS[:ssl_cert].empty? && SETTINGS[:ssl_key] && !SETTINGS[:ssl_key].empty?
           res.cert = OpenSSL::X509::Certificate.new(File.read(SETTINGS[:ssl_cert]))
           res.key  = OpenSSL::PKey::RSA.new(File.read(SETTINGS[:ssl_key]), nil)
         end
