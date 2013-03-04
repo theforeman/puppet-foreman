@@ -1,0 +1,6 @@
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
+
+RailsAutoDetect On
+AddDefaultCharset UTF-8
+DocumentRoot <%= scope.lookupvar 'foreman::app_root' %>/public
+PassengerAppRoot <%= scope.lookupvar 'foreman::app_root' %>

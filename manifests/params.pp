@@ -18,6 +18,8 @@ class foreman::params {
   $authentication = true
   # configure foreman via apache and passenger
   $passenger    = true
+  # Enclose apache configuration in <VirtualHost>...</VirtualHost>
+  $use_vhost    = true
   # force SSL (note: requires passenger)
   $ssl          = true
 
