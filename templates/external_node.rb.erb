@@ -41,6 +41,7 @@ def tsecs
   SETTINGS[:timeout] || 3
 end
 
+require 'etc'
 require 'net/http'
 require 'net/https'
 require 'fileutils'
@@ -120,6 +121,15 @@ def enc(certname)
 end
 
 # Actual code starts here
+
+# Setuid to puppet if we can
+begin
+  Process::GID.change_privilege(Etc.getgrnam('puppet').gid)
+  Process::UID.change_privilege(Etc.getpwnam('puppet').uid)
+rescue
+  puts "cannot switch to user 'puppet', continuing as '#{Etc.getpwuid.name}'"
+end
+
 begin
   if ARGV.delete("--push-facts")
     # push all facts files to Foreman and don't act as an ENC
