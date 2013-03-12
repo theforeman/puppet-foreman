@@ -2,22 +2,17 @@ class foreman::config::passenger {
   include apache::ssl
   include ::passenger
 
-  if ($foreman::use_vhost) {
-    file {'foreman_vhost':
-      path    => "${foreman::apache_conf_dir}/foreman.conf",
-      content => template('foreman/foreman-vhost.conf.erb'),
-      mode    => '0644',
-      notify  => Exec['reload-apache'],
-      require => Class['foreman::install'],
-    }
-  } else {
-    file {'foreman_apache':
-      path    => "${foreman::apache_conf_dir}/foreman.conf",
-      content => template('foreman/foreman-apache.conf.erb'),
-      mode    => '0644',
-      notify  => Exec['reload-apache'],
-      require => Class['foreman::install'],
-    }
+  $foreman_conf = $foreman::use_vhost ? {
+    false   => 'foreman/foreman-apache.conf.erb',
+    default => 'foreman/foreman-vhost.conf.erb',
+  }
+
+  file {'foreman_vhost':
+    path    => "${foreman::apache_conf_dir}/foreman.conf",
+    content => template($foreman_conf),
+    mode    => '0644',
+    notify  => Exec['reload-apache'],
+    require => Class['foreman::install'],
   }
 
   exec {'restart_foreman':
