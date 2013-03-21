@@ -12,6 +12,8 @@ class foreman::params {
   # Do you use storeconfig (and run foreman on the same database) ? (note: not
   # required)
   $storeconfigs = false
+  # what backend to use for storedconfigs (false for default (activerecord), puppetdb for puppetdb)
+  $storeconfigs_backend = false
   # should foreman manage host provisioning as well
   $unattended   = true
   # Enable users authentication (default user:admin pw:changeme)

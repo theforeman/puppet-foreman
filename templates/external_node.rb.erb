@@ -6,7 +6,7 @@ SETTINGS = {
   :url          => "<%= @foreman_url %>",  # e.g. https://foreman.example.com
   :puppetdir    => "<%= @puppet_home %>",  # e.g. /var/lib/puppet
   :facts        => <%= @facts %>,          # true/false to upload facts
-  :storeconfigs => <%= @storeconfigs %>,   # true/false if sharing ActiveRecord-storeconfigs
+  :storeconfigs => <%= @storeconfigs && !@storeconfigs_backend %>,   # true/false if sharing ActiveRecord-storeconfigs
   :timeout      => 3,
   # if CA is specified, remote Foreman host will be verified
   :ssl_ca       => "<%= @ssl_ca -%>",      # e.g. /var/lib/puppet/ssl/certs/ca.pem
