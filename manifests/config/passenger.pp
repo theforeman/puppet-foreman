@@ -1,5 +1,6 @@
 class foreman::config::passenger {
-  include apache::ssl
+  include ::apache
+  include ::apache::mod::ssl
   include ::passenger
 
   $foreman_conf = $foreman::use_vhost ? {
@@ -11,7 +12,7 @@ class foreman::config::passenger {
     path    => "${foreman::apache_conf_dir}/foreman.conf",
     content => template($foreman_conf),
     mode    => '0644',
-    notify  => Exec['reload-apache'],
+    notify  => Service['httpd'],
     require => Class['foreman::install'],
   }
 
