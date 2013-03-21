@@ -1,6 +1,6 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
 
-<% if scope.lookupvar('::osfamily') == 'Redhat' -%>
+<% if scope.lookupvar('::osfamily') == 'RedHat' -%>
 # puppetlabs-apache doesn't listen to 443 by default so we have to do that ourselves.
 Listen 443
 <% end -%>
