@@ -1,6 +1,6 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
 
-<VirtualHost <%= ipaddress %>:80>
+<VirtualHost <%= listen_interface %>:80>
   ServerName <%= fqdn %>
   ServerAlias foreman
   DocumentRoot <%= scope.lookupvar 'foreman::app_root' %>/public
@@ -11,7 +11,7 @@
 
 </VirtualHost>
 
-<VirtualHost <%= ipaddress %>:443>
+<VirtualHost <%= listen_interface %>:443>
   ServerName <%= fqdn %>
   ServerAlias foreman
 
