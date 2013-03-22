@@ -39,8 +39,17 @@ class foreman::params {
   $railspath   = '/usr/share'
   $app_root    = "${railspath}/foreman"
   $user        = 'foreman'
+  $group       = 'foreman'
   $environment = 'production'
-  $use_sqlite  = true
+
+  # if enabled, will install and configure the database server on this host
+  $db_manage   = true
+  # Database 'production' settings
+  $db_type     = 'postgresql'
+  $db_username = 'foreman'
+  # Generate and cache the password on the master once
+  # In multi-puppetmaster setups, the user should specify their own
+  $db_password = cache_data("db_password", random_password(32))
 
   # OS specific paths
   $ruby_major = regsubst($::rubyversion, '^(\d+\.\d+).*', '\1')
