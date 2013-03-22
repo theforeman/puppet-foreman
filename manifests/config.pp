@@ -16,8 +16,15 @@ class foreman::config {
   file {'/etc/foreman/settings.yaml':
     source  => concat_output('foreman_settings'),
     notify  => Class['foreman::service'],
-    owner   => $foreman::user,
-    require => User[$foreman::user],
+    owner   => 'root',
+  }
+
+  file { '/etc/foreman/database.yml':
+    owner   => 'root',
+    group   => $foreman::group,
+    mode    => 640,
+    content => template('foreman/database.yml.erb'),
+    notify  => Class['foreman::service'],
   }
 
   case $::operatingsystem {
