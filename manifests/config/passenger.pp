@@ -1,6 +1,20 @@
-class foreman::config::passenger {
+class foreman::config::passenger(
+
+  # specifiy which interface to bind passenger to eth0, eth1, ...
+  $listen_on_interface = ''
+
+
+) {
   include apache::ssl
   include ::passenger
+
+  # Check the value in case the interface doesn't exist, otherwise listen on all interfaces
+  if inline_template("<%= interfaces.split(',').include?(listen_on_interface) %>") == "true" {
+    $listen_interface = inline_template("<%= ipaddress_${listen_on_interface} %>")
+  }
+  else{
+    $listen_interface = '*'
+  }
 
   $foreman_conf = $foreman::use_vhost ? {
     false   => 'foreman/foreman-apache.conf.erb',

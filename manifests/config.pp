@@ -47,5 +47,10 @@ class foreman::config {
     ensure  => absent,
   }
 
-  if $foreman::passenger  { include foreman::config::passenger }
+  if $foreman::passenger  {
+    class{"foreman::config::passenger":
+      listen_on_interface => $foreman::passenger_interface,
+    }
+  }
+
 }
