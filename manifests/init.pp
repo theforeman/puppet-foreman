@@ -20,7 +20,8 @@ class foreman (
   $apache_conf_dir        = $foreman::params::apache_conf_dir,
   $puppet_home            = $foreman::params::puppet_home,
   $locations_enabled      = $foreman::params::locations_enabled,
-  $organizations_enabled  = $foreman::params::organizations_enabled
+  $organizations_enabled  = $foreman::params::organizations_enabled,
+  $passenger_interface    = $foreman::params::passenger_interface
 ) inherits foreman::params {
   class { 'foreman::install': } ~>
   class { 'foreman::config': } ~>
