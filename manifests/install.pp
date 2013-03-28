@@ -10,24 +10,23 @@ class foreman::install {
     default => Foreman::Install::Repos['foreman'],
   }
 
-  package {'foreman':
+  case $foreman::db_type {
+    sqlite: {
+      case $::operatingsystem {
+        Debian,Ubuntu: { $package = 'foreman-sqlite3' }
+        default:       { $package = 'foreman-sqlite' }
+      }
+    }
+    postgresql: {
+      $package = 'foreman-postgresql'
+    }
+    mysql: {
+      $package = 'foreman-mysql'
+    }
+  }
+
+  package { $package:
     ensure  => present,
     require => $repo,
-    notify  => Class['foreman::service'],
   }
-
-  if $foreman::use_sqlite {
-    case $::operatingsystem {
-      Debian,Ubuntu: { $sqlite = 'foreman-sqlite3' }
-      default:       { $sqlite = 'foreman-sqlite' }
-    }
-
-    package {'foreman-sqlite3':
-      ensure  => present,
-      name    => $sqlite,
-      require => $repo,
-      notify  => [Class['foreman::service'], Package['foreman']],
-    }
-  }
-
 }

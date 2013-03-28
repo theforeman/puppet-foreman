@@ -5,11 +5,19 @@ class foreman::config {
     environment => "RAILS_ENV=${foreman::environment}",
   }
 
-  file {'/etc/foreman/settings.yaml':
+  file { '/etc/foreman/settings.yaml':
     content => template('foreman/settings.yaml.erb'),
     notify  => Class['foreman::service'],
-    owner   => $foreman::user,
+    owner   => 'root',
     require => User[$foreman::user],
+  }
+
+  file { '/etc/foreman/database.yml':
+    owner   => 'root',
+    group   => $foreman::group,
+    mode    => 640,
+    content => template('foreman/database.yml.erb'),
+    notify  => Class['foreman::service'],
   }
 
   case $::operatingsystem {
