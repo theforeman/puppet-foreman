@@ -17,19 +17,16 @@ define foreman::install::repos(
       }
     }
     Debian,Ubuntu: {
-      file { "/etc/apt/sources.list.d/${name}.list":
-        content => "deb http://deb.theforeman.org/ ${::lsbdistcodename} ${repo}\n"
+
+      apt::key{'2048R/E775FF07':
+        source => 'http://deb.theforeman.org/foreman.asc',
       }
-      ~>
-      exec { "foreman-key-${name}":
-        command     => '/usr/bin/wget -q http://deb.theforeman.org/foreman.asc -O- | /usr/bin/apt-key add -',
-        refreshonly => true
+
+      apt::sources_list{'foreman':
+        content => "deb http://deb.theforeman.org/ ${::lsbdistcodename} ${repo}",
+        require => Apt::Key['2048R/E775FF07'],
       }
-      ~>
-      exec { "update-apt-${name}":
-        command     => '/usr/bin/apt-get update',
-        refreshonly => true
-      }
+
     }
     default: { fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}") }
   }
