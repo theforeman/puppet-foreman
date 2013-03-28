@@ -3,8 +3,8 @@ define foreman::install::repos(
 ) {
   include foreman::params
 
-  case $::operatingsystem {
-    redhat,centos,fedora,Scientific: {
+  case $::osfamily {
+    RedHat: {
       $repo_path = $repo ? {
         'stable' => 'releases/latest',
         default  => $repo,
