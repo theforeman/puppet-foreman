@@ -44,23 +44,27 @@ class foreman::params {
 
   # OS specific paths
   $ruby_major = regsubst($::rubyversion, '^(\d+\.\d+).*', '\1')
-  case $::operatingsystem {
-    fedora: {
-      if $::operatingsystemrelease >= 17 {
-        $puppet_basedir  = "/usr/share/ruby/vendor_ruby/puppet"
-      } else {
-        $puppet_basedir  = "/usr/lib/ruby/site_ruby/${ruby_major}/puppet"
+  case $::osfamily {
+    RedHat: {
+      case $::operatingsystem {
+        fedora: {
+          if $::operatingsystemrelease >= 17 {
+            $puppet_basedir  = "/usr/share/ruby/vendor_ruby/puppet"
+          } else {
+            $puppet_basedir  = "/usr/lib/ruby/site_ruby/${ruby_major}/puppet"
+          }
+          $apache_conf_dir = '/etc/httpd/conf.d'
+          $yumcode = "f${::operatingsystemrelease}"
+        }
+        default: {
+          $puppet_basedir  = "/usr/lib/ruby/site_ruby/${ruby_major}/puppet"
+          $apache_conf_dir = '/etc/httpd/conf.d'
+          $osmajor = regsubst($::operatingsystemrelease, '\..*', '')
+          $yumcode = "el${osmajor}"
+        }
       }
-      $apache_conf_dir = '/etc/httpd/conf.d'
-      $yumcode = "f${::operatingsystemrelease}"
     }
-    redhat,centos,Scientific: {
-      $puppet_basedir  = "/usr/lib/ruby/site_ruby/${ruby_major}/puppet"
-      $apache_conf_dir = '/etc/httpd/conf.d'
-      $osmajor = regsubst($::operatingsystemrelease, '\..*', '')
-      $yumcode = "el${osmajor}"
-    }
-    Debian,Ubuntu: {
+    Debian: {
       $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
       $apache_conf_dir = '/etc/apache2/conf.d'
     }
