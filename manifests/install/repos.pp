@@ -3,8 +3,8 @@ define foreman::install::repos(
 ) {
   include foreman::params
 
-  case $::operatingsystem {
-    redhat,centos,fedora,Scientific: {
+  case $::osfamily {
+    RedHat: {
       $repo_path = $repo ? {
         'stable' => 'releases/latest',
         default  => $repo,
@@ -16,7 +16,7 @@ define foreman::install::repos(
           enabled  => '1';
       }
     }
-    Debian,Ubuntu: {
+    Debian: {
       file { "/etc/apt/sources.list.d/${name}.list":
         content => "deb http://deb.theforeman.org/ ${::lsbdistcodename} ${repo}\n"
       }
@@ -31,6 +31,6 @@ define foreman::install::repos(
         refreshonly => true
       }
     }
-    default: { fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}") }
+    default: { fail("${::hostname}: This module does not support operatingsystem ${::osfamily}") }
   }
 }
