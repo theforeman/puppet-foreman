@@ -5,8 +5,16 @@ class foreman::config {
     environment => "RAILS_ENV=${foreman::environment}",
   }
 
-  file {'/etc/foreman/settings.yaml':
+  concat_build {'foreman_settings':
+    order => ['*.yaml'],
+  }
+
+  concat_fragment {'foreman_settings+01-header.yaml':
     content => template('foreman/settings.yaml.erb'),
+  }
+
+  file {'/etc/foreman/settings.yaml':
+    source  => concat_output('foreman_settings'),
     notify  => Class['foreman::service'],
     owner   => $foreman::user,
     require => User[$foreman::user],
