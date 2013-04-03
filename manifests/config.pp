@@ -15,6 +15,7 @@ class foreman::config {
 
   file {'/etc/foreman/settings.yaml':
     source  => concat_output('foreman_settings'),
+    require => Concat_build['foreman_settings'],
     notify  => Class['foreman::service'],
     owner   => 'root',
   }
