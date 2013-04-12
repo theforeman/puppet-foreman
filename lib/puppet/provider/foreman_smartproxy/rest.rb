@@ -13,7 +13,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest) do
   end
 
   def proxy
-    smartProxies.index[0].find { |s| s['smart_proxy']['name'] == resource[:name] }
+    @proxy ||= smartProxies.index[0].find { |s| s['smart_proxy']['name'] == resource[:name] }
   end
 
   def id
@@ -32,6 +32,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest) do
 
   def destroy
     smartProxies.destroy({'id' => id})
+    @proxy = nil
   end
 
   def url
