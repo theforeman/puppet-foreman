@@ -12,8 +12,11 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest) do
     )
   end
 
+  def proxy
+    smartProxies.index[0].find { |s| s['smart_proxy']['name'] == resource[:name] }
+  end
+
   def id
-    proxy = smartProxies.index[0].find { |s| s['smart_proxy']['name'] == resource[:name] }
     proxy ? proxy['smart_proxy']['id'] : nil
   end
 
@@ -32,11 +35,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest) do
   end
 
   def url
-    smartProxies.index[0].each do |s|
-      if s['smart_proxy']['name'] == resource[:name]
-        return s['smart_proxy']['url']
-      end
-    end
+    proxy ? proxy['smart_proxy']['url'] : nil
   end
 
   def url=(value)
