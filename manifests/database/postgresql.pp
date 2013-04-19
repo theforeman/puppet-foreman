@@ -4,6 +4,11 @@ class foreman::database::postgresql {
     default => $foreman::db_database,
   }
 
+  $password = $foreman::db_password ? {
+    'UNSET' => false,
+    default => postgresql_password($foreman::db_username, $foreman::db_password),
+  }
+
   # Prevents errors if run from /root etc.
   Postgresql_psql {
     cwd => "/",
@@ -12,6 +17,6 @@ class foreman::database::postgresql {
   include postgresql::client, postgresql::server
   postgresql::db { $dbname:
     user     => $foreman::db_username,
-    password => postgresql_password($foreman::db_username, $foreman::db_password),
+    password => $password,
   }
 }
