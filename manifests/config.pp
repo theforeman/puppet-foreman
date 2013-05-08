@@ -18,6 +18,8 @@ class foreman::config {
     require => Concat_build['foreman_settings'],
     notify  => Class['foreman::service'],
     owner   => 'root',
+    group   => $foreman::group,
+    mode    => '0640',
   }
 
   file { '/etc/foreman/database.yml':
