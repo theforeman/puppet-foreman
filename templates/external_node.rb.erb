@@ -127,7 +127,7 @@ begin
   Process::GID.change_privilege(Etc.getgrnam('puppet').gid)
   Process::UID.change_privilege(Etc.getpwnam('puppet').uid)
 rescue
-  puts "cannot switch to user 'puppet', continuing as '#{Etc.getpwuid.name}'"
+  $stderr.puts "cannot switch to user 'puppet', continuing as '#{Etc.getpwuid.name}'"
 end
 
 begin
