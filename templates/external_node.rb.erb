@@ -155,14 +155,13 @@ begin
       # Read from cache, we got some sort of an error.
       result = read_cache(certname)
     ensure
+      require 'yaml'
+      yaml = YAML.load(result)
       if no_env
-        require 'yaml'
-        yaml = YAML.load(result)
         yaml.delete('environment')
-        puts yaml.to_yaml
-      else
-        puts result
       end
+      # Always reset the result to back to clean yaml on our end
+      puts yaml.to_yaml
     end
   end
 rescue => e
