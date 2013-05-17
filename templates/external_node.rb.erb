@@ -124,8 +124,8 @@ end
 
 # Setuid to puppet if we can
 begin
-  Process::GID.change_privilege(Etc.getgrnam('puppet').gid)
-  Process::UID.change_privilege(Etc.getpwnam('puppet').uid)
+  Process::GID.change_privilege(Etc.getgrnam('puppet').gid) unless Etc.getpwuid.name == 'puppet'
+  Process::UID.change_privilege(Etc.getpwnam('puppet').uid) unless Etc.getpwuid.name == 'puppet'
 rescue
   puts "cannot switch to user 'puppet', continuing as '#{Etc.getpwuid.name}'"
 end
