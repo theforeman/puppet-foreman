@@ -1,0 +1,15 @@
+fixtures:
+  repositories:
+    apache:           'git://github.com/theforeman/puppet-apache'
+    concat:           'git://github.com/ripienaar/puppet-concat'
+    concat_native:    'git://github.com/theforeman/puppet-concat'
+    create_resources: 'git://github.com/puppetlabs/puppetlabs-create_resources'
+    mysql:            'git://github.com/puppetlabs/puppetlabs-mysql'
+    passenger:        'git://github.com/theforeman/puppet-passenger'
+    postgresql:       'git://github.com/puppetlabs/puppetlabs-postgresql'
+    puppet:           'git://github.com/theforeman/puppet-puppet'
+    stdlib:           'git://github.com/puppetlabs/puppetlabs-stdlib'
+
+
+  symlinks:
+    foreman: "#{source_dir}"
