@@ -11,5 +11,5 @@ dependency 'theforeman/apache', '>= 1.2.0-rc1'
 dependency 'theforeman/concat_native', '>= 1.2.0-rc1'
 dependency 'theforeman/passenger', '>= 1.2.0-rc1'
 
-dependency 'puppetlabs/mysql', '>= 1.2.0-rc1'
+dependency 'puppetlabs/mysql'
 dependency 'puppetlabs/postgresql', '>= 2.2.0'
