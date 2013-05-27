@@ -63,7 +63,7 @@ def upload_facts(certname, filename)
     fact = File.read(filename)
     begin
       uri = URI.parse("#{url}/fact_values/create?format=yml")
-      req = Net::HTTP::Post.new(uri.path)
+      req = Net::HTTP::Post.new(uri.request_uri)
       req.set_form_data('facts' => fact)
       res             = Net::HTTP.new(uri.host, uri.port)
       res.use_ssl     = uri.scheme == 'https'
@@ -99,7 +99,7 @@ end
 def enc(certname)
   foreman_url      = "#{url}/node/#{certname}?format=yml"
   uri              = URI.parse(foreman_url)
-  req              = Net::HTTP::Get.new(foreman_url)
+  req              = Net::HTTP::Get.new(uri.request_uri)
   http             = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl     = uri.scheme == 'https'
   if http.use_ssl?
