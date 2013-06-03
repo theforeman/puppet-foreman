@@ -9,8 +9,8 @@ class foreman::config::passenger(
   include ::passenger
 
   # Check the value in case the interface doesn't exist, otherwise listen on all interfaces
-  if inline_template("<%= interfaces.split(',').include?(listen_on_interface) %>") == "true" {
-    $listen_interface = inline_template("<%= ipaddress_${listen_on_interface} %>")
+  if inline_template('<%= @interfaces.split(',').include?(listen_on_interface) %>') == 'true' {
+    $listen_interface = inline_template("<%= @ipaddress_${listen_on_interface} %>")
   }
   else{
     $listen_interface = '*'
