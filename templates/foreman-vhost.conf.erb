@@ -1,7 +1,7 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
 
-<VirtualHost <%= listen_interface %>:80>
-  ServerName <%= fqdn %>
+<VirtualHost <%= @listen_interface %>:80>
+  ServerName <%= @fqdn %>
   ServerAlias foreman
   DocumentRoot <%= scope.lookupvar 'foreman::app_root' %>/public
   PassengerAppRoot <%= scope.lookupvar 'foreman::app_root' %>
@@ -11,8 +11,8 @@
 
 </VirtualHost>
 
-<VirtualHost <%= listen_interface %>:443>
-  ServerName <%= fqdn %>
+<VirtualHost <%= @listen_interface %>:443>
+  ServerName <%= @fqdn %>
   ServerAlias foreman
 
   RailsAutoDetect On
@@ -22,8 +22,8 @@
   # Use puppet certificates for SSL
 
   SSLEngine On
-  SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= fqdn %>.pem
-  SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= fqdn %>.pem
+  SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= @fqdn %>.pem
+  SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem
   SSLCertificateChainFile /var/lib/puppet/ssl/certs/ca.pem
   SSLCACertificateFile    /var/lib/puppet/ssl/certs/ca.pem
   SSLVerifyClient         optional
