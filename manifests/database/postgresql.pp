@@ -11,7 +11,7 @@ class foreman::database::postgresql {
 
   # Prevents errors if run from /root etc.
   Postgresql_psql {
-    cwd => "/",
+    cwd => '/',
   }
 
   include postgresql::client, postgresql::server
