@@ -64,22 +64,27 @@ class foreman::params {
           }
           $apache_conf_dir = '/etc/httpd/conf.d'
           $yumcode = "f${::operatingsystemrelease}"
+          $passenger_scl = undef
         }
         default: {
           $puppet_basedir  = "/usr/lib/ruby/site_ruby/${ruby_major}/puppet"
           $apache_conf_dir = '/etc/httpd/conf.d'
           $osmajor = regsubst($::operatingsystemrelease, '\..*', '')
           $yumcode = "el${osmajor}"
+          # add passenger::install::scl as EL uses SCL on Foreman 1.2+
+          $passenger_scl = 'ruby193'
         }
       }
     }
     Debian: {
       $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
       $apache_conf_dir = '/etc/apache2/conf.d'
+      $passenger_scl = undef
     }
     default:              {
       $puppet_basedir  = "/usr/lib/ruby/${ruby_major}/puppet"
       $apache_conf_dir = '/etc/apache2/conf.d/foreman.conf'
+      $passenger_scl = undef
     }
   }
   $puppet_home = '/var/lib/puppet'

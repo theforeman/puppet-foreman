@@ -7,6 +7,7 @@ class foreman (
   $unattended             = $foreman::params::unattended,
   $authentication         = $foreman::params::authentication,
   $passenger              = $foreman::params::passenger,
+  $passenger_scl          = $foreman::params::passenger_scl,
   $use_vhost              = $foreman::params::use_vhost,
   $ssl                    = $foreman::params::ssl,
   $custom_repo            = $foreman::params::custom_repo,

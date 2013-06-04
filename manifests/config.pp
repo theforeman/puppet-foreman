@@ -68,6 +68,7 @@ class foreman::config {
   if $foreman::passenger  {
     class{"foreman::config::passenger":
       listen_on_interface => $foreman::passenger_interface,
+      scl_prefix          => $foreman::passenger_scl,
     }
   }
 
