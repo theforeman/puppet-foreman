@@ -1,12 +1,17 @@
 class foreman::config::passenger(
 
   # specifiy which interface to bind passenger to eth0, eth1, ...
-  $listen_on_interface = ''
-
+  $listen_on_interface = '',
+  $scl_prefix = undef
 
 ) {
   include apache::ssl
   include ::passenger
+  if $scl_prefix {
+    class { '::passenger::install::scl':
+      prefix => $scl_prefix,
+    }
+  }
 
   # Check the value in case the interface doesn't exist, otherwise listen on all interfaces
   if inline_template('<%= @interfaces.split(',').include?(@listen_on_interface) %>') == 'true' {
