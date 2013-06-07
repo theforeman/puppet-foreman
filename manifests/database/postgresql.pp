@@ -1,3 +1,4 @@
+# Set up the foreman database using postgresql
 class foreman::database::postgresql {
   $dbname = $foreman::db_database ? {
     'UNSET' => 'foreman',

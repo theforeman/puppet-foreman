@@ -1,3 +1,4 @@
+# Set up a repository for foreman
 define foreman::install::repos(
   $repo = stable
 ) {

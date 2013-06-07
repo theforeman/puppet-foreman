@@ -1,3 +1,4 @@
+# The foreman default parameters
 class foreman::params {
 
 # Basic configurations
@@ -49,7 +50,7 @@ class foreman::params {
   $db_username = 'foreman'
   # Generate and cache the password on the master once
   # In multi-puppetmaster setups, the user should specify their own
-  $db_password = cache_data("db_password", random_password(32))
+  $db_password = cache_data('db_password', random_password(32))
 
   # OS specific paths
   $ruby_major = regsubst($::rubyversion, '^(\d+\.\d+).*', '\1')
@@ -58,7 +59,7 @@ class foreman::params {
       case $::operatingsystem {
         fedora: {
           if $::operatingsystemrelease >= 17 {
-            $puppet_basedir  = "/usr/share/ruby/vendor_ruby/puppet"
+            $puppet_basedir  = '/usr/share/ruby/vendor_ruby/puppet'
           } else {
             $puppet_basedir  = "/usr/lib/ruby/site_ruby/${ruby_major}/puppet"
           }
@@ -92,6 +93,6 @@ class foreman::params {
   # If CA is specified, remote Foreman host will be verified in reports/ENC scripts
   $client_ssl_ca   = "${puppet_home}/ssl/certs/ca.pem"
   # Used to authenticate to Foreman, required if require_ssl_puppetmasters is enabled
-  $client_ssl_cert = "${puppet_home}/ssl/certs/${fqdn}.pem"
-  $client_ssl_key  = "${puppet_home}/ssl/private_keys/${fqdn}.pem"
+  $client_ssl_cert = "${puppet_home}/ssl/certs/${::fqdn}.pem"
+  $client_ssl_key  = "${puppet_home}/ssl/private_keys/${::fqdn}.pem"
 }

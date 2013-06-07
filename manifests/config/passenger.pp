@@ -1,3 +1,4 @@
+# Configure the foreman service using passenger
 class foreman::config::passenger(
 
   # specifiy which interface to bind passenger to eth0, eth1, ...
@@ -14,10 +15,9 @@ class foreman::config::passenger(
   }
 
   # Check the value in case the interface doesn't exist, otherwise listen on all interfaces
-  if inline_template('<%= @interfaces.split(',').include?(@listen_on_interface) %>') == 'true' {
+  if $listen_on_interface in split($::interfaces, ',') {
     $listen_interface = inline_template("<%= @ipaddress_${listen_on_interface} %>")
-  }
-  else{
+  } else {
     $listen_interface = '*'
   }
 
