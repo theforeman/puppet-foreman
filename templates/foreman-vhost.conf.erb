@@ -5,7 +5,7 @@
   ServerAlias foreman
   DocumentRoot <%= scope.lookupvar 'foreman::app_root' %>/public
   PassengerAppRoot <%= scope.lookupvar 'foreman::app_root' %>
-<% if @scl_prefix -%>
+<% if @scl_prefix and !@scl_prefix.empty? -%>
   PassengerRuby /usr/bin/<%= @scl_prefix -%>-ruby
 <% end -%>
 
@@ -19,7 +19,7 @@
 
   DocumentRoot <%= scope.lookupvar 'foreman::app_root' %>/public
   PassengerAppRoot <%= scope.lookupvar 'foreman::app_root' %>
-<% if @scl_prefix -%>
+<% if @scl_prefix and !@scl_prefix.empty? -%>
   PassengerRuby /usr/bin/<%= @scl_prefix -%>-ruby
 <% end -%>
 
