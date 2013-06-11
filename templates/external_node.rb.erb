@@ -6,7 +6,6 @@ SETTINGS = {
   :url          => "<%= @foreman_url %>",  # e.g. https://foreman.example.com
   :puppetdir    => "<%= @puppet_home %>",  # e.g. /var/lib/puppet
   :facts        => <%= @facts %>,          # true/false to upload facts
-  :storeconfigs => <%= @storeconfigs && !@storeconfigs_backend %>,   # true/false if sharing ActiveRecord-storeconfigs
   :timeout      => 10,
   # if CA is specified, remote Foreman host will be verified
   :ssl_ca       => "<%= @ssl_ca -%>",      # e.g. /var/lib/puppet/ssl/certs/ca.pem
@@ -140,7 +139,7 @@ begin
     # send facts to Foreman - enable 'facts' setting to activate
     # if you use this option below, make sure that you don't send facts to foreman via the rake task or push facts alternatives.
     #
-    if SETTINGS[:facts] && !SETTINGS[:storeconfigs]
+    if SETTINGS[:facts]
       upload_facts certname, "#{puppetdir}/yaml/facts/#{certname}.yaml"
     end
     #

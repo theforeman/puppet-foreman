@@ -4,7 +4,6 @@ class foreman (
   $enc                    = $foreman::params::enc,
   $reports                = $foreman::params::reports,
   $facts                  = $foreman::params::facts,
-  $storeconfigs           = $foreman::params::storeconfigs,
   $unattended             = $foreman::params::unattended,
   $authentication         = $foreman::params::authentication,
   $passenger              = $foreman::params::passenger,

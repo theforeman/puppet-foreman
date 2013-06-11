@@ -3,8 +3,6 @@
 class foreman::puppetmaster (
   $foreman_url    = $foreman::params::foreman_url,
   $facts          = $foreman::params::facts,
-  $storeconfigs   = $foreman::params::storeconfigs,
-  $storeconfigs_backend = $foreman::params::storeconfigs_backend,
   $puppet_home    = $foreman::params::puppet_home,
   $puppet_basedir = $foreman::params::puppet_basedir,
   $ssl_ca         = $foreman::params::client_ssl_ca,
@@ -33,8 +31,6 @@ class foreman::puppetmaster (
     class {'foreman::config::enc':
       foreman_url          => $foreman_url,
       facts                => $facts,
-      storeconfigs         => $storeconfigs,
-      storeconfigs_backend => $storeconfigs_backend,
       puppet_home          => $puppet_home,
       ssl_ca               => $ssl_ca,
       ssl_cert             => $ssl_cert,
