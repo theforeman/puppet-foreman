@@ -68,6 +68,77 @@ describe 'foreman::install' do
 
       it { should contain_package('foreman-mysql').with_require('Foreman::Install::Repos[foreman]') }
     end
+
+    context 'with SELinux enabled' do
+      let :facts do
+        default_facts.merge({
+          :operatingsystem => 'RedHat',
+          :osfamily        => 'RedHat',
+          :selinux         => 'true',
+        })
+      end
+
+      describe 'with selinux undef' do
+        let :pre_condition do
+          "class {'foreman': }"
+        end
+        it { should contain_package('foreman-selinux').with_require('Foreman::Install::Repos[foreman]') }
+      end
+
+      describe 'with selinux false' do
+        let :pre_condition do
+          "class {'foreman':
+             selinux => false,
+           }"
+        end
+        it { should_not contain_package('foreman-selinux') }
+      end
+
+      describe 'with selinux true' do
+        let :pre_condition do
+          "class {'foreman':
+             selinux => true,
+           }"
+        end
+        it { should contain_package('foreman-selinux').with_require('Foreman::Install::Repos[foreman]') }
+      end
+    end
+
+    context 'with SELinux disabled' do
+      let :facts do
+        default_facts.merge({
+          :operatingsystem => 'RedHat',
+          :osfamily        => 'RedHat',
+          :selinux         => 'false',
+        })
+      end
+
+      describe 'with selinux undef' do
+        let :pre_condition do
+          "class {'foreman': }"
+        end
+        it { should_not contain_package('foreman-selinux') }
+      end
+
+      describe 'with selinux false' do
+        let :pre_condition do
+          "class {'foreman':
+             selinux => false,
+           }"
+        end
+        it { should_not contain_package('foreman-selinux') }
+      end
+
+      describe 'with selinux true' do
+        let :pre_condition do
+          "class {'foreman':
+             selinux => true,
+           }"
+        end
+        it { should contain_package('foreman-selinux').with_require('Foreman::Install::Repos[foreman]') }
+      end
+    end
+
   end
 
   context 'on debian' do

@@ -13,3 +13,4 @@ dependency 'theforeman/passenger', '>= 1.2.0-rc2'
 
 dependency 'puppetlabs/mysql'
 dependency 'puppetlabs/postgresql', '>= 2.2.0'
+dependency 'puppetlabs/stdlib'
