@@ -13,6 +13,7 @@ class foreman (
   $ssl                    = $foreman::params::ssl,
   $custom_repo            = $foreman::params::custom_repo,
   $repo                   = $foreman::params::repo,
+  $selinux                = $foreman::params::selinux,
   $db_manage              = $foreman::params::db_manage,
   $db_type                = $foreman::params::db_type,
   $db_adapter             = 'UNSET',
