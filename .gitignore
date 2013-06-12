@@ -6,3 +6,11 @@
 vendor/
 
 pkg/
+
+Gemfile.lock
+
+.rbenv*
+.rvmrc*
+.ruby-version
+
+spec/fixtures/

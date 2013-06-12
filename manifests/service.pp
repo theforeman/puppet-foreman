@@ -1,3 +1,4 @@
+# Configure the foreman service
 class foreman::service {
   case $foreman::passenger {
     true: {

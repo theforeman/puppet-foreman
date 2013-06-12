@@ -1,3 +1,4 @@
+# Configure foreman
 class foreman::config {
   Cron {
     require     => User[$foreman::user],
@@ -25,7 +26,7 @@ class foreman::config {
   file { '/etc/foreman/database.yml':
     owner   => 'root',
     group   => $foreman::group,
-    mode    => 640,
+    mode    => '0640',
     content => template('foreman/database.yml.erb'),
     notify  => Class['foreman::service'],
   }
@@ -66,7 +67,7 @@ class foreman::config {
   }
 
   if $foreman::passenger  {
-    class{"foreman::config::passenger":
+    class{'foreman::config::passenger':
       listen_on_interface => $foreman::passenger_interface,
       scl_prefix          => $foreman::passenger_scl,
     }

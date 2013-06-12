@@ -1,3 +1,4 @@
+# Set up the mysql database for foreman
 class foreman::database::mysql {
   $dbname = $foreman::db_database ? {
     'UNSET' => 'foreman',

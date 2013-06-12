@@ -1,3 +1,4 @@
+# Manage your foreman server
 class foreman (
   $foreman_url            = $foreman::params::foreman_url,
   $enc                    = $foreman::params::enc,

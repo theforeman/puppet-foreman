@@ -1,3 +1,4 @@
+# Configure the foreman ENC for a puppet server
 class foreman::config::enc (
   $foreman_url  = $foreman::params::foreman_url,
   $facts        = $foreman::params::facts,

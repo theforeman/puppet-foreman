@@ -1,3 +1,4 @@
+# Install the needed packages for foreman
 class foreman::install {
   if ! $foreman::custom_repo {
     foreman::install::repos { 'foreman':

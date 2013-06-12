@@ -5,10 +5,11 @@ describe 'foreman::install::repos' do
   let(:title) { 'foreman' }
 
   context 'on debian' do
-    let (:facts) do
+    let :facts do
       {
         :lsbdistcodename => 'squeeze',
-        :operatingsystem => 'Debian'
+        :operatingsystem => 'Debian',
+        :osfamily        => 'Debian',
       }
     end
 
@@ -41,10 +42,11 @@ describe 'foreman::install::repos' do
   end
 
   context 'on fedora' do
-    let (:facts) do
+    let :facts do
       {
-        :operatingsystem => 'Fedora',
-        :operatingsystemrelease => '17'
+        :operatingsystem        => 'Fedora',
+        :osfamily               => 'RedHat',
+        :operatingsystemrelease => '17',
       }
     end
 
@@ -77,9 +79,10 @@ describe 'foreman::install::repos' do
   end
 
   context 'on EL' do
-    let (:facts) do
+    let :facts do
       {
         :operatingsystem => 'RedHat',
+        :osfamily => 'RedHat',
         :operatingsystemrelease => '6.3'
       }
     end
