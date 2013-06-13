@@ -2,7 +2,8 @@
 class foreman::install {
   if ! $foreman::custom_repo {
     foreman::install::repos { 'foreman':
-      repo => $foreman::repo
+      repo => $foreman::repo,
+      gpgcheck => $foreman::gpgcheck,
     }
   }
 
