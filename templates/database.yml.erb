@@ -18,8 +18,7 @@ test:
 
 <%
   type     = scope.lookupvar("::foreman::db_type")
-  adapter  = scope.lookupvar("::foreman::db_adapter")
-  adapter  = (type == 'sqlite') ? 'sqlite3' : type if adapter == 'UNSET'
+  adapter  = scope.lookupvar("::foreman::db_adapter_real")
   host     = scope.lookupvar("::foreman::db_host")
   host     = scope.lookupvar("::fqdn") if type == 'mysql' && adapter == 'UNSET'
   database = scope.lookupvar("::foreman::db_database")

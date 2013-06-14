@@ -66,7 +66,7 @@ describe 'foreman::install' do
          }"
       end
 
-      it { should contain_package('foreman-mysql').with_require('Foreman::Install::Repos[foreman]') }
+      it { should contain_package('foreman-mysql2').with_require('Foreman::Install::Repos[foreman]') }
     end
 
     context 'with SELinux enabled' do
@@ -198,7 +198,7 @@ describe 'foreman::install' do
          }"
       end
 
-      it { should contain_package('foreman-mysql').with_require('Foreman::Install::Repos[foreman]') }
+      it { should contain_package('foreman-mysql2').with_require('Foreman::Install::Repos[foreman]') }
     end
   end
 end
