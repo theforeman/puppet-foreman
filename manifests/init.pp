@@ -34,6 +34,15 @@ class foreman (
   $organizations_enabled  = $foreman::params::organizations_enabled,
   $passenger_interface    = $foreman::params::passenger_interface
 ) inherits foreman::params {
+  if $db_adapter == 'UNSET' {
+    $db_adapter_real = $foreman::db_type ? {
+      'sqlite' => 'sqlite3',
+      'mysql'  => 'mysql2',
+      default  => $foreman::db_type,
+    }
+  } else {
+    $db_adapter_real = $db_adapter
+  }
   class { 'foreman::install': } ~>
   class { 'foreman::config': } ~>
   class { 'foreman::database': } ~>

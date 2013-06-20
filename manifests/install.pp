@@ -23,7 +23,7 @@ class foreman::install {
       $package = 'foreman-postgresql'
     }
     mysql: {
-      $package = 'foreman-mysql'
+      $package = 'foreman-mysql2'
     }
   }
 
