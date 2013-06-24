@@ -31,11 +31,14 @@ describe 'foreman::config::passenger' do
 
         should contain_file('foreman_vhost').with({
           :path    => '/etc/httpd/conf.d/foreman.conf',
-          :content => /<VirtualHost \*:80>/,
           :mode    => '0644',
           :notify  => 'Exec[reload-apache]',
           :require => 'Class[Foreman::Install]',
         })
+
+        should contain_file('foreman_vhost').with_content(/<VirtualHost \*:80>/)
+
+        should contain_file('foreman_vhost').with_content(/<VirtualHost \*:443>/)
 
         should contain_exec('restart_foreman').with({
           :command     => '/bin/touch /usr/share/foreman/tmp/restart.txt',
@@ -63,9 +66,15 @@ describe 'foreman::config::passenger' do
         }"
       end
 
-      it do
+      it 'should contain the HTTP vhost' do
         should contain_file('foreman_vhost').with({
           :content => /<VirtualHost 127.0.0.1:80>/,
+        })
+      end
+
+      it 'should contain the HTTPS vhost' do
+        should contain_file('foreman_vhost').with({
+          :content => /<VirtualHost 127.0.0.1:443>/,
         })
       end
     end
@@ -79,6 +88,22 @@ describe 'foreman::config::passenger' do
 
       it 'should include scl' do
         should include_class('passenger::install::scl')
+      end
+    end
+
+    describe 'without ssl' do
+      let :pre_condition do
+        "class {'foreman':
+          ssl => false,
+        }"
+      end
+
+      it 'should contain the HTTP vhost' do
+        should contain_file('foreman_vhost').with_content(/<VirtualHost \*:80>/)
+      end
+
+      it 'should not contain the HTTPS vhost' do
+        should_not contain_file('foreman_vhost').with_content(/<VirtualHost \*:443>/)
       end
     end
   end
