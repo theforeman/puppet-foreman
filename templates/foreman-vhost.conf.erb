@@ -23,6 +23,7 @@
 
 </VirtualHost>
 
+<% if scope.lookupvar 'foreman::ssl' -%>
 <VirtualHost <%= @listen_interface %>:443>
   ServerName <%= @fqdn %>
   ServerAlias foreman
@@ -56,3 +57,4 @@
   SSLVerifyDepth          3
 
 </VirtualHost>
+<% end -%>
