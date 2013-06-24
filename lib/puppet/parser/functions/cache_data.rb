@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'yaml'
+require 'etc'
 
 # Retrieves data from a cache file, or creates it with supplied data if the file doesn't exist
 #
@@ -24,6 +25,12 @@ module Puppet::Parser::Functions
       FileUtils.mkdir_p cache_dir unless File.exists? cache_dir
       File.open(cache, 'w', 0600) do |c|
         c.write(YAML.dump(initial_data))
+      end
+      # Chown to puppet to prevent later cache-read errors when this is run as root
+      if Etc.getpwuid.name == 'root'
+        uid = Etc.getpwnam('puppet').uid
+        File.chown(uid, nil, cache)
+        File.chown(uid, nil, cache_dir)
       end
       initial_data
     end
