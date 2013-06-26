@@ -3,13 +3,16 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest) do
   confine :feature => :foreman_api
 
   def smartProxies
-    ForemanApi::Resources::SmartProxy.new(
+    ForemanApi::Resources::SmartProxy.new({
       :base_url => resource[:base_url],
       :oauth    => {
         :consumer_key    => resource[:consumer_key],
         :consumer_secret => resource[:consumer_secret]
       }
-    )
+    },{
+      :headers => {
+        :foreman_user => resource[:effective_user]
+      }})
   end
 
   def proxy
