@@ -1,5 +1,5 @@
 Puppet::Type.newtype(:foreman_smartproxy) do
-  desc 'foreman_smartproxy creates a smartproxy in foreman database.'
+  desc 'foreman_smartproxy registers a smartproxy in foreman.'
 
   ensurable
 
@@ -8,7 +8,11 @@ Puppet::Type.newtype(:foreman_smartproxy) do
   end
 
   newparam(:base_url) do
-    desc 'Foreman\'s base_url.'
+    desc 'Foreman\'s base url.'
+  end
+
+  newparam(:effective_user) do
+    desc 'Foreman\'s effective user for the registration (usually admin).'
   end
 
   newparam(:consumer_key) do
@@ -26,4 +30,3 @@ Puppet::Type.newtype(:foreman_smartproxy) do
   end
 
 end
-
