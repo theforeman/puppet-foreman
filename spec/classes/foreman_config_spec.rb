@@ -27,9 +27,11 @@ describe 'foreman::config' do
         'order' => ['*.yaml'],
       })}
 
-      it { should contain_concat_fragment('foreman_settings+01-header.yaml').with({
-        'content' => //, # TODO verify content
-      })}
+      it {
+        should contain_concat_fragment('foreman_settings+01-header.yaml').with({'content' => /:login:\s*true/ })
+        should contain_concat_fragment('foreman_settings+01-header.yaml').with({'content' => /:require_ssl:\s*true/ })
+        should contain_concat_fragment('foreman_settings+01-header.yaml').with({'content' => /:oauth_consumer_secret:\s*\w+/ })
+      }
 
       it { should contain_file('/etc/foreman/settings.yaml').with({
         'source'  => /\/tmp\/.+\/concat\/output\/foreman_settings.out/,

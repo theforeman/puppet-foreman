@@ -32,7 +32,11 @@ class foreman (
   $puppet_home            = $foreman::params::puppet_home,
   $locations_enabled      = $foreman::params::locations_enabled,
   $organizations_enabled  = $foreman::params::organizations_enabled,
-  $passenger_interface    = $foreman::params::passenger_interface
+  $passenger_interface    = $foreman::params::passenger_interface,
+  $oauth_active           = $foreman::params::oauth_active,
+  $oauth_map_users        = $foreman::params::oauth_map_users,
+  $oauth_consumer_key     = $foreman::params::oauth_consumer_key,
+  $oauth_consumer_secret  = $foreman::params::oauth_consumer_secret
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $foreman::db_type ? {
