@@ -31,7 +31,7 @@ class foreman::params {
   # set it to some custom location.
   $custom_repo = false
   # this can be stable, rc, or nightly
-  $repo        = 'rc'
+  $repo        = 'stable'
   $railspath   = '/usr/share'
   $app_root    = "${railspath}/foreman"
   $user        = 'foreman'
