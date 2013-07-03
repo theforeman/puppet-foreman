@@ -14,6 +14,7 @@ class foreman (
   $repo                   = $foreman::params::repo,
   $selinux                = $foreman::params::selinux,
   $gpgcheck               = $foreman::params::gpgcheck,
+  $version                = $foreman::params::version,
   $db_manage              = $foreman::params::db_manage,
   $db_type                = $foreman::params::db_type,
   $db_adapter             = 'UNSET',
