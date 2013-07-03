@@ -34,7 +34,7 @@ class foreman::install {
 
   if $foreman::selinux or (str2bool($::selinux) and $foreman::selinux != false) {
     package { 'foreman-selinux':
-      ensure  => $foreman::present,
+      ensure  => $foreman::version,
       require => $repo,
     }
   }
