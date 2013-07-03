@@ -24,7 +24,25 @@ describe 'foreman::install' do
 
       it { should contain_foreman__install__repos('foreman') }
 
-      it { should contain_package('foreman-postgresql').with_require('Foreman::Install::Repos[foreman]') }
+      it { should contain_package('foreman-postgresql').with({
+	'require' => 'Foreman::Install::Repos[foreman]',
+	'ensure' => 'present',
+      })}
+    end
+
+    describe 'with version' do
+      let :pre_condition do
+        "class {'foreman':
+          version => 'latest',
+        }"
+      end
+
+      it { should contain_foreman__install__repos('foreman') }
+
+      it { should contain_package('foreman-postgresql').with({
+	'require' => 'Foreman::Install::Repos[foreman]',
+	'ensure' => 'latest',
+      })}
     end
 
     describe 'with custom repo' do
@@ -156,7 +174,25 @@ describe 'foreman::install' do
 
       it { should contain_foreman__install__repos('foreman') }
 
-      it { should contain_package('foreman-postgresql').with_require('Foreman::Install::Repos[foreman]') }
+      it { should contain_package('foreman-postgresql').with({
+	'require' => 'Foreman::Install::Repos[foreman]',
+	'ensure' => 'present',
+      })}
+    end
+
+    describe 'with version' do
+      let :pre_condition do
+        "class {'foreman':
+          version => 'latest',
+        }"
+      end
+
+      it { should contain_foreman__install__repos('foreman') }
+
+      it { should contain_package('foreman-postgresql').with({
+	'require' => 'Foreman::Install::Repos[foreman]',
+	'ensure' => 'latest',
+      })}
     end
 
     describe 'with custom repo' do

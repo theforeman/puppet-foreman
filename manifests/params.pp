@@ -38,6 +38,7 @@ class foreman::params {
   $group       = 'foreman'
   $environment = 'production'
   $gpgcheck    = true
+  $version     = 'present'
 
   # when undef, foreman-selinux will be installed if SELinux is enabled
   # setting to false/true will override this check (e.g. set to false on 1.1)
