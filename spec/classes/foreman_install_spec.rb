@@ -24,10 +24,10 @@ describe 'foreman::install' do
 
       it { should contain_foreman__install__repos('foreman') }
 
-      should contain_package('foreman-postgresql').with({
+      it { should contain_package('foreman-postgresql').with(
       	'require' => 'Foreman::Install::Repos[foreman]',
-      	'ensure' => 'present'
-      })
+      	'ensure' => 'present',
+      )}
     end
     
     describe 'with version' do
@@ -35,13 +35,14 @@ describe 'foreman::install' do
         "class {'foreman':
           version => 'latest',
         }"
+      end
 
       it { should contain_foreman__install__repos('foreman') }
 
-      should contain_package('foreman-postgresql').with({
+      it { should contain_package('foreman-postgresql').with(
       	'require' => 'Foreman::Install::Repos[foreman]',
       	'ensure' => 'latest',
-      })
+      )}
     end    
 
     describe 'with custom repo' do
@@ -173,10 +174,10 @@ describe 'foreman::install' do
 
       it { should contain_foreman__install__repos('foreman') }
 
-      should contain_package('foreman-postgresql').with({
+      it { should contain_package('foreman-postgresql').with(
       	'require' => 'Foreman::Install::Repos[foreman]',
-      	'ensure' => 'present'
-      })
+      	'ensure' => 'present',
+      )}
     end
     
     describe 'with version' do
@@ -184,13 +185,14 @@ describe 'foreman::install' do
         "class {'foreman':
           version => 'latest',
         }"
+      end
 
       it { should contain_foreman__install__repos('foreman') }
 
-      should contain_package('foreman-postgresql').with({
+      it { should contain_package('foreman-postgresql').with(
       	'require' => 'Foreman::Install::Repos[foreman]',
       	'ensure' => 'latest',
-      })
+      )}
     end  
 
     describe 'with custom repo' do
