@@ -1,9 +1,82 @@
 # Manage your foreman server
+#
+# === Parameters:
+#
+# $foreman_url::            URL on which foreman is going to run
+#
+# $unattended::             Should foreman manage host provisioning as well
+#                           type:boolean
+#
+# $authentication::         Enable users authentication (default user:admin pw:changeme)
+#                           type:boolean
+#
+# $passenger::              Configure foreman via apache and passenger
+#                           type:boolean
+#
+# $passenger_scl::          Software collection name (on RHEL currently 'ruby193', undef on others)
+#
+# $use_vhost::              Enclose apache configuration in <VirtualHost>...</VirtualHost>
+#                           type:boolean
+#
+# $ssl::                    Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
+#                           type:boolean
+#
+# $custom_repo::            No need to change anything here by default
+#                           if set to true, no repo will be added by this module, letting you to
+#                           set it to some custom location.
+#                           type:boolean
+#
+# $repo::                   This can be stable, rc, or nightly
+#
+# $selinux::                when undef, foreman-selinux will be installed if SELinux is enabled
+#                           setting to false/true will override this check (e.g. set to false on 1.1)
+#                           type:boolean
+#
+# $gpgcheck::               turn on/off gpg check in repo files (effective only on RedHat family systems)
+#                           type:boolean
+#
+# $db_manage::              if enabled, will install and configure the database server on this host
+#                           type:boolean
+#
+# $db_type::                Database 'production' type (valid types: mysql/postgresql/sqlite)
+#
+# $db_adapter::             Database 'production' adapter
+#
+# $db_host::                Database 'production' host
+#
+# $db_port::                Database 'production' port
+#                           type:integer
+#
+# $db_database::            Database 'production' database (e.g. foreman)
+#
+# $db_username::            Database 'production' user (e.g. foreman)
+#
+# $db_password::            Database 'production' password (default is random)
+#
+# $db_sslmode::             Database 'production' ssl mode
+#
+# $app_root::               Name of foreman root directory
+#
+# $user::                   User under which foreman will run
+#
+# $environment::            Rails environment of foreman
+#
+# $puppet_basedir::         Where are puppet modules located
+#
+# $apache_conf_dir::        Directory that holds Apache configuration files (e.g. /etc/httpd/conf.d)
+#
+# $puppet_home::            Puppet home directory
+#
+# $locations_enabled::      Enable locations?
+#                           type:boolean
+#
+# $organizations_enabled::  Enable organizations?
+#                           type:boolean
+#
+# $passenger_interface::    Defines which network interface passenger should listen on, undef means all interfaces
+#
 class foreman (
   $foreman_url            = $foreman::params::foreman_url,
-  $enc                    = $foreman::params::enc,
-  $reports                = $foreman::params::reports,
-  $facts                  = $foreman::params::facts,
   $unattended             = $foreman::params::unattended,
   $authentication         = $foreman::params::authentication,
   $passenger              = $foreman::params::passenger,
@@ -24,7 +97,6 @@ class foreman (
   $db_username            = $foreman::params::db_username,
   $db_password            = $foreman::params::db_password,
   $db_sslmode             = 'UNSET',
-  $railspath              = $foreman::params::railspath,
   $app_root               = $foreman::params::app_root,
   $user                   = $foreman::params::user,
   $environment            = $foreman::params::environment,
