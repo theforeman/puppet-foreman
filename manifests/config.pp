@@ -70,6 +70,7 @@ class foreman::config {
     class{'foreman::config::passenger':
       listen_on_interface => $foreman::passenger_interface,
       scl_prefix          => $foreman::passenger_scl,
+      ssl                 => $foreman::ssl,
     }
   }
 

@@ -1,0 +1,35 @@
+<% if @ssl -%>
+<VirtualHost <%= @listen_interface %>:443>
+  ServerName <%= @fqdn %>
+  ServerAlias foreman
+
+  DocumentRoot <%= @app_root %>/public
+  PassengerAppRoot <%= @app_root %>
+<% if @scl_prefix and !@scl_prefix.empty? -%>
+  PassengerRuby /usr/bin/<%= @scl_prefix -%>-ruby
+<% end -%>
+
+  AddDefaultCharset UTF-8
+
+  <Directory <%= @app_root %>/public>
+    <IfVersion < 2.4>
+      Allow from all
+    </IfVersion>  
+    <IfVersion >= 2.4>
+      Require all granted
+    </IfVersion>
+  </Directory>
+
+  # Use puppet certificates for SSL
+
+  SSLEngine On
+  SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= @fqdn %>.pem
+  SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem
+  SSLCertificateChainFile /var/lib/puppet/ssl/certs/ca.pem
+  SSLCACertificateFile    /var/lib/puppet/ssl/certs/ca.pem
+  SSLVerifyClient         optional
+  SSLOptions              +StdEnvVars
+  SSLVerifyDepth          3
+
+</VirtualHost>
+<% end -%>
