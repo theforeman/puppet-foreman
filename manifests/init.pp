@@ -123,5 +123,7 @@ class foreman (
   class { 'foreman::install': } ~>
   class { 'foreman::config': } ~>
   class { 'foreman::database': } ~>
-  class { 'foreman::service': }
+  class { 'foreman::service': } ->
+  Class["foreman"] ->
+  Foreman_smartproxy <| |>
 }
