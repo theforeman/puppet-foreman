@@ -15,9 +15,6 @@ class foreman::database::postgresql {
     cwd => '/',
   }
 
-  # Postgresql::Params<| |> -> Postgresql::Server<| |>
-  # Postgresql::Params<| |> -> Postgresql::Client<| |>
-
   # create database resources, but leave room for user-infused parameters.
   $dbp  = $::foreman::raw_db_parameters
   if has_key($dbp, "postgresql::params") {
