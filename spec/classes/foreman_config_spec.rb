@@ -39,7 +39,7 @@ describe 'foreman::config' do
           with({})
 
         should contain_file('/etc/foreman/settings.yaml').with({
-          'source'  => /\/tmp\/.+\/concat\/output\/foreman_settings.out/,
+          'source'  => %r{/concat/output/foreman_settings.out$},
           'require' => 'Concat_build[foreman_settings]',
           'notify'  => 'Class[Foreman::Service]',
           'owner'   => 'root',
@@ -190,7 +190,7 @@ describe 'foreman::config' do
           with({})
 
         should contain_file('/etc/foreman/settings.yaml').with({
-          'source'  => /\/tmp\/.+\/concat\/output\/foreman_settings.out/,
+          'source'  => %r{/concat/output/foreman_settings.out$},
           'require' => 'Concat_build[foreman_settings]',
           'notify'  => 'Class[Foreman::Service]',
           'owner'   => 'root',
