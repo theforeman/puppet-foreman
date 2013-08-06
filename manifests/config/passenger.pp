@@ -2,13 +2,10 @@
 class foreman::config::passenger (
   # specifiy which interface to bind passenger to eth0, eth1, ...
   $listen_on_interface = '',
-  $scl_prefix = undef,
-  $ssl = true
-
+  $scl_prefix = undef
 ) {
 
   # validate parameter values
-  validate_bool($ssl)
   validate_string($listen_on_interface)
 
   include apache
@@ -17,33 +14,24 @@ class foreman::config::passenger (
   if $listen_on_interface in split($::interfaces, ',') {
     $listen_interface = inline_template("<%= @ipaddress_${listen_on_interface} %>")
   } else {
-    $listen_interface = '*'
+    $listen_interface = undef
   }
 
-  if $ssl {
-    include apache::mod::ssl
-
-    apache::listen { 443: }
-    
-    # Add ssl fragment to vhost if needed
-    $ssl_fragment = template('foreman/foreman-vhost-ssl.conf.erb')
-  }
-
-  $listen_ports = 80
-
-  include apache::mod::passenger
-
+  # Set up passenger
   if $scl_prefix {
-    class { '::foreman::install::passenger_scl': prefix => $scl_prefix, }
+    class {'apache::mod::passenger':
+      passenger_ruby => "/usr/bin/${scl_prefix}-ruby",
+      #package        => "${scl_prefix}-rubygem-passenger-native", # FIXME PR
+    }
+  } else {
+    include apache::mod::passenger
   }
-
 
   if $foreman::use_vhost {
     apache::vhost { 'foreman':
-      template        => 'foreman/foreman-vhost.conf.erb',
-      custom_fragment => $ssl_fragment,
-      port            => $listen_ports,
-      docroot         => "${app_root}/public",
+      #ip              => $listen_interface, # FIXME
+      port            => 80,
+      docroot         => "${foreman::app_root}/public",
       priority        => '15',
       notify          => Service['httpd'],
       require         => Class['foreman::install'],
@@ -58,11 +46,32 @@ class foreman::config::passenger (
     }
   }
 
-  exec { 'restart_foreman':
-    command     => "/bin/touch ${foreman::app_root}/tmp/restart.txt",
-    refreshonly => true,
-    cwd         => $foreman::app_root,
-    path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+  if $foreman::ssl {
+    if $foreman::use_vhost {
+      apache::vhost { 'foreman-ssl':
+        #ip              => $listen_interface, # FIXME
+        port            => 80,
+        docroot         => "${foreman::app_root}/public",
+        priority        => '15',
+        ssl             => true,
+        ssl_cert        => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
+        ssl_key         => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
+        ssl_chain       => '/var/lib/puppet/ssl/certs/ca.pem',
+        ssl_ca          => '/var/lib/puppet/ssl/certs/ca.pem',
+        notify          => Service['httpd'],
+        require         => Class['foreman::install'],
+      }
+    } else {
+      include apache::mod::ssl
+
+      file { 'foreman_vhost':
+        path    => "${foreman::apache_conf_dir}/foreman-ssl.conf",
+        content => template('foreman/foreman-apache.conf.erb'),
+        mode    => '0644',
+        notify  => Service['httpd'],
+        require => Class['foreman::install'],
+      }
+    }
   }
 
   file { ["${foreman::app_root}/config.ru", "${foreman::app_root}/config/environment.rb"]:
