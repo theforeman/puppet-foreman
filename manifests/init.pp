@@ -35,6 +35,9 @@
 # $gpgcheck::               turn on/off gpg check in repo files (effective only on RedHat family systems)
 #                           type:boolean
 #
+# $version::                foreman package version, it's passed to ensure parameter of package resource
+#                           can be set to specific version number, 'latest', 'present' etc.
+#
 # $db_manage::              if enabled, will install and configure the database server on this host
 #                           type:boolean
 #
@@ -74,6 +77,16 @@
 #                           type:boolean
 #
 # $passenger_interface::    Defines which network interface passenger should listen on, undef means all interfaces
+#
+# $oauth_active::           Enable OAuth authentication for REST API
+#                           type:boolean
+#
+# $oauth_map_users::        Should foreman use the foreman_user header to identify API user?
+#                           type:boolean
+#
+# $oauth_consumer_key::     OAuth consumer key
+#
+# $oauth_consumer_secret::  OAuth consumer secret
 #
 class foreman (
   $foreman_url            = $foreman::params::foreman_url,
