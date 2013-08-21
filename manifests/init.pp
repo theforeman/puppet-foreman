@@ -110,6 +110,7 @@ class foreman (
   $db_username            = $foreman::params::db_username,
   $db_password            = $foreman::params::db_password,
   $db_sslmode             = 'UNSET',
+  $raw_db_parameters      = {}, 
   $app_root               = $foreman::params::app_root,
   $user                   = $foreman::params::user,
   $environment            = $foreman::params::environment,
