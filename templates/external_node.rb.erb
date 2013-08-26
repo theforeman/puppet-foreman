@@ -150,7 +150,7 @@ begin
         result = enc(certname)
         cache(certname, result)
       end
-    rescue TimeoutError, SocketError, Errno::EHOSTUNREACH
+    rescue TimeoutError, SocketError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED
       # Read from cache, we got some sort of an error.
       result = read_cache(certname)
     ensure
