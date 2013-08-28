@@ -4,6 +4,16 @@ Installs and configures Foreman.
 
 Part of the Foreman installer: http://github.com/theforeman/foreman-installer
 
+## ENC / Report Processors
+
+The current enc and report processor scripts are only compatible with Foreman 1.3.
+To get the old scripts, pass the appropriate API variables to `foreman::puppetmaster`
+
+    class { 'foreman::puppetmaster':
+      enc_api    => 'v1',
+      report_api => 'v1',
+    }
+
 ## Database support
 
 This module supports configuration of either SQLite, PostgreSQL or MySQL as the

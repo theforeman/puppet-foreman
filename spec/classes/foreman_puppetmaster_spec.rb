@@ -16,6 +16,7 @@ describe 'foreman::puppetmaster' do
       })
 
       should contain_file('/usr/lib/ruby/1.8/puppet/reports/foreman.rb').with({
+        :content => %r{api/reports},
         :mode    => '0644',
         :owner   => 'root',
         :group   => 'root',
@@ -33,6 +34,23 @@ describe 'foreman::puppetmaster' do
         :ssl_key        => "/var/lib/puppet/ssl/private_keys/#{facts[:fqdn]}.pem",
       })
     end
+  end
+
+  describe 'with v1 report api' do
+    let :pre_condition do
+      "class {'foreman::puppetmaster': report_api => 'v1'}"
+    end
+
+    it 'should set up the v1 report' do
+      should contain_file('/usr/lib/ruby/1.8/puppet/reports/foreman.rb').with({
+        :content => %r{reports/create\?format=yml},
+        :mode    => '0644',
+        :owner   => 'root',
+        :group   => 'root',
+        :require => 'Exec[Create Puppet Reports dir]',
+      })
+    end
+
   end
 
   describe 'without reports' do
@@ -54,6 +72,36 @@ describe 'foreman::puppetmaster' do
 
     it 'should not include enc' do
       should_not contain_class('foreman::config::enc')
+    end
+  end
+
+  context 'RedHat' do
+    let :facts do
+      {
+        :operatingsystem => 'RedHat',
+        :osfamily        => 'RedHat',
+      }
+    end
+
+    describe 'json package' do
+      it 'should install json package' do
+        should contain_package('rubygem-json').with_ensure('installed')
+      end
+    end
+  end
+
+  context 'Debian' do
+    let :facts do
+      {
+        :operatingsystem => 'Debian',
+        :osfamily        => 'Debian',
+      }
+    end
+
+    describe 'json package' do
+      it 'should install json package' do
+        should contain_package('ruby-json').with_ensure('installed')
+      end
     end
   end
 end
