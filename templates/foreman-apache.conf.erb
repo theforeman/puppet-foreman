@@ -1,17 +1,12 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
 
 DocumentRoot <%= scope.lookupvar 'foreman::app_root' %>/public
-PassengerAppRoot <%= scope.lookupvar 'foreman::app_root' %>
-<% if @scl_prefix and !@scl_prefix.empty? -%>
-PassengerRuby /usr/bin/<%= @scl_prefix -%>-ruby
-<% end -%>
-
-AddDefaultCharset UTF-8
+<%= scope.function_template(['foreman/apache-fragment.conf.erb']) -%>
 
 <Directory <%= scope.lookupvar 'foreman::app_root' %>/public>
   <IfVersion < 2.4>
     Allow from all
-  </IfVersion>  
+  </IfVersion>
   <IfVersion >= 2.4>
     Require all granted
   </IfVersion>
