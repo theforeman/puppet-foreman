@@ -18,22 +18,27 @@ class foreman::config::passenger (
   }
 
   # Set up passenger
+  include ::passenger
   if $scl_prefix {
-    class {'apache::mod::passenger':
-      passenger_ruby => "/usr/bin/${scl_prefix}-ruby",
-      #package        => "${scl_prefix}-rubygem-passenger-native", # FIXME PR
+    $fragment = "PassengerRuby /usr/bin/${scl_prefix}-ruby
+    PassengerAppRoot ${foreman::app_root}
+    AddDefaultCharset UTF-8"
+
+    class {'::passenger::scl':
+      prefix => $scl_prefix,
     }
   } else {
-    include apache::mod::passenger
+    $fragment = "PassengerAppRoot ${foreman::app_root}
+    AddDefaultCharset UTF-8"
   }
 
   if $foreman::use_vhost {
     apache::vhost { 'foreman':
-      #ip              => $listen_interface, # FIXME
+      #ip             => $listen_interface, # FIXME
       port            => 80,
       docroot         => "${foreman::app_root}/public",
-      priority        => '15',
-      notify          => Service['httpd'],
+      priority        => '5',
+      custom_fragment => $fragment,
       require         => Class['foreman::install'],
     }
   } else {
@@ -50,15 +55,15 @@ class foreman::config::passenger (
     if $foreman::use_vhost {
       apache::vhost { 'foreman-ssl':
         #ip              => $listen_interface, # FIXME
-        port            => 80,
+        port            => 443,
         docroot         => "${foreman::app_root}/public",
-        priority        => '15',
+        priority        => '5',
         ssl             => true,
         ssl_cert        => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
         ssl_key         => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
         ssl_chain       => '/var/lib/puppet/ssl/certs/ca.pem',
         ssl_ca          => '/var/lib/puppet/ssl/certs/ca.pem',
-        notify          => Service['httpd'],
+        custom_fragment => $fragment,
         require         => Class['foreman::install'],
       }
     } else {
