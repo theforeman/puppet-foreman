@@ -4,6 +4,16 @@ Installs and configures Foreman.
 
 Part of the Foreman installer: http://github.com/theforeman/foreman-installer
 
+## Database support
+
+This module supports configuration of either SQLite, PostgreSQL or MySQL as the
+database for Foreman.  The database type can be changed using the `db_type`
+parameter, or management disabled with `db_manage`.
+
+The default database is PostgreSQL, which will be fully installed and managed
+on the host this module is applied to.  If using MySQL, the puppetlabs-mysql
+module must be added to the modulepath, otherwise it's not required.
+
 # Contributing
 
 * Fork the project
