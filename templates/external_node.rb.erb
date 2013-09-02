@@ -47,10 +47,27 @@ require 'fileutils'
 require 'timeout'
 
 def upload_all_facts
+  now = Time.now
+  facts_after = 0
+  fact_timestamp = "#{puppetdir}/yaml/foreman/timestamp"
+  if ARGV.delete("--all")
+    # There shouldn't be any files with a negative timestamp
+    facts_after = 0
+  else
+    if File.exist?(fact_timestamp)
+      contents = File.read(fact_timestamp)
+      # if this gets garbled, then it'll default back to 0 and push all facts
+      facts_after = contents.to_i()
+    end
+  end
+  facts_after = Time.at(facts_after)
   Dir["#{puppetdir}/yaml/facts/*.yaml"].each do |f|
     certname = File.basename(f, ".yaml")
-    upload_facts(certname, f)
+    if File.mtime(f) > facts_after
+      upload_facts(certname, f)
+    end
   end
+  File.open(fact_timestamp, 'w') { |file| file.write(now.to_i) }
 end
 
 def upload_facts(certname, filename)
