@@ -36,6 +36,7 @@ class foreman::params {
   $app_root    = "${railspath}/foreman"
   $user        = 'foreman'
   $group       = 'foreman'
+  $user_groups = ['puppet']
   $environment = 'production'
   $gpgcheck    = true
   $version     = 'present'
