@@ -62,6 +62,11 @@
 #
 # $user::                   User under which foreman will run
 #
+# $group::                  Primary group for the Foreman user
+#
+# $user_groups::            Additional groups for the Foreman user
+#                           type:array
+#
 # $environment::            Rails environment of foreman
 #
 # $puppet_basedir::         Where are puppet modules located
@@ -112,6 +117,8 @@ class foreman (
   $db_sslmode             = 'UNSET',
   $app_root               = $foreman::params::app_root,
   $user                   = $foreman::params::user,
+  $group                  = $foreman::params::group,
+  $user_groups            = $foreman::params::user_groups,
   $environment            = $foreman::params::environment,
   $puppet_basedir         = $foreman::params::puppet_basedir,
   $apache_conf_dir        = $foreman::params::apache_conf_dir,
