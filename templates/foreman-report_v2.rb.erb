@@ -59,7 +59,7 @@ Puppet::Reports.register_report(:foreman) do
       req.body         = {'report' => generate_report}.to_json
       response = http.request(req)
     rescue Exception => e
-      raise Puppet::Error, "Could not send report to Foreman at #{$foreman_url}/reports/create: #{e}\n#{e.backtrace}"
+      raise Puppet::Error, "Could not send report to Foreman at #{$foreman_url}/api/reports: #{e}\n#{e.backtrace}"
     end
   end
 
