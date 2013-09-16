@@ -55,25 +55,19 @@ class foreman::params {
   $db_password = cache_data('db_password', random_password(32))
 
   # OS specific paths
-  $ruby_major = regsubst($::rubyversion, '^(\d+\.\d+).*', '\1')
   case $::osfamily {
     RedHat: {
+      $apache_conf_dir = '/etc/httpd/conf.d'
+
       case $::operatingsystem {
         fedora: {
-          if $::operatingsystemrelease >= 17 {
-            $puppet_basedir  = '/usr/share/ruby/vendor_ruby/puppet'
-          } else {
-            $puppet_basedir  = "/usr/lib/ruby/site_ruby/${ruby_major}/puppet"
-          }
-          $apache_conf_dir = '/etc/httpd/conf.d'
+          $puppet_basedir  = '/usr/share/ruby/vendor_ruby/puppet'
           $yumcode = "f${::operatingsystemrelease}"
           $passenger_scl = undef
         }
         default: {
-          $puppet_basedir  = "/usr/lib/ruby/site_ruby/${ruby_major}/puppet"
-          $apache_conf_dir = '/etc/httpd/conf.d'
-          $osmajor = regsubst($::operatingsystemrelease, '\..*', '')
-          $yumcode = "el${osmajor}"
+          $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
+          $yumcode = regsubst($::operatingsystemrelease, '^(\d+)\..*$', 'el\1')
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
           $passenger_scl = 'ruby193'
         }
@@ -84,10 +78,8 @@ class foreman::params {
       $apache_conf_dir = '/etc/apache2/conf.d'
       $passenger_scl = undef
     }
-    default:              {
-      $puppet_basedir  = "/usr/lib/ruby/${ruby_major}/puppet"
-      $apache_conf_dir = '/etc/apache2/conf.d/foreman.conf'
-      $passenger_scl = undef
+    default: {
+      fail("${::hostname}: This module does not support osfamily ${::osfamily}")
     }
   }
   $puppet_home = '/var/lib/puppet'

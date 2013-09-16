@@ -69,8 +69,6 @@
 #
 # $environment::            Rails environment of foreman
 #
-# $puppet_basedir::         Where are puppet modules located
-#
 # $apache_conf_dir::        Directory that holds Apache configuration files (e.g. /etc/httpd/conf.d)
 #
 # $puppet_home::            Puppet home directory
@@ -120,7 +118,6 @@ class foreman (
   $group                  = $foreman::params::group,
   $user_groups            = $foreman::params::user_groups,
   $environment            = $foreman::params::environment,
-  $puppet_basedir         = $foreman::params::puppet_basedir,
   $apache_conf_dir        = $foreman::params::apache_conf_dir,
   $puppet_home            = $foreman::params::puppet_home,
   $locations_enabled      = $foreman::params::locations_enabled,
