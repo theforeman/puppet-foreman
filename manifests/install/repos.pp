@@ -6,7 +6,7 @@ define foreman::install::repos(
   include foreman::params
 
   case $::osfamily {
-    RedHat: {
+    RedHat, Linux: {
       $repo_path = $repo ? {
         'stable' => 'releases/latest',
         default  => $repo,
