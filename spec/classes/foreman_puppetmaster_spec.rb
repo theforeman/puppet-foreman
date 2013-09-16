@@ -30,9 +30,9 @@ describe 'foreman::puppetmaster' do
         should contain_class('foreman::config::enc').with({
           :foreman_url    => "https://#{facts[:fqdn]}",
           :facts          => true,
-            :puppet_home    => '/var/lib/puppet',
-            :ssl_ca         => '/var/lib/puppet/ssl/certs/ca.pem',
-            :ssl_cert       => "/var/lib/puppet/ssl/certs/#{facts[:fqdn]}.pem",
+          :puppet_home    => '/var/lib/puppet',
+          :ssl_ca         => '/var/lib/puppet/ssl/certs/ca.pem',
+          :ssl_cert       => "/var/lib/puppet/ssl/certs/#{facts[:fqdn]}.pem",
           :ssl_key        => "/var/lib/puppet/ssl/private_keys/#{facts[:fqdn]}.pem",
         })
       end
@@ -98,6 +98,37 @@ describe 'foreman::puppetmaster' do
         })
 
         should contain_file('/usr/share/ruby/vendor_ruby/puppet/reports/foreman.rb').with({
+          :content => %r{api/reports},
+          :mode    => '0644',
+          :owner   => 'root',
+          :group   => 'root',
+          :require => 'Exec[Create Puppet Reports dir]',
+        })
+      end
+
+      it 'should install json package' do
+        should contain_package('rubygem-json').with_ensure('installed')
+      end
+    end
+  end
+
+  context 'Amazon' do
+    let :facts do
+      {
+        :operatingsystem => 'Amazon',
+        :rubyversion     => '1.8.7',
+        :osfamily        => 'Linux',
+      }
+    end
+
+    describe 'without custom parameters' do
+      it 'should set up reports' do
+        should contain_exec('Create Puppet Reports dir').with({
+          :command => '/bin/mkdir -p /usr/lib/ruby/site_ruby/1.8/puppet/reports',
+          :creates => '/usr/lib/ruby/site_ruby/1.8/puppet/reports',
+        })
+
+        should contain_file('/usr/lib/ruby/site_ruby/1.8/puppet/reports/foreman.rb').with({
           :content => %r{api/reports},
           :mode    => '0644',
           :owner   => 'root',
