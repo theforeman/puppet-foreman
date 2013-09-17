@@ -5,16 +5,16 @@ describe 'foreman::install' do
     {
       :concat_basedir           => '/tmp',
       :interfaces               => '',
+      :operatingsystem          => 'RedHat',
+      :operatingsystemrelease   => '6.4',
+      :osfamily                 => 'RedHat',
       :postgres_default_version => '8.4',
     }
   end
 
   context 'RedHat' do
     let :facts do
-      default_facts.merge({
-        :operatingsystem => 'RedHat',
-        :osfamily        => 'RedHat',
-      })
+      default_facts
     end
 
     describe 'without parameters' do
@@ -90,8 +90,6 @@ describe 'foreman::install' do
     context 'with SELinux enabled' do
       let :facts do
         default_facts.merge({
-          :operatingsystem => 'RedHat',
-          :osfamily        => 'RedHat',
           :selinux         => 'true',
         })
       end
@@ -125,8 +123,6 @@ describe 'foreman::install' do
     context 'with SELinux disabled' do
       let :facts do
         default_facts.merge({
-          :operatingsystem => 'RedHat',
-          :osfamily        => 'RedHat',
           :selinux         => 'false',
         })
       end
@@ -162,8 +158,9 @@ describe 'foreman::install' do
   context 'on debian' do
     let :facts do
       default_facts.merge({
-        :operatingsystem => 'Debian',
-        :osfamily        => 'Debian',
+        :operatingsystem        => 'Debian',
+        :operatingsystemrelease => '7.1',
+        :osfamily               => 'Debian',
       })
     end
 

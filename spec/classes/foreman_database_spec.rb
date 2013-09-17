@@ -12,8 +12,9 @@ describe 'foreman::install' do
   context 'RedHat' do
     let :facts do
       default_facts.merge({
-        :operatingsystem => 'RedHat',
-        :osfamily        => 'RedHat',
+        :operatingsystem        => 'RedHat',
+        :operatingsystemrelease => '6.4',
+        :osfamily               => 'RedHat',
       })
     end
 
@@ -37,8 +38,9 @@ describe 'foreman::install' do
   context 'on debian' do
     let :facts do
       default_facts.merge({
-        :operatingsystem => 'Debian',
-        :osfamily        => 'Debian',
+        :operatingsystem        => 'Debian',
+        :operatingsystemrelease => '7.1',
+        :osfamily               => 'Debian',
       })
     end
 

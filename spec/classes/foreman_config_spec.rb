@@ -6,6 +6,7 @@ describe 'foreman::config' do
     {
       :concat_basedir           => '/tmp',
       :interfaces               => '',
+      :operatingsystemrelease   => '6.4',
       :postgres_default_version => '8.4',
     }
   end
