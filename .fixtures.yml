@@ -1,12 +1,18 @@
 fixtures:
   repositories:
     apache:           'git://github.com/theforeman/puppet-apache'
-    concat:           'git://github.com/ripienaar/puppet-concat'
+    concat:
+      repo:           'git://github.com/ripienaar/puppet-concat'
+      ref:            '04356974f72b90a1d0f57346a00e95a717924e43'
     concat_native:    'git://github.com/theforeman/puppet-concat'
     create_resources: 'git://github.com/puppetlabs/puppetlabs-create_resources'
-    mysql:            'git://github.com/puppetlabs/puppetlabs-mysql'
+    mysql:
+      repo:           'git://github.com/puppetlabs/puppetlabs-mysql'
+      ref:            '52fb70ebdeb74f66bedc54196c0884c2b84699f3'
     passenger:        'git://github.com/theforeman/puppet-passenger'
-    postgresql:       'git://github.com/puppetlabs/puppetlabs-postgresql'
+    postgresql:
+      repo:           'git://github.com/puppetlabs/puppetlabs-postgresql'
+      ref:            'efb5daae5dc66da9e6ebfe21d1f09fb763e9a0f8'
     puppet:           'git://github.com/theforeman/puppet-puppet'
     stdlib:           'git://github.com/puppetlabs/puppetlabs-stdlib'
 
