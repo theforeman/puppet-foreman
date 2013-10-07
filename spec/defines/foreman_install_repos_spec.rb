@@ -4,114 +4,108 @@ require 'spec_helper'
 describe 'foreman::install::repos' do
   let(:title) { 'foreman' }
 
-  context 'on debian' do
+  context 'on osfamily debian' do
     let :facts do
       {
-        :lsbdistcodename => 'squeeze',
-        :operatingsystem => 'Debian',
         :osfamily        => 'Debian',
       }
     end
 
-    context 'with repo => stable' do
-      let(:params) { {:repo => 'stable'} }
+    let(:params) { {:repo => 'stable'} }
 
-      it do
-        should contain_file('/etc/apt/sources.list.d/foreman.list') \
-          .with_content("deb http://deb.theforeman.org/ squeeze stable\n")
-      end
-    end
-
-    context 'with repo => rc' do
-      let(:params) { {:repo => 'rc'} }
-
-      it do
-        should contain_file('/etc/apt/sources.list.d/foreman.list') \
-          .with_content("deb http://deb.theforeman.org/ squeeze rc\n")
-      end
-    end
-
-    context 'with repo => nightly' do
-      let(:params) { {:repo => 'nightly'} }
-
-      it do
-        should contain_file('/etc/apt/sources.list.d/foreman.list') \
-          .with_content("deb http://deb.theforeman.org/ squeeze nightly\n")
-      end
+    it 'should include the apt repo class' do
+      should contain_foreman__install__repos__apt('foreman').with_repo('stable')
     end
   end
 
-  context 'on fedora' do
+  context 'on Fedora' do
     let :facts do
       {
         :operatingsystem        => 'Fedora',
+        :operatingsystemrelease => '19',
         :osfamily               => 'RedHat',
-        :operatingsystemrelease => '17',
       }
     end
 
-    context 'with repo => stable' do
-      let(:params) { {:repo => 'stable'} }
+    let(:params) { {:repo => 'stable'} }
 
-      it do
-        should contain_yumrepo('foreman') \
-          .with_baseurl('http://yum.theforeman.org/releases/latest/f17/$basearch')
-      end
-    end
-
-    context 'with repo => rc' do
-      let(:params) { {:repo => 'rc'} }
-
-      it do
-        should contain_yumrepo('foreman') \
-          .with_baseurl('http://yum.theforeman.org/rc/f17/$basearch')
-      end
-    end
-
-    context 'with repo => nightly' do
-      let(:params) { {:repo => 'nightly'} }
-
-      it do
-        should contain_yumrepo('foreman') \
-          .with_baseurl('http://yum.theforeman.org/nightly/f17/$basearch')
-      end
+    it 'should include the yum repo class' do
+      should contain_foreman__install__repos__yum('foreman').with({
+        :repo     => 'stable',
+        :yumcode  => 'f19',
+        :gpgcheck => true,
+      })
     end
   end
 
-  context 'on EL' do
+  context 'on RedHat' do
     let :facts do
       {
-        :operatingsystem => 'RedHat',
-        :osfamily => 'RedHat',
-        :operatingsystemrelease => '6.3'
+        :operatingsystem        => 'RedHat',
+        :operatingsystemrelease => '6.4',
+        :osfamily               => 'RedHat',
       }
     end
 
-    context 'with repo => stable' do
-      let(:params) { {:repo => 'stable'} }
+    let(:params) { {:repo => 'stable'} }
 
-      it do
-        should contain_yumrepo('foreman') \
-          .with_baseurl('http://yum.theforeman.org/releases/latest/el6/$basearch')
-      end
+    it 'should include the yum repo class' do
+      should contain_foreman__install__repos__yum('foreman').with({
+        :repo     => 'stable',
+        :yumcode  => 'el6',
+        :gpgcheck => true,
+      })
+    end
+  end
+
+  context 'on Amazon' do
+    let :facts do
+      {
+        :operatingsystem        => 'Amazon',
+        :operatingsystemrelease => '6.4',
+        :osfamily               => 'Linux',
+      }
     end
 
-    context 'with repo => rc' do
-      let(:params) { {:repo => 'rc'} }
+    let(:params) { {:repo => 'stable'} }
 
-      it do
-        should contain_yumrepo('foreman') \
-          .with_baseurl('http://yum.theforeman.org/rc/el6/$basearch')
-      end
+    it do
+      should contain_foreman__install__repos__yum('foreman').with({
+        :repo     => 'stable',
+        :yumcode  => 'el6',
+        :gpgcheck => true,
+      })
+    end
+  end
+
+  context 'on unsupported Linux operatingsystem' do
+    let :facts do
+      {
+        :hostname        => 'localhost',
+        :operatingsystem => 'unsupported',
+        :osfamily        => 'Linux',
+      }
     end
 
-    context 'with repo => nightly' do
-      let(:params) { {:repo => 'nightly'} }
+    let(:params) { {:repo => 'stable'} }
 
-      it do
-        should contain_yumrepo('foreman') \
-          .with_baseurl('http://yum.theforeman.org/nightly/el6/$basearch')
-      end
+    it 'should fail' do
+      expect { subject }.to raise_error(/#{facts[:hostname]}: This module does not support operatingsystem #{facts[:operatingsystem]}/)
+    end
+  end
+
+  context 'on unsupported osfamily' do
+    let :facts do
+      {
+        :hostname => 'localhost',
+        :osfamily => 'unsupported',
+      }
+    end
+
+    let(:params) { {:repo => 'stable'} }
+
+    it 'should fail' do
+      expect { subject }.to raise_error(/#{facts[:hostname]}: This module does not support osfamily #{facts[:osfamily]}/)
     end
   end
 end

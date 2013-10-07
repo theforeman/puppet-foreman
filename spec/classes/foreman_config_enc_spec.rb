@@ -1,9 +1,13 @@
 require 'spec_helper'
 
 describe 'foreman::config::enc' do
+  let :facts do
+    {
+      :osfamily => 'RedHat',
+    }
+  end
 
   describe 'without custom parameters' do
-
     it 'should set up enc' do
       should contain_file('/etc/puppet/node.rb').with({
         :content => %r{api/hosts/facts},
@@ -15,8 +19,8 @@ describe 'foreman::config::enc' do
   end
 
   describe 'with v1 enc api' do
-    let :pre_condition do
-      "class {'foreman::config::enc': enc_api => 'v1'}"
+    let :params do
+      {:enc_api => 'v1'}
     end
 
     it 'should set up the v1 enc' do
@@ -27,6 +31,5 @@ describe 'foreman::config::enc' do
         :group   => 'puppet',
       })
     end
-
   end
 end
