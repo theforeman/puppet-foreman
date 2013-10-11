@@ -15,7 +15,7 @@ class foreman::database::postgresql {
     cwd => '/',
   }
 
-  include postgresql::client, postgresql::server
+  include postgresql::client, postgresql::server, postgresql::params
   $grant = 'ALL'
   # TODO copied from puppetlabs-postgresql 2.3.0 manifests/db.pp
   # should be removed by db once they expose owner parameter
@@ -24,11 +24,11 @@ class foreman::database::postgresql {
     tablespace  => undef,
     require     => Class['postgresql::server'],
     locale      => $postgresql::params::locale,
-    owner       => $dbname,
+    owner       => $foreman::db_username,
   }
 
-  if ! defined(Postgresql::Database_user[$user]) {
-    postgresql::database_user { $dbname:
+  if ! defined(Postgresql::Database_user[$foreman::db_username]) {
+    postgresql::database_user { $foreman::db_username:
       password_hash   => $password,
       require         => Postgresql::Database[$dbname],
     }
