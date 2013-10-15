@@ -40,6 +40,8 @@ describe 'foreman::config::passenger' do
 
         should contain_file('foreman_vhost').with_content(/<VirtualHost \*:443>/)
 
+        should contain_file('foreman_vhost').with_content(/access plus 1 year/)
+
         should contain_exec('restart_foreman').with({
           :command     => '/bin/touch /usr/share/foreman/tmp/restart.txt',
           :refreshonly => true,

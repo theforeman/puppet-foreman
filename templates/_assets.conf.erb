@@ -1,0 +1,43 @@
+# Static public dir serving
+<Directory <%= scope.lookupvar 'foreman::app_root' %>/public>
+
+  <IfVersion < 2.4>
+    Allow from all
+  </IfVersion>
+  <IfVersion >= 2.4>
+    Require all granted
+  </IfVersion>
+
+</Directory>
+
+<Directory <%= scope.lookupvar 'foreman::app_root' %>/public/assets>
+
+  # Use standard http expire header for assets instead of ETag
+  <IfModule mod_expires.c>
+    Header unset ETag
+    FileETag None
+    ExpiresActive On
+    ExpiresDefault "access plus 1 year"
+  </IfModule>
+
+  # Return compressed assets if they are precompiled
+  <IfModule mod_rewrite.c>
+    RewriteEngine on
+    # Make sure the browser supports gzip encoding and file with .gz added
+    # does exist on disc before we rewrite with the extension
+    RewriteCond %{HTTP:Accept-Encoding} \b(x-)?gzip\b
+    RewriteCond %{REQUEST_FILENAME}.gz -s
+    RewriteRule ^(.+) $1.gz [L]
+    # Set headers for all possible assets which are compressed
+    <FilesMatch \.css\.gz$>
+      ForceType text/css
+      Header set Content-Encoding gzip
+    </FilesMatch>
+    <FilesMatch \.js\.gz$>
+      ForceType text/javascript
+      Header set Content-Encoding gzip
+    </FilesMatch>
+  </IfModule>
+
+</Directory>
+
