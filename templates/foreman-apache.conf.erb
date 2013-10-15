@@ -8,11 +8,4 @@ PassengerRuby /usr/bin/<%= @scl_prefix -%>-ruby
 
 AddDefaultCharset UTF-8
 
-<Directory <%= scope.lookupvar 'foreman::app_root' %>/public>
-  <IfVersion < 2.4>
-    Allow from all
-  </IfVersion>  
-  <IfVersion >= 2.4>
-    Require all granted
-  </IfVersion>
-</Directory>
+<%= scope.function_template(['foreman/_assets.conf.erb']) %>
