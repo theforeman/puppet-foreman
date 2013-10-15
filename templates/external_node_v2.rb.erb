@@ -63,7 +63,10 @@ end
 def upload_all_facts
   Dir["#{puppetdir}/yaml/facts/*.yaml"].each do |f|
     certname = File.basename(f, ".yaml")
-    upload_facts(certname, f)
+    # Skip empty host fact yaml files
+    if File.size(f) != 0
+      upload_facts(certname, f)
+    end
   end
 end
 
