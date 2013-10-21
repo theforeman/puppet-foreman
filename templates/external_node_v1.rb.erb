@@ -55,7 +55,7 @@ end
 
 def upload_facts(certname, filename)
   # Temp file keeping the last run time
-  stat = stat_file(certname)
+  stat = stat_file("#{certname}-push-facts")
   last_run = File.exists?(stat) ? File.stat(stat).mtime.utc : Time.now - 365*24*60*60
   last_fact = File.stat(filename).mtime.utc
   if last_fact > last_run
@@ -79,6 +79,7 @@ def upload_facts(certname, filename)
         end
       end
       res.start { |http| http.request(req) }
+      cache("#{certname}-push-facts", "Facts from this host were last pushed to #{uri} at #{Time.now}\n")
     rescue => e
       raise "Could not send facts to Foreman: #{e}"
     end
