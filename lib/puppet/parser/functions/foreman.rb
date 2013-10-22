@@ -5,7 +5,7 @@
 # To use foreman(), first create a hash. This sample hash will contain
 # parameters to let us get a list of 'hosts' that match our search parameters.
 #
-# $f = { item         => 'hosts',   <-
+# $f = { item         => 'hosts',
 #        search       => 'hostgroup=Grid',
 #        per_page     => '20',
 #        foreman_url  => 'https://foreman',
