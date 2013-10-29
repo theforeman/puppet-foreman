@@ -3,6 +3,7 @@ class foreman::config::enc (
   $foreman_url = $foreman::params::foreman_url,
   $facts       = $foreman::params::facts,
   $puppet_home = $foreman::params::puppet_home,
+  $puppet_user = $foreman::params::puppet_user,
   $ssl_ca      = $foreman::params::client_ssl_ca,
   $ssl_cert    = $foreman::params::client_ssl_cert,
   $ssl_key     = $foreman::params::client_ssl_key,

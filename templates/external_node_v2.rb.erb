@@ -4,6 +4,7 @@
 SETTINGS = {
   :url          => "<%= @foreman_url %>",  # e.g. https://foreman.example.com
   :puppetdir    => "<%= @puppet_home %>",  # e.g. /var/lib/puppet
+  :puppetuser   => "<%= @puppet_user %>",  # e.g. puppet
   :facts        => <%= @facts %>,          # true/false to upload facts
   :timeout      => 10,
   # if CA is specified, remote Foreman host will be verified
@@ -28,6 +29,10 @@ end
 
 def puppetdir
   SETTINGS[:puppetdir] || raise("Must provide puppet base directory - please edit file")
+end
+
+def puppetuser
+  SETTINGS[:puppetuser] || 'puppet'
 end
 
 def stat_file(certname)
@@ -149,12 +154,12 @@ end
 # Actual code starts here
 
 if __FILE__ == $0 then
-  # Setuid to puppet if we can
+  # Setuid to puppet user if we can
   begin
-    Process::GID.change_privilege(Etc.getgrnam('puppet').gid) unless Etc.getpwuid.name == 'puppet'
-    Process::UID.change_privilege(Etc.getpwnam('puppet').uid) unless Etc.getpwuid.name == 'puppet'
+    Process::GID.change_privilege(Etc.getgrnam(puppetuser).gid) unless Etc.getpwuid.name == puppetuser
+    Process::UID.change_privilege(Etc.getpwnam(puppetuser).uid) unless Etc.getpwuid.name == puppetuser
   rescue
-    $stderr.puts "cannot switch to user 'puppet', continuing as '#{Etc.getpwuid.name}'"
+    $stderr.puts "cannot switch to user #{puppetuser}, continuing as '#{Etc.getpwuid.name}'"
   end
 
   begin
