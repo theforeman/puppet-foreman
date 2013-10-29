@@ -4,7 +4,7 @@
 SETTINGS = {
   :url          => "<%= @foreman_url %>",  # e.g. https://foreman.example.com
   :puppetdir    => "<%= @puppet_home %>",  # e.g. /var/lib/puppet
-  :puppetuser   => "<%= @puppet_user %>",  # e.g. /var/lib/puppet
+  :puppetuser   => "<%= @puppet_user %>",  # e.g. puppet
   :facts        => <%= @facts %>,          # true/false to upload facts
   :timeout      => 10,
   # if CA is specified, remote Foreman host will be verified
