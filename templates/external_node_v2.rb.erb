@@ -32,7 +32,7 @@ def puppetdir
 end
 
 def puppetuser
-  SETTINGS[:puppetuser] || raise("Must provide puppet user - please edit file")
+  SETTINGS[:puppetuser] || 'puppet'
 end
 
 def stat_file(certname)
