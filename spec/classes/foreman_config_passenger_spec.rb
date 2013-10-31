@@ -4,18 +4,18 @@ require 'spec_helper'
 describe 'foreman::config::passenger' do
   let :default_facts do
     {
-      :concat_basedir           => '/tmp',
-      :interfaces               => 'lo',
-      :ipaddress_lo             => '127.0.0.1',
-      :postgres_default_version => '8.4',
+      :concat_basedir => '/tmp',
+      :interfaces     => 'lo',
+      :ipaddress_lo   => '127.0.0.1',
     }
   end
 
   context 'on redhat' do
     let :facts do
       default_facts.merge({
-        :operatingsystem => 'RedHat',
-        :osfamily        => 'RedHat',
+        :operatingsystem        => 'RedHat',
+        :operatingsystemrelease => '6.4',
+        :osfamily               => 'RedHat',
       })
     end
 

@@ -4,17 +4,17 @@ require 'spec_helper'
 describe 'foreman::config' do
   let :default_facts do
     {
-      :concat_basedir           => '/tmp',
-      :interfaces               => '',
-      :postgres_default_version => '8.4',
+      :concat_basedir => '/tmp',
+      :interfaces     => '',
     }
   end
 
   context 'on redhat' do
     let :facts do
       default_facts.merge({
-        :operatingsystem => 'RedHat',
-        :osfamily        => 'RedHat',
+        :operatingsystem        => 'RedHat',
+        :operatingsystemrelease => '6.4',
+        :osfamily               => 'RedHat',
       })
     end
 
@@ -166,8 +166,9 @@ describe 'foreman::config' do
   context 'on debian' do
     let :facts do
       default_facts.merge({
-        :operatingsystem => 'Debian',
-        :osfamily        => 'Debian',
+        :operatingsystem        => 'Debian',
+        :operatingsystemrelease => 'wheezy',
+        :osfamily               => 'Debian',
       })
     end
 
