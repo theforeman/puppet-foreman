@@ -32,10 +32,12 @@
     <FilesMatch \.css\.gz$>
       ForceType text/css
       Header set Content-Encoding gzip
+      SetEnv no-gzip
     </FilesMatch>
     <FilesMatch \.js\.gz$>
       ForceType text/javascript
       Header set Content-Encoding gzip
+      SetEnv no-gzip
     </FilesMatch>
   </IfModule>
 
