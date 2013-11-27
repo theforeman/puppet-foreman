@@ -24,13 +24,8 @@ describe 'foreman::install' do
 
       it { should contain_class('foreman::database::postgresql') }
 
-      it { should contain_exec('dbmigrate').with({
-        'command'     => '/usr/share/foreman/extras/dbmigrate',
-        'user'        => 'foreman',
-        'environment' => 'HOME=/usr/share/foreman',
-        'logoutput'   => 'on_failure',
-        'refreshonly' => true,
-      })}
+      it { should contain_foreman__rake('db:migrate') }
+      it { should contain_foreman__rake('db:seed') }
     end
   end
 
@@ -49,13 +44,8 @@ describe 'foreman::install' do
 
       it { should contain_class('foreman::database::postgresql') }
 
-      it { should contain_exec('dbmigrate').with({
-        'command'     => '/usr/share/foreman/extras/dbmigrate',
-        'user'        => 'foreman',
-        'environment' => 'HOME=/usr/share/foreman',
-        'logoutput'   => 'on_failure',
-        'refreshonly' => true,
-      })}
+      it { should contain_foreman__rake('db:migrate') }
+      it { should contain_foreman__rake('db:seed') }
     end
   end
 end
