@@ -16,11 +16,22 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest) do
   end
 
   def proxy
-    @proxy ||= smartProxies.index[0].find { |s| s['smart_proxy']['name'] == resource[:name] }
+    if @proxy
+      @proxy
+    else
+      spi = smartProxies.index[0]
+      if spi.has_key?('results')
+        # foreman_api 0.1.18+
+        @proxy = spi['results'].find { |s| s['name'] == resource[:name] }
+      else
+        # foreman_api < 0.1.18
+        @proxy = spi.find { |s| s['smart_proxy']['name'] == resource[:name] }['smart_proxy']
+      end
+    end
   end
 
   def id
-    proxy ? proxy['smart_proxy']['id'] : nil
+    proxy ? proxy['id'] : nil
   end
 
   def exists?
@@ -39,7 +50,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest) do
   end
 
   def url
-    proxy ? proxy['smart_proxy']['url'] : nil
+    proxy ? proxy['url'] : nil
   end
 
   def url=(value)
