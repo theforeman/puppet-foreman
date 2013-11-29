@@ -76,6 +76,8 @@ describe 'foreman::config' do
         'ensure'  => 'present',
         'shell'   => '/sbin/nologin',
         'comment' => 'Foreman',
+        'gid'     => 'foreman',
+        'groups'  => ['puppet'],
         'home'    => '/usr/share/foreman',
         'require' => 'Class[Foreman::Install]',
       })}

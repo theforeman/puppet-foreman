@@ -57,6 +57,8 @@ class foreman::config {
     shell   => '/sbin/nologin',
     comment => 'Foreman',
     home    => $foreman::app_root,
+    gid     => $foreman::group,
+    groups  => $foreman::user_groups,
     require => Class['foreman::install'],
   }
 
