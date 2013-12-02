@@ -27,8 +27,7 @@ module Puppet::Parser::Functions
         c.write(YAML.dump(initial_data))
       end
       # Chown to puppet to prevent later cache-read errors when this is run as root
-      if Etc.getpwuid.name == 'root'
-        uid = Etc.getpwnam('puppet').uid
+      if Etc.getpwuid.name == 'root' && (uid = (Etc.getpwnam('puppet').uid rescue nil))
         File.chown(uid, nil, cache)
         File.chown(uid, nil, cache_dir)
       end
