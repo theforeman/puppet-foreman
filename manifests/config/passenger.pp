@@ -30,15 +30,8 @@ class foreman::config::passenger(
     path    => "${foreman::apache_conf_dir}/foreman.conf",
     content => template($foreman_conf),
     mode    => '0644',
-    notify  => Exec['reload-apache'],
+    notify  => Class['foreman::service'],
     require => Class['foreman::install'],
-  }
-
-  exec {'restart_foreman':
-    command     => "/bin/touch ${foreman::app_root}/tmp/restart.txt",
-    refreshonly => true,
-    cwd         => $foreman::app_root,
-    path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
   }
 
   file { ["${foreman::app_root}/config.ru", "${foreman::app_root}/config/environment.rb"]:
