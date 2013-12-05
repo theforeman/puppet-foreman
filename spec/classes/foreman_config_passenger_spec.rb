@@ -32,7 +32,7 @@ describe 'foreman::config::passenger' do
         should contain_file('foreman_vhost').with({
           :path    => '/etc/httpd/conf.d/foreman.conf',
           :mode    => '0644',
-          :notify  => 'Exec[reload-apache]',
+          :notify  => 'Class[Foreman::Service]',
           :require => 'Class[Foreman::Install]',
         })
 
@@ -41,13 +41,6 @@ describe 'foreman::config::passenger' do
         should contain_file('foreman_vhost').with_content(/<VirtualHost \*:443>/)
 
         should contain_file('foreman_vhost').with_content(/access plus 1 year/)
-
-        should contain_exec('restart_foreman').with({
-          :command     => '/bin/touch /usr/share/foreman/tmp/restart.txt',
-          :refreshonly => true,
-          :cwd         => '/usr/share/foreman',
-          :path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-        })
 
         should contain_file('/usr/share/foreman/config.ru').with({
           :owner   => 'foreman',
