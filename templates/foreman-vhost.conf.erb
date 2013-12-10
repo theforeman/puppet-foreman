@@ -31,12 +31,10 @@
 
   <%= scope.function_template(['foreman/_assets.conf.erb']) %>
 
-  # Use puppet certificates for SSL
-
   SSLEngine On
-  SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= @fqdn %>.pem
-  SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem
-  SSLCertificateChainFile /var/lib/puppet/ssl/certs/ca.pem
+  SSLCertificateFile      <%= @ssl_cert %>
+  SSLCertificateKeyFile   <%= @ssl_key %>
+  SSLCertificateChainFile <%= @ssl_ca %>
   SSLCACertificateFile    /var/lib/puppet/ssl/certs/ca.pem
   SSLVerifyClient         optional
   SSLOptions              +StdEnvVars

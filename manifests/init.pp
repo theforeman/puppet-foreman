@@ -81,6 +81,12 @@
 #
 # $passenger_interface::    Defines which network interface passenger should listen on, undef means all interfaces
 #
+# $server_ssl_ca::          Defines Apache mod_ssl SSLCertificateChainFile setting in Foreman vhost conf file.
+#
+# $server_ssl_cert::        Defines Apache mod_ssl SSLCertificateFile setting in Foreman vhost conf file.
+#
+# $server_ssl_key::         Defines Apache mod_ssl SSLCertificateKeyFile setting in Foreman vhost conf file.
+#
 # $oauth_active::           Enable OAuth authentication for REST API
 #                           type:boolean
 #
@@ -123,6 +129,9 @@ class foreman (
   $locations_enabled      = $foreman::params::locations_enabled,
   $organizations_enabled  = $foreman::params::organizations_enabled,
   $passenger_interface    = $foreman::params::passenger_interface,
+  $server_ssl_ca          = $foreman::params::server_ssl_ca,
+  $server_ssl_cert        = $foreman::params::server_ssl_cert,
+  $server_ssl_key         = $foreman::params::server_ssl_key,
   $oauth_active           = $foreman::params::oauth_active,
   $oauth_map_users        = $foreman::params::oauth_map_users,
   $oauth_consumer_key     = $foreman::params::oauth_consumer_key,

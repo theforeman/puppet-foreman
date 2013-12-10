@@ -108,5 +108,22 @@ describe 'foreman::config::passenger' do
         should_not contain_file('foreman_vhost').with_content(/<VirtualHost \*:443>/)
       end
     end
+
+    describe 'with custom ssl cert' do
+      let :pre_condition do
+        "class {'foreman':
+          server_ssl_cert => 'foo',
+          server_ssl_key  => 'bar',
+          server_ssl_ca   => 'baz',
+          ssl             => true,
+        }"
+      end
+
+      it 'should specify trust chain' do
+        should contain_file('foreman_vhost').with_content(/SSLCertificateFile\s+foo/)
+        should contain_file('foreman_vhost').with_content(/SSLCertificateKeyFile\s+bar/)
+        should contain_file('foreman_vhost').with_content(/SSLCertificateChainFile\s+baz/)
+      end
+    end
   end
 end

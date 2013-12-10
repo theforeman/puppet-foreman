@@ -105,6 +105,11 @@ class foreman::params {
   $client_ssl_cert = "${puppet_home}/ssl/certs/${::fqdn}.pem"
   $client_ssl_key  = "${puppet_home}/ssl/private_keys/${::fqdn}.pem"
 
+  # Set these values if you want Passenger to serve a CA-provided cert instead of puppet's
+  $server_ssl_ca   = "${puppet_home}/ssl/certs/ca.pem"
+  $server_ssl_cert = "${puppet_home}/ssl/certs/${::fqdn}.pem"
+  $server_ssl_key  = "${puppet_home}/ssl/private_keys/${::fqdn}.pem"
+
   # We need the REST API interface with OAuth for some REST Puppet providers
   $oauth_active = true
   $oauth_map_users = true
