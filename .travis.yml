@@ -5,9 +5,8 @@ rvm:
 env:
   - PUPPET_VERSION=2.6.0
   - PUPPET_VERSION=2.7.0
-  - PUPPET_VERSION=3.0.0
-  - PUPPET_VERSION=3.1.0
   - PUPPET_VERSION=3.2.0
+  - PUPPET_VERSION=3.3
 matrix:
   exclude:
     # No support for Ruby 1.9 before Puppet 2.7
@@ -18,7 +17,3 @@ matrix:
       env: PUPPET_VERSION=2.6.0
     - rvm: 2.0.0
       env: PUPPET_VERSION=2.7.0
-    - rvm: 2.0.0
-      env: PUPPET_VERSION=3.0.0
-    - rvm: 2.0.0
-      env: PUPPET_VERSION=3.1.0
