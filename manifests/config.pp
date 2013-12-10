@@ -74,6 +74,9 @@ class foreman::config {
 
   # Datacentred additions, edit the plugins file and then
   # trigger an update to install them - SM
+  concat_fragment {'foreman_settings+50-dc.yaml':
+    content => template('foreman/dc-settings.yaml.erb'),
+  }
   file { "${foreman::app_root}/bundler.d/Gemfile.local.rb":
     ensure  => file,
     content => template('foreman/Gemfile.local.rb.erb'),
