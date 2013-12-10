@@ -72,4 +72,17 @@ class foreman::config {
     include foreman::config::passenger
   }
 
+  # Datacentred additions, edit the plugins file and then
+  # trigger an update to install them - SM
+  file { "${foreman::app_root}/bundler.d/Gemfile.local.rb":
+    ensure  => file,
+    content => template('foreman/Gemfile.local.rb.erb'),
+  } ~>
+  exec { 'foreman_plugin_update':
+    user        => $foreman::user,
+    cwd         => $foreman::app_root,
+    command     => '/usr/bin/bundle update',
+    refreshonly => true,
+  }
+
 }
