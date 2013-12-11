@@ -77,6 +77,9 @@ class foreman::config {
   concat_fragment {'foreman_settings+50-dc.yaml':
     content => template('foreman/dc-settings.yaml.erb'),
   }
+  package { 'git':
+    ensure => present,
+  } ->
   file { "${foreman::app_root}/bundler.d/Gemfile.local.rb":
     ensure  => file,
     content => template('foreman/Gemfile.local.rb.erb'),
