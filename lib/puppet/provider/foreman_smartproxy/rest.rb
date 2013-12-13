@@ -20,7 +20,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest) do
       @proxy
     else
       spi = smartProxies.index[0]
-      if spi.has_key?('results')
+      if spi.is_a?(Hash) && spi.has_key?('results')
         # foreman_api 0.1.18+
         @proxy = spi['results'].find { |s| s['name'] == resource[:name] }
       else
