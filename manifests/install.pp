@@ -40,4 +40,12 @@ class foreman::install {
       require => $repo,
     }
   }
+
+  if $foreman::passenger_scl {
+    package{ "${foreman::passenger_scl}-rubygem-passenger-native":
+      ensure  => installed,
+      require => Class['apache'],
+      before  => Class['apache::service'],
+    }
+  }
 }
