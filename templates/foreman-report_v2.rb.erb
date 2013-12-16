@@ -98,8 +98,7 @@ Puppet::Reports.register_report(:foreman) do
 
     # special fix for false warning about skips
     # sometimes there are skip values, but there are no error messages, we ignore them.
-    # add one for ignoring the "Finished catalog run in X seconds" notice
-    if report_status["skipped"] > 0 and ((report_status.values.inject(:+)) - report_status["skipped"] + 1 == report.logs.find_all { |l| l.level != :debug and l.level != :info }.size)
+    if report_status["skipped"] > 0 and ((report_status.values.inject(:+)) - report_status["skipped"] == report.logs.size)
       report_status["skipped"] = 0
     end
     # fix for reports that contain no metrics (i.e. failed catalog)
@@ -124,6 +123,9 @@ Puppet::Reports.register_report(:foreman) do
     logs.each do |log|
       # skipping debug messages, we dont want them in Foreman's db
       next if log.level == :debug
+
+      # skipping info messages, we dont want them in Foreman's db
+      next if log.level == :info
 
       # skipping catalog summary run messages, we dont want them in Foreman's db
       next if log.message =~ /^Finished catalog run in \d+.\d+ seconds$/
