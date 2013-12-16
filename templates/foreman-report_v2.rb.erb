@@ -124,6 +124,9 @@ Puppet::Reports.register_report(:foreman) do
       # skipping debug messages, we dont want them in Foreman's db
       next if log.level == :debug
 
+      # skipping info messages, we dont want them in Foreman's db
+      next if log.level == :info
+
       # skipping catalog summary run messages, we dont want them in Foreman's db
       next if log.message =~ /^Finished catalog run in \d+.\d+ seconds$/
 
