@@ -25,6 +25,8 @@ class foreman::params {
   # Choose whether you want to enable locations and organizations.
   $locations_enabled      = false
   $organizations_enabled  = false
+  $configure_epel_repo    = true
+  $configure_scl_repo     = true
 
 # Advance configurations - no need to change anything here by default
   # if set to true, no repo will be added by this module, letting you to
