@@ -43,7 +43,7 @@ production:
   username: <%= username %>
 <% end -%>
 <% unless (password = scope.lookupvar("::foreman::db_password")) == 'UNSET' -%>
-  password: <%= password %>
+  password: "<%= password %>"
 <% end -%>
 <% if type == 'sqlite' -%>
   pool: 5
