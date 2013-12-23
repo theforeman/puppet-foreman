@@ -25,9 +25,9 @@ describe 'foreman::config::passenger' do
       end
 
       it do
-        should include_class('apache::ssl')
-        should include_class('passenger')
-        should_not include_class('::passenger::install::scl')
+        should contain_class('apache::ssl')
+        should contain_class('passenger')
+        should_not contain_class('::passenger::install::scl')
 
         should contain_file('foreman_vhost').with({
           :path    => '/etc/httpd/conf.d/foreman.conf',
@@ -82,7 +82,7 @@ describe 'foreman::config::passenger' do
       end
 
       it 'should include scl' do
-        should include_class('passenger::install::scl')
+        should contain_class('passenger::install::scl')
       end
     end
 
