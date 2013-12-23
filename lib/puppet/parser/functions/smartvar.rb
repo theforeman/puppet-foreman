@@ -7,13 +7,16 @@ require "net/http"
 require "net/https"
 require "uri"
 require "timeout"
+require "yaml"
+
+SETTINGS = YAML.load_file("/etc/foreman/puppet.yml")
 
 module Puppet::Parser::Functions
   newfunction(:smartvar, :type => :rvalue) do |args|
     #URL to query
-    foreman_url  = "http://foreman"
-    foreman_user = "admin"
-    foreman_pass = "changeme"
+    foreman_url  = SETTINGS[:url]
+    foreman_user = SETTINGS[:user] || 'admin'
+    foreman_pass = SETTINGS[:password] || 'changeme'
 
     var = args[0]
     raise Puppet::ParseError, "Must provide a variable name to search for" if var.nil?
