@@ -18,10 +18,10 @@ describe 'foreman' do
       })
     end
 
-    it { should include_class('foreman::install') }
-    it { should include_class('foreman::config') }
-    it { should include_class('foreman::database') }
-    it { should include_class('foreman::service') }
+    it { should contain_class('foreman::install') }
+    it { should contain_class('foreman::config') }
+    it { should contain_class('foreman::database') }
+    it { should contain_class('foreman::service') }
   end
 
   context 'on debian' do
@@ -32,9 +32,9 @@ describe 'foreman' do
       })
     end
 
-    it { should include_class('foreman::install') }
-    it { should include_class('foreman::config') }
-    it { should include_class('foreman::database') }
-    it { should include_class('foreman::service') }
+    it { should contain_class('foreman::install') }
+    it { should contain_class('foreman::config') }
+    it { should contain_class('foreman::database') }
+    it { should contain_class('foreman::service') }
   end
 end
