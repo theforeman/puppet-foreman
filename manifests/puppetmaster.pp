@@ -53,9 +53,27 @@ class foreman::puppetmaster (
   }
 
   if $enc {
-    class {'foreman::config::enc':
-      puppet_home => $puppet_home,
-      enc_api     => $enc_api,
+    file { '/etc/puppet/node.rb':
+      source => "puppet:///modules/${module_name}/external_node_${enc_api}.rb",
+      mode   => '0550',
+      owner  => 'puppet',
+      group  => 'puppet',
+    }
+
+    file { "${puppet_home}/yaml":
+      ensure                  => directory,
+      recurse                 => true,
+      owner                   => 'puppet',
+      group                   => 'puppet',
+      selinux_ignore_defaults => true,
+      require                 => Class['::puppet::server::install'],
+    }
+
+    file { "${puppet_home}/yaml/foreman":
+      ensure  => directory,
+      owner   => 'puppet',
+      group   => 'puppet',
+      require => Class['::puppet::server::install'],
     }
   }
 }
