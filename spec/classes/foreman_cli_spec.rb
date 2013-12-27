@@ -4,6 +4,8 @@ describe 'foreman::cli' do
   context 'standalone with parameters' do
     let(:params) do {
       'foreman_url' => 'http://example.com',
+      'username'    => 'joe',
+      'password'    => 'secret',
     } end
 
     it { should contain_package('foreman-cli').with_ensure('installed') }
@@ -26,8 +28,8 @@ describe 'foreman::cli' do
         content = subject.resource('file', '/root/.hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
         content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
           ":foreman:",
-          "  :username: 'admin'",
-          "  :password: 'changeme'",
+          "  :username: 'joe'",
+          "  :password: 'secret'",
           "  :refresh_cache: false",
           "  :request_timeout: 120",
         ]
@@ -37,6 +39,8 @@ describe 'foreman::cli' do
     describe 'with manage_root_config=false' do
       let(:params) do {
         'foreman_url' => 'http://example.com',
+        'username'    => 'joe',
+        'password'    => 'secret',
         'manage_root_config' => false,
       } end
 
@@ -55,7 +59,10 @@ describe 'foreman::cli' do
     } end
 
     let :pre_condition do
-      "class { 'foreman': }"
+      "class { 'foreman':
+         admin_username => 'joe',
+         admin_password => 'secret',
+       }"
     end
 
     it { should contain_package('foreman-cli').with_ensure('installed') }
@@ -67,6 +74,19 @@ describe 'foreman::cli' do
           ":foreman:",
           "  :enable_module: true",
           "  :host: 'https://#{facts[:fqdn]}'",
+        ]
+      end
+    end
+
+    describe '/root/.hammer/cli.modules.d/foreman.yml' do
+      it 'should contain settings from foreman' do
+        content = subject.resource('file', '/root/.hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
+        content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
+          ":foreman:",
+          "  :username: 'joe'",
+          "  :password: 'secret'",
+          "  :refresh_cache: false",
+          "  :request_timeout: 120",
         ]
       end
     end

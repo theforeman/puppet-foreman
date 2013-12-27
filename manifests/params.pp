@@ -163,7 +163,14 @@ class foreman::params {
 
   # We need the REST API interface with OAuth for some REST Puppet providers
   $oauth_active = true
-  $oauth_map_users = true
+  $oauth_map_users = false
   $oauth_consumer_key = cache_data('oauth_consumer_key', random_password(32))
   $oauth_consumer_secret = cache_data('oauth_consumer_secret', random_password(32))
+
+  # Initial admin account details
+  $admin_username = 'admin'
+  $admin_password = cache_data('admin_password', random_password(16))
+  $admin_first_name = undef
+  $admin_last_name = undef
+  $admin_email = undef
 }

@@ -111,6 +111,16 @@
 #
 # $oauth_consumer_secret::  OAuth consumer secret
 #
+# $admin_username::         Username for the initial admin user
+#
+# $admin_password::         Password of the initial admin user, default is randomly generated
+#
+# $admin_first_name::       First name of the initial admin user
+#
+# $admin_last_name::        Last name of the initial admin user
+#
+# $admin_email::            E-mail address of the initial admin user
+#
 class foreman (
   $foreman_url            = $foreman::params::foreman_url,
   $unattended             = $foreman::params::unattended,
@@ -155,6 +165,11 @@ class foreman (
   $passenger_prestart     = $foreman::params::passenger_prestart,
   $passenger_min_instances = $foreman::params::passenger_min_instances,
   $passenger_start_timeout = $foreman::params::passenger_start_timeout,
+  $admin_username         = $foreman::params::admin_username,
+  $admin_password         = $foreman::params::admin_password,
+  $admin_first_name       = $foreman::params::admin_first_name,
+  $admin_last_name        = $foreman::params::admin_last_name,
+  $admin_email            = $foreman::params::admin_email,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $foreman::db_type ? {

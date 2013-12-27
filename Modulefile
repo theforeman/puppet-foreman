@@ -12,4 +12,4 @@ dependency 'theforeman/tftp', '>= 1.4.0'
 
 dependency 'puppetlabs/apache', '>= 1.0.0 < 2.0.0'
 dependency 'puppetlabs/postgresql', '>= 3.0.0'
-dependency 'puppetlabs/stdlib', '>= 2.0.0'
+dependency 'puppetlabs/stdlib', '>= 4.2.0'
