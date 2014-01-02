@@ -9,4 +9,3 @@ describe 'foreman::plugin::puppetdb' do
     should contain_foreman__plugin('puppetdb').with_package('ruby-puppetdb_foreman')
   end
 end
-

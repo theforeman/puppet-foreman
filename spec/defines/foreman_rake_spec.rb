@@ -3,9 +3,8 @@ require 'spec_helper'
 describe 'foreman::rake' do
   let :default_facts do
     {
-      :concat_basedir           => '/tmp',
-      :interfaces               => '',
-      :postgres_default_version => '8.4',
+      :concat_basedir => '/tmp',
+      :interfaces     => '',
     }
   end
 

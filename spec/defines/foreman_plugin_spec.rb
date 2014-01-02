@@ -9,9 +9,10 @@ describe 'foreman::plugin' do
     end
 
     let :facts do {
-      :concat_basedir           => '/nonexistant',
-      :osfamily                 => 'RedHat',
-      :postgres_default_version => '8.4',
+      :concat_basedir         => '/nonexistant',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '6.4',
+      :osfamily               => 'RedHat',
     } end
 
     it 'should install the correct package with notify' do
