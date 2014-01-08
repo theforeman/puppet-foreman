@@ -28,6 +28,13 @@
 #
 # $repo::                   This can be stable, rc, or nightly
 #
+# $configure_epel_repo::    If disabled the EPEL repo will not be configured on RedHat family systems.
+#                           type:boolean
+#
+# $configure_scl_repo::     If disabled the the SCL repo will not be configured on Red Hat clone systems.
+#                           (Currently only installs repos for CentOS and Scientific)
+#                           type:boolean
+#
 # $selinux::                when undef, foreman-selinux will be installed if SELinux is enabled
 #                           setting to false/true will override this check (e.g. set to false on 1.1)
 #                           type:boolean
@@ -107,6 +114,8 @@ class foreman (
   $ssl                    = $foreman::params::ssl,
   $custom_repo            = $foreman::params::custom_repo,
   $repo                   = $foreman::params::repo,
+  $configure_epel_repo    = $foreman::params::configure_epel_repo,
+  $configure_scl_repo     = $foreman::params::configure_scl_repo,
   $selinux                = $foreman::params::selinux,
   $gpgcheck               = $foreman::params::gpgcheck,
   $version                = $foreman::params::version,
