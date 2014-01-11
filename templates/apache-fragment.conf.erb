@@ -1,0 +1,6 @@
+PassengerAppRoot <%= @app_root %>
+<% if @scl_prefix and !@scl_prefix.empty? -%>
+  PassengerRuby /usr/bin/<%= @scl_prefix -%>-ruby
+<% end -%>
+
+AddDefaultCharset UTF-8

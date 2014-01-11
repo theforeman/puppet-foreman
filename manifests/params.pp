@@ -59,8 +59,6 @@ class foreman::params {
   # OS specific paths
   case $::osfamily {
     RedHat: {
-      $apache_conf_dir = '/etc/httpd/conf.d'
-
       case $::operatingsystem {
         fedora: {
           $puppet_basedir  = '/usr/share/ruby/vendor_ruby/puppet'
@@ -79,14 +77,12 @@ class foreman::params {
     }
     Debian: {
       $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
-      $apache_conf_dir = '/etc/apache2/conf.d'
       $passenger_scl = undef
       $plugin_prefix = 'ruby-foreman-'
     }
     Linux: {
       case $::operatingsystem {
         Amazon: {
-          $apache_conf_dir = '/etc/httpd/conf.d'
           $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
           $yumcode = 'el6'
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+

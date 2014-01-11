@@ -2,121 +2,79 @@ require 'spec_helper'
 
 
 describe 'foreman::config::passenger' do
-  let :default_facts do
-    {
-      :concat_basedir => '/tmp',
-      :interfaces     => 'lo',
-      :ipaddress_lo   => '127.0.0.1',
-    }
+  let :facts do {
+    :concat_basedir         => '/nonexistant',
+    :fqdn                   => 'foreman.example.org',
+    :operatingsystem        => 'RedHat',
+    :operatingsystemrelease => '6.4',
+    :osfamily               => 'RedHat',
+  } end
+
+  describe 'with minimal parameters' do
+    let :params do {
+      :app_root => '/usr/share/foreman',
+      :ssl      => false,
+      :user     => 'foreman',
+    } end
+
+    it 'should include apache with modules' do
+      should contain_class('apache')
+      should contain_class('apache::mod::headers')
+      should contain_class('apache::mod::passenger')
+    end
+
+    it 'should ensure ownership' do
+      should contain_file("#{params[:app_root]}/config.ru").with_owner(params[:user])
+      should contain_file("#{params[:app_root]}/config/environment.rb").with_owner(params[:user])
+    end
   end
 
-  context 'on redhat' do
-    let :facts do
-      default_facts.merge({
-        :operatingsystem        => 'RedHat',
-        :operatingsystemrelease => '6.4',
-        :osfamily               => 'RedHat',
+  describe 'with vhost and ssl' do
+    let :params do {
+      :app_root  => '/usr/share/foreman',
+      :use_vhost => true,
+      :ssl       => true,
+      :ssl_cert  => 'cert.pem',
+      :ssl_key   => 'key.pem',
+      :ssl_ca    => 'ca.pem',
+    } end
+
+    it 'should contain the docroot' do
+      should contain_file("#{params[:app_root]}/public")
+    end
+
+    it 'should include a http vhost' do
+      should contain_apache__vhost('foreman').with({
+        :ip              => nil,
+        :servername      => facts[:fqdn],
+        :serveraliases   => ['foreman'],
+        :docroot         => "#{params[:app_root]}/public",
+        :priority        => '5',
+        :options         => ['none'],
+        :port            => 80,
+        :custom_fragment => %r{^<Directory #{params[:app_root]}/public>$},
       })
     end
 
-    describe 'without parameters' do
-      let :pre_condition do
-        "class {'foreman':}"
-      end
-
-      it do
-        should contain_class('apache::ssl')
-        should contain_class('passenger')
-        should_not contain_class('::passenger::install::scl')
-
-        should contain_file('foreman_vhost').with({
-          :path    => '/etc/httpd/conf.d/foreman.conf',
-          :mode    => '0644',
-          :notify  => 'Class[Foreman::Service]',
-          :require => 'Class[Foreman::Install]',
-        })
-
-        should contain_file('foreman_vhost').with_content(/<VirtualHost \*:80>/)
-
-        should contain_file('foreman_vhost').with_content(/<VirtualHost \*:443>/)
-
-        should contain_file('foreman_vhost').with_content(/access plus 1 year/)
-
-        should contain_file('/usr/share/foreman/config.ru').with({
-          :owner   => 'foreman',
-          :require => 'Class[Foreman::Install]',
-        })
-
-        should contain_file('/usr/share/foreman/config/environment.rb').with({
-          :owner   => 'foreman',
-          :require => 'Class[Foreman::Install]',
-        })
-      end
-    end
-
-    describe 'with listen_interface' do
-      let :pre_condition do
-        "class {'foreman':
-          passenger_interface => 'lo',
-        }"
-      end
-
-      it 'should contain the HTTP vhost' do
-        should contain_file('foreman_vhost').with({
-          :content => /<VirtualHost 127.0.0.1:80>/,
-        })
-      end
-
-      it 'should contain the HTTPS vhost' do
-        should contain_file('foreman_vhost').with({
-          :content => /<VirtualHost 127.0.0.1:443>/,
-        })
-      end
-    end
-
-    describe 'with scl_prefix' do
-      let :pre_condition do
-        "class {'foreman':
-          passenger_scl => 'ruby193',
-        }"
-      end
-
-      it 'should include scl' do
-        should contain_class('passenger::install::scl')
-      end
-    end
-
-    describe 'without ssl' do
-      let :pre_condition do
-        "class {'foreman':
-          ssl => false,
-        }"
-      end
-
-      it 'should contain the HTTP vhost' do
-        should contain_file('foreman_vhost').with_content(/<VirtualHost \*:80>/)
-      end
-
-      it 'should not contain the HTTPS vhost' do
-        should_not contain_file('foreman_vhost').with_content(/<VirtualHost \*:443>/)
-      end
-    end
-
-    describe 'with custom ssl cert' do
-      let :pre_condition do
-        "class {'foreman':
-          server_ssl_cert => 'foo',
-          server_ssl_key  => 'bar',
-          server_ssl_ca   => 'baz',
-          ssl             => true,
-        }"
-      end
-
-      it 'should specify trust chain' do
-        should contain_file('foreman_vhost').with_content(/SSLCertificateFile\s+foo/)
-        should contain_file('foreman_vhost').with_content(/SSLCertificateKeyFile\s+bar/)
-        should contain_file('foreman_vhost').with_content(/SSLCertificateChainFile\s+baz/)
-      end
+    it 'should include a https vhost' do
+      should contain_apache__vhost('foreman-ssl').with({
+        :ip                => nil,
+        :servername        => facts[:fqdn],
+        :serveraliases     => ['foreman'],
+        :docroot           => "#{params[:app_root]}/public",
+        :priority          => '5',
+        :options           => ['none'],
+        :port              => 443,
+        :ssl               => true,
+        :ssl_cert          => params[:ssl_cert],
+        :ssl_key           => params[:ssl_key],
+        :ssl_chain         => params[:ssl_ca],
+        :ssl_ca            => params[:ssl_ca],
+        :ssl_verify_client => 'optional',
+        :ssl_options       => '+StdEnvVars',
+        :ssl_verify_depth  => '3',
+        :custom_fragment   => %r{^<Directory #{params[:app_root]}/public>$},
+      })
     end
   end
 end

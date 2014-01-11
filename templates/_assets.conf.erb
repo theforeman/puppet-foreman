@@ -1,5 +1,5 @@
 # Static public dir serving
-<Directory <%= scope.lookupvar 'foreman::app_root' %>/public>
+<Directory <%= @docroot %>>
 
   <IfVersion < 2.4>
     Allow from all
@@ -10,7 +10,7 @@
 
 </Directory>
 
-<Directory <%= scope.lookupvar 'foreman::app_root' %>/public/assets>
+<Directory <%= @docroot %>/assets>
 
   # Use standard http expire header for assets instead of ETag
   <IfModule mod_expires.c>
