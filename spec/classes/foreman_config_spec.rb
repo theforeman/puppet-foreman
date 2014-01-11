@@ -41,35 +41,31 @@ describe 'foreman::config' do
         should contain_file('/etc/foreman/settings.yaml').with({
           'source'  => %r{/concat/output/foreman_settings.out$},
           'require' => 'Concat_build[foreman_settings]',
-          'notify'  => 'Class[Foreman::Service]',
           'owner'   => 'root',
           'group'   => 'foreman',
           'mode'    => '0640',
         })
+      end
 
+      it 'should configure the database' do
         should contain_file('/etc/foreman/database.yml').with({
           'owner'   => 'root',
           'group'   => 'foreman',
           'mode'    => '0640',
           'content' => /adapter: postgresql/,
-          'notify'  => 'Class[Foreman::Service]',
         })
+      end
 
+      it 'should set the defaults file' do
         should contain_file('/etc/sysconfig/foreman').
           with_content(/^FOREMAN_HOME=\/usr\/share\/foreman$/).
           with_content(/^FOREMAN_USER=foreman$/).
           with_content(/^FOREMAN_ENV=production/).
           with_content(/^FOREMAN_USE_PASSENGER=1$/).
-          with({
-            'ensure'  => 'present',
-            'require' => 'Class[Foreman::Install]',
-            'before'  => 'Class[Foreman::Service]',
-          })
+          with_ensure('present')
       end
 
-      it { should contain_file('/usr/share/foreman').with({
-        'ensure'  => 'directory',
-      })}
+      it { should contain_file('/usr/share/foreman').with_ensure('directory') }
 
       it { should contain_user('foreman').with({
         'ensure'  => 'present',
@@ -78,30 +74,12 @@ describe 'foreman::config' do
         'gid'     => 'foreman',
         'groups'  => ['puppet'],
         'home'    => '/usr/share/foreman',
-        'require' => 'Class[Foreman::Install]',
       })}
 
       it 'should remove old crons' do
-        should contain_cron('clear_session_table').with({
-          'ensure'      => 'absent',
-          'require'     => 'User[foreman]',
-          'user'        => 'foreman',
-          'environment' => 'RAILS_ENV=production'
-        })
-
-        should contain_cron('expire_old_reports').with({
-          'ensure'      => 'absent',
-          'require'     => 'User[foreman]',
-          'user'        => 'foreman',
-          'environment' => 'RAILS_ENV=production'
-        })
-
-        should contain_cron('daily summary').with({
-          'ensure'      => 'absent',
-          'require'     => 'User[foreman]',
-          'user'        => 'foreman',
-          'environment' => 'RAILS_ENV=production'
-        })
+        should contain_cron('clear_session_table').with_ensure('absent')
+        should contain_cron('expire_old_reports').with_ensure('absent')
+        should contain_cron('daily summary').with_ensure('absent')
       end
 
       it { should contain_class('foreman::config::passenger').with({
@@ -177,7 +155,7 @@ describe 'foreman::config' do
         "class {'foreman':}"
       end
 
-      it 'should set up the config' do
+      it 'should set up settings.yaml' do
         should contain_concat_build('foreman_settings').with_order(['*.yaml'])
 
         should contain_concat_fragment('foreman_settings+01-header.yaml').
@@ -195,65 +173,45 @@ describe 'foreman::config' do
         should contain_file('/etc/foreman/settings.yaml').with({
           'source'  => %r{/concat/output/foreman_settings.out$},
           'require' => 'Concat_build[foreman_settings]',
-          'notify'  => 'Class[Foreman::Service]',
           'owner'   => 'root',
           'group'   => 'foreman',
           'mode'    => '0640',
         })
+      end
 
+      it 'should configure the database' do
         should contain_file('/etc/foreman/database.yml').with({
           'owner'   => 'root',
           'group'   => 'foreman',
           'mode'    => '0640',
           'content' => /adapter: postgresql/,
-          'notify'  => 'Class[Foreman::Service]',
         })
+      end
 
+      it 'should set the defaults file' do
         should contain_file('/etc/default/foreman').
           with_content(/^START=no$/).
           with_content(/^FOREMAN_HOME=\/usr\/share\/foreman$/).
           with_content(/^FOREMAN_USER=foreman$/).
           with_content(/^FOREMAN_ENV=production/).
-          with({
-            'ensure'  => 'present',
-            'require' => 'Class[Foreman::Install]',
-            'before'  => 'Class[Foreman::Service]',
-          })
+          with_ensure('present')
       end
 
-      it { should contain_file('/usr/share/foreman').with({
-        'ensure'  => 'directory',
-      })}
+      it { should contain_file('/usr/share/foreman').with_ensure('directory') }
 
       it { should contain_user('foreman').with({
         'ensure'  => 'present',
         'shell'   => '/sbin/nologin',
         'comment' => 'Foreman',
+        'gid'     => 'foreman',
+        'groups'  => ['puppet'],
         'home'    => '/usr/share/foreman',
-        'require' => 'Class[Foreman::Install]',
       })}
 
       it 'should remove old crons' do
-        should contain_cron('clear_session_table').with({
-          'ensure'      => 'absent',
-          'require'     => 'User[foreman]',
-          'user'        => 'foreman',
-          'environment' => 'RAILS_ENV=production'
-        })
-
-        should contain_cron('expire_old_reports').with({
-          'ensure'      => 'absent',
-          'require'     => 'User[foreman]',
-          'user'        => 'foreman',
-          'environment' => 'RAILS_ENV=production'
-        })
-
-        should contain_cron('daily summary').with({
-          'ensure'      => 'absent',
-          'require'     => 'User[foreman]',
-          'user'        => 'foreman',
-          'environment' => 'RAILS_ENV=production'
-        })
+        should contain_cron('clear_session_table').with_ensure('absent')
+        should contain_cron('expire_old_reports').with_ensure('absent')
+        should contain_cron('daily summary').with_ensure('absent')
       end
 
       it { should contain_class('foreman::config::passenger').with({

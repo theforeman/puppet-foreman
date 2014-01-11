@@ -59,6 +59,9 @@ class foreman::params {
   # OS specific paths
   case $::osfamily {
     RedHat: {
+      $init_config = '/etc/sysconfig/foreman'
+      $init_config_tmpl = 'foreman.sysconfig'
+
       case $::operatingsystem {
         fedora: {
           $puppet_basedir  = '/usr/share/ruby/vendor_ruby/puppet'
@@ -79,6 +82,8 @@ class foreman::params {
       $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
       $passenger_scl = undef
       $plugin_prefix = 'ruby-foreman-'
+      $init_config = '/etc/default/foreman'
+      $init_config_tmpl = 'foreman.default'
     }
     Linux: {
       case $::operatingsystem {
@@ -88,6 +93,8 @@ class foreman::params {
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
           $passenger_scl = 'ruby193'
           $plugin_prefix = 'ruby193-rubygem-foreman_'
+          $init_config = '/etc/sysconfig/foreman'
+          $init_config_tmpl = 'foreman.sysconfig'
         }
         default: {
           fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")
