@@ -94,6 +94,10 @@ class foreman::params {
         }
       }
     }
+    ArchLinux: {
+      # Only the agent classes (cron / service) are supported for now, which
+      # doesn't require any OS-specific params
+    }
     default: {
       fail("${::hostname}: This module does not support osfamily ${::osfamily}")
     }
