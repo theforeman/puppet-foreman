@@ -7,6 +7,7 @@ SETTINGS = {
   :puppetuser   => "<%= @puppet_user %>",  # e.g. puppet
   :facts        => <%= @facts %>,          # true/false to upload facts
   :timeout      => 10,
+  :threads      => nil,
   # if CA is specified, remote Foreman host will be verified
   :ssl_ca       => "<%= @ssl_ca -%>",      # e.g. /var/lib/puppet/ssl/certs/ca.pem
   # ssl_cert and key are required if require_ssl_puppetmasters is enabled in Foreman
@@ -44,6 +45,46 @@ def tsecs
   SETTINGS[:timeout] || 3
 end
 
+def thread_count
+  SETTINGS[:threads] || case RbConfig::CONFIG['host_os']
+  when /darwin9/
+    `hwprefs cpu_count`.to_i
+  when /darwin/
+    ((`which hwprefs` != '') ? `hwprefs thread_count` : `sysctl -n hw.ncpu`).to_i
+  when /linux/
+    `cat /proc/cpuinfo | grep processor | wc -l`.to_i
+  when /freebsd/
+    `sysctl -n hw.ncpu`.to_i
+  when /mswin|mingw/
+    require 'win32ole'
+    wmi = WIN32OLE.connect("winmgmts://")
+    cpu = wmi.ExecQuery("select NumberOfCores from Win32_Processor") # TODO count hyper-threaded in this
+    cpu.to_enum.first.NumberOfCores
+  else
+    4
+  end
+end
+
+class Http_Fact_Requests
+  include Enumerable
+
+  def initialize
+    @results_array = []
+  end
+
+  def <<(val)
+    @results_array << val
+  end
+
+  def each(&block)
+    @results_array.each(&block)
+  end
+
+  def pop
+    @results_array.pop
+  end
+end
+
 require 'etc'
 require 'net/http'
 require 'net/https'
@@ -65,12 +106,17 @@ rescue LoadError
   end
 end
 
-def upload_all_facts
+def process_all_facts(http_requests)
   Dir["#{puppetdir}/yaml/facts/*.yaml"].each do |f|
     certname = File.basename(f, ".yaml")
     # Skip empty host fact yaml files
     if File.size(f) != 0
-      upload_facts(certname, f)
+      req = generate_fact_request(certname, f)
+      if http_requests
+        http_requests << [certname, req]
+      else
+        upload_facts(certname, req)
+      end
     end
   end
 end
@@ -83,7 +129,25 @@ def build_body(certname,filename)
   {'facts' => puppet_facts['values'], 'name' => hostname, 'certname' => certname}
 end
 
-def upload_facts(certname, filename)
+def initialize_http(uri)
+  res              = Net::HTTP.new(uri.host, uri.port)
+  res.use_ssl      = uri.scheme == 'https'
+  if res.use_ssl?
+    if SETTINGS[:ssl_ca] && !SETTINGS[:ssl_ca].empty?
+      res.ca_file = SETTINGS[:ssl_ca]
+      res.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    else
+      res.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    end
+    if SETTINGS[:ssl_cert] && !SETTINGS[:ssl_cert].empty? && SETTINGS[:ssl_key] && !SETTINGS[:ssl_key].empty?
+      res.cert = OpenSSL::X509::Certificate.new(File.read(SETTINGS[:ssl_cert]))
+      res.key  = OpenSSL::PKey::RSA.new(File.read(SETTINGS[:ssl_key]), nil)
+    end
+  end
+  res
+end
+
+def generate_fact_request(certname, filename)
   # Temp file keeping the last run time
   stat = stat_file("#{certname}-push-facts")
   last_run = File.exists?(stat) ? File.stat(stat).mtime.utc : Time.now - 365*24*60*60
@@ -95,24 +159,9 @@ def upload_facts(certname, filename)
       req.add_field('Accept', 'application/json,version=2' )
       req.content_type = 'application/json'
       req.body         = build_body(certname, filename).to_json
-      res              = Net::HTTP.new(uri.host, uri.port)
-      res.use_ssl      = uri.scheme == 'https'
-      if res.use_ssl?
-        if SETTINGS[:ssl_ca] && !SETTINGS[:ssl_ca].empty?
-          res.ca_file = SETTINGS[:ssl_ca]
-          res.verify_mode = OpenSSL::SSL::VERIFY_PEER
-        else
-          res.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        end
-        if SETTINGS[:ssl_cert] && !SETTINGS[:ssl_cert].empty? && SETTINGS[:ssl_key] && !SETTINGS[:ssl_key].empty?
-          res.cert = OpenSSL::X509::Certificate.new(File.read(SETTINGS[:ssl_cert]))
-          res.key  = OpenSSL::PKey::RSA.new(File.read(SETTINGS[:ssl_key]), nil)
-        end
-      end
-      res.start { |http| http.request(req) }
-      cache("#{certname}-push-facts", "Facts from this host were last pushed to #{uri} at #{Time.now}\n")
+      req
     rescue => e
-      raise "Could not send facts to Foreman: #{e}"
+      raise "Could not generate facts for Foreman: #{e}"
     end
   end
 end
@@ -151,6 +200,31 @@ def enc(certname)
   res.body
 end
 
+def upload_facts(certname, req)
+  uri = URI.parse("#{url}/api/hosts/facts")
+  begin
+    res = initialize_http(uri)
+    res.start { |http| http.request(req) }
+    cache("#{certname}-push-facts", "Facts from this host were last pushed to #{uri} at #{Time.now}\n")
+  rescue => e
+    raise "Could not send facts to Foreman: #{e}"
+  end
+end
+
+def upload_facts_parallel(http_fact_requests)
+  thread_count.times.map {
+    Thread.new(http_fact_requests) do |fact_requests|
+    while factref = fact_requests.pop
+      certname         = factref[0]
+      httpobj          = factref[1]
+      if httpobj
+        upload_facts(certname, httpobj)
+      end
+    end
+    end
+  }.each(&:join)
+end
+
 # Actual code starts here
 
 if __FILE__ == $0 then
@@ -166,14 +240,19 @@ if __FILE__ == $0 then
     no_env = ARGV.delete("--no-environment")
     if ARGV.delete("--push-facts")
       # push all facts files to Foreman and don't act as an ENC
-      upload_all_facts
+      process_all_facts(false)
+    elsif ARGV.delete("--push-facts-parallel")
+      http_fact_requests = Http_Fact_Requests.new
+      process_all_facts(http_fact_requests)
+      upload_facts_parallel(http_fact_requests)
     else
       certname = ARGV[0] || raise("Must provide certname as an argument")
       # send facts to Foreman - enable 'facts' setting to activate
       # if you use this option below, make sure that you don't send facts to foreman via the rake task or push facts alternatives.
       #
       if SETTINGS[:facts]
-        upload_facts certname, "#{puppetdir}/yaml/facts/#{certname}.yaml"
+        req = generate_fact_request certname, "#{puppetdir}/yaml/facts/#{certname}.yaml"
+        upload_facts(certname, req)
       end
       #
       # query External node
