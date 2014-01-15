@@ -46,23 +46,10 @@ def tsecs
 end
 
 def thread_count
-  SETTINGS[:threads] || case RbConfig::CONFIG['host_os']
-  when /darwin9/
-    `hwprefs cpu_count`.to_i
-  when /darwin/
-    ((`which hwprefs` != '') ? `hwprefs thread_count` : `sysctl -n hw.ncpu`).to_i
-  when /linux/
-    `cat /proc/cpuinfo | grep processor | wc -l`.to_i
-  when /freebsd/
-    `sysctl -n hw.ncpu`.to_i
-  when /mswin|mingw/
-    require 'win32ole'
-    wmi = WIN32OLE.connect("winmgmts://")
-    cpu = wmi.ExecQuery("select NumberOfCores from Win32_Processor") # TODO count hyper-threaded in this
-    cpu.to_enum.first.NumberOfCores
-  else
-    4
-  end
+  return SETTINGS[:threads].to_i if not SETTINGS[:threads].nil? and SETTINGS[:threads].to_i > 0
+  require 'facter'
+  processors = Facter.value(:processorcount).to_i
+  processors > 0 ? processors : 1
 end
 
 class Http_Fact_Requests
@@ -114,7 +101,7 @@ def process_all_facts(http_requests)
       req = generate_fact_request(certname, f)
       if http_requests
         http_requests << [certname, req]
-      else
+      elsif req
         upload_facts(certname, req)
       end
     end
@@ -201,6 +188,7 @@ def enc(certname)
 end
 
 def upload_facts(certname, req)
+  return nil if req.nil?
   uri = URI.parse("#{url}/api/hosts/facts")
   begin
     res = initialize_http(uri)
@@ -211,8 +199,8 @@ def upload_facts(certname, req)
   end
 end
 
-def upload_facts_parallel(http_fact_requests)
-  thread_count.times.map {
+def upload_facts_parallel(http_fact_requests, wait = true)
+  t = thread_count.times.map {
     Thread.new(http_fact_requests) do |fact_requests|
     while factref = fact_requests.pop
       certname         = factref[0]
@@ -222,7 +210,79 @@ def upload_facts_parallel(http_fact_requests)
       end
     end
     end
-  }.each(&:join)
+  }
+  if wait
+    t.each(&:join)
+  end
+end
+
+def watch_and_send_facts(parallel)
+  begin
+    require 'inotify'
+  rescue LoadError
+    puts "You need the `ruby-inotify` (not inotify!) gem to watch for fact updates"
+    exit 2
+  end
+
+  watch_descriptors = []
+  pending = []
+  threads = thread_count
+  last_send = Time.now
+
+  inotify_limit = `sysctl fs.inotify.max_user_watches`.gsub(/[^\d]/, '').to_i
+
+  inotify = Inotify.new
+
+  inotify.add_watch("#{puppetdir}/yaml/facts", Inotify::CREATE)
+
+  yamls = Dir["#{puppetdir}/yaml/facts/*.yaml"]
+
+  if yamls.length > inotify_limit
+    puts "Looks like your inotify watch limit is #{inotify_limit} but you are asking to watch at least #{yamls.length} fact files."
+    puts "Increase the watch limit via the system tunable fs.inotify.max_user_watches, exiting."
+    exit 2
+  end
+
+  yamls.each do |f|
+    begin
+      watch_descriptors[inotify.add_watch(f, Inotify::CLOSE_WRITE)] = f
+    end
+  end
+
+  inotify.each_event do |ev|
+    fn = watch_descriptors[ev.wd]
+    add_watch = false
+
+    if !fn
+      fn = ev.name
+      add_watch = true
+    end
+
+    if File.extname(fn) != ".yaml"
+      next
+    end
+
+    if add_watch || (ev.mask & Inotify::ONESHOT)
+      watch_descriptors[inotify.add_watch(fn, Inotify::CLOSE_WRITE)] = fn
+    end
+
+    if fn
+      certname = File.basename(fn, ".yaml")
+      req = generate_fact_request certname, fn
+      if parallel
+        pending << [certname,req]
+      else
+        upload_facts(certname,req)
+      end
+    end
+    if parallel && (pending.length >= threads || ((last_send + 5) < Time.now))
+      if pending.length > 0
+        upload_facts_parallel(pending, false)
+        pending = []
+      end
+      last_send = Time.now
+    end
+  end
 end
 
 # Actual code starts here
@@ -232,16 +292,24 @@ if __FILE__ == $0 then
   begin
     Process::GID.change_privilege(Etc.getgrnam(puppetuser).gid) unless Etc.getpwuid.name == puppetuser
     Process::UID.change_privilege(Etc.getpwnam(puppetuser).uid) unless Etc.getpwuid.name == puppetuser
+    # Facter (in thread_count) tries to read from $HOME, which is still /root after the UID change
+    ENV['HOME'] = Etc.getpwnam(puppetuser).dir
   rescue
     $stderr.puts "cannot switch to user #{puppetuser}, continuing as '#{Etc.getpwuid.name}'"
   end
 
   begin
     no_env = ARGV.delete("--no-environment")
-    if ARGV.delete("--push-facts")
+    watch = ARGV.delete("--watch-facts")
+    push_facts_parallel = ARGV.delete("--push-facts-parallel")
+    push_facts = ARGV.delete("--push-facts")
+    if watch && ! ( push_facts || push_facts_parallel )
+        raise "Cannot watch for facts without specifying --push-facts or --push-facts-parallel"
+    end
+    if push_facts
       # push all facts files to Foreman and don't act as an ENC
       process_all_facts(false)
-    elsif ARGV.delete("--push-facts-parallel")
+    elsif push_facts_parallel
       http_fact_requests = Http_Fact_Requests.new
       process_all_facts(http_fact_requests)
       upload_facts_parallel(http_fact_requests)
@@ -278,5 +346,8 @@ if __FILE__ == $0 then
   rescue => e
     warn e
     exit 1
+  end
+  if watch
+    watch_and_send_facts(push_facts_parallel)
   end
 end
