@@ -50,7 +50,7 @@ describe 'foreman::config::passenger' do
         :serveraliases   => ['foreman'],
         :docroot         => "#{params[:app_root]}/public",
         :priority        => '5',
-        :options         => ['none'],
+        :options         => ['SymLinksIfOwnerMatch'],
         :port            => 80,
         :custom_fragment => %r{^<Directory #{params[:app_root]}/public>$},
       })
@@ -63,7 +63,7 @@ describe 'foreman::config::passenger' do
         :serveraliases     => ['foreman'],
         :docroot           => "#{params[:app_root]}/public",
         :priority          => '5',
-        :options           => ['none'],
+        :options           => ['SymLinksIfOwnerMatch'],
         :port              => 443,
         :ssl               => true,
         :ssl_cert          => params[:ssl_cert],
