@@ -21,10 +21,10 @@ class foreman::install::repos::extra(
       CentOS: {
         yumrepo { 'SCL':
           descr    => 'CentOS Software Collections',
-          baseurl  => "http://dev.centos.org/centos/${osreleasemajor}/SCL/\$basearch",
+          baseurl  => 'http://mirror.centos.org/centos/$releasever/SCL/$basearch/',
           enabled  => 1,
           gpgcheck => 1,
-          gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Testing-6',
+          gpgkey   => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-${osreleasemajor}",
         }
       }
       Scientific: {
