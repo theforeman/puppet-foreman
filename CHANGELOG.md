@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.1
+* Bump stdlib dependency to fix Forge upload error
+
 ## 2.0.0
 * Add Foreman 1.4 support (default)
 * Switch to puppetlabs-apache from theforeman-apache
