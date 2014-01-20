@@ -11,4 +11,4 @@ dependency 'theforeman/concat_native', '>= 1.3.0'
 
 dependency 'puppetlabs/apache', '~> 0.10'
 dependency 'puppetlabs/postgresql', '>= 3.0.0'
-dependency 'puppetlabs/stdlib', '>= 0'
+dependency 'puppetlabs/stdlib', '>= 2.0.0'
