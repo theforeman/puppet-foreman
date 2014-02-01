@@ -82,7 +82,7 @@ class foreman::config::passenger(
       ip              => $listen_interface,
       port            => 80,
       docroot         => $docroot,
-      priority        => '5',
+      priority        => '05',
       options         => ['SymLinksIfOwnerMatch'],
       custom_fragment => template('foreman/apache-fragment.conf.erb', 'foreman/_assets.conf.erb'),
     }
@@ -94,7 +94,7 @@ class foreman::config::passenger(
         ip                => $listen_interface,
         port              => 443,
         docroot           => $docroot,
-        priority          => '5',
+        priority          => '05',
         options           => ['SymLinksIfOwnerMatch'],
         ssl               => true,
         ssl_cert          => $ssl_cert,
