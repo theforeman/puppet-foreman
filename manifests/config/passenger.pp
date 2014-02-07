@@ -77,6 +77,13 @@ class foreman::config::passenger(
       $listen_interface = undef
     }
 
+    file { "${apache::confd_dir}/05-foreman.d":
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+    }
+
     apache::vhost { 'foreman':
       servername      => $servername,
       serveraliases   => ['foreman'],
@@ -85,10 +92,19 @@ class foreman::config::passenger(
       docroot         => $docroot,
       priority        => '05',
       options         => ['SymLinksIfOwnerMatch'],
-      custom_fragment => template('foreman/apache-fragment.conf.erb', 'foreman/_assets.conf.erb'),
+      custom_fragment => template('foreman/apache-fragment.conf.erb', 'foreman/_assets.conf.erb',
+                                  'foreman/_virt_host_include.erb'),
     }
 
     if $ssl {
+
+      file { "${apache::confd_dir}/05-foreman-ssl.d":
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+      }
+
       apache::vhost { 'foreman-ssl':
         servername        => $servername,
         serveraliases     => ['foreman'],
@@ -105,7 +121,8 @@ class foreman::config::passenger(
         ssl_verify_client => 'optional',
         ssl_options       => '+StdEnvVars',
         ssl_verify_depth  => '3',
-        custom_fragment   => template('foreman/apache-fragment.conf.erb', 'foreman/_assets.conf.erb'),
+        custom_fragment   => template('foreman/apache-fragment.conf.erb', 'foreman/_assets.conf.erb',
+                                      'foreman/_ssl_virt_host_include.erb'),
       }
     }
   } else {
