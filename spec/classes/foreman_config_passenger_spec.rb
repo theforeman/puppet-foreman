@@ -43,6 +43,18 @@ describe 'foreman::config::passenger' do
       should contain_file("#{params[:app_root]}/public")
     end
 
+    it 'should contain virt host plugin dir' do
+       should contain_file('/etc/httpd/conf.d/05-foreman.d').with({
+         'ensure'  => 'directory',
+       })
+    end
+
+    it 'should contain ssl virt host plugin dir' do
+       should contain_file('/etc/httpd/conf.d/05-foreman-ssl.d').with({
+         'ensure'  => 'directory',
+       })
+    end
+
     it 'should include a http vhost' do
       should contain_apache__vhost('foreman').with({
         :ip              => nil,
