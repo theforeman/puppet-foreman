@@ -68,7 +68,7 @@ describe 'foreman::config::passenger' do
         :ssl               => true,
         :ssl_cert          => params[:ssl_cert],
         :ssl_key           => params[:ssl_key],
-        :ssl_chain         => params[:ssl_ca],
+        :ssl_chain         => params[:ssl_chain],
         :ssl_ca            => params[:ssl_ca],
         :ssl_verify_client => 'optional',
         :ssl_options       => '+StdEnvVars',

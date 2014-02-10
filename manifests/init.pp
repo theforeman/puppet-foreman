@@ -86,7 +86,9 @@
 #
 # $passenger_interface::    Defines which network interface passenger should listen on, undef means all interfaces
 #
-# $server_ssl_ca::          Defines Apache mod_ssl SSLCertificateChainFile setting in Foreman vhost conf file.
+# $server_ssl_ca::          Defines Apache mod_ssl SSLCACertificateFile setting in Foreman vhost conf file.
+#
+# $server_ssl_chain::       Defines Apache mod_ssl SSLCertificateChainFile setting in Foreman vhost conf file.
 #
 # $server_ssl_cert::        Defines Apache mod_ssl SSLCertificateFile setting in Foreman vhost conf file.
 #
@@ -136,6 +138,7 @@ class foreman (
   $organizations_enabled  = $foreman::params::organizations_enabled,
   $passenger_interface    = $foreman::params::passenger_interface,
   $server_ssl_ca          = $foreman::params::server_ssl_ca,
+  $server_ssl_chain       = $foreman::params::server_ssl_chain,
   $server_ssl_cert        = $foreman::params::server_ssl_cert,
   $server_ssl_key         = $foreman::params::server_ssl_key,
   $oauth_active           = $foreman::params::oauth_active,
