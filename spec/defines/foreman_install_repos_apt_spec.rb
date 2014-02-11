@@ -15,7 +15,7 @@ describe 'foreman::install::repos::apt' do
 
     it 'should add the stable repo' do
       should contain_file('/etc/apt/sources.list.d/foreman.list') \
-        .with_content("deb http://deb.theforeman.org/ squeeze stable\n")
+        .with_content("deb http://deb.theforeman.org/ squeeze stable\ndeb http://deb.theforeman.org/ plugins main\n")
     end
   end
 
@@ -24,7 +24,7 @@ describe 'foreman::install::repos::apt' do
 
     it 'should add the rc repo' do
       should contain_file('/etc/apt/sources.list.d/foreman.list') \
-        .with_content("deb http://deb.theforeman.org/ squeeze rc\n")
+        .with_content("deb http://deb.theforeman.org/ squeeze rc\ndeb http://deb.theforeman.org/ plugins main\n")
     end
   end
 
@@ -33,7 +33,7 @@ describe 'foreman::install::repos::apt' do
 
     it 'should add the nightly repo' do
       should contain_file('/etc/apt/sources.list.d/foreman.list') \
-        .with_content("deb http://deb.theforeman.org/ squeeze nightly\n")
+        .with_content("deb http://deb.theforeman.org/ squeeze nightly\ndeb http://deb.theforeman.org/ plugins main\n")
     end
   end
 
