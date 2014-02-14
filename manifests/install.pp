@@ -48,4 +48,5 @@ class foreman::install {
       before  => Class['apache::service'],
     }
   }
+
 }
