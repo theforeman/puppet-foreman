@@ -4,7 +4,7 @@ class foreman::database {
     $db_class = "foreman::database::${foreman::db_type}"
 
     class { $db_class: } ~>
-    foreman::rake { 'db:migrate': } ->
+    foreman::rake { 'db:migrate': } ~>
     foreman::rake { 'db:seed': }
   }
 }
