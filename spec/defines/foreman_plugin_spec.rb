@@ -35,4 +35,32 @@ describe 'foreman::plugin' do
       })
     end
   end
+
+  context 'when handling underscores on Red Hat' do
+    let :params do {
+      :package => 'my_fun_plugin',
+    } end
+
+    it 'should use underscores' do
+      should contain_package('my_fun_plugin').with({
+        :ensure => 'installed',
+      })
+    end
+  end
+
+  context 'when handling underscores on Debian' do
+    let :facts do {
+      :osfamily => 'Debian',
+    } end
+
+    let :params do {
+      :package => 'my_fun_plugin',
+    } end
+
+    it 'should use hyphens' do
+      should contain_package('my-fun-plugin').with({
+        :ensure => 'installed',
+      })
+    end
+  end
 end
