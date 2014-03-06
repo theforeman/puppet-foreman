@@ -1,5 +1,2 @@
 ### File managed with puppet ###
 ## Module:           '<%= scope.to_hash['module_name'] %>'
-<%
-  module_paths = Puppet::Node::Environment.current[:modulepath].split(':').map{|i| File.expand_path(i) }.join('|')
-%>## Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{module_paths}"),"") %>'
