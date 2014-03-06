@@ -77,14 +77,16 @@ class foreman::config::passenger(
     }
 
     apache::vhost { 'foreman':
-      servername      => $servername,
-      serveraliases   => ['foreman'],
-      ip              => $listen_interface,
-      port            => 80,
-      docroot         => $docroot,
-      priority        => '05',
-      options         => ['SymLinksIfOwnerMatch'],
-      custom_fragment => template('foreman/apache-fragment.conf.erb', 'foreman/_assets.conf.erb'),
+      servername       => $servername,
+      serveraliases    => ['foreman'],
+      ip               => $listen_interface,
+      port             => 80,
+      docroot          => $docroot,
+      priority         => '05',
+      options          => ['SymLinksIfOwnerMatch'],
+      custom_fragment  => template('foreman/apache-fragment.conf.erb', 'foreman/_assets.conf.erb'),
+      error_log        => true,
+      error_log_syslog => 'syslog:local1',
     }
 
     if $ssl {
@@ -105,6 +107,8 @@ class foreman::config::passenger(
         ssl_options       => '+StdEnvVars',
         ssl_verify_depth  => '3',
         custom_fragment   => template('foreman/apache-fragment.conf.erb', 'foreman/_assets.conf.erb'),
+        error_log         => true,
+        error_log_syslog  => 'syslog:local1',
       }
     }
   } else {
