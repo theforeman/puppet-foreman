@@ -36,6 +36,7 @@ class foreman::params {
   $repo        = 'stable'
   $railspath   = '/usr/share'
   $app_root    = "${railspath}/foreman"
+  $data_root   = "/var/lib/foreman"
   $user        = 'foreman'
   $group       = 'foreman'
   $user_groups = ['puppet']
