@@ -183,7 +183,7 @@ def enc(certname)
   end
   res = http.start { |http| http.request(req) }
 
-  raise "Error retrieving node #{certname}: #{res.class}" unless res.code == "200"
+  raise "Error retrieving node #{certname}: #{res.class}\nCheck Foreman's /var/log/foreman/production.log for more information." unless res.code == "200"
   res.body
 end
 
@@ -333,14 +333,16 @@ if __FILE__ == $0 then
       rescue TimeoutError, SocketError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED
         # Read from cache, we got some sort of an error.
         result = read_cache(certname)
-      ensure
+      end
+
+      if no_env
         require 'yaml'
         yaml = YAML.load(result)
-        if no_env
-          yaml.delete('environment')
-        end
+        yaml.delete('environment')
         # Always reset the result to back to clean yaml on our end
         puts yaml.to_yaml
+      else
+        puts result
       end
     end
   rescue => e
