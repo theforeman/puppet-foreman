@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.1.0
+* Add compute resource and new plugin classes (#3308)
+* Add support for parallel fact pushes in node.rb
+* Add event driven fact pushing (--watch-facts) in node.rb
+* Add server_ssl_chain parameter to set SSLCertificateChainFile
+* Add support for plugins to add virtual host entries
+* Use alphanumeric ordering for vhosts (#4225)
+* Use the production CentOS SCL repo, use centos-release-SCL
+* Add Debian plugins repo
+* Update to puppetlabs-apache 1.0
+* Trigger db:seed too when DB changes
+* Run foreman-rake apipie:cache after installation
+* Ensure plugins are installed after core
+* Improve node.rb response when server-side error occurs
+* Remove template source from header for Puppet 3.5 compatibility
+* Add basic Archlinux support for agent classes
+* Fix Modulefile specification for Forge compatibility
+* Cleanup of foreman::config
+
 ## 2.0.1
 * Bump stdlib dependency to fix Forge upload error
 
