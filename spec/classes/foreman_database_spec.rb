@@ -26,6 +26,7 @@ describe 'foreman::install' do
 
       it { should contain_foreman__rake('db:migrate') }
       it { should contain_foreman__rake('db:seed') }
+      it { should contain_foreman__rake('apipie:cache') }
     end
   end
 
@@ -47,6 +48,7 @@ describe 'foreman::install' do
 
       it { should contain_foreman__rake('db:migrate') }
       it { should contain_foreman__rake('db:seed') }
+      it { should contain_foreman__rake('apipie:cache') }
     end
   end
 end

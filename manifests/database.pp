@@ -5,6 +5,7 @@ class foreman::database {
 
     class { $db_class: } ~>
     foreman::rake { 'db:migrate': } ~>
-    foreman::rake { 'db:seed': }
+    foreman::rake { 'db:seed': } ~>
+    foreman::rake { 'apipie:cache': }
   }
 }
