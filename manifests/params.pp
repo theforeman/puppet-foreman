@@ -111,18 +111,19 @@ class foreman::params {
   }
   $puppet_home = '/var/lib/puppet'
   $puppet_user = 'puppet'
+  $lower_fqdn = downcase($::fqdn)
 
   # If CA is specified, remote Foreman host will be verified in reports/ENC scripts
   $client_ssl_ca   = "${puppet_home}/ssl/certs/ca.pem"
   # Used to authenticate to Foreman, required if require_ssl_puppetmasters is enabled
-  $client_ssl_cert = "${puppet_home}/ssl/certs/${::fqdn}.pem"
-  $client_ssl_key  = "${puppet_home}/ssl/private_keys/${::fqdn}.pem"
+  $client_ssl_cert = "${puppet_home}/ssl/certs/${lower_fqdn}.pem"
+  $client_ssl_key  = "${puppet_home}/ssl/private_keys/${lower_fqdn}.pem"
 
   # Set these values if you want Passenger to serve a CA-provided cert instead of puppet's
   $server_ssl_ca    = "${puppet_home}/ssl/certs/ca.pem"
   $server_ssl_chain = "${puppet_home}/ssl/certs/ca.pem"
-  $server_ssl_cert  = "${puppet_home}/ssl/certs/${::fqdn}.pem"
-  $server_ssl_key   = "${puppet_home}/ssl/private_keys/${::fqdn}.pem"
+  $server_ssl_cert  = "${puppet_home}/ssl/certs/${lower_fqdn}.pem"
+  $server_ssl_key   = "${puppet_home}/ssl/private_keys/${lower_fqdn}.pem"
 
   # We need the REST API interface with OAuth for some REST Puppet providers
   $oauth_active = true
