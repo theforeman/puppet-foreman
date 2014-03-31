@@ -1,0 +1,10 @@
+#!/usr/bin/env python
+"""Simple messager to inform a host has been provisioned"""
+
+import sys
+import hipchat
+
+hipster = hipchat.HipChat(token=<%= @foreman_hipchat_token %>)
+message = 'Build completed of host {0}'.format(sys.argv[2])
+hipster.message_room(<%= @foreman_hipchat_room %>, 'Foreman', message)
+
