@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.1
+* Fix SSL configuration with upper case hostnames (#4679)
+
 ## 2.1.0
 * Add compute resource and new plugin classes (#3308)
 * Add support for parallel fact pushes in node.rb
