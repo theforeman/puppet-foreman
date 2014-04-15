@@ -11,6 +11,7 @@ fixtures:
     postgresql:       'git://github.com/puppetlabs/puppetlabs-postgresql'
     puppet:           'git://github.com/theforeman/puppet-puppet'
     stdlib:           'git://github.com/puppetlabs/puppetlabs-stdlib'
+    tftp:             'git://github.com/theforeman/puppet-tftp'
 
 
   symlinks:
