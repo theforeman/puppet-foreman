@@ -69,7 +69,7 @@ describe 'foreman::config' do
 
       it { should contain_user('foreman').with({
         'ensure'  => 'present',
-        'shell'   => '/sbin/nologin',
+        'shell'   => '/bin/false',
         'comment' => 'Foreman',
         'gid'     => 'foreman',
         'groups'  => ['puppet'],
@@ -201,7 +201,7 @@ describe 'foreman::config' do
 
       it { should contain_user('foreman').with({
         'ensure'  => 'present',
-        'shell'   => '/sbin/nologin',
+        'shell'   => '/bin/false',
         'comment' => 'Foreman',
         'gid'     => 'foreman',
         'groups'  => ['puppet'],
