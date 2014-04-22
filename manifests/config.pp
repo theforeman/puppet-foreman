@@ -34,7 +34,7 @@ class foreman::config {
 
   user { $foreman::user:
     ensure  => 'present',
-    shell   => '/sbin/nologin',
+    shell   => '/bin/false',
     comment => 'Foreman',
     home    => $foreman::app_root,
     gid     => $foreman::group,
