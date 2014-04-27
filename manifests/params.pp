@@ -58,12 +58,12 @@ class foreman::params {
 
   # OS specific paths
   case $::osfamily {
-    RedHat: {
+    'RedHat': {
       $init_config = '/etc/sysconfig/foreman'
       $init_config_tmpl = 'foreman.sysconfig'
 
       case $::operatingsystem {
-        fedora: {
+        'fedora': {
           $puppet_basedir  = '/usr/share/ruby/vendor_ruby/puppet'
           $yumcode = "f${::operatingsystemrelease}"
           $passenger_scl = undef
@@ -78,16 +78,16 @@ class foreman::params {
         }
       }
     }
-    Debian: {
+    'Debian': {
       $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
       $passenger_scl = undef
       $plugin_prefix = 'ruby-foreman-'
       $init_config = '/etc/default/foreman'
       $init_config_tmpl = 'foreman.default'
     }
-    Linux: {
+    'Linux': {
       case $::operatingsystem {
-        Amazon: {
+        'Amazon': {
           $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
           $yumcode = 'el6'
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
@@ -101,7 +101,7 @@ class foreman::params {
         }
       }
     }
-    ArchLinux: {
+    'ArchLinux': {
       # Only the agent classes (cron / service) are supported for now, which
       # doesn't require any OS-specific params
     }

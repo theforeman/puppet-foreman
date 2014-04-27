@@ -3,7 +3,7 @@ define foreman::plugin(
 ) {
   # Debian gem2deb converts underscores to hyphens
   case $::osfamily {
-    Debian: {
+    'Debian': {
       $real_package = regsubst($package,'_','-','G')
     }
     default: {
