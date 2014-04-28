@@ -18,12 +18,12 @@ class foreman::install::repos::extra(
 
   if $configure_scl_repo {
     case $::operatingsystem {
-      CentOS: {
+      'CentOS': {
         package {'centos-release-SCL':
           ensure => installed,
         }
       }
-      Scientific: {
+      'Scientific': {
         yumrepo { 'SCL':
           descr    => 'Scientific Linux Software Collections',
           baseurl  => "http://ftp.scientificlinux.org/linux/scientific/${osreleasemajor}/\$basearch/external_products/softwarecollections/",

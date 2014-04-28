@@ -15,7 +15,7 @@ class foreman::puppetmaster (
 ) inherits foreman::params {
 
   case $::operatingsystem {
-    Debian,Ubuntu: {
+    'Debian','Ubuntu': {
       case $::lsbdistcodename {
         'squeeze': { $json_package = 'libjson-ruby' }
         default:   { $json_package = 'ruby-json' }
