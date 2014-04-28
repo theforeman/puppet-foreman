@@ -1,8 +1,8 @@
 class foreman::plugin::tasks {
   case $::osfamily {
-    RedHat: {
+    'RedHat': {
       case $::operatingsystem {
-        fedora: {
+        'fedora': {
           $package = 'rubygem-foreman-tasks'
         }
         default: {

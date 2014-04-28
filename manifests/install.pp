@@ -15,16 +15,16 @@ class foreman::install {
   }
 
   case $foreman::db_type {
-    sqlite: {
+    'sqlite': {
       case $::operatingsystem {
-        Debian,Ubuntu: { $package = 'foreman-sqlite3' }
-        default:       { $package = 'foreman-sqlite' }
+        'Debian','Ubuntu': { $package = 'foreman-sqlite3' }
+        default:           { $package = 'foreman-sqlite' }
       }
     }
-    postgresql: {
+    'postgresql': {
       $package = 'foreman-postgresql'
     }
-    mysql: {
+    'mysql': {
       $package = 'foreman-mysql2'
     }
   }

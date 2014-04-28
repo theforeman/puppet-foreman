@@ -6,21 +6,21 @@ define foreman::install::repos(
   include foreman::params
 
   case $::osfamily {
-    RedHat: {
+    'RedHat': {
       foreman::install::repos::yum {$name:
         repo     => $repo,
         yumcode  => $foreman::params::yumcode,
         gpgcheck => $gpgcheck,
       }
     }
-    Debian: {
+    'Debian': {
       foreman::install::repos::apt {$name:
         repo => $repo,
       }
     }
-    Linux: {
+    'Linux': {
       case $::operatingsystem {
-        Amazon: {
+        'Amazon': {
           foreman::install::repos::yum {$name:
             repo     => $repo,
             yumcode  => $foreman::params::yumcode,
