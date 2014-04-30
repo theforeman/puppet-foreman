@@ -29,4 +29,20 @@ Puppet::Type.newtype(:foreman_smartproxy) do
     newvalues(URI.regexp)
   end
 
+  newparam(:timeout) do
+    desc "Timeout for HTTP(s) requests"
+
+    munge do |value|
+      value = value.shift if value.is_a?(Array)
+      begin
+        value = Integer(value)
+      rescue ArgumentError
+        raise ArgumentError, "The timeout must be a number.", $!.backtrace
+      end
+      [value, 0].max
+    end
+
+    defaultto 500
+  end
+
 end
