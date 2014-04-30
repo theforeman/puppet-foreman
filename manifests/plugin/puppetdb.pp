@@ -1,8 +1,8 @@
 class foreman::plugin::puppetdb {
   case $::osfamily {
-    RedHat: {
+    'RedHat': {
       case $::operatingsystem {
-        fedora: {
+        'fedora': {
           $package = 'rubygem-puppetdb_foreman'
         }
         default: {
@@ -10,12 +10,12 @@ class foreman::plugin::puppetdb {
         }
       }
     }
-    Debian: {
+    'Debian': {
       $package = 'ruby-puppetdb_foreman'
     }
-    Linux: {
+    'Linux': {
       case $::operatingsystem {
-        Amazon: {
+        'Amazon': {
           $package = 'ruby193-rubygem-puppetdb_foreman'
         }
         default: {

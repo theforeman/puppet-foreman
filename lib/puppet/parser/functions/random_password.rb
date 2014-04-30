@@ -66,7 +66,9 @@ For example:
     # Numbers in Puppet are often string-encoded which is troublesome ...
     if size.is_a?(String) and size.match(/^\d+$/)
       size = size.to_i
-    else
+    end
+
+    if !size.is_a?(Numeric) || size < 0
       raise Puppet::ParseError, 'random_password(): Requires a non-negative ' +
         'integer value to work with'
     end
