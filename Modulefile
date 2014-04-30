@@ -8,7 +8,7 @@ description 'Module for configuring Foreman'
 project_page 'http://github.com/theforeman/foreman-installer'
 
 dependency 'theforeman/concat_native', '>= 1.3.0'
-dependency 'theforeman/puppet-tftp', '>= 1.4.0'
+dependency 'theforeman/tftp', '>= 1.4.0'
 
 dependency 'puppetlabs/apache', '>= 1.0.0 < 2.0.0'
 dependency 'puppetlabs/postgresql', '>= 3.0.0'
