@@ -47,14 +47,6 @@ class foreman::config::passenger(
   include ::apache::mod::headers
   include ::apache::mod::passenger
 
-  if $::osfamily == 'RedHat' {
-    # Work around https://github.com/puppetlabs/puppetlabs-apache/pull/563
-    File <| title == 'passenger.conf' |> {
-      replace => false,
-    }
-    Apache::Mod['passenger'] -> File['passenger.conf']
-  }
-
   # Ensure the Version module is loaded as we need it in the Foreman vhosts
   # RedHat distros come with this enabled. Newer Debian and Ubuntu distros
   # comes also with this enabled. Only old Debian and Ubuntu distros (squeeze,
