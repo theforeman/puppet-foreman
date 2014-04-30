@@ -7,3 +7,8 @@ fixture_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
 def static_fixture_path
   File.join(File.dirname(__FILE__), 'static_fixtures')
 end
+
+if ENV['PARSER'] == 'future'
+  puts "Enabling future parser"
+  RSpec.configure { |c| c.parser = 'future' }
+end
