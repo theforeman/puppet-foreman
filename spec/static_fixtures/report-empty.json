@@ -28,7 +28,7 @@
   ],
   "status": {
     "applied": 0,
-    "failed": 0,
+    "failed": 2,
     "failed_restarts": 0,
     "pending": 0,
     "restarted": 0,

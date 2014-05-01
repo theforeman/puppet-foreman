@@ -85,6 +85,14 @@ describe 'foreman_report_processor' do
       should_not match /debug/
     }
   end
+
+  describe "report should show failure metrics for failed catalog fetches" do
+    subject { YAML.load_file("#{static_fixture_path}/report-3.5.1-catalog-errors.yaml").extend(processor) }
+    it {
+      subject.generate_report['status']['failed'].should eql(1)
+    }
+  end
+
   # TODO: check debug logs are filtered
 
   # Normally we wouldn't include commented code, but this is a handy way
