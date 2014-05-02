@@ -145,6 +145,12 @@ class foreman::params {
       # Only the agent classes (cron / service) are supported for now, which
       # doesn't require any OS-specific params
     }
+    windows: {
+      $puppet_basedir = undef
+      $yumcode = undef
+      $passenger_scl = undef
+      $plugin_prefix = undef
+    }
     default: {
       fail("${::hostname}: This module does not support osfamily ${::osfamily}")
     }
