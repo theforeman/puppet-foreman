@@ -18,7 +18,7 @@ describe 'foreman::config::passenger' do
     } end
 
     it 'should include apache with modules' do
-      should contain_class('apache')
+      should contain_class('apache').that_comes_before('Anchor[foreman::config::passenger_end]')
       should contain_class('apache::mod::headers')
       should contain_class('apache::mod::passenger')
     end

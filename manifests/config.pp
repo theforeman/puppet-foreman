@@ -48,6 +48,6 @@ class foreman::config {
   }
 
   if $foreman::passenger  {
-    include foreman::config::passenger
+    class { '::foreman::config::passenger': } -> anchor { 'foreman::config_end': }
   }
 }
