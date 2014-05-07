@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.3
+* Fix ordering of Apache and foreman_smartproxy resources
+* Workaround Travis CI/REE issue
+
 ## 2.1.2
 * Fix user shell path so it's valid on Debian (#5390)
 * Remove obsolete test conditional for Facter 2 compat
