@@ -42,23 +42,6 @@ describe 'foreman::puppetmaster' do
       end
     end
 
-    describe 'with v1 report api' do
-      let :params do
-        {:report_api => 'v1'}
-      end
-
-      it 'should set up the v1 report' do
-        should contain_file('/usr/lib/ruby/site_ruby/1.8/puppet/reports/foreman.rb').with({
-          :content => %r{reports/create\?format=yml},
-          :mode    => '0644',
-          :owner   => 'root',
-          :group   => 'root',
-          :require => 'Exec[Create Puppet Reports dir]',
-        })
-      end
-
-    end
-
     describe 'without reports' do
       let :params do
         {:reports => false}
