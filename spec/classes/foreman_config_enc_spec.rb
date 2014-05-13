@@ -17,19 +17,4 @@ describe 'foreman::config::enc' do
       })
     end
   end
-
-  describe 'with v1 enc api' do
-    let :params do
-      {:enc_api => 'v1'}
-    end
-
-    it 'should set up the v1 enc' do
-      should contain_file('/etc/puppet/node.rb').with({
-        :content => %r{fact_values/create},
-        :mode    => '0550',
-        :owner   => 'puppet',
-        :group   => 'puppet',
-      })
-    end
-  end
 end
