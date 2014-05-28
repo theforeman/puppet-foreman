@@ -86,6 +86,13 @@
 #
 # $passenger_interface::    Defines which network interface passenger should listen on, undef means all interfaces
 #
+# $passenger_prestart::     Pre-start the first passenger worker instance process during httpd start.
+#                           type:boolean
+#
+# $passenger_min_instances:: Minimum passenger worker instances to keep when application is idle.
+#
+# $passenger_start_timeout:: Amount of seconds to wait for Ruby application boot.
+#
 # $server_ssl_ca::          Defines Apache mod_ssl SSLCACertificateFile setting in Foreman vhost conf file.
 #
 # $server_ssl_chain::       Defines Apache mod_ssl SSLCertificateChainFile setting in Foreman vhost conf file.
@@ -144,7 +151,10 @@ class foreman (
   $oauth_active           = $foreman::params::oauth_active,
   $oauth_map_users        = $foreman::params::oauth_map_users,
   $oauth_consumer_key     = $foreman::params::oauth_consumer_key,
-  $oauth_consumer_secret  = $foreman::params::oauth_consumer_secret
+  $oauth_consumer_secret  = $foreman::params::oauth_consumer_secret,
+  $passenger_prestart     = $foreman::params::passenger_prestart,
+  $passenger_min_instances = $foreman::params::passenger_min_instances,
+  $passenger_start_timeout = $foreman::params::passenger_start_timeout,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $foreman::db_type ? {

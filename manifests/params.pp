@@ -68,6 +68,18 @@ class foreman::params {
           $yumcode = "f${::operatingsystemrelease}"
           $passenger_scl = undef
           $plugin_prefix = 'rubygem-foreman_'
+          case $::operatingsystemrelease {
+            '19': {
+              $passenger_prestart = false
+              $passenger_min_instances = 1
+              $passenger_start_timeout = 0
+            }
+            default: {
+              $passenger_prestart = true
+              $passenger_min_instances = 1
+              $passenger_start_timeout = 600
+            }
+          }
         }
         default: {
           $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
@@ -75,6 +87,9 @@ class foreman::params {
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
           $passenger_scl = 'ruby193'
           $plugin_prefix = 'ruby193-rubygem-foreman_'
+          $passenger_prestart = true
+          $passenger_min_instances = 1
+          $passenger_start_timeout = 600
         }
       }
     }
@@ -84,6 +99,24 @@ class foreman::params {
       $plugin_prefix = 'ruby-foreman-'
       $init_config = '/etc/default/foreman'
       $init_config_tmpl = 'foreman.default'
+
+      case $::lsbdistcodename {
+        /^(squeeze|precise)$/: {
+          $passenger_prestart = false
+          $passenger_min_instances = 0
+          $passenger_start_timeout = 0
+        }
+        /^wheezy$/: {
+          $passenger_prestart = false
+          $passenger_min_instances = 1
+          $passenger_start_timeout = 0
+        }
+        default: {
+          $passenger_prestart = true
+          $passenger_min_instances = 1
+          $passenger_start_timeout = 600
+        }
+      }
     }
     'Linux': {
       case $::operatingsystem {
@@ -95,6 +128,9 @@ class foreman::params {
           $plugin_prefix = 'ruby193-rubygem-foreman_'
           $init_config = '/etc/sysconfig/foreman'
           $init_config_tmpl = 'foreman.sysconfig'
+          $passenger_prestart = true
+          $passenger_min_instances = 1
+          $passenger_start_timeout = 600
         }
         default: {
           fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")

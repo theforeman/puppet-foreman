@@ -24,6 +24,13 @@
 #
 # $user::                   The user under which the application runs.
 #
+# $prestart::               Pre-start the first passenger worker instance process during httpd start.
+#                           type:boolean
+#
+# $min_instances::          Minimum passenger worker instances to keep when application is idle.
+#
+# $start_timeout::          Amount of seconds to wait for Ruby application boot.
+#
 class foreman::config::passenger(
   $app_root            = $foreman::app_root,
   $listen_on_interface = $foreman::passenger_interface,
@@ -35,11 +42,15 @@ class foreman::config::passenger(
   $ssl_cert            = $foreman::server_ssl_cert,
   $ssl_key             = $foreman::server_ssl_key,
   $use_vhost           = $foreman::use_vhost,
-  $user                = $foreman::user
+  $user                = $foreman::user,
+  $prestart            = $foreman::passenger_prestart,
+  $min_instances       = $foreman::passenger_min_instances,
+  $start_timeout       = $foreman::passenger_start_timeout,
 ) {
   # validate parameter values
   validate_string($listen_on_interface)
   validate_bool($ssl)
+  validate_bool($prestart)
 
   $docroot = "${app_root}/public"
 
