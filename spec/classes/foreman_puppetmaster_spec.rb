@@ -4,9 +4,10 @@ describe 'foreman::puppetmaster' do
   context 'RedHat' do
     let :facts do
       {
-        :fqdn        => 'hostname.example.org',
-        :rubyversion => '1.8.7',
-        :osfamily    => 'RedHat',
+        :fqdn                   => 'hostname.example.org',
+        :rubyversion            => '1.8.7',
+        :osfamily               => 'RedHat',
+        :operatingsystemrelease => '6.5',
       }
     end
 
@@ -61,6 +62,38 @@ describe 'foreman::puppetmaster' do
 
       it 'should not include enc' do
         should_not contain_class('foreman::config::enc')
+      end
+    end
+  end
+
+  context 'RedHat 7.x' do
+    let :facts do
+      {
+        :fqdn                   => 'hostname.example.org',
+        :rubyversion            => '2.0.0',
+        :osfamily               => 'RedHat',
+        :operatingsystemrelease => '7.0',
+      }
+    end
+
+    describe 'without custom parameters' do
+      it 'should set up reports' do
+        should contain_exec('Create Puppet Reports dir').with({
+          :command => '/bin/mkdir -p /usr/share/ruby/vendor_ruby/puppet/reports',
+          :creates => '/usr/share/ruby/vendor_ruby/puppet/reports',
+        })
+
+        should contain_file('/usr/share/ruby/vendor_ruby/puppet/reports/foreman.rb').with({
+          :content => %r{api/reports},
+          :mode    => '0644',
+          :owner   => 'root',
+          :group   => 'root',
+          :require => 'Exec[Create Puppet Reports dir]',
+        })
+      end
+
+      it 'should install json package' do
+        should contain_package('rubygem-json').with_ensure('installed')
       end
     end
   end
