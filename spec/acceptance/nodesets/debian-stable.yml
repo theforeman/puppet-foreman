@@ -1,0 +1,12 @@
+HOSTS:
+  debian-stable.example.com:
+    roles:
+      - master
+    platform: debian-stable-x86_64
+    image : debian:stable
+    hypervisor : docker
+    docker_image_commands:
+      - 'apt-get install wget --assume-yes'
+CONFIG:
+  log_level: debug
+  type: git

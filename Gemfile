@@ -12,3 +12,7 @@ gem 'puppetlabs_spec_helper', '>=0.2.0'
 gem 'rspec-puppet', '>= 1'
 gem 'json'
 gem 'webmock'
+
+group :development, :test do
+  gem 'beaker-rspec', :require => false
+end
