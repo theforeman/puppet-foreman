@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.4
+* Report processor: increment error counter for non-resource Puppet
+  errors (#3851)
+
 ## 2.1.3
 * Fix ordering of Apache and foreman_smartproxy resources
 * Workaround Travis CI/REE issue
