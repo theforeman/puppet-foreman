@@ -52,9 +52,18 @@ class foreman::config {
     ensure  => directory,
   }
 
+  case $::lsbdistcodename {
+    'trusty': {
+      $shell = '/usr/sbin/nologin'
+    }
+    default: {
+      $shell = '/sbin/nologin'
+    }
+  }
+
   user { $foreman::user:
     ensure  => 'present',
-    shell   => '/sbin/nologin',
+    shell   => $shell,
     comment => 'Foreman',
     home    => $foreman::app_root,
     gid     => $foreman::group,
