@@ -121,6 +121,21 @@
 #
 # $admin_email::            E-mail address of the initial admin user
 #
+# $ipa_authentication::     Enable configuration for external authentication via IPA
+#                           type:boolean
+#
+# $http_keytab::            Path to keytab to be used for Kerberos authentication on the WebUI
+#
+# $pam_service::            PAM service used for host-based access control in IPA
+#
+# $configure_ipa_repo::     Enable custom yum repo with packages needed for external authentication via IPA,
+#                           this may be needed on RHEL 6.5 and older.
+#                           type:boolean
+#
+# $ipa_manage_sssd::        If ipa_authentication is true, should the installer manage SSSD? You can disable it
+#                           if you use another module for SSSD configuration
+#                           type:boolean
+#
 class foreman (
   $foreman_url            = $foreman::params::foreman_url,
   $unattended             = $foreman::params::unattended,
@@ -170,6 +185,11 @@ class foreman (
   $admin_first_name       = $foreman::params::admin_first_name,
   $admin_last_name        = $foreman::params::admin_last_name,
   $admin_email            = $foreman::params::admin_email,
+  $ipa_authentication     = $foreman::params::ipa_authentication,
+  $http_keytab            = $foreman::params::http_keytab,
+  $pam_service            = $foreman::params::pam_service,
+  $configure_ipa_repo     = $foreman::params::configure_ipa_repo,
+  $ipa_manage_sssd        = $foreman::params::ipa_manage_sssd,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $foreman::db_type ? {
@@ -179,6 +199,9 @@ class foreman (
     }
   } else {
     $db_adapter_real = $db_adapter
+  }
+  if $passenger == false and $ipa_authentication {
+    fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
   }
   class { 'foreman::install': } ~>
   class { 'foreman::config': } ~>
