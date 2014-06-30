@@ -177,4 +177,10 @@ class foreman::params {
   $admin_first_name = undef
   $admin_last_name = undef
   $admin_email = undef
+
+  $ipa_authentication = false
+  $http_keytab = '/etc/httpd/conf/http.keytab'
+  $pam_service = 'foreman'
+  $configure_ipa_repo = false
+  $ipa_manage_sssd = true
 }
