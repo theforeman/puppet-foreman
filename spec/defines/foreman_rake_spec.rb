@@ -26,11 +26,12 @@ describe 'foreman::rake' do
     end
 
     it { should contain_exec('foreman-rake-db:migrate').with({
-      'command'     => '/usr/sbin/foreman-rake db:migrate',
+      'command'     => '/usr/sbin/foreman-rake db:migrate && /bin/touch /var/lib/foreman/db:migrate_done',
+      'provider'    => 'shell',
       'user'        => 'foreman',
       'environment' => 'HOME=/usr/share/foreman',
       'logoutput'   => 'on_failure',
-      'refreshonly' => true,
+      'creates'     => '/var/lib/foreman/db:migrate_done'
     })}
   end
 end

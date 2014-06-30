@@ -67,6 +67,8 @@
 #
 # $app_root::               Name of foreman root directory
 #
+# $data_root::              Name of foreman data root directory
+#
 # $user::                   User under which foreman will run
 #
 # $group::                  Primary group for the Foreman user
@@ -136,6 +138,7 @@ class foreman (
   $db_password            = $foreman::params::db_password,
   $db_sslmode             = 'UNSET',
   $app_root               = $foreman::params::app_root,
+  $data_root              = $foreman::params::data_root,
   $user                   = $foreman::params::user,
   $group                  = $foreman::params::group,
   $user_groups            = $foreman::params::user_groups,
