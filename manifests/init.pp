@@ -180,11 +180,13 @@ class foreman (
   } else {
     $db_adapter_real = $db_adapter
   }
+
+  anchor { 'foreman::begin': } ->
   class { 'foreman::install': } ~>
   class { 'foreman::config': } ~>
   class { 'foreman::database': } ~>
   class { 'foreman::service': } ->
-  Class['foreman'] ->
+  anchor { 'foreman::end': } ->
   Foreman_smartproxy <| |>
 
   # Anchor these separately so as not to break
