@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+# Script to enable a given host in Nagios when Foreman
+# finishes building it.
+
+require 'open-uri'
+require 'json'
+
+@foreman_icinga_url = "icinga.sal01.datacentred.co.uk"
+@foreman_icinga_token = "TOKEN"
+@host = ARGV[2] || "bigyellow"
+
+# Running Icinga commands via API isn't officially documented
+# See here for doc: http://www.monitoring-portal.org/wbb/index.php?page=Thread&postID=192319#post192319
+url = %W(
+  #{@foreman_icinga_url}
+  icinga-web
+  web
+  api
+  cmd
+  cmd=ENABLE_ALL_NOTIFICATIONS
+  authkey=#{@foreman_icinga_token}
+  target=host
+  data=#{@host}
+  json
+)
+
+# NOTE: Icinga currently fails to auth on POST requests...
+open("http://#{url.join("/")}") do |f|
+  res = JSON.parse(f.read)
+  raise StandardError, res['errors'].join(". ") unless res['success']
+end
