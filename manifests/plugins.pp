@@ -1,7 +1,8 @@
 class foreman::plugins (
   $foreman_hipchat_token = undef,
   $foreman_hipchat_room  = undef,
-  $foreman_icinga_token = undef,
+  $foreman_icinga_host = undef,
+  $foreman_icinga_port = undef,
 ) {
 
   package { 'git':
