@@ -193,4 +193,9 @@ class foreman::params {
   $pam_service = 'foreman'
   $configure_ipa_repo = false
   $ipa_manage_sssd = true
+
+  # Websockets
+  $websockets_encrypt = true
+  $websockets_ssl_key = $server_ssl_key
+  $websockets_ssl_cert = $server_ssl_cert
 }

@@ -141,6 +141,13 @@
 #                           if you use another module for SSSD configuration
 #                           type:boolean
 #
+# $websockets_encrypt::     Whether to encrypt websocket connections
+#                           type:boolean
+#
+#
+# $websockets_ssl_key::     SSL key file to use when encrypting websocket connections
+# $websockets_ssl_cert::    SSL certificate file to use when encrypting websocket connections
+#
 class foreman (
   $foreman_url            = $foreman::params::foreman_url,
   $unattended             = $foreman::params::unattended,
@@ -197,6 +204,9 @@ class foreman (
   $pam_service            = $foreman::params::pam_service,
   $configure_ipa_repo     = $foreman::params::configure_ipa_repo,
   $ipa_manage_sssd        = $foreman::params::ipa_manage_sssd,
+  $websockets_encrypt     = $foreman::params::websockets_encrypt,
+  $websockets_ssl_key     = $foreman::params::websockets_ssl_key,
+  $websockets_ssl_cert    = $foreman::params::websockets_ssl_cert,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $foreman::db_type ? {
