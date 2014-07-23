@@ -58,4 +58,8 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
     api.call(:update, :id => id, :url => value)
   end
 
+  def refresh_features!
+    api.call(:refresh, :id => id)
+  end
+
 end
