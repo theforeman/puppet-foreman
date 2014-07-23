@@ -4,11 +4,17 @@
 
 # URL of your Foreman installation
 $foreman_url='<%= @foreman_url %>'
+
+# user/pass for http basic auth
+$foreman_user = "<%= @foreman_user %>"
+$foreman_pass = "<%= @foreman_pass %>"
+
 # if CA is specified, remote Foreman host will be verified
 $foreman_ssl_ca = "<%= @ssl_ca -%>"
 # ssl_cert and key are required if require_ssl_puppetmasters is enabled in Foreman
 $foreman_ssl_cert = "<%= @ssl_cert -%>"
 $foreman_ssl_key = "<%= @ssl_key -%>"
+
 
 require 'puppet'
 require 'net/http'
@@ -54,6 +60,11 @@ Puppet::Reports.register_report(:foreman) do
         end
       end
       req = Net::HTTP::Post.new("#{uri.path}/api/reports")
+
+      if http_auth? 
+        req.basic_auth $foreman_user, $foreman_pass
+      end
+
       req.add_field('Accept', 'application/json,version=2' )
       req.content_type = 'application/json'
       req.body         = {'report' => generate_report}.to_json
@@ -176,6 +187,12 @@ Puppet::Reports.register_report(:foreman) do
                 else
                   @format = 0
                 end
+  end
+
+  def http_auth?
+    defined?($foreman_user) && defined?($foreman_pass) &&
+      !$foreman_user.nil? && !$foreman_pass.nil? &&
+      $foreman_user != '' && $foreman_pass != ''
   end
 
 end
