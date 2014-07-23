@@ -45,4 +45,8 @@ Puppet::Type.newtype(:foreman_smartproxy) do
     defaultto 500
   end
 
+  def refresh
+    provider.refresh_features! if provider.respond_to?(:refresh_features!)
+  end
+
 end
