@@ -111,24 +111,26 @@ class foreman::config {
       }
 
 
-      $sssd_services = ensure_value_in_string($::sssd_services, ['ifp'], ', ')
+      if $foreman::ipa_manage_sssd {
+        $sssd_services = ensure_value_in_string($::sssd_services, ['ifp'], ', ')
 
-      $sssd_ldap_user_extra_attrs = ensure_value_in_string($::sssd_ldap_user_extra_attrs, ['email:mail', 'lastname:sn', 'firstname:givenname'], ', ')
+        $sssd_ldap_user_extra_attrs = ensure_value_in_string($::sssd_ldap_user_extra_attrs, ['email:mail', 'lastname:sn', 'firstname:givenname'], ', ')
 
-      $sssd_allowed_uids = ensure_value_in_string($::sssd_allowed_uids, ['apache', 'root'], ', ')
+        $sssd_allowed_uids = ensure_value_in_string($::sssd_allowed_uids, ['apache', 'root'], ', ')
 
-      $sssd_user_attributes = ensure_value_in_string($::sssd_user_attributes, ['+email', '+firstname', '+lastname'], ', ')
+        $sssd_user_attributes = ensure_value_in_string($::sssd_user_attributes, ['+email', '+firstname', '+lastname'], ', ')
 
-      augeas { 'sssd-ifp-extra-attributes':
-        context => '/files/etc/sssd/sssd.conf',
-        changes => [
-          "set target[.=~regexp('domain/.*')]/ldap_user_extra_attrs '${sssd_ldap_user_extra_attrs}'",
-          "set target[.='sssd']/services '${sssd_services}'",
-          'set target[.=\'ifp\'] \'ifp\'',
-          "set target[.='ifp']/allowed_uids '${sssd_allowed_uids}'",
-          "set target[.='ifp']/user_attributes '${sssd_user_attributes}'",
-        ],
-        notify  => Service['sssd'],
+        augeas { 'sssd-ifp-extra-attributes':
+          context => '/files/etc/sssd/sssd.conf',
+          changes => [
+            "set target[.=~regexp('domain/.*')]/ldap_user_extra_attrs '${sssd_ldap_user_extra_attrs}'",
+            "set target[.='sssd']/services '${sssd_services}'",
+            'set target[.=\'ifp\'] \'ifp\'',
+            "set target[.='ifp']/allowed_uids '${sssd_allowed_uids}'",
+            "set target[.='ifp']/user_attributes '${sssd_user_attributes}'",
+          ],
+          notify  => Service['sssd'],
+        }
       }
 
       concat_fragment {'foreman_settings+02-authorize_login_delegation.yaml':
