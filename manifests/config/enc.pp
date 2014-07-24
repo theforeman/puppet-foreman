@@ -17,6 +17,7 @@ class foreman::config::enc (
     mode    => '0550',
     owner   => 'puppet',
     group   => 'puppet',
+    seltype => 'foreman_enc_t',
   }
   file { "${puppet_home}/yaml":
     ensure                  => directory,
