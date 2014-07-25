@@ -82,10 +82,12 @@ class foreman::config::passenger(
     }
 
     file { "${apache::confd_dir}/05-foreman.d":
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
+      ensure  => 'directory',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      purge   => true,
+      recurse => inf,
     }
 
     apache::vhost { 'foreman':
