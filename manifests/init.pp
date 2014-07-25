@@ -121,6 +121,10 @@
 #
 # $admin_email::            E-mail address of the initial admin user
 #
+# $initial_organization::   Name of an initial organization
+#
+# $initial_location::       Name of an initial location
+#
 # $ipa_authentication::     Enable configuration for external authentication via IPA
 #                           type:boolean
 #
@@ -185,6 +189,8 @@ class foreman (
   $admin_first_name       = $foreman::params::admin_first_name,
   $admin_last_name        = $foreman::params::admin_last_name,
   $admin_email            = $foreman::params::admin_email,
+  $initial_organization   = $foreman::params::initial_organization,
+  $initial_location       = $foreman::params::initial_location,
   $ipa_authentication     = $foreman::params::ipa_authentication,
   $http_keytab            = $foreman::params::http_keytab,
   $pam_service            = $foreman::params::pam_service,

@@ -178,6 +178,10 @@ class foreman::params {
   $admin_last_name = undef
   $admin_email = undef
 
+  # Initial taxonomies
+  $initial_organization = undef
+  $initial_location = undef
+
   $ipa_authentication = false
   $http_keytab = '/etc/httpd/conf/http.keytab'
   $pam_service = 'foreman'
