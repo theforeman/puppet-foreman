@@ -10,6 +10,8 @@ class foreman::database {
       'SEED_ADMIN_FIRST_NAME' => $::foreman::admin_first_name,
       'SEED_ADMIN_LAST_NAME'  => $::foreman::admin_last_name,
       'SEED_ADMIN_EMAIL'      => $::foreman::admin_email,
+      'SEED_ORGANIZATION'     => $::foreman::initial_organization,
+      'SEED_LOCATION'         => $::foreman::initial_location,
     }
 
     class { $db_class: } ~>
