@@ -1,19 +1,13 @@
 # copy this file to your report dir - e.g. /usr/lib/ruby/1.8/puppet/reports/
 # add this report in your puppetmaster reports - e.g, in your puppet.conf add:
 # reports=log, foreman # (or any other reports you want)
-
-# URL of your Foreman installation
-$foreman_url='<%= @foreman_url %>'
-# if CA is specified, remote Foreman host will be verified
-$foreman_ssl_ca = "<%= @ssl_ca -%>"
-# ssl_cert and key are required if require_ssl_puppetmasters is enabled in Foreman
-$foreman_ssl_cert = "<%= @ssl_cert -%>"
-$foreman_ssl_key = "<%= @ssl_key -%>"
+# configuration is in /etc/foreman/puppet.yaml
 
 require 'puppet'
 require 'net/http'
 require 'net/https'
 require 'uri'
+require 'yaml'
 begin
   require 'json'
 rescue LoadError
@@ -29,6 +23,10 @@ rescue LoadError
   end
 end
 
+$settings_file = "/etc/foreman/puppet.yaml"
+
+SETTINGS = YAML.load_file($settings_file)
+
 Puppet::Reports.register_report(:foreman) do
   Puppet.settings.use(:reporting)
   desc "Sends reports directly to Foreman"
@@ -38,19 +36,23 @@ Puppet::Reports.register_report(:foreman) do
       # check for report metrics
       raise(Puppet::ParseError, "Invalid report: can't find metrics information for #{self.host}") if self.metrics.nil?
 
-      uri = URI.parse($foreman_url)
+      def foreman_url
+        SETTINGS[:url] || raise(Puppet::Error, "Must provide URL in #{$settings_file}")
+      end
+
+      uri = URI.parse(foreman_url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl     = uri.scheme == 'https'
       if http.use_ssl?
-        if $foreman_ssl_ca && !$foreman_ssl_ca.empty?
-          http.ca_file = $foreman_ssl_ca
+        if SETTINGS[:ssl_ca] && !SETTINGS[:ssl_ca].empty?
+          http.ca_file = SETTINGS[:ssl_ca]
           http.verify_mode = OpenSSL::SSL::VERIFY_PEER
         else
           http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         end
-        if $foreman_ssl_cert && !$foreman_ssl_cert.empty? && $foreman_ssl_key && !$foreman_ssl_key.empty?
-          http.cert = OpenSSL::X509::Certificate.new(File.read($foreman_ssl_cert))
-          http.key  = OpenSSL::PKey::RSA.new(File.read($foreman_ssl_key), nil)
+        if SETTINGS[:ssl_cert] && !SETTINGS[:ssl_cert].empty? && SETTINGS[:ssl_key] && !SETTINGS[:ssl_key].empty?
+          http.cert = OpenSSL::X509::Certificate.new(File.read(SETTINGS[:ssl_cert]))
+          http.key  = OpenSSL::PKey::RSA.new(File.read(SETTINGS[:ssl_key]), nil)
         end
       end
       req = Net::HTTP::Post.new("#{uri.path}/api/reports")
@@ -59,7 +61,7 @@ Puppet::Reports.register_report(:foreman) do
       req.body         = {'report' => generate_report}.to_json
       response = http.request(req)
     rescue Exception => e
-      raise Puppet::Error, "Could not send report to Foreman at #{$foreman_url}/api/reports: #{e}\n#{e.backtrace}"
+      raise Puppet::Error, "Could not send report to Foreman at #{foreman_url}/api/reports: #{e}\n#{e.backtrace}"
     end
   end
 

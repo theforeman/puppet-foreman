@@ -1,12 +1,17 @@
 require 'spec_helper'
+require 'yaml'
 
 class Enc
-  # Parse ERB and create a ruby object we can load - need an instance variable for ERB
-  @foreman_url = 'http://localhost:3000'
-  @facts       = true
-  @puppet_home = '/var/lib/puppet'
-  template     = File.join(File.dirname(__FILE__), '../..', 'templates', 'external_node_v2.rb.erb')
-  eval ERB.new(File.read(template), nil, '-').result(binding)
+  yaml_text = <<-EOF
+---
+:url: "http://localhost:3000"
+:facts: true
+:puppet_home: "/var/lib/puppet"
+  EOF
+  yaml = YAML.load(yaml_text)
+  YAML.stubs(:load_file).with("/etc/foreman/puppet.yaml").returns(yaml)
+  YAML.stubs(:load_file).with("/dev/null").returns({})
+  eval File.read(File.join(File.dirname(__FILE__), '../..', 'files', 'external_node_v2.rb'))
 end
 
 describe 'foreman_external_node' do

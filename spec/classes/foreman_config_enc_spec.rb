@@ -10,10 +10,10 @@ describe 'foreman::config::enc' do
   describe 'without custom parameters' do
     it 'should set up enc' do
       should contain_file('/etc/puppet/node.rb').with({
-        :content => %r{api/hosts/facts},
-        :mode    => '0550',
-        :owner   => 'puppet',
-        :group   => 'puppet',
+        :mode   => '0550',
+        :owner  => 'puppet',
+        :group  => 'puppet',
+        :source => 'puppet:///modules/foreman/external_node_v2.rb',
       })
     end
   end
