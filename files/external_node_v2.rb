@@ -1,20 +1,5 @@
 #!/usr/bin/env ruby
 
-# If copying this template by hand, replace the settings below including the angle brackets
-SETTINGS = {
-  :url          => "<%= @foreman_url %>",  # e.g. https://foreman.example.com
-  :puppetdir    => "<%= @puppet_home %>",  # e.g. /var/lib/puppet
-  :puppetuser   => "<%= @puppet_user %>",  # e.g. puppet
-  :facts        => <%= @facts %>,          # true/false to upload facts
-  :timeout      => 10,
-  :threads      => nil,
-  # if CA is specified, remote Foreman host will be verified
-  :ssl_ca       => "<%= @ssl_ca -%>",      # e.g. /var/lib/puppet/ssl/certs/ca.pem
-  # ssl_cert and key are required if require_ssl_puppetmasters is enabled in Foreman
-  :ssl_cert     => "<%= @ssl_cert -%>",    # e.g. /var/lib/puppet/ssl/certs/FQDN.pem
-  :ssl_key      => "<%= @ssl_key -%>"      # e.g. /var/lib/puppet/ssl/private_keys/FQDN.pem
-}
-
 # Script usually acts as an ENC for a single host, with the certname supplied as argument
 #   if 'facts' is true, the YAML facts for the host are uploaded
 #   ENC output is printed and cached
@@ -22,14 +7,18 @@ SETTINGS = {
 # If --push-facts is given as the only arg, it uploads facts for all hosts and then exits.
 # Useful in scenarios where the ENC isn't used.
 
-### Do not edit below this line
+require 'yaml'
+
+$settings_file = "/etc/foreman/puppet.yaml"
+
+SETTINGS = YAML.load_file($settings_file)
 
 def url
-  SETTINGS[:url] || raise("Must provide URL - please edit file")
+  SETTINGS[:url] || raise("Must provide URL in #{$settings_file}")
 end
 
 def puppetdir
-  SETTINGS[:puppetdir] || raise("Must provide puppet base directory - please edit file")
+  SETTINGS[:puppetdir] || raise("Must provide puppet base directory in #{$settings_file}")
 end
 
 def puppetuser
@@ -42,7 +31,7 @@ def stat_file(certname)
 end
 
 def tsecs
-  SETTINGS[:timeout] || 3
+  SETTINGS[:timeout] || 10
 end
 
 def thread_count
@@ -77,7 +66,6 @@ require 'net/http'
 require 'net/https'
 require 'fileutils'
 require 'timeout'
-require 'yaml'
 begin
   require 'json'
 rescue LoadError

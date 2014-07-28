@@ -1,10 +1,16 @@
 require 'spec_helper'
+require 'yaml'
 
 describe 'foreman_report_processor' do
-  # Parse ERB and create a ruby object we can load - need an instance variable for ERB
-  @foreman_url      = 'http://localhost:3000'
-  template=File.join(File.dirname(__FILE__), '../..', 'templates', 'foreman-report_v2.rb.erb')
-  eval ERB.new(File.read(template), nil, '-').result(binding)
+  yaml_text = <<-EOF
+---
+:url: "http://localhost:3000"
+:facts: true
+:puppet_home: "/var/lib/puppet"
+  EOF
+  yaml = YAML.load(yaml_text)
+  YAML.stubs(:load_file).with("/etc/foreman/puppet.yaml").returns(yaml)
+  eval File.read(File.join(File.dirname(__FILE__), '../..', 'files', 'foreman-report_v2.rb'))
   let(:processor) { Puppet::Reports.report(:foreman) }
 
   describe "making a connection" do
