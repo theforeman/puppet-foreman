@@ -36,10 +36,6 @@ Puppet::Reports.register_report(:foreman) do
       # check for report metrics
       raise(Puppet::ParseError, "Invalid report: can't find metrics information for #{self.host}") if self.metrics.nil?
 
-      def foreman_url
-        SETTINGS[:url] || raise(Puppet::Error, "Must provide URL in #{$settings_file}")
-      end
-
       uri = URI.parse(foreman_url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl     = uri.scheme == 'https'
@@ -178,6 +174,10 @@ Puppet::Reports.register_report(:foreman) do
                 else
                   @format = 0
                 end
+  end
+
+  def foreman_url
+    SETTINGS[:url] || raise(Puppet::Error, "Must provide URL in #{$settings_file}")
   end
 
 end
