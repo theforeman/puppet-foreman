@@ -30,6 +30,13 @@ class foreman::puppetmaster (
     ensure  => installed,
   }
 
+  file {'/etc/foreman':
+    ensure  => directory,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+  }
+
   file {'/etc/foreman/puppet.yaml':
     content => template("${module_name}/puppet.yaml.erb"),
     mode    => '0640',
