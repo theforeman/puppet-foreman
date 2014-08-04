@@ -40,6 +40,16 @@ describe 'foreman::puppetmaster' do
         should contain_package('rubygem-json').with_ensure('installed')
       end
 
+      it 'should create /etc/foreman' do
+        should contain_file('/etc/foreman').
+          with_ensure('directory').
+          with({
+            :mode    => '0755',
+            :owner   => 'root',
+            :group   => 'root',
+          })
+      end
+
       it 'should create puppet.yaml' do
         should contain_file('/etc/foreman/puppet.yaml').
           with_content(/^:url: "https:\/\/#{facts[:fqdn]}"$/).
