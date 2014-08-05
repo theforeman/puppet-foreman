@@ -7,7 +7,8 @@
 # $unattended::             Should foreman manage host provisioning as well
 #                           type:boolean
 #
-# $authentication::         Enable users authentication (default user:admin pw:changeme)
+# $authentication::         Enable user authentication. Initial credentials are set using admin_username
+#                           and admin_password.
 #                           type:boolean
 #
 # $passenger::              Configure foreman via apache and passenger
