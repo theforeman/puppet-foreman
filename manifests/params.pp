@@ -141,7 +141,7 @@ class foreman::params {
         }
       }
     }
-    'ArchLinux': {
+    /(ArchLinux|Suse)/: {
       # Only the agent classes (cron / service) are supported for now, which
       # doesn't require any OS-specific params
     }
