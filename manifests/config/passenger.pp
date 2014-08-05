@@ -87,7 +87,7 @@ class foreman::config::passenger(
       group   => 'root',
       mode    => '0644',
       purge   => true,
-      recurse => inf,
+      recurse => true,
     }
 
     apache::vhost { 'foreman':
@@ -110,7 +110,7 @@ class foreman::config::passenger(
         group   => 'root',
         mode    => '0644',
         purge   => true,
-        recurse => inf,
+        recurse => true,
       }
 
       apache::vhost { 'foreman-ssl':
