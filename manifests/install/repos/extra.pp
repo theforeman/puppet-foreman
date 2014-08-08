@@ -45,7 +45,7 @@ class foreman::install::repos::extra(
     yumrepo { 'adelton-identity':
       enabled  => 1,
       gpgcheck => 0,
-      baseurl  => 'http://copr-be.cloud.fedoraproject.org/results/adelton/identity_demo/epel-6-$basearch/',
+      baseurl  => "http://copr-be.cloud.fedoraproject.org/results/adelton/identity_demo/epel-${osreleasemajor}-\$basearch/",
       before   => [ Package['mod_authnz_pam', 'mod_lookup_identity', 'mod_intercept_form_submit', 'sssd-dbus'] ],
     }
   }
