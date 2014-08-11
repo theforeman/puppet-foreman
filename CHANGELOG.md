@@ -1,5 +1,36 @@
 # Changelog
 
+## 2.2.0
+* Add ipa_authentication parameter to configure Foreman authentication against
+  IPA using Kerberos etc (#6445)
+* Add foreman::cli class to install and configure Hammer CLI
+* Add admin_* parameters for initial admin username and password (Foreman 1.6)
+* Add initial_* parameters to create an initial organization or location (#6802)
+* Add foreman::plugin::tasks class to install foreman_tasks plugin
+* install_images parameter added to foreman::plugin::discovery to download
+  discovery images to TFTP root
+* Change ENC and report processor configuration to /etc/foreman/puppet.yaml
+  instead of embedded and templated settings
+* Add foreman_smartproxy provider that uses apipie-bindings, adds a timeout
+  parameter
+* Configure websockets_ssl* in Foreman settings (#3601)
+* Purge configuration files under Foreman httpd directories
+* Extend startup timeout for Passenger, add parameters to control
+* Refresh proxy features when foreman_smartproxy is notified (#3185)
+* Fix future parser compatibility in random_password() and manifests
+* Add Windows and SUSE to params class
+* Remove v1 node and report processors
+* Remove workaround for passenger.conf being replaced by pl-apache
+* Refactor foreman::config::enc into foreman::puppetmaster
+
+## 2.1.4
+* Report processor: increment error counter for non-resource Puppet
+  errors (#3851)
+
+## 2.1.3
+* Fix ordering of Apache and foreman_smartproxy resources
+* Workaround Travis CI/REE issue
+
 ## 2.1.2
 * Fix user shell path so it's valid on Debian (#5390)
 * Remove obsolete test conditional for Facter 2 compat

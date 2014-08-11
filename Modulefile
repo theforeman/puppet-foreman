@@ -1,5 +1,5 @@
 name    'theforeman-foreman'
-version '2.1.2'
+version '2.2.0'
 source 'git://github.com/theforeman/puppet-foreman'
 author 'theforeman'
 license 'GPLv3+'
