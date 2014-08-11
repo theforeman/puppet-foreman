@@ -39,7 +39,7 @@ class foreman::install {
       ensure  => $foreman::version,
       require => $repo,
     }
-    if $foreman::ipa_authentication and $foreman::configure_ipa_repo {
+    if $foreman::ipa_authentication and $foreman::configure_ipa_repo and $foreman::osreleasemajor == '6' {
       package { 'mod_lookup_identity-selinux':
         ensure  => installed,
         require => $repo,
