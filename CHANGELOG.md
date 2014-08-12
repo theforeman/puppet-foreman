@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.1
+* Move ENC and report processor configuration to /etc/puppet/foreman.yaml
+
 ## 2.2.0
 * Add ipa_authentication parameter to configure Foreman authentication against
   IPA using Kerberos etc (#6445)
