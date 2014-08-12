@@ -9,7 +9,7 @@ describe 'foreman_report_processor' do
 :puppet_home: "/var/lib/puppet"
   EOF
   yaml = YAML.load(yaml_text)
-  YAML.stubs(:load_file).with("/etc/foreman/puppet.yaml").returns(yaml)
+  YAML.stubs(:load_file).with("/etc/puppet/foreman.yaml").returns(yaml)
   eval File.read(File.join(File.dirname(__FILE__), '../..', 'files', 'foreman-report_v2.rb'))
   let(:processor) { Puppet::Reports.report(:foreman) }
 

@@ -9,7 +9,7 @@ class Enc
 :puppet_home: "/var/lib/puppet"
   EOF
   yaml = YAML.load(yaml_text)
-  YAML.stubs(:load_file).with("/etc/foreman/puppet.yaml").returns(yaml)
+  YAML.stubs(:load_file).with("/etc/puppet/foreman.yaml").returns(yaml)
   YAML.stubs(:load_file).with("/dev/null").returns({})
   eval File.read(File.join(File.dirname(__FILE__), '../..', 'files', 'external_node_v2.rb'))
 end
