@@ -17,8 +17,10 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
       },
       :timeout => resource[:timeout],
       :headers => {
-        :foreman_user => resource[:effective_user]
-      }}).resource(:smart_proxies)
+        :foreman_user => resource[:effective_user],
+      },
+      :apidoc_cache_base_dir => File.join(Puppet[:server_datadir], 'apipie_bindings')
+    }).resource(:smart_proxies)
   end
 
   # proxy hash or nil
