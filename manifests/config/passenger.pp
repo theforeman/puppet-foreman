@@ -35,7 +35,7 @@ class foreman::config::passenger(
   $app_root            = $foreman::app_root,
   $listen_on_interface = $foreman::passenger_interface,
   $scl_prefix          = $foreman::passenger_scl,
-  $servername          = $::fqdn,
+  $servername          = $foreman::servername,
   $ssl                 = $foreman::ssl,
   $ssl_ca              = $foreman::server_ssl_ca,
   $ssl_chain           = $foreman::server_ssl_chain,
@@ -49,6 +49,7 @@ class foreman::config::passenger(
 ) {
   # validate parameter values
   validate_string($listen_on_interface)
+  validate_string($servername)
   validate_bool($ssl)
   validate_bool($prestart)
 

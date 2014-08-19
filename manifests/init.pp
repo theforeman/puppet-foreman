@@ -19,6 +19,8 @@
 # $use_vhost::              Enclose apache configuration in <VirtualHost>...</VirtualHost>
 #                           type:boolean
 #
+# $servername::             Server name of the VirtualHost in the webserver
+#
 # $ssl::                    Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
 #                           type:boolean
 #
@@ -155,6 +157,7 @@ class foreman (
   $passenger              = $foreman::params::passenger,
   $passenger_scl          = $foreman::params::passenger_scl,
   $use_vhost              = $foreman::params::use_vhost,
+  $servername             = $foreman::params::servername,
   $ssl                    = $foreman::params::ssl,
   $custom_repo            = $foreman::params::custom_repo,
   $repo                   = $foreman::params::repo,
@@ -220,6 +223,7 @@ class foreman (
   if $passenger == false and $ipa_authentication {
     fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
   }
+
   class { 'foreman::install': } ~>
   class { 'foreman::config': } ~>
   class { 'foreman::database': } ~>

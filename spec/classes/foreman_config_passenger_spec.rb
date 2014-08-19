@@ -37,6 +37,7 @@ describe 'foreman::config::passenger' do
       let :params do {
         :app_root  => '/usr/share/foreman',
         :use_vhost => true,
+        :servername => facts[:fqdn],
         :ssl       => true,
         :ssl_cert  => 'cert.pem',
         :ssl_key   => 'key.pem',
