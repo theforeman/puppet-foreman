@@ -36,11 +36,12 @@ class foreman::plugin::discovery (
     foreman::remote_file {"${::tftp::params::root}boot/${kernel}":
       remote_location => "${source}${kernel}",
       mode            => 0644,
+      require         => File["${::tftp::params::root}boot"],
     }
-
     foreman::remote_file {"${::tftp::params::root}boot/${initrd}":
       remote_location => "${source}${initrd}",
       mode            => 0644,
+      require         => File["${::tftp::params::root}boot"],
     }
   }
 }
