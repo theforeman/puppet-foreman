@@ -78,6 +78,9 @@
 #
 # $db_sslmode::               Database 'production' ssl mode
 #
+# $db_pool::                  Database 'production' size of connection pool
+#                             type:integer
+#
 # $app_root::                 Name of foreman root directory
 #
 # $user::                     User under which foreman will run
@@ -188,6 +191,7 @@ class foreman (
   $db_username              = $foreman::params::db_username,
   $db_password              = $foreman::params::db_password,
   $db_sslmode               = 'UNSET',
+  $db_pool                  = $foreman::params::db_pool,
   $app_root                 = $foreman::params::app_root,
   $user                     = $foreman::params::user,
   $group                    = $foreman::params::group,

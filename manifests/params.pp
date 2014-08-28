@@ -64,6 +64,8 @@ class foreman::params {
   # Generate and cache the password on the master once
   # In multi-puppetmaster setups, the user should specify their own
   $db_password = cache_data('db_password', random_password(32))
+  # Default database connection pool
+  $db_pool = 5
 
   # OS specific paths
   case $::osfamily {
