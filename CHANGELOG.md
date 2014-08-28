@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.2
+* Expose Apache vhost ServerName via servername parameter
+* Fix dependency on TFTP directory in discovery image download
+* Fix apipie-bindings cache directory when HOME is unset in daemon (#7063)
+* Unit test and lint fixes
+
 ## 2.2.1
 * Move ENC and report processor configuration to /etc/puppet/foreman.yaml
 
