@@ -7,6 +7,7 @@ describe 'foreman::puppetmaster' do
         :fqdn                   => 'hostname.example.org',
         :rubyversion            => '1.8.7',
         :osfamily               => 'RedHat',
+        :operatingsystem        => 'RedHat',
         :operatingsystemrelease => '6.5',
       }
     end
@@ -87,6 +88,7 @@ describe 'foreman::puppetmaster' do
         :fqdn                   => 'hostname.example.org',
         :rubyversion            => '2.0.0',
         :osfamily               => 'RedHat',
+        :operatingsystem        => 'RedHat',
         :operatingsystemrelease => '7.0',
       }
     end
@@ -116,8 +118,9 @@ describe 'foreman::puppetmaster' do
   context 'Fedora' do
     let :facts do
       {
-        :operatingsystem => 'Fedora',
-        :osfamily        => 'RedHat',
+        :operatingsystem        => 'Fedora',
+        :operatingsystemrelease => '20',
+        :osfamily               => 'RedHat',
       }
     end
 
@@ -179,6 +182,7 @@ describe 'foreman::puppetmaster' do
       {
         :operatingsystem => 'Debian',
         :osfamily        => 'Debian',
+        :lsbdistcodename => 'wheezy',
       }
     end
 

@@ -51,11 +51,19 @@ describe 'foreman::cli' do
 
   context 'with foreman' do
     let :facts do {
-      :concat_basedir => '/tmp',
+      :concat_basedir         => '/tmp',
       :operatingsystemrelease => '6.4',
-      :operatingsystem=> 'RedHat',
-      :osfamily => 'RedHat',
-      :fqdn     => 'foreman.example.com',
+      :operatingsystem        => 'RedHat',
+      :osfamily               => 'RedHat',
+      :fqdn                   => 'foreman.example.com',
+      :rubyversion            => '1.8.7',
+      :selinux                => 'true',
+      :puppet_vardir          => '/tmp',
+      :lsbdistcodename        => 'Santiago',
+      :id                     => 'root',
+      :puppetversion          => '2.7.25',
+      :path                   => '/tmp',
+      :kernel                 => 'Linux',
     } end
 
     let :pre_condition do

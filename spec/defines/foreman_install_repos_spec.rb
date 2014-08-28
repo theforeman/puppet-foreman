@@ -8,6 +8,7 @@ describe 'foreman::install::repos' do
     let :facts do
       {
         :osfamily        => 'Debian',
+        :lsbdistcodename => 'wheezy',
       }
     end
 
@@ -44,6 +45,7 @@ describe 'foreman::install::repos' do
         :operatingsystem        => 'RedHat',
         :operatingsystemrelease => '6.4',
         :osfamily               => 'RedHat',
+        :rubyversion            => '1.8.7',
       }
     end
 
@@ -64,6 +66,7 @@ describe 'foreman::install::repos' do
         :operatingsystem        => 'Amazon',
         :operatingsystemrelease => '6.4',
         :osfamily               => 'Linux',
+        :rubyversion            => '1.8.7',
       }
     end
 

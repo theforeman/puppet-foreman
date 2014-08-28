@@ -6,6 +6,10 @@ describe 'foreman' do
     {
       :concat_basedir => '/tmp',
       :interfaces     => '',
+      :puppet_vardir  => '/tmp',
+      :id             => 'root',
+      :path           => '/tmp',
+      :kernel         => 'Linux',
     }
   end
 
@@ -15,6 +19,9 @@ describe 'foreman' do
         :operatingsystem        => 'RedHat',
         :operatingsystemrelease => '6.4',
         :osfamily               => 'RedHat',
+        :rubyversion            => '1.8.7',
+        :selinux                => 'true',
+        :lsbdistcodename        => 'Santiago',
       })
     end
 
@@ -30,6 +37,8 @@ describe 'foreman' do
         :operatingsystem        => 'Debian',
         :operatingsystemrelease => 'wheezy',
         :osfamily               => 'Debian',
+        :lsbdistcodename        => 'wheezy',
+        :selinux                => 'false',
       })
     end
 

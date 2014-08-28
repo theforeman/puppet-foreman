@@ -9,6 +9,14 @@ describe 'foreman::config::passenger' do
       :operatingsystem         => 'RedHat',
       :operatingsystemrelease  => '6.4',
       :osfamily                => 'RedHat',
+      :rubyversion             => '1.8.7',
+      :selinux                 => 'true',
+      :puppet_vardir           => '/tmp',
+      :lsbdistcodename         => 'Santiago',
+      :id                      => 'root',
+      :puppetversion           => '2.7.25',
+      :path                    => '/tmp',
+      :kernel                  => 'Linux',
     } end
 
     describe 'with minimal parameters' do
@@ -117,8 +125,10 @@ describe 'foreman::config::passenger' do
       :fqdn                   => 'foreman.example.org',
       :osfamily               => 'Debian',
       :operatingsystem        => 'Debian',
-      :operatingsystemrelease => 'squeeze',
+      :operatingsystemrelease => '6.0.10',
       :lsbdistcodename        => 'squeeze',
+      :selinux                => 'false',
+      :puppet_vardir          => '/tmp',
     } end
 
     describe 'with vhost and ssl' do

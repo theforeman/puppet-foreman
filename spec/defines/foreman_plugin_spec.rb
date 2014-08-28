@@ -13,6 +13,13 @@ describe 'foreman::plugin' do
       :operatingsystem        => 'RedHat',
       :operatingsystemrelease => '6.4',
       :osfamily               => 'RedHat',
+      :rubyversion            => '1.8.7',
+      :selinux                => 'true',
+      :lsbdistcodename        => 'Santiago',
+      :puppet_vardir          => '/tmp',
+      :id                     => 'root',
+      :path                   => '/tmp',
+      :kernel                 => 'Linux',
     } end
 
     it 'should install the correct package with notify' do
@@ -24,6 +31,10 @@ describe 'foreman::plugin' do
   end
 
   context 'with package parameter' do
+    let :facts do {
+      :osfamily => 'RedHat',
+    } end
+
     let :params do {
       :package => 'myplugin',
     } end
@@ -37,6 +48,10 @@ describe 'foreman::plugin' do
   end
 
   context 'when handling underscores on Red Hat' do
+    let :facts do {
+      :osfamily => 'RedHat',
+    } end
+
     let :params do {
       :package => 'my_fun_plugin',
     } end
