@@ -1,14 +1,15 @@
+# This file is managed centrally by modulesync
+#   https://github.com/theforeman/foreman-installer-modulesync
+
 source 'https://rubygems.org'
 
-if ENV.key?('PUPPET_VERSION')
-  puppetversion = "~> #{ENV['PUPPET_VERSION']}"
-else
-  puppetversion = ['>= 2.6']
-end
+gem 'puppet', ENV.key?('PUPPET_VERSION') ? "~> #{ENV['PUPPET_VERSION']}" : '>= 2.7'
 
-gem 'puppet',  puppetversion
-gem 'puppet-lint', '>=0.3.2'
-gem 'puppetlabs_spec_helper', '>=0.2.0'
+gem 'rake'
 gem 'rspec-puppet', '>= 1'
+gem 'puppetlabs_spec_helper', '>= 0.8.0'
+gem 'simplecov'
 gem 'json'
 gem 'webmock'
+
+# vim:ft=ruby

@@ -1,6 +1,8 @@
+---
+# This file is managed centrally by modulesync
+#   https://github.com/theforeman/foreman-installer-modulesync
 rvm:
-  # Workaround for travis-ci/travis-ci#2217, we support 1.8.7 MRI generally
-  - 1.8.7-p374
+  - 1.8.7
   - 1.9.3
   - 2.0.0
 env:
