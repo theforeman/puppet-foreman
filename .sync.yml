@@ -1,0 +1,16 @@
+---
+Gemfile:
+  extra:
+    - gem: json
+    - gem: webmock
+Rakefile:
+  extra_disabled_lint_checks:
+    - 'disable_documentation'
+spec/spec_helper.rb:
+  requires:
+    - webmock/rspec
+    - puppet/reports
+  extra_code: |
+    def static_fixture_path
+      File.join(File.dirname(__FILE__), 'static_fixtures')
+    end
