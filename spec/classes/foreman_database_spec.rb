@@ -24,7 +24,9 @@ describe 'foreman::install' do
 
       it { should contain_class('foreman::database::postgresql') }
 
+      it { should contain_foreman_config_entry('db_pending_migration') }
       it { should contain_foreman__rake('db:migrate') }
+      it { should contain_foreman_config_entry('db_pending_seed') }
       it { should contain_foreman__rake('db:seed') }
       it { should contain_foreman__rake('apipie:cache') }
     end
@@ -63,7 +65,9 @@ describe 'foreman::install' do
 
       it { should contain_class('foreman::database::postgresql') }
 
+      it { should contain_foreman_config_entry('db_pending_migration') }
       it { should contain_foreman__rake('db:migrate') }
+      it { should contain_foreman_config_entry('db_pending_seed') }
       it { should contain_foreman__rake('db:seed') }
       it { should contain_foreman__rake('apipie:cache') }
     end
