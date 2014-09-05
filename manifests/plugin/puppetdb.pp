@@ -1,3 +1,4 @@
+# Installs puppetdb_foreman plugin
 class foreman::plugin::puppetdb {
   case $::osfamily {
     'RedHat': {
