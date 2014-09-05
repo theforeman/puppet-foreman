@@ -1,3 +1,4 @@
+# Installs the package for a given Foreman plugin
 define foreman::plugin(
   $package = "${foreman::plugin_prefix}${title}"
 ) {
