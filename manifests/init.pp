@@ -210,6 +210,10 @@ class foreman (
   $websockets_encrypt     = $foreman::params::websockets_encrypt,
   $websockets_ssl_key     = $foreman::params::websockets_ssl_key,
   $websockets_ssl_cert    = $foreman::params::websockets_ssl_cert,
+  $plugin_prefix          = $foreman::params::plugin_prefix,
+  $osreleasemajor         = $foreman::params::osreleasemajor,
+  $init_config            = $foreman::params::init_config,
+  $init_config_tmpl       = $foreman::params::init_config_tmpl,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $foreman::db_type ? {
