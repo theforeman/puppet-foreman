@@ -24,28 +24,41 @@
 #
 # $user::                   The user under which the application runs.
 #
+# $prestart::               Pre-start the first passenger worker instance process during httpd start.
+#                           type:boolean
+#
+# $min_instances::          Minimum passenger worker instances to keep when application is idle.
+#
+# $start_timeout::          Amount of seconds to wait for Ruby application boot.
+#
 class foreman::config::passenger(
   $app_root            = $foreman::app_root,
   $listen_on_interface = $foreman::passenger_interface,
   $scl_prefix          = $foreman::passenger_scl,
-  $servername          = $::fqdn,
+  $servername          = $foreman::servername,
   $ssl                 = $foreman::ssl,
   $ssl_ca              = $foreman::server_ssl_ca,
   $ssl_chain           = $foreman::server_ssl_chain,
   $ssl_cert            = $foreman::server_ssl_cert,
   $ssl_key             = $foreman::server_ssl_key,
   $use_vhost           = $foreman::use_vhost,
-  $user                = $foreman::user
+  $user                = $foreman::user,
+  $prestart            = $foreman::passenger_prestart,
+  $min_instances       = $foreman::passenger_min_instances,
+  $start_timeout       = $foreman::passenger_start_timeout,
 ) {
   # validate parameter values
   validate_string($listen_on_interface)
+  validate_string($servername)
   validate_bool($ssl)
+  validate_bool($prestart)
 
   $docroot = "${app_root}/public"
 
   include ::apache
   include ::apache::mod::headers
   include ::apache::mod::passenger
+  Class['::apache'] -> anchor { 'foreman::config::passenger_end': }
 
   # Ensure the Version module is loaded as we need it in the Foreman vhosts
   # RedHat distros come with this enabled. Newer Debian and Ubuntu distros
@@ -70,10 +83,12 @@ class foreman::config::passenger(
     }
 
     file { "${apache::confd_dir}/05-foreman.d":
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
+      ensure  => 'directory',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      purge   => true,
+      recurse => true,
     }
 
     apache::vhost { 'foreman':
@@ -91,10 +106,12 @@ class foreman::config::passenger(
     if $ssl {
 
       file { "${apache::confd_dir}/05-foreman-ssl.d":
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        purge   => true,
+        recurse => true,
       }
 
       apache::vhost { 'foreman-ssl':

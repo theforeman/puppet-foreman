@@ -1,1 +1,6 @@
---format documentation --colour --backtrace
+--format
+documentation
+--colour
+--loadby
+mtime
+--backtrace

@@ -7,7 +7,8 @@
 # $unattended::             Should foreman manage host provisioning as well
 #                           type:boolean
 #
-# $authentication::         Enable users authentication (default user:admin pw:changeme)
+# $authentication::         Enable user authentication. Initial credentials are set using admin_username
+#                           and admin_password.
 #                           type:boolean
 #
 # $passenger::              Configure foreman via apache and passenger
@@ -17,6 +18,8 @@
 #
 # $use_vhost::              Enclose apache configuration in <VirtualHost>...</VirtualHost>
 #                           type:boolean
+#
+# $servername::             Server name of the VirtualHost in the webserver
 #
 # $ssl::                    Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
 #                           type:boolean
@@ -86,6 +89,13 @@
 #
 # $passenger_interface::    Defines which network interface passenger should listen on, undef means all interfaces
 #
+# $passenger_prestart::     Pre-start the first passenger worker instance process during httpd start.
+#                           type:boolean
+#
+# $passenger_min_instances:: Minimum passenger worker instances to keep when application is idle.
+#
+# $passenger_start_timeout:: Amount of seconds to wait for Ruby application boot.
+#
 # $server_ssl_ca::          Defines Apache mod_ssl SSLCACertificateFile setting in Foreman vhost conf file.
 #
 # $server_ssl_chain::       Defines Apache mod_ssl SSLCertificateChainFile setting in Foreman vhost conf file.
@@ -104,6 +114,42 @@
 #
 # $oauth_consumer_secret::  OAuth consumer secret
 #
+# $admin_username::         Username for the initial admin user
+#
+# $admin_password::         Password of the initial admin user, default is randomly generated
+#
+# $admin_first_name::       First name of the initial admin user
+#
+# $admin_last_name::        Last name of the initial admin user
+#
+# $admin_email::            E-mail address of the initial admin user
+#
+# $initial_organization::   Name of an initial organization
+#
+# $initial_location::       Name of an initial location
+#
+# $ipa_authentication::     Enable configuration for external authentication via IPA
+#                           type:boolean
+#
+# $http_keytab::            Path to keytab to be used for Kerberos authentication on the WebUI
+#
+# $pam_service::            PAM service used for host-based access control in IPA
+#
+# $configure_ipa_repo::     Enable custom yum repo with packages needed for external authentication via IPA,
+#                           this may be needed on RHEL 6.5 and older.
+#                           type:boolean
+#
+# $ipa_manage_sssd::        If ipa_authentication is true, should the installer manage SSSD? You can disable it
+#                           if you use another module for SSSD configuration
+#                           type:boolean
+#
+# $websockets_encrypt::     Whether to encrypt websocket connections
+#                           type:boolean
+#
+#
+# $websockets_ssl_key::     SSL key file to use when encrypting websocket connections
+# $websockets_ssl_cert::    SSL certificate file to use when encrypting websocket connections
+#
 class foreman (
   $foreman_url            = $foreman::params::foreman_url,
   $unattended             = $foreman::params::unattended,
@@ -111,6 +157,7 @@ class foreman (
   $passenger              = $foreman::params::passenger,
   $passenger_scl          = $foreman::params::passenger_scl,
   $use_vhost              = $foreman::params::use_vhost,
+  $servername             = $foreman::params::servername,
   $ssl                    = $foreman::params::ssl,
   $custom_repo            = $foreman::params::custom_repo,
   $repo                   = $foreman::params::repo,
@@ -144,7 +191,25 @@ class foreman (
   $oauth_active           = $foreman::params::oauth_active,
   $oauth_map_users        = $foreman::params::oauth_map_users,
   $oauth_consumer_key     = $foreman::params::oauth_consumer_key,
-  $oauth_consumer_secret  = $foreman::params::oauth_consumer_secret
+  $oauth_consumer_secret  = $foreman::params::oauth_consumer_secret,
+  $passenger_prestart     = $foreman::params::passenger_prestart,
+  $passenger_min_instances = $foreman::params::passenger_min_instances,
+  $passenger_start_timeout = $foreman::params::passenger_start_timeout,
+  $admin_username         = $foreman::params::admin_username,
+  $admin_password         = $foreman::params::admin_password,
+  $admin_first_name       = $foreman::params::admin_first_name,
+  $admin_last_name        = $foreman::params::admin_last_name,
+  $admin_email            = $foreman::params::admin_email,
+  $initial_organization   = $foreman::params::initial_organization,
+  $initial_location       = $foreman::params::initial_location,
+  $ipa_authentication     = $foreman::params::ipa_authentication,
+  $http_keytab            = $foreman::params::http_keytab,
+  $pam_service            = $foreman::params::pam_service,
+  $configure_ipa_repo     = $foreman::params::configure_ipa_repo,
+  $ipa_manage_sssd        = $foreman::params::ipa_manage_sssd,
+  $websockets_encrypt     = $foreman::params::websockets_encrypt,
+  $websockets_ssl_key     = $foreman::params::websockets_ssl_key,
+  $websockets_ssl_cert    = $foreman::params::websockets_ssl_cert,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $foreman::db_type ? {
@@ -155,6 +220,10 @@ class foreman (
   } else {
     $db_adapter_real = $db_adapter
   }
+  if $passenger == false and $ipa_authentication {
+    fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
+  }
+
   class { 'foreman::install': } ~>
   class { 'foreman::config': } ~>
   class { 'foreman::database': } ~>

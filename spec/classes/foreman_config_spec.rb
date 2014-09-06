@@ -33,7 +33,7 @@ describe 'foreman::config' do
           with_content(/^:locations_enabled:\s*false$/).
           with_content(/^:organizations_enabled:\s*false$/).
           with_content(/^:oauth_active:\s*true$/).
-          with_content(/^:oauth_map_users:\s*true$/).
+          with_content(/^:oauth_map_users:\s*false$/).
           with_content(/^:oauth_consumer_key:\s*\w+$/).
           with_content(/^:oauth_consumer_secret:\s*\w+$/).
           with({})
@@ -82,10 +82,12 @@ describe 'foreman::config' do
         should contain_cron('daily summary').with_ensure('absent')
       end
 
-      it { should contain_class('foreman::config::passenger').with({
-        :listen_on_interface => '',
-        :scl_prefix          => 'ruby193',
-      })}
+      it 'should contain foreman::config::passenger' do
+        should contain_class('foreman::config::passenger').
+          with_listen_on_interface('').
+          with_scl_prefix('ruby193').
+          that_comes_before('Anchor[foreman::config_end]')
+      end
     end
 
     describe 'without passenger' do
@@ -119,7 +121,7 @@ describe 'foreman::config' do
           locations_enabled     => true,
           organizations_enabled => true,
           oauth_active          => false,
-          oauth_map_users       => false,
+          oauth_map_users       => true,
           oauth_consumer_key    => 'abc',
           oauth_consumer_secret => 'def',
         }"
@@ -133,7 +135,7 @@ describe 'foreman::config' do
           with_content(/^:locations_enabled:\s*true$/).
           with_content(/^:organizations_enabled:\s*true$/).
           with_content(/^:oauth_active:\s*false$/).
-          with_content(/^:oauth_map_users:\s*false$/).
+          with_content(/^:oauth_map_users:\s*true$/).
           with_content(/^:oauth_consumer_key:\s*abc$/).
           with_content(/^:oauth_consumer_secret:\s*def$/).
           with({})
@@ -165,7 +167,7 @@ describe 'foreman::config' do
           with_content(/^:locations_enabled:\s*false$/).
           with_content(/^:organizations_enabled:\s*false$/).
           with_content(/^:oauth_active:\s*true$/).
-          with_content(/^:oauth_map_users:\s*true$/).
+          with_content(/^:oauth_map_users:\s*false$/).
           with_content(/^:oauth_consumer_key:\s*\w+$/).
           with_content(/^:oauth_consumer_secret:\s*\w+$/).
           with({})

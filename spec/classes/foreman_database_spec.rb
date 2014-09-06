@@ -28,6 +28,23 @@ describe 'foreman::install' do
       it { should contain_foreman__rake('db:seed') }
       it { should contain_foreman__rake('apipie:cache') }
     end
+
+    describe 'with seed parameters' do
+      let :pre_condition do
+        "class {'foreman':
+           admin_username => 'joe',
+           admin_password => 'secret',
+         }"
+      end
+
+      it {
+        should contain_foreman__rake('db:seed').
+          with_environment({
+            'SEED_ADMIN_USER'     => 'joe',
+            'SEED_ADMIN_PASSWORD' => 'secret',
+          })
+      }
+    end
   end
 
   context 'on debian' do

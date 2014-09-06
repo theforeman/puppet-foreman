@@ -18,6 +18,8 @@ class foreman::params {
   $passenger    = true
   # Enclose apache configuration in <VirtualHost>...</VirtualHost>
   $use_vhost    = true
+  # Server name of the VirtualHost
+  $servername   = $::fqdn
   # force SSL (note: requires passenger)
   $ssl          = true
   #define which interface passenger should listen on, undef means all interfaces
@@ -68,13 +70,32 @@ class foreman::params {
           $yumcode = "f${::operatingsystemrelease}"
           $passenger_scl = undef
           $plugin_prefix = 'rubygem-foreman_'
+          case $::operatingsystemrelease {
+            '19': {
+              $passenger_prestart = false
+              $passenger_min_instances = 1
+              $passenger_start_timeout = 0
+            }
+            default: {
+              $passenger_prestart = true
+              $passenger_min_instances = 1
+              $passenger_start_timeout = 600
+            }
+          }
         }
         default: {
-          $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
-          $yumcode = regsubst($::operatingsystemrelease, '^(\d+)\..*$', 'el\1')
+          $osreleasemajor = regsubst($::operatingsystemrelease, '^(\d+)\..*$', '\1')
+          $yumcode = "el${osreleasemajor}"
+          $puppet_basedir = $osreleasemajor ? {
+            '6'     => regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet'),
+            default => '/usr/share/ruby/vendor_ruby/puppet',
+          }
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
           $passenger_scl = 'ruby193'
           $plugin_prefix = 'ruby193-rubygem-foreman_'
+          $passenger_prestart = true
+          $passenger_min_instances = 1
+          $passenger_start_timeout = 600
         }
       }
     }
@@ -84,6 +105,24 @@ class foreman::params {
       $plugin_prefix = 'ruby-foreman-'
       $init_config = '/etc/default/foreman'
       $init_config_tmpl = 'foreman.default'
+
+      case $::lsbdistcodename {
+        /^(squeeze|precise)$/: {
+          $passenger_prestart = false
+          $passenger_min_instances = 0
+          $passenger_start_timeout = 0
+        }
+        /^wheezy$/: {
+          $passenger_prestart = false
+          $passenger_min_instances = 1
+          $passenger_start_timeout = 0
+        }
+        default: {
+          $passenger_prestart = true
+          $passenger_min_instances = 1
+          $passenger_start_timeout = 600
+        }
+      }
     }
     'Linux': {
       case $::operatingsystem {
@@ -95,13 +134,16 @@ class foreman::params {
           $plugin_prefix = 'ruby193-rubygem-foreman_'
           $init_config = '/etc/sysconfig/foreman'
           $init_config_tmpl = 'foreman.sysconfig'
+          $passenger_prestart = true
+          $passenger_min_instances = 1
+          $passenger_start_timeout = 600
         }
         default: {
           fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")
         }
       }
     }
-    'ArchLinux': {
+    /(ArchLinux|Suse)/: {
       # Only the agent classes (cron / service) are supported for now, which
       # doesn't require any OS-specific params
     }
@@ -133,7 +175,29 @@ class foreman::params {
 
   # We need the REST API interface with OAuth for some REST Puppet providers
   $oauth_active = true
-  $oauth_map_users = true
+  $oauth_map_users = false
   $oauth_consumer_key = cache_data('oauth_consumer_key', random_password(32))
   $oauth_consumer_secret = cache_data('oauth_consumer_secret', random_password(32))
+
+  # Initial admin account details
+  $admin_username = 'admin'
+  $admin_password = cache_data('admin_password', random_password(16))
+  $admin_first_name = undef
+  $admin_last_name = undef
+  $admin_email = undef
+
+  # Initial taxonomies
+  $initial_organization = undef
+  $initial_location = undef
+
+  $ipa_authentication = false
+  $http_keytab = '/etc/httpd/conf/http.keytab'
+  $pam_service = 'foreman'
+  $configure_ipa_repo = false
+  $ipa_manage_sssd = true
+
+  # Websockets
+  $websockets_encrypt = true
+  $websockets_ssl_key = $server_ssl_key
+  $websockets_ssl_cert = $server_ssl_cert
 }

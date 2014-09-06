@@ -1,10 +1,16 @@
 require 'spec_helper'
+require 'yaml'
 
 describe 'foreman_report_processor' do
-  # Parse ERB and create a ruby object we can load - need an instance variable for ERB
-  @foreman_url      = 'http://localhost:3000'
-  template=File.join(File.dirname(__FILE__), '../..', 'templates', 'foreman-report_v2.rb.erb')
-  eval ERB.new(File.read(template), nil, '-').result(binding)
+  yaml_text = <<-EOF
+---
+:url: "http://localhost:3000"
+:facts: true
+:puppet_home: "/var/lib/puppet"
+  EOF
+  yaml = YAML.load(yaml_text)
+  YAML.stubs(:load_file).with("/etc/puppet/foreman.yaml").returns(yaml)
+  eval File.read(File.join(File.dirname(__FILE__), '../..', 'files', 'foreman-report_v2.rb'))
   let(:processor) { Puppet::Reports.report(:foreman) }
 
   describe "making a connection" do
@@ -85,6 +91,14 @@ describe 'foreman_report_processor' do
       should_not match /debug/
     }
   end
+
+  describe "report should show failure metrics for failed catalog fetches" do
+    subject { YAML.load_file("#{static_fixture_path}/report-3.5.1-catalog-errors.yaml").extend(processor) }
+    it {
+      subject.generate_report['status']['failed'].should eql(1)
+    }
+  end
+
   # TODO: check debug logs are filtered
 
   # Normally we wouldn't include commented code, but this is a handy way
