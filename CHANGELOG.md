@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.3
+* Fix apipie-bindings cache path to prevent installer/master conflict
+* Sync module configs
+
 ## 2.2.2
 * Expose Apache vhost ServerName via servername parameter
 * Fix dependency on TFTP directory in discovery image download
