@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe 'foreman::install::repos::extra' do
+  let :pre_condition do
+    "class { 'foreman': }"
+  end
+
   let(:params) do
     {
       :configure_scl_repo  => true,

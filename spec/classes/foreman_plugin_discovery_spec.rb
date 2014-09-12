@@ -16,6 +16,10 @@ describe 'foreman::plugin::discovery' do
     }
   end
 
+  let :pre_condition do
+    "class { 'foreman': }"
+  end
+
   context 'with enabled image installation' do
     let :params do
       {

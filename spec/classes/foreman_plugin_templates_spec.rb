@@ -19,6 +19,10 @@ describe 'foreman::plugin::templates' do
     }
   end
 
+  let :pre_condition do
+    "class { 'foreman': }"
+  end
+
   it 'should call the plugin' do
     should contain_foreman__plugin('templates')
   end
