@@ -3,9 +3,9 @@ Gemfile:
   extra:
     - gem: json
     - gem: webmock
-Rakefile:
+.puppet-lint.rc:
   extra_disabled_lint_checks:
-    - 'disable_documentation'
+    - 'documentation'
 spec/spec_helper.rb:
   requires:
     - webmock/rspec
