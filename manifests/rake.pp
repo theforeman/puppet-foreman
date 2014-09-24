@@ -1,6 +1,9 @@
 # Run a Foreman rake task when notified
 define foreman::rake($environment = {}) {
   validate_hash($environment)
+
+  # https://github.com/rodjek/puppet-lint/issues/327
+  # lint:ignore:arrow_alignment
   exec { "foreman-rake-${title}":
     command     => "/usr/sbin/foreman-rake ${title}",
     user        => $::foreman::user,
@@ -8,4 +11,5 @@ define foreman::rake($environment = {}) {
     logoutput   => 'on_failure',
     refreshonly => true,
   }
+  # lint:endignore
 }
