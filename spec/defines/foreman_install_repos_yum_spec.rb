@@ -13,7 +13,7 @@ describe 'foreman::install::repos::yum' do
           :descr    => 'Foreman stable repository',
           :baseurl  => 'http://yum.theforeman.org/releases/latest/el6/$basearch',
           :gpgcheck => '1',
-          :gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'http://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman',
           :enabled  => '1',
         })
 
@@ -21,7 +21,7 @@ describe 'foreman::install::repos::yum' do
           :descr    => 'Foreman stable source repository',
           :baseurl  => 'http://yum.theforeman.org/releases/latest/el6/source',
           :gpgcheck => '1',
-          :gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'http://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman',
           :enabled  => '0',
         })
       end
@@ -35,7 +35,7 @@ describe 'foreman::install::repos::yum' do
           :descr    => 'Foreman stable repository',
           :baseurl  => 'http://yum.theforeman.org/releases/latest/el6/$basearch',
           :gpgcheck => '0',
-          :gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'http://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman',
           :enabled  => '1',
         })
 
@@ -43,7 +43,7 @@ describe 'foreman::install::repos::yum' do
           :descr    => 'Foreman stable source repository',
           :baseurl  => 'http://yum.theforeman.org/releases/latest/el6/source',
           :gpgcheck => '0',
-          :gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'http://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman',
           :enabled  => '0',
         })
       end
@@ -59,7 +59,7 @@ describe 'foreman::install::repos::yum' do
           :descr    => 'Foreman rc repository',
           :baseurl  => 'http://yum.theforeman.org/rc/el6/$basearch',
           :gpgcheck => '1',
-          :gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'http://yum.theforeman.org/rc/RPM-GPG-KEY-foreman',
           :enabled  => '1',
         })
 
@@ -67,7 +67,7 @@ describe 'foreman::install::repos::yum' do
           :descr    => 'Foreman rc source repository',
           :baseurl  => 'http://yum.theforeman.org/rc/el6/source',
           :gpgcheck => '1',
-          :gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'http://yum.theforeman.org/rc/RPM-GPG-KEY-foreman',
           :enabled  => '0',
         })
       end
@@ -81,7 +81,7 @@ describe 'foreman::install::repos::yum' do
           :descr    => 'Foreman rc repository',
           :baseurl  => 'http://yum.theforeman.org/rc/el6/$basearch',
           :gpgcheck => '0',
-          :gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'http://yum.theforeman.org/rc/RPM-GPG-KEY-foreman',
           :enabled  => '1',
         })
 
@@ -89,7 +89,7 @@ describe 'foreman::install::repos::yum' do
           :descr    => 'Foreman rc source repository',
           :baseurl  => 'http://yum.theforeman.org/rc/el6/source',
           :gpgcheck => '0',
-          :gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'http://yum.theforeman.org/rc/RPM-GPG-KEY-foreman',
           :enabled  => '0',
         })
       end
@@ -105,7 +105,7 @@ describe 'foreman::install::repos::yum' do
           :descr    => 'Foreman nightly repository',
           :baseurl  => 'http://yum.theforeman.org/nightly/el6/$basearch',
           :gpgcheck => '0',
-          :gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'http://yum.theforeman.org/nightly/RPM-GPG-KEY-foreman',
           :enabled  => '1',
         })
 
@@ -113,7 +113,7 @@ describe 'foreman::install::repos::yum' do
           :descr    => 'Foreman nightly source repository',
           :baseurl  => 'http://yum.theforeman.org/nightly/el6/source',
           :gpgcheck => '0',
-          :gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'http://yum.theforeman.org/nightly/RPM-GPG-KEY-foreman',
           :enabled  => '0',
         })
       end
@@ -127,7 +127,7 @@ describe 'foreman::install::repos::yum' do
           :descr    => 'Foreman nightly repository',
           :baseurl  => 'http://yum.theforeman.org/nightly/el6/$basearch',
           :gpgcheck => '0',
-          :gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'http://yum.theforeman.org/nightly/RPM-GPG-KEY-foreman',
           :enabled  => '1',
         })
 
@@ -135,7 +135,7 @@ describe 'foreman::install::repos::yum' do
           :descr    => 'Foreman nightly source repository',
           :baseurl  => 'http://yum.theforeman.org/nightly/el6/source',
           :gpgcheck => '0',
-          :gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'http://yum.theforeman.org/nightly/RPM-GPG-KEY-foreman',
           :enabled  => '0',
         })
       end
