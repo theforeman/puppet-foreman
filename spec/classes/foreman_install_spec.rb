@@ -8,7 +8,7 @@ describe 'foreman::install' do
     }
   end
 
-  context 'RedHat' do
+  context 'RHEL' do
     let :facts do
       default_facts.merge({
         :operatingsystem        => 'RedHat',
@@ -24,7 +24,7 @@ describe 'foreman::install' do
 
       it { should contain_foreman__install__repos('foreman') }
       it { should contain_class('foreman::install::repos::extra').with({
-        :configure_scl_repo  => true,
+        :configure_scl_repo  => false,
         :configure_epel_repo => true,
       })}
 
@@ -167,6 +167,48 @@ describe 'foreman::install' do
     end
   end
 
+  context 'CentOS' do
+    let :facts do
+      default_facts.merge({
+        :operatingsystem        => 'CentOS',
+        :operatingsystemrelease => '6.4',
+        :osfamily               => 'RedHat',
+      })
+    end
+
+    describe 'without parameters' do
+      let :pre_condition do
+        "class {'foreman':}"
+      end
+
+      it { should contain_class('foreman::install::repos::extra').with({
+        :configure_scl_repo  => true,
+        :configure_epel_repo => true,
+      })}
+    end
+  end
+
+  context 'Fedora' do
+    let :facts do
+      default_facts.merge({
+        :operatingsystem        => 'Fedora',
+        :operatingsystemrelease => '19',
+        :osfamily               => 'RedHat',
+      })
+    end
+
+    describe 'without parameters' do
+      let :pre_condition do
+        "class {'foreman':}"
+      end
+
+      it { should contain_class('foreman::install::repos::extra').with({
+        :configure_scl_repo  => false,
+        :configure_epel_repo => false,
+      })}
+    end
+  end
+
   context 'on debian' do
     let :facts do
       default_facts.merge({
@@ -183,8 +225,8 @@ describe 'foreman::install' do
 
       it { should contain_foreman__install__repos('foreman') }
       it { should contain_class('foreman::install::repos::extra').with({
-        :configure_scl_repo  => true,
-        :configure_epel_repo => true,
+        :configure_scl_repo  => false,
+        :configure_epel_repo => false,
       })}
 
       it { should contain_package('foreman-postgresql').with_ensure('present') }

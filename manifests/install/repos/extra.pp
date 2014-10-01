@@ -7,7 +7,7 @@ class foreman::install::repos::extra(
 ) {
   $osreleasemajor = regsubst($::operatingsystemrelease, '^(\d+)\..*$', '\1')
 
-  if $::osfamily == 'RedHat' and $::operatingsystem != 'Fedora' and $configure_epel_repo {
+  if $configure_epel_repo {
     $epel_gpgkey = $osreleasemajor ? {
       '7'     => 'https://fedoraproject.org/static/352C64E5.txt',
       default => 'https://fedoraproject.org/static/0608B895.txt',
@@ -23,21 +23,8 @@ class foreman::install::repos::extra(
   }
 
   if $configure_scl_repo {
-    case $::operatingsystem {
-      'CentOS': {
-        package {'centos-release-SCL':
-          ensure => installed,
-        }
-      }
-      'Scientific': {
-        yumrepo { 'SCL':
-          descr    => 'Scientific Linux Software Collections',
-          baseurl  => "http://ftp.scientificlinux.org/linux/scientific/${osreleasemajor}/\$basearch/external_products/softwarecollections/",
-          enabled  => 1,
-          gpgcheck => 1,
-        }
-      }
-      default: {}
+    package {'foreman-release-scl':
+      ensure => installed,
     }
   }
 

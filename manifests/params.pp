@@ -29,8 +29,9 @@ class foreman::params {
   # Choose whether you want to enable locations and organizations.
   $locations_enabled      = false
   $organizations_enabled  = false
-  $configure_epel_repo    = true
-  $configure_scl_repo     = true
+  $configure_epel_repo    = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
+  # Only configure extra SCL repos on EL clones, RHEL itself usually has RHSCL
+  $configure_scl_repo     = ($::osfamily == 'RedHat' and $::operatingsystem != 'RedHat' and $::operatingsystem != 'Fedora')
 
 # Advance configurations - no need to change anything here by default
   # if set to true, no repo will be added by this module, letting you to
