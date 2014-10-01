@@ -8,17 +8,17 @@ class foreman::install::repos::extra(
   $osreleasemajor = regsubst($::operatingsystemrelease, '^(\d+)\..*$', '\1')
 
   if $::osfamily == 'RedHat' and $::operatingsystem != 'Fedora' and $configure_epel_repo {
-    $epel_gpgcheck = $osreleasemajor ? {
-      '7'     => 0,
-      default => 1,
+    $epel_gpgkey = $osreleasemajor ? {
+      '7'     => 'https://fedoraproject.org/static/352C64E5.txt',
+      default => 'https://fedoraproject.org/static/0608B895.txt',
     }
     yumrepo { 'epel':
       descr      => "Extra Packages for Enterprise Linux ${osreleasemajor} - \$basearch",
       mirrorlist => "https://mirrors.fedoraproject.org/metalink?repo=epel-${osreleasemajor}&arch=\$basearch",
       baseurl    => "http://download.fedoraproject.org/pub/epel/${osreleasemajor}/\$basearch",
       enabled    => 1,
-      gpgcheck   => $epel_gpgcheck,
-      gpgkey     => 'https://fedoraproject.org/static/0608B895.txt',
+      gpgcheck   => 1,
+      gpgkey     => $epel_gpgkey,
     }
   }
 

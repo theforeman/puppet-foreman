@@ -21,6 +21,7 @@ describe 'foreman::install::repos::extra' do
       it { should contain_yumrepo('epel').with({
         :mirrorlist => 'https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch',
         :gpgcheck   => 1,
+        :gpgkey     => 'https://fedoraproject.org/static/0608B895.txt',
       }) }
       it { should_not contain_package('centos-release-SCL') }
       it { should_not contain_yumrepo('SCL') }
@@ -39,7 +40,8 @@ describe 'foreman::install::repos::extra' do
     describe 'when fully enabled' do
       it { should contain_yumrepo('epel').with({
         :mirrorlist => 'https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch',
-        :gpgcheck   => 0,
+        :gpgcheck   => 1,
+        :gpgkey     => 'https://fedoraproject.org/static/352C64E5.txt',
       }) }
       it { should_not contain_package('centos-release-SCL') }
       it { should_not contain_yumrepo('SCL') }
