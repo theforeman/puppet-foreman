@@ -104,7 +104,7 @@ Puppet::Reports.register_report(:foreman) do
       report_status["failed"] += 1
     end
     # fix for Puppet non-resource errors (i.e. failed catalog fetches before falling back to cache)
-    report_status["failed"] += report.logs.find_all {|l| l.source == 'Puppet' && l.level.to_s == 'err' }.count
+    report_status["failed"] += report.logs.find_all {|l| l.source =~ /Puppet$/ && l.level.to_s == 'err' }.count
 
     return report_status
   end
