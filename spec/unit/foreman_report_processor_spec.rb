@@ -57,7 +57,7 @@ describe 'foreman_report_processor' do
   describe "report should support failure metrics" do
     subject { YAML.load_file("#{static_fixture_path}/report-2.6.5-errors.yaml").extend(processor) }
     it {
-      subject.generate_report['status']['failed'].should eql(1)
+      subject.generate_report['status']['failed'].should eql(3)
     }
   end
 
@@ -94,6 +94,13 @@ describe 'foreman_report_processor' do
 
   describe "report should show failure metrics for failed catalog fetches" do
     subject { YAML.load_file("#{static_fixture_path}/report-3.5.1-catalog-errors.yaml").extend(processor) }
+    it {
+      subject.generate_report['status']['failed'].should eql(1)
+    }
+  end
+
+  describe "report should properly bypass log processor changes" do
+    subject { YAML.load_file("#{static_fixture_path}/report-log-preprocessed.yaml").extend(processor) }
     it {
       subject.generate_report['status']['failed'].should eql(1)
     }
