@@ -4,8 +4,21 @@ require 'spec_helper'
 describe 'foreman::config' do
   let :default_facts do
     {
-        :concat_basedir => '/tmp',
-        :interfaces => '',
+        :concat_basedir             => '/tmp',
+        :interfaces                 => '',
+        :rubyversion                => '1.8.7',
+        :selinux                    => 'true',
+        :puppet_vardir              => '/tmp',
+        :lsbdistcodename            => 'Santiago',
+        :id                         => 'root',
+        :puppetversion              => '2.7.25',
+        :path                       => '/tmp',
+        :kernel                     => 'Linux',
+        :default_ipa_server         => '',
+        :sssd_services              => '',
+        :sssd_ldap_user_extra_attrs => '',
+        :sssd_allowed_uids          => '',
+        :sssd_user_attributes       => '',
     }
   end
 

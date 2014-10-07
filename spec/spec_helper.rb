@@ -13,3 +13,11 @@ end
 def static_fixture_path
   File.join(File.dirname(__FILE__), 'static_fixtures')
 end
+
+RSpec.configure do |c|
+  c.before :each do
+    if Gem::Version.new(`puppet --version`) >= Gem::Version.new('3.5')
+      Puppet.settings[:strict_variables]=true
+    end
+  end
+end

@@ -5,15 +5,23 @@ describe 'foreman::install' do
     {
       :concat_basedir => '/tmp',
       :interfaces     => '',
+      :puppet_vardir  => '/tmp',
+      :id             => 'root',
+      :path           => '/tmp',
+      :kernel         => 'Linux',
     }
   end
 
   context 'RedHat' do
     let :facts do
       default_facts.merge({
-        :operatingsystem        => 'RedHat',
-        :operatingsystemrelease => '6.4',
-        :osfamily               => 'RedHat',
+        :operatingsystem           => 'RedHat',
+        :operatingsystemrelease    => '6.4',
+        :operatingsystemmajrelease => '6',
+        :osfamily                  => 'RedHat',
+        :rubyversion               => '1.8.7',
+        :selinux                   => 'true',
+        :lsbdistcodename           => 'Santiago',
       })
     end
 
@@ -98,6 +106,8 @@ describe 'foreman::install' do
           :operatingsystemrelease => '6.4',
           :osfamily               => 'RedHat',
           :selinux                => 'true',
+          :rubyversion            => '1.8.7',
+          :lsbdistcodename        => 'Santiago',
         })
       end
 
@@ -136,6 +146,8 @@ describe 'foreman::install' do
           :operatingsystemrelease => '6.4',
           :osfamily               => 'RedHat',
           :selinux                => 'false',
+          :rubyversion            => '1.8.7',
+          :lsbdistcodename        => 'Santiago',
         })
       end
 
@@ -173,6 +185,9 @@ describe 'foreman::install' do
         :operatingsystem        => 'Debian',
         :operatingsystemrelease => 'wheezy',
         :osfamily               => 'Debian',
+        :lsbdistcodename        => 'wheezy',
+        :selinux                => 'false',
+        :rubyversion            => '1.9.3',
       })
     end
 

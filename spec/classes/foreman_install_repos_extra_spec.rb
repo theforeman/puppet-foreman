@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe 'foreman::install::repos::extra' do
+  let :pre_condition do
+    "class { 'foreman': }"
+  end
+
   let(:params) do
     {
       :configure_scl_repo  => true,
@@ -14,6 +18,10 @@ describe 'foreman::install::repos::extra' do
         :operatingsystem        => 'RedHat',
         :operatingsystemrelease => '6.4',
         :osfamily               => 'RedHat',
+        :rubyversion            => '1.8.7',
+        :selinux                => 'true',
+        :puppet_vardir          => '/tmp',
+        :lsbdistcodename        => 'Santiago',
       }
     end
 
@@ -34,6 +42,9 @@ describe 'foreman::install::repos::extra' do
         :operatingsystem        => 'RedHat',
         :operatingsystemrelease => '7.0',
         :osfamily               => 'RedHat',
+        :selinux                => 'true',
+        :puppet_vardir          => '/tmp',
+        :lsbdistcodename        => 'Santiago',
       }
     end
 
@@ -54,6 +65,10 @@ describe 'foreman::install::repos::extra' do
         :operatingsystem        => 'CentOS',
         :operatingsystemrelease => '6.4',
         :osfamily               => 'RedHat',
+        :rubyversion            => '1.8.7',
+        :selinux                => 'true',
+        :puppet_vardir          => '/tmp',
+        :lsbdistcodename        => 'Santiago',
       }
     end
 
@@ -70,6 +85,10 @@ describe 'foreman::install::repos::extra' do
         :operatingsystem        => 'Scientific',
         :operatingsystemrelease => '6.4',
         :osfamily               => 'RedHat',
+        :rubyversion            => '1.8.7',
+        :selinux                => 'true',
+        :puppet_vardir          => '/tmp',
+        :lsbdistcodename        => 'Santiago',
       }
     end
 
@@ -86,6 +105,9 @@ describe 'foreman::install::repos::extra' do
         :operatingsystem        => 'Fedora',
         :operatingsystemrelease => '19',
         :osfamily               => 'RedHat',
+        :selinux                => 'true',
+        :puppet_vardir          => '/tmp',
+        :lsbdistcodename        => 'Santiago',
       }
     end
 
@@ -102,6 +124,9 @@ describe 'foreman::install::repos::extra' do
         :operatingsystem        => 'Debian',
         :operatingsystemrelease => 'wheezy',
         :osfamily               => 'Debian',
+        :lsbdistcodename        => 'wheezy',
+        :selinux                => 'false',
+        :puppet_vardir          => '/tmp',
       }
     end
 

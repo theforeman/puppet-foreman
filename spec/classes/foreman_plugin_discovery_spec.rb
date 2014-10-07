@@ -3,9 +3,21 @@ require 'spec_helper'
 describe 'foreman::plugin::discovery' do
   let :facts do
     {
-        :osfamily => 'RedHat',
-        :operatingsystem => 'Fedora',
+        :osfamily               => 'RedHat',
+        :operatingsystem        => 'Fedora',
+        :operatingsystemrelease => '20',
+        :selinux                => 'true',
+        :puppet_vardir          => '/tmp',
+        :lsbdistcodename        => 'Santiago',
+        :concat_basedir         => '/tmp',
+        :id                     => 'root',
+        :path                   => '/tmp',
+        :kernel                 => 'Linux',
     }
+  end
+
+  let :pre_condition do
+    "class { 'foreman': }"
   end
 
   context 'with enabled image installation' do
