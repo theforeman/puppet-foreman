@@ -24,8 +24,9 @@ describe 'foreman::install' do
 
       it { should contain_foreman__install__repos('foreman') }
       it { should contain_class('foreman::install::repos::extra').with({
-        :configure_scl_repo  => false,
-        :configure_epel_repo => true,
+        :configure_scl_repo       => false,
+        :configure_epel_repo      => true,
+        :configure_brightbox_repo => false,
       })}
 
       it { should contain_package('foreman-postgresql').with_ensure('present') }
@@ -182,8 +183,9 @@ describe 'foreman::install' do
       end
 
       it { should contain_class('foreman::install::repos::extra').with({
-        :configure_scl_repo  => true,
-        :configure_epel_repo => true,
+        :configure_scl_repo       => true,
+        :configure_epel_repo      => true,
+        :configure_brightbox_repo => false,
       })}
     end
   end
@@ -203,8 +205,9 @@ describe 'foreman::install' do
       end
 
       it { should contain_class('foreman::install::repos::extra').with({
-        :configure_scl_repo  => false,
-        :configure_epel_repo => false,
+        :configure_scl_repo       => false,
+        :configure_epel_repo      => false,
+        :configure_brightbox_repo => false,
       })}
     end
   end
@@ -225,8 +228,9 @@ describe 'foreman::install' do
 
       it { should contain_foreman__install__repos('foreman') }
       it { should contain_class('foreman::install::repos::extra').with({
-        :configure_scl_repo  => false,
-        :configure_epel_repo => false,
+        :configure_scl_repo       => false,
+        :configure_epel_repo      => false,
+        :configure_brightbox_repo => false,
       })}
 
       it { should contain_package('foreman-postgresql').with_ensure('present') }
@@ -290,6 +294,30 @@ describe 'foreman::install' do
 
       it { should contain_package('foreman-mysql2').that_requires('Foreman::Install::Repos[foreman]') }
       it { should contain_package('foreman-mysql2').that_requires('Class[foreman::install::repos::extra]') }
+    end
+  end
+
+  context 'on Ubuntu 12.04' do
+    let :facts do
+      default_facts.merge({
+        :lsbdistid              => 'ubuntu',
+        :lsbdistcodename        => 'precise',
+        :operatingsystem        => 'Ubuntu',
+        :operatingsystemrelease => '12.04',
+        :osfamily               => 'Debian',
+      })
+    end
+
+    describe 'without parameters' do
+      let :pre_condition do
+        "class {'foreman':}"
+      end
+
+      it { should contain_class('foreman::install::repos::extra').with({
+        :configure_scl_repo       => false,
+        :configure_epel_repo      => false,
+        :configure_brightbox_repo => true,
+      })}
     end
   end
 end

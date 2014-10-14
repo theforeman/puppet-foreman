@@ -27,13 +27,17 @@ class foreman::params {
   #define which interface passenger should listen on, undef means all interfaces
   $passenger_interface = ''
   # Choose whether you want to enable locations and organizations.
-  $locations_enabled      = false
-  $organizations_enabled  = false
-  $configure_epel_repo    = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
-  # Only configure extra SCL repos on EL clones, RHEL itself usually has RHSCL
-  $configure_scl_repo     = ($::osfamily == 'RedHat' and $::operatingsystem != 'RedHat' and $::operatingsystem != 'Fedora')
+  $locations_enabled     = false
+  $organizations_enabled = false
 
-# Advance configurations - no need to change anything here by default
+  # Additional software repos
+  $configure_epel_repo      = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
+  # Only configure extra SCL repos on EL clones, RHEL itself usually has RHSCL
+  $configure_scl_repo       = ($::osfamily == 'RedHat' and $::operatingsystem != 'RedHat' and $::operatingsystem != 'Fedora')
+  # Only configure Brightbox PPA on Ubuntu 12.04 (precise)
+  $configure_brightbox_repo = ($::operatingsystem == 'Ubuntu' and $::operatingsystemrelease == '12.04')
+
+# Advanced configuration - no need to change anything here by default
   # if set to true, no repo will be added by this module, letting you to
   # set it to some custom location.
   $custom_repo = false

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'foreman::install::repos::extra' do
-  describe 'when fully enabled' do
+  describe 'when EL repos are fully enabled' do
     let(:params) do
       {
         :configure_scl_repo  => true,
@@ -44,11 +44,35 @@ describe 'foreman::install::repos::extra' do
     end
   end
 
+  describe 'when deb repos are fully enabled' do
+    let(:params) do
+      {
+        :configure_brightbox_repo  => true,
+      }
+    end
+
+    context 'Ubuntu' do
+      let :facts do
+        {
+          :lsbdistid              => 'ubuntu',
+          :lsbdistcodename        => 'precise',
+          :operatingsystem        => 'Ubuntu',
+          :operatingsystemrelease => '12.04',
+          :osfamily               => 'Debian',
+        }
+      end
+
+      it { should contain_class('apt') }
+      it { should contain_apt__ppa('ppa:brightbox/ruby-ng') }
+    end
+  end
+
   describe 'when fully disabled' do
     let(:params) do
       {
-        :configure_scl_repo  => false,
-        :configure_epel_repo => false,
+        :configure_scl_repo       => false,
+        :configure_epel_repo      => false,
+        :configure_brightbox_repo => false,
       }
     end
 
@@ -63,6 +87,8 @@ describe 'foreman::install::repos::extra' do
 
       it { should_not contain_yumrepo('epel') }
       it { should_not contain_package('foreman-release-scl') }
+      it { should_not contain_class('apt') }
+      it { should have_apt__ppa_resource_count(0) }
     end
   end
 end

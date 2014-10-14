@@ -1,6 +1,7 @@
 fixtures:
   repositories:
     apache:           'git://github.com/puppetlabs/puppetlabs-apache'
+    apt:              'git://github.com/puppetlabs/puppetlabs-apt'
     concat:           'git://github.com/puppetlabs/puppetlabs-concat'
     concat_native:    'git://github.com/theforeman/puppet-concat'
     mysql:
