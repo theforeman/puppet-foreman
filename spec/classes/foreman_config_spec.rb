@@ -85,7 +85,7 @@ describe 'foreman::config' do
       it 'should contain foreman::config::passenger' do
         should contain_class('foreman::config::passenger').
           with_listen_on_interface('').
-          with_scl_prefix('ruby193').
+          with_ruby('/usr/bin/ruby193-ruby').
           that_comes_before('Anchor[foreman::config_end]')
       end
     end
@@ -218,7 +218,7 @@ describe 'foreman::config' do
 
       it { should contain_class('foreman::config::passenger').with({
         :listen_on_interface => '',
-        :scl_prefix          => '',
+        :ruby                => '',
       })}
     end
   end

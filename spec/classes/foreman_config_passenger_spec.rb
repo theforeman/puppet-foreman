@@ -45,6 +45,7 @@ describe 'foreman::config::passenger' do
         :prestart      => true,
         :min_instances => '1',
         :start_timeout => '600',
+        :ruby          => '/usr/bin/ruby193-ruby'
       } end
 
       it 'should contain the docroot' do
@@ -79,6 +80,12 @@ describe 'foreman::config::passenger' do
       it 'should include a pre-start http fragment' do
         should contain_apache__vhost('foreman').with({
           :custom_fragment => %r{^PassengerPreStart http://#{facts[:fqdn]}$},
+        })
+      end
+
+      it 'should include the Ruby interpreter' do
+        should contain_apache__vhost('foreman').with({
+          :custom_fragment => %r{^PassengerRuby /usr/bin/ruby193-ruby$},
         })
       end
 
@@ -149,6 +156,12 @@ describe 'foreman::config::passenger' do
       it 'should not include start timeout fragment on Squeeze' do
         should contain_apache__vhost('foreman-ssl').without({
           :custom_fragment => %r{^PassengerStartTimeout},
+        })
+      end
+
+      it 'should not include the Ruby interpreter' do
+        should contain_apache__vhost('foreman').without({
+          :custom_fragment => %r{^PassengerRuby},
         })
       end
     end

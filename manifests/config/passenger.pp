@@ -7,7 +7,7 @@
 # $listen_on_interface::    Specify which interface to bind passenger to.
 #                           Defaults to all interfaces.
 #
-# $scl_prefix::             RedHat SCL prefix.
+# $ruby::                   Path to Ruby interpreter
 #
 # $servername::             Servername for the vhost.
 #
@@ -34,7 +34,7 @@
 class foreman::config::passenger(
   $app_root            = $foreman::app_root,
   $listen_on_interface = $foreman::passenger_interface,
-  $scl_prefix          = $foreman::passenger_scl,
+  $ruby                = $foreman::real_passenger_ruby,
   $servername          = $foreman::servername,
   $ssl                 = $foreman::ssl,
   $ssl_ca              = $foreman::server_ssl_ca,

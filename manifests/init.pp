@@ -15,6 +15,9 @@
 #                             type:boolean
 #
 # $passenger_scl::            Software collection name (on RHEL currently 'ruby193', undef on others)
+#                             Deprecated, specify passenger_ruby and passenger_ruby_package instead.
+#
+# $passenger_ruby::           Ruby interpreter used to run Foreman under Passenger
 #
 # $passenger_ruby_package::   Package to install to provide Passenger libraries for the active Ruby
 #                             interpreter
@@ -163,6 +166,7 @@ class foreman (
   $authentication           = $foreman::params::authentication,
   $passenger                = $foreman::params::passenger,
   $passenger_scl            = $foreman::params::passenger_scl,
+  $passenger_ruby           = $foreman::params::passenger_ruby,
   $passenger_ruby_package   = $foreman::params::passenger_ruby_package,
   $use_vhost                = $foreman::params::use_vhost,
   $servername               = $foreman::params::servername,
@@ -231,6 +235,13 @@ class foreman (
   }
   if $passenger == false and $ipa_authentication {
     fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
+  }
+
+  if $passenger_scl {
+    warning("${::hostname}: foreman::passenger_scl is deprecated; please use passenger_ruby and passenger_ruby_package")
+    $real_passenger_ruby = "/usr/bin/${passenger_scl}-ruby"
+  } else {
+    $real_passenger_ruby = $passenger_ruby
   }
 
   class { 'foreman::install': } ~>
