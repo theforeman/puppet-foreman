@@ -47,8 +47,13 @@ class foreman::install {
     }
   }
 
-  if $foreman::passenger_scl {
-    package{ "${foreman::passenger_scl}-rubygem-passenger-native":
+  if $::foreman::passenger_ruby_package or $::foreman::passenger_scl {
+    # passenger_scl is deprecated, but keep fallback for SCL OSes
+    $real_passenger_ruby_package = $::foreman::passenger_scl ? {
+      undef   => $::foreman::passenger_ruby_package,
+      default => "${::foreman::passenger_scl}-rubygem-passenger-native",
+    }
+    package { $real_passenger_ruby_package:
       ensure  => installed,
       require => Class['apache'],
       before  => Class['apache::service'],

@@ -16,6 +16,9 @@
 #
 # $passenger_scl::            Software collection name (on RHEL currently 'ruby193', undef on others)
 #
+# $passenger_ruby_package::   Package to install to provide Passenger libraries for the active Ruby
+#                             interpreter
+#
 # $use_vhost::                Enclose apache configuration in <VirtualHost>...</VirtualHost>
 #                             type:boolean
 #
@@ -160,6 +163,7 @@ class foreman (
   $authentication           = $foreman::params::authentication,
   $passenger                = $foreman::params::passenger,
   $passenger_scl            = $foreman::params::passenger_scl,
+  $passenger_ruby_package   = $foreman::params::passenger_ruby_package,
   $use_vhost                = $foreman::params::use_vhost,
   $servername               = $foreman::params::servername,
   $ssl                      = $foreman::params::ssl,

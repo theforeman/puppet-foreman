@@ -76,6 +76,7 @@ class foreman::params {
           $puppet_basedir  = '/usr/share/ruby/vendor_ruby/puppet'
           $yumcode = "f${::operatingsystemrelease}"
           $passenger_scl = undef
+          $passenger_ruby_package = undef
           $plugin_prefix = 'rubygem-foreman_'
           case $::operatingsystemrelease {
             '19': {
@@ -99,6 +100,7 @@ class foreman::params {
           }
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
           $passenger_scl = 'ruby193'
+          $passenger_ruby_package = 'ruby193-rubygem-passenger-native'
           $plugin_prefix = 'ruby193-rubygem-foreman_'
           $passenger_prestart = true
           $passenger_min_instances = 1
@@ -109,6 +111,10 @@ class foreman::params {
     'Debian': {
       $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
       $passenger_scl = undef
+      $passenger_ruby_package = $::operatingsystemrelease ? {
+        '12.04' => 'passenger-common1.9.1',
+        default => undef,
+      }
       $plugin_prefix = 'ruby-foreman-'
       $init_config = '/etc/default/foreman'
       $init_config_tmpl = 'foreman.default'
@@ -138,6 +144,7 @@ class foreman::params {
           $yumcode = 'el6'
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
           $passenger_scl = 'ruby193'
+          $passenger_ruby_package = 'ruby193-rubygem-passenger-native'
           $plugin_prefix = 'ruby193-rubygem-foreman_'
           $init_config = '/etc/sysconfig/foreman'
           $init_config_tmpl = 'foreman.sysconfig'
@@ -158,6 +165,7 @@ class foreman::params {
       $puppet_basedir = undef
       $yumcode = undef
       $passenger_scl = undef
+      $passenger_ruby_package = undef
       $plugin_prefix = undef
     }
     default: {
