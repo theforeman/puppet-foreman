@@ -62,7 +62,6 @@ class foreman::puppetmaster (
 
     file { "${puppet_home}/yaml":
       ensure                  => directory,
-      recurse                 => true,
       owner                   => 'puppet',
       group                   => 'puppet',
       selinux_ignore_defaults => true,
