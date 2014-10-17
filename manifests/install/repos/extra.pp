@@ -41,5 +41,11 @@ class foreman::install::repos::extra(
   if $configure_brightbox_repo {
     include apt
     apt::ppa { 'ppa:brightbox/ruby-ng': }
+
+    # Setting alternatives to manual mode prevents the installation of 1.9 from later
+    # automatically switching them
+    alternatives { ['ruby', 'gem']:
+      mode => 'manual',
+    }
   }
 }
