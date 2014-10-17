@@ -1,5 +1,6 @@
 fixtures:
   repositories:
+    alternatives:     'git://github.com/adrienthebo/puppet-alternatives'
     apache:           'git://github.com/puppetlabs/puppetlabs-apache'
     apt:              'git://github.com/puppetlabs/puppetlabs-apt'
     concat:           'git://github.com/puppetlabs/puppetlabs-concat'
