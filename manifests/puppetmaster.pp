@@ -69,6 +69,21 @@ class foreman::puppetmaster (
       ensure => directory,
       owner  => $puppet_user,
       group  => $puppet_group,
+      mode   => '0750',
+    }
+
+    file { "${puppet_home}/yaml/node":
+      ensure => directory,
+      owner  => $puppet_user,
+      group  => $puppet_group,
+      mode   => '0750',
+    }
+
+    file { "${puppet_home}/yaml/facts":
+      ensure => directory,
+      owner  => $puppet_user,
+      group  => $puppet_group,
+      mode   => '0750',
     }
   }
 }
