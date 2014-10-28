@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.2.4
+* Set GPG keys for each Foreman repo
+* Enable EPEL7 GPG checking (#6015)
+* Wrap API parameters for new apipie-bindings
+* Fix errors with strict variables
+* Fix failed status calculation when log processor enabled
+
 ## 2.2.3
 * Fix apipie-bindings cache path to prevent installer/master conflict
 * Sync module configs
