@@ -54,6 +54,14 @@ class foreman::config::passenger(
   validate_bool($prestart)
 
   $docroot = "${app_root}/public"
+  $suburi_parts = split($foreman::foreman_url, '/')
+  $suburi_parts_count = size($suburi_parts) - 1
+  if $suburi_parts_count >= 3 {
+    $suburi_without_slash = join(values_at($suburi_parts, ["3-${suburi_parts_count}"]), '/')
+    if $suburi_without_slash {
+      $suburi = "/${suburi_without_slash}"
+    }
+  }
 
   include ::apache
   include ::apache::mod::headers
@@ -100,7 +108,7 @@ class foreman::config::passenger(
       priority        => '05',
       options         => ['SymLinksIfOwnerMatch'],
       custom_fragment => template('foreman/apache-fragment.conf.erb', 'foreman/_assets.conf.erb',
-                                  'foreman/_virt_host_include.erb'),
+                                  'foreman/_virt_host_include.erb', 'foreman/_suburi.conf.erb'),
     }
 
     if $ssl {
@@ -131,7 +139,7 @@ class foreman::config::passenger(
         ssl_options       => '+StdEnvVars',
         ssl_verify_depth  => '3',
         custom_fragment   => template('foreman/apache-fragment.conf.erb', 'foreman/_assets.conf.erb',
-                                      'foreman/_ssl_virt_host_include.erb'),
+                                      'foreman/_ssl_virt_host_include.erb', 'foreman/_suburi.conf.erb'),
       }
     }
   } else {
