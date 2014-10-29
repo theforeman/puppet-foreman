@@ -1,4 +1,6 @@
+<% unless @suburi %>
 PassengerAppRoot <%= @app_root %>
+<% end %>
 <% if @ruby and !@ruby.empty? -%>
 PassengerRuby <%= @ruby %>
 <% end -%>

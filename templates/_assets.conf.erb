@@ -1,4 +1,5 @@
 # Static public dir serving
+<% unless @suburi %>
 <Directory <%= @docroot %>>
 
   <IfVersion < 2.4>
@@ -42,4 +43,4 @@
   </IfModule>
 
 </Directory>
-
+<% end %>
