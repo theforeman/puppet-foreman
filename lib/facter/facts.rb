@@ -1,4 +1,4 @@
-require 'facter/util/sssd'
+require 'util/sssd'
 
 # == Fact: default_ipa_realm
 # == Fact: default_ipa_server
