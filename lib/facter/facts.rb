@@ -1,4 +1,9 @@
-require 'facter/util/sssd'
+begin
+  require 'facter/util/sssd'
+rescue LoadError
+  # Puppet 2 compatibility, facter/ dir is the load path, not lib/
+  require 'util/sssd'
+end
 
 # == Fact: default_ipa_realm
 # == Fact: default_ipa_server
