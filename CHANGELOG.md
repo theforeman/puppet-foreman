@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.3.0
+* Add foreman_config_entry resource type and provider
+* Configure Brightbox Ruby NG PPA on Ubuntu 12.04 (#7227)
+    * Set PassengerRuby to ruby1.9.1 and install appropriate Passenger package
+    * Keep Ruby alternative on 1.8 via alternatives module dependency (#7970)
+* Add foreman::plugin::ovirt_provision class for ovirt_provision_plugin
+* Install foreman-release-scl on EL clones (#7234)
+* Refacter SSSD facts for faster runs
+* Add docs to all classes/defines
+* Remove expensive directory recursion on $vardir/yaml
+* Deprecated: passenger_scl parameter has been replaced by passenger_ruby and
+  passenger_ruby_package
+
+## 2.2.4
+* Set GPG keys for each Foreman repo
+* Enable EPEL7 GPG checking (#6015)
+* Wrap API parameters for new apipie-bindings
+* Fix errors with strict variables
+* Fix failed status calculation when log processor enabled
+
 ## 2.2.3
 * Fix apipie-bindings cache path to prevent installer/master conflict
 * Sync module configs

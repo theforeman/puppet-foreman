@@ -1,11 +1,11 @@
 {
   "name":         "theforeman-foreman",
-  "version":      "2.2.3",
+  "version":      "2.3.0",
   "author":       "theforeman",
   "summary":      "Foreman server configuration",
   "license":      "GPLv3+",
   "source":       "git://github.com/theforeman/puppet-foreman",
-  "project_page": "https://github.com/theforeman/foreman-installer",
+  "project_page": "https://github.com/theforeman/puppet-foreman",
   "issues_url":   "https://github.com/theforeman/puppet-foreman/issues",
   "description":  "Module for configuring Foreman",
   "tags":         ["foreman"],
