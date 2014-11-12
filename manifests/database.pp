@@ -19,6 +19,8 @@ class foreman::database {
     foreman::rake { 'db:seed':
       environment => delete_undef_values($seed_env),
     } ~>
-    foreman::rake { 'apipie:cache': }
+    foreman::rake { 'apipie:cache':
+      timeout => 0,
+    }
   }
 }
