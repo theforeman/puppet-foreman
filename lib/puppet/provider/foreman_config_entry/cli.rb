@@ -8,16 +8,25 @@ Puppet::Type.type(:foreman_config_entry).provide(:cli) do
 
   def self.run_foreman_config(args = "", options = {})
     Dir.chdir('/usr/share/foreman') do
-      output = Puppet::Util::Execution.execute(
-        "/usr/share/foreman/script/foreman-config #{args}",
-        { :failonfail      => false,
-          :combine         => false,
-          :uid             => 'foreman',
-          :gid             => 'foreman' }.merge(options)
-      )
-      if $?.success?
-        output
+      command = "/usr/share/foreman/script/foreman-config #{args}"
+      if Puppet::PUPPETVERSION.to_f < 3.4
+        old_home = ENV['HOME']
+        begin
+          ENV['HOME'] = '/usr/share/foreman'
+          output, status = Puppet::Util::SUIDManager.run_and_capture(command, 'foreman', 'foreman')
+        ensure
+          ENV['HOME'] = old_home
+        end
+      else
+        output = Puppet::Util::Execution.execute(command,
+          { :failonfail      => false,
+            :combine         => false,
+            :uid             => 'foreman',
+            :gid             => 'foreman' }.merge(options)
+        )
+        status = $?
       end
+      output if status.success?
     end
   end
 
