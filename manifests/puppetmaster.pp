@@ -8,6 +8,8 @@ class foreman::puppetmaster (
   $enc              = $foreman::params::enc,
   $facts            = $foreman::params::facts,
   $puppet_home      = $foreman::params::puppet_home,
+  $puppet_user      = $foreman::params::puppet_user,
+  $puppet_group     = $foreman::params::puppet_group,
   $puppet_basedir   = $foreman::params::puppet_basedir,
   $ssl_ca           = $foreman::params::client_ssl_ca,
   $ssl_cert         = $foreman::params::client_ssl_cert,
@@ -34,7 +36,7 @@ class foreman::puppetmaster (
     content => template("${module_name}/puppet.yaml.erb"),
     mode    => '0640',
     owner   => 'root',
-    group   => 'puppet',
+    group   => $puppet_group,
   }
 
   if $reports {   # foreman reporter
@@ -56,22 +58,22 @@ class foreman::puppetmaster (
     file { '/etc/puppet/node.rb':
       source => "puppet:///modules/${module_name}/external_node_${enc_api}.rb",
       mode   => '0550',
-      owner  => 'puppet',
-      group  => 'puppet',
+      owner  => $puppet_user,
+      group  => $puppet_group,
     }
 
     file { "${puppet_home}/yaml":
       ensure                  => directory,
-      owner                   => 'puppet',
-      group                   => 'puppet',
+      owner                   => $puppet_user,
+      group                   => $puppet_group,
       selinux_ignore_defaults => true,
       require                 => Class['::puppet::server::install'],
     }
 
     file { "${puppet_home}/yaml/foreman":
       ensure  => directory,
-      owner   => 'puppet',
-      group   => 'puppet',
+      owner   => $puppet_user,
+      group   => $puppet_group,
       require => Class['::puppet::server::install'],
     }
   }

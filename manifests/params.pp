@@ -177,6 +177,7 @@ class foreman::params {
   }
   $puppet_home = '/var/lib/puppet'
   $puppet_user = 'puppet'
+  $puppet_group = 'puppet'
   $lower_fqdn = downcase($::fqdn)
   $passenger_scl = undef
 
