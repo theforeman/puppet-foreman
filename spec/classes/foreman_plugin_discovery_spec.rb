@@ -11,10 +11,6 @@ describe 'foreman::plugin::discovery' do
   context 'with enabled image installation' do
     let :params do
       {
-          :version => 'latest',
-          :source => 'http://yum.theforeman.org/discovery/releases/latest/',
-          :initrd => 'foreman-discovery-image-latest.el6.iso-img',
-          :kernel => 'foreman-discovery-image-latest.el6.iso-vmlinuz',
           :install_images => true
       }
     end
@@ -23,24 +19,25 @@ describe 'foreman::plugin::discovery' do
       should contain_foreman__plugin('discovery')
     end
 
-    it 'should download and install kernel file' do
-      should contain_foreman__remote_file("/var/lib/tftpboot/boot/foreman-discovery-image-latest.el6.iso-vmlinuz").
-                 with_remote_location('http://yum.theforeman.org/discovery/releases/latest/foreman-discovery-image-latest.el6.iso-vmlinuz')
+    it 'should download and install tarball' do
+      should contain_foreman__remote_file("/var/lib/tftpboot/boot/fdi-image-latest.tar").
+        with_remote_location('http://downloads.theforeman.org/discovery/releases/latest/fdi-image-latest.tar')
+    end
+    
+    it 'should extract the tarball' do
+      should contain_exec('untar fdi-image-latest.tar').with({
+        'command'     => "tar xf fdi-image-latest.tar",
+        'path'        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+        'cwd'         => '/var/lib/tftpboot/boot',
+        'creates'     => "/var/lib/tftpboot/boot/fdi-image/initrd0.img",
+      })
     end
 
-    it 'should download and install initrd file' do
-      should contain_foreman__remote_file("/var/lib/tftpboot/boot/foreman-discovery-image-latest.el6.iso-img").
-                 with_remote_location('http://yum.theforeman.org/discovery/releases/latest/foreman-discovery-image-latest.el6.iso-img')
-    end
   end
 
   context 'with disabled image installation' do
     let :params do
       {
-          :version => 'latest',
-          :source => 'http://yum.theforeman.org/discovery/releases/latest/',
-          :initrd => 'foreman-discovery-image-latest.el6.iso-img',
-          :kernel => 'foreman-discovery-image-latest.el6.iso-vmlinuz',
           :install_images => false
       }
     end
@@ -49,12 +46,8 @@ describe 'foreman::plugin::discovery' do
       should contain_foreman__plugin('discovery')
     end
 
-    it 'should not download and install kernel file' do
-      should_not contain_foreman__remote_file("/var/lib/tftpboot/boot/foreman-discovery-image-latest.el6.iso-vmlinuz")
-    end
-
-    it 'should not download and install initrd file' do
-      should_not contain_foreman__remote_file("/var/lib/tftpboot/boot/foreman-discovery-image-latest.el6.iso-img")
+    it 'should not download and install tarball' do
+      should_not contain_foreman__remote_file("/var/lib/tftpboot/boot/fdi-image-latest.tar")
     end
   end
 end
