@@ -4,44 +4,42 @@
 #
 # === Parameters:
 #
-# $version::         version string of discovery image, in form of x.y.z-r
-#
-# $source::          mirror url from which the image files should be obtained, you
-#                    can use http(s):// or file://
-#
-# $initrd::          name of initrd image file
-#
-# $kernel::          name of kernel file
-#
 # $install_images::  should the installer download and setup discovery images
 #                    for you? the average size is few hundreds of MB
 #                    type:boolean
 #
+# $tftp_root::       tftp root to install image into
+#
+# $source_url::      source URL to download from
+#
+# $image_name::      tarball with images
+#
 class foreman::plugin::discovery (
-  $version        = $foreman::plugin::discovery::params::version,
-  $source         = $foreman::plugin::discovery::params::source,
-  $initrd         = $foreman::plugin::discovery::params::initrd,
-  $kernel         = $foreman::plugin::discovery::params::kernel,
   $install_images = $foreman::plugin::discovery::params::install_images,
+  $tftp_root      = $foreman::plugin::discovery::params::tftp_root,
+  $source_url     = $foreman::plugin::discovery::params::source_url,
+  $image_name     = $foreman::plugin::discovery::params::image_name,
 ) inherits foreman::plugin::discovery::params {
 
+  $tftp_root_clean = regsubst($tftp_root, '/$', '')
   validate_bool($install_images)
+  validate_absolute_path($tftp_root_clean)
+  validate_string($source_url)
+  validate_string($image_name)
 
   foreman::plugin {'discovery':
   }
 
   if $install_images {
-    include ::tftp::params
-
-    foreman::remote_file {"${::tftp::params::root}boot/${kernel}":
-      remote_location => "${source}${kernel}",
+    foreman::remote_file {"${tftp_root_clean}/boot/${image_name}":
+      remote_location => "${source_url}${image_name}",
       mode            => 0644,
-      require         => File["${::tftp::params::root}boot"],
-    }
-    foreman::remote_file {"${::tftp::params::root}boot/${initrd}":
-      remote_location => "${source}${initrd}",
-      mode            => 0644,
-      require         => File["${::tftp::params::root}boot"],
+      require         => File["${tftp_root_clean}/boot"],
+    } ~> exec { "untar ${image_name}":
+      command => "tar xf ${image_name}",
+      path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+      cwd     => "${tftp_root_clean}/boot",
+      creates => "${tftp_root_clean}/boot/fdi-image/initrd0.img",
     }
   }
 }
