@@ -18,3 +18,4 @@ matrix:
     # No support for Ruby 2.0 before Puppet 3.2
     - rvm: 2.0.0
       env: PUPPET_VERSION=2.7.0
+bundler_args: --without development
