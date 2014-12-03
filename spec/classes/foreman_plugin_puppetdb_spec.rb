@@ -6,6 +6,6 @@ describe 'foreman::plugin::puppetdb' do
   } end
 
   it 'should call the plugin' do
-    should contain_foreman__plugin('puppetdb').with_package('ruby-puppetdb_foreman')
+    should contain_foreman__plugin('puppetdb').with_package('ruby-puppetdb-foreman')
   end
 end
