@@ -12,7 +12,7 @@ class foreman::plugin::puppetdb {
       }
     }
     'Debian': {
-      $package = 'ruby-puppetdb_foreman'
+      $package = 'ruby-puppetdb-foreman'
     }
     'Linux': {
       case $::operatingsystem {
