@@ -10,6 +10,7 @@ gem 'rspec-puppet', '>= 1'
 gem 'puppetlabs_spec_helper', '>= 0.8.0'
 gem 'puppet-lint', '>= 1'
 gem 'simplecov'
+gem 'puppet-blacksmith', '>= 3.1.0'
 gem 'json'
 gem 'webmock'
 
