@@ -90,7 +90,7 @@ describe 'foreman::install::repos' do
     let(:params) { {:repo => 'stable'} }
 
     it 'should fail' do
-      expect { subject }.to raise_error(/#{facts[:hostname]}: This module does not support operatingsystem #{facts[:operatingsystem]}/)
+      should raise_error(/#{facts[:hostname]}: This module does not support operatingsystem #{facts[:operatingsystem]}/)
     end
   end
 
@@ -105,7 +105,7 @@ describe 'foreman::install::repos' do
     let(:params) { {:repo => 'stable'} }
 
     it 'should fail' do
-      expect { subject }.to raise_error(/#{facts[:hostname]}: This module does not support osfamily #{facts[:osfamily]}/)
+      should raise_error(/#{facts[:hostname]}: This module does not support osfamily #{facts[:osfamily]}/)
     end
   end
 end

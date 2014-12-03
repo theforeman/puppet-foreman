@@ -21,7 +21,7 @@ describe 'foreman::cli' do
 
         describe '/etc/hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings' do
-            content = subject.resource('file', '/etc/hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
+            content = catalogue.resource('file', '/etc/hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
             content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
               ":foreman:",
               "  :enable_module: true",
@@ -34,7 +34,7 @@ describe 'foreman::cli' do
           it { should contain_file('/root/.hammer/cli.modules.d/foreman.yml').with_replace(false) }
 
           it 'should contain settings' do
-            content = subject.resource('file', '/root/.hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
+            content = catalogue.resource('file', '/root/.hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
             content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
               ":foreman:",
               "  :username: 'joe'",
@@ -71,7 +71,7 @@ describe 'foreman::cli' do
 
         describe '/etc/hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings from foreman' do
-            content = subject.resource('file', '/etc/hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
+            content = catalogue.resource('file', '/etc/hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
             content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
               ":foreman:",
               "  :enable_module: true",
@@ -82,7 +82,7 @@ describe 'foreman::cli' do
 
         describe '/root/.hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings from foreman' do
-            content = subject.resource('file', '/root/.hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
+            content = catalogue.resource('file', '/root/.hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
             content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
               ":foreman:",
               "  :username: 'joe'",

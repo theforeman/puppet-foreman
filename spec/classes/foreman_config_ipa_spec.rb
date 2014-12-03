@@ -30,9 +30,7 @@ describe 'foreman::config' do
           end
 
           it "will fail" do
-            expect {
-              should contain_exec('ipa-getkeytab')
-            }.to raise_error(Puppet::Error, /External authentication via IPA can only be enabled when passenger is used/)
+            should raise_error(Puppet::Error, /External authentication via IPA can only be enabled when passenger is used/)
           end
         end
 

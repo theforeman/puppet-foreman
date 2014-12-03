@@ -260,7 +260,7 @@ describe 'foreman::config' do
 
       it { should contain_class('foreman::config::passenger').with({
         :listen_on_interface => '',
-        :ruby                => '',
+        :ruby                => nil,
       })}
     end
   end

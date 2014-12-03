@@ -37,9 +37,7 @@ describe 'foreman::plugin::tasks' do
     end
 
     it 'should fail' do
-      expect {
-        should contain_foreman__plugin('tasks')
-      }.to raise_error(Puppet::Error, /foreman-tasks does not support osfamily/)
+      should raise_error(Puppet::Error, /foreman-tasks does not support osfamily/)
     end
   end
 end
