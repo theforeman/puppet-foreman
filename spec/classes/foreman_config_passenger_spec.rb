@@ -35,13 +35,14 @@ describe 'foreman::config::passenger' do
 
     describe 'with vhost and ssl' do
       let :params do {
-        :app_root  => '/usr/share/foreman',
-        :use_vhost => true,
-        :servername => facts[:fqdn],
-        :ssl       => true,
-        :ssl_cert  => 'cert.pem',
-        :ssl_key   => 'key.pem',
-        :ssl_ca    => 'ca.pem',
+        :app_root      => '/usr/share/foreman',
+        :use_vhost     => true,
+        :servername    => facts[:fqdn],
+        :ssl           => true,
+        :ssl_cert      => 'cert.pem',
+        :ssl_key       => 'key.pem',
+        :ssl_ca        => 'ca.pem',
+        :ssl_crl       => 'crl.pem',
         :prestart      => true,
         :min_instances => '1',
         :start_timeout => '600',
@@ -101,11 +102,34 @@ describe 'foreman::config::passenger' do
           :ssl_key                 => params[:ssl_key],
           :ssl_chain               => params[:ssl_chain],
           :ssl_ca                  => params[:ssl_ca],
+          :ssl_crl                 => params[:ssl_crl],
           :ssl_verify_client       => 'optional',
           :ssl_options             => '+StdEnvVars',
           :ssl_verify_depth        => '3',
+          :ssl_crl_check           => 'chain',
           :custom_fragment         => %r{^<Directory #{params[:app_root]}/public>$},
         })
+      end
+    end
+
+    describe 'with vhost and ssl, no CRL' do
+      let :params do {
+        :app_root      => '/usr/share/foreman',
+        :use_vhost     => true,
+        :servername    => facts[:fqdn],
+        :ssl           => true,
+        :ssl_cert      => 'cert.pem',
+        :ssl_key       => 'key.pem',
+        :ssl_ca        => 'ca.pem',
+        :prestart      => true,
+        :min_instances => '1',
+        :start_timeout => '600',
+        :ruby          => '/usr/bin/ruby193-ruby'
+      } end
+
+      it do
+        should contain_apache__vhost('foreman-ssl').without_ssl_crl
+        should contain_apache__vhost('foreman-ssl').without_ssl_crl_chain
       end
     end
   end

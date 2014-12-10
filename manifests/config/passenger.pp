@@ -19,6 +19,8 @@
 #
 # $ssl_ca::                 Location of the SSL CA file
 #
+# $ssl_crl::                Location of the SSL certificate revocation list file
+#
 # $use_vhost::              Whether to install a vhost. Note that using ssl and
 #                           no vhost is unsupported.
 #
@@ -41,6 +43,7 @@ class foreman::config::passenger(
   $ssl_chain           = $foreman::server_ssl_chain,
   $ssl_cert            = $foreman::server_ssl_cert,
   $ssl_key             = $foreman::server_ssl_key,
+  $ssl_crl             = $foreman::server_ssl_crl,
   $use_vhost           = $foreman::use_vhost,
   $user                = $foreman::user,
   $prestart            = $foreman::passenger_prestart,
@@ -127,6 +130,10 @@ class foreman::config::passenger(
         true  => "https://${servername}",
         false => undef,
       }
+      $ssl_crl_check = $ssl_crl ? {
+        undef   => undef,
+        default => 'chain',
+      }
 
       file { "${apache::confd_dir}/05-foreman-ssl.d":
         ensure  => 'directory',
@@ -156,6 +163,8 @@ class foreman::config::passenger(
         ssl_key                 => $ssl_key,
         ssl_chain               => $ssl_chain,
         ssl_ca                  => $ssl_ca,
+        ssl_crl                 => $ssl_crl,
+        ssl_crl_check           => $ssl_crl_check,
         ssl_verify_client       => 'optional',
         ssl_options             => '+StdEnvVars',
         ssl_verify_depth        => '3',
