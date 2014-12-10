@@ -66,53 +66,45 @@ describe 'foreman::config::passenger' do
 
       it 'should include a http vhost' do
         should contain_apache__vhost('foreman').with({
-          :ip              => nil,
-          :servername      => facts[:fqdn],
-          :serveraliases   => ['foreman'],
-          :docroot         => "#{params[:app_root]}/public",
-          :priority        => '05',
-          :options         => ['SymLinksIfOwnerMatch'],
-          :port            => 80,
-          :custom_fragment => %r{^<Directory #{params[:app_root]}/public>$},
-        })
-      end
-
-      it 'should include a pre-start http fragment' do
-        should contain_apache__vhost('foreman').with({
-          :custom_fragment => %r{^PassengerPreStart http://#{facts[:fqdn]}$},
-        })
-      end
-
-      it 'should include the Ruby interpreter' do
-        should contain_apache__vhost('foreman').with({
-          :custom_fragment => %r{^PassengerRuby /usr/bin/ruby193-ruby$},
+          :ip                      => nil,
+          :servername              => facts[:fqdn],
+          :serveraliases           => ['foreman'],
+          :add_default_charset     => 'UTF-8',
+          :docroot                 => "#{params[:app_root]}/public",
+          :priority                => '05',
+          :options                 => ['SymLinksIfOwnerMatch'],
+          :port                    => 80,
+          :passenger_min_instances => '1',
+          :passenger_pre_start     => "http://#{facts[:fqdn]}",
+          :passenger_start_timeout => '600',
+          :passenger_ruby          => "/usr/bin/ruby193-ruby",
+          :custom_fragment         => %r{^<Directory #{params[:app_root]}/public>$},
         })
       end
 
       it 'should include a https vhost' do
         should contain_apache__vhost('foreman-ssl').with({
-          :ip                => nil,
-          :servername        => facts[:fqdn],
-          :serveraliases     => ['foreman'],
-          :docroot           => "#{params[:app_root]}/public",
-          :priority          => '05',
-          :options           => ['SymLinksIfOwnerMatch'],
-          :port              => 443,
-          :ssl               => true,
-          :ssl_cert          => params[:ssl_cert],
-          :ssl_key           => params[:ssl_key],
-          :ssl_chain         => params[:ssl_chain],
-          :ssl_ca            => params[:ssl_ca],
-          :ssl_verify_client => 'optional',
-          :ssl_options       => '+StdEnvVars',
-          :ssl_verify_depth  => '3',
-          :custom_fragment   => %r{^<Directory #{params[:app_root]}/public>$},
-        })
-      end
-
-      it 'should include a pre-start https fragment' do
-        should contain_apache__vhost('foreman-ssl').with({
-          :custom_fragment => %r{^PassengerPreStart https://#{facts[:fqdn]}$},
+          :ip                      => nil,
+          :servername              => facts[:fqdn],
+          :serveraliases           => ['foreman'],
+          :add_default_charset     => 'UTF-8',
+          :docroot                 => "#{params[:app_root]}/public",
+          :priority                => '05',
+          :options                 => ['SymLinksIfOwnerMatch'],
+          :port                    => 443,
+          :passenger_min_instances => '1',
+          :passenger_pre_start     => "https://#{facts[:fqdn]}",
+          :passenger_start_timeout => '600',
+          :passenger_ruby          => "/usr/bin/ruby193-ruby",
+          :ssl                     => true,
+          :ssl_cert                => params[:ssl_cert],
+          :ssl_key                 => params[:ssl_key],
+          :ssl_chain               => params[:ssl_chain],
+          :ssl_ca                  => params[:ssl_ca],
+          :ssl_verify_client       => 'optional',
+          :ssl_options             => '+StdEnvVars',
+          :ssl_verify_depth        => '3',
+          :custom_fragment         => %r{^<Directory #{params[:app_root]}/public>$},
         })
       end
     end
@@ -137,32 +129,24 @@ describe 'foreman::config::passenger' do
         :ssl_key   => 'key.pem',
         :ssl_ca    => 'ca.pem',
         :prestart      => false,
-        :min_instances => '0',
-        :start_timeout => '0',
+        :min_instances => Undef.new,
+        :start_timeout => Undef.new,
       } end
 
-      it 'should not include a pre-start https fragment on Squeeze' do
-        should contain_apache__vhost('foreman-ssl').without({
-          :custom_fragment => %r{^PassengerPreStart},
-        })
+      it 'should not include a pre-start https on Squeeze' do
+        should contain_apache__vhost('foreman-ssl').without_passenger_pre_start
       end
 
-      it 'should not include min instances fragment on Squeeze' do
-        should contain_apache__vhost('foreman-ssl').without({
-          :custom_fragment => %r{^PassengerMinInstances},
-        })
+      it 'should not include min instances on Squeeze' do
+        should contain_apache__vhost('foreman-ssl').without_passenger_min_instances
       end
 
-      it 'should not include start timeout fragment on Squeeze' do
-        should contain_apache__vhost('foreman-ssl').without({
-          :custom_fragment => %r{^PassengerStartTimeout},
-        })
+      it 'should not include start timeout on Squeeze' do
+        should contain_apache__vhost('foreman-ssl').without_passenger_start_timeout
       end
 
       it 'should not include the Ruby interpreter' do
-        should contain_apache__vhost('foreman').without({
-          :custom_fragment => %r{^PassengerRuby},
-        })
+        should contain_apache__vhost('foreman').without_passenger_ruby
       end
     end
   end

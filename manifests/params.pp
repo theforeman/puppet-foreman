@@ -82,7 +82,7 @@ class foreman::params {
             '19': {
               $passenger_prestart = false
               $passenger_min_instances = 1
-              $passenger_start_timeout = 0
+              $passenger_start_timeout = undef
             }
             default: {
               $passenger_prestart = true
@@ -125,13 +125,13 @@ class foreman::params {
       case $::lsbdistcodename {
         /^(squeeze|precise)$/: {
           $passenger_prestart = false
-          $passenger_min_instances = 0
-          $passenger_start_timeout = 0
+          $passenger_min_instances = undef
+          $passenger_start_timeout = undef
         }
         /^wheezy$/: {
           $passenger_prestart = false
           $passenger_min_instances = 1
-          $passenger_start_timeout = 0
+          $passenger_start_timeout = undef
         }
         default: {
           $passenger_prestart = true

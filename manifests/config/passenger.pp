@@ -90,6 +90,11 @@ class foreman::config::passenger(
       $listen_interface = undef
     }
 
+    $http_prestart = $prestart ? {
+      true  => "http://${servername}",
+      false => undef,
+    }
+
     file { "${apache::confd_dir}/05-foreman.d":
       ensure  => 'directory',
       owner   => 'root',
@@ -100,18 +105,28 @@ class foreman::config::passenger(
     }
 
     apache::vhost { 'foreman':
-      servername      => $servername,
-      serveraliases   => ['foreman'],
-      ip              => $listen_interface,
-      port            => 80,
-      docroot         => $docroot,
-      priority        => '05',
-      options         => ['SymLinksIfOwnerMatch'],
-      custom_fragment => template('foreman/apache-fragment.conf.erb', 'foreman/_assets.conf.erb',
-                                  'foreman/_virt_host_include.erb', 'foreman/_suburi.conf.erb'),
+      add_default_charset     => 'UTF-8',
+      docroot                 => $docroot,
+      ip                      => $listen_interface,
+      options                 => ['SymLinksIfOwnerMatch'],
+      passenger_app_root      => $app_root,
+      passenger_min_instances => $min_instances,
+      passenger_pre_start     => $http_prestart,
+      passenger_start_timeout => $start_timeout,
+      passenger_ruby          => $ruby,
+      port                    => 80,
+      priority                => '05',
+      servername              => $servername,
+      serveraliases           => ['foreman'],
+      custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_virt_host_include.erb',
+                                          'foreman/_suburi.conf.erb'),
     }
 
     if $ssl {
+      $https_prestart = $prestart ? {
+        true  => "https://${servername}",
+        false => undef,
+      }
 
       file { "${apache::confd_dir}/05-foreman-ssl.d":
         ensure  => 'directory',
@@ -123,23 +138,29 @@ class foreman::config::passenger(
       }
 
       apache::vhost { 'foreman-ssl':
-        servername        => $servername,
-        serveraliases     => ['foreman'],
-        ip                => $listen_interface,
-        port              => 443,
-        docroot           => $docroot,
-        priority          => '05',
-        options           => ['SymLinksIfOwnerMatch'],
-        ssl               => true,
-        ssl_cert          => $ssl_cert,
-        ssl_key           => $ssl_key,
-        ssl_chain         => $ssl_chain,
-        ssl_ca            => $ssl_ca,
-        ssl_verify_client => 'optional',
-        ssl_options       => '+StdEnvVars',
-        ssl_verify_depth  => '3',
-        custom_fragment   => template('foreman/apache-fragment.conf.erb', 'foreman/_assets.conf.erb',
-                                      'foreman/_ssl_virt_host_include.erb', 'foreman/_suburi.conf.erb'),
+        add_default_charset     => 'UTF-8',
+        docroot                 => $docroot,
+        ip                      => $listen_interface,
+        options                 => ['SymLinksIfOwnerMatch'],
+        passenger_app_root      => $app_root,
+        passenger_min_instances => $min_instances,
+        passenger_pre_start     => $https_prestart,
+        passenger_start_timeout => $start_timeout,
+        passenger_ruby          => $ruby,
+        port                    => 443,
+        priority                => '05',
+        servername              => $servername,
+        serveraliases           => ['foreman'],
+        ssl                     => true,
+        ssl_cert                => $ssl_cert,
+        ssl_key                 => $ssl_key,
+        ssl_chain               => $ssl_chain,
+        ssl_ca                  => $ssl_ca,
+        ssl_verify_client       => 'optional',
+        ssl_options             => '+StdEnvVars',
+        ssl_verify_depth        => '3',
+        custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_ssl_virt_host_include.erb',
+                                            'foreman/_suburi.conf.erb'),
       }
     }
   } else {
