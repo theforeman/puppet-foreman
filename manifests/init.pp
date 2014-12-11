@@ -160,6 +160,8 @@
 # $websockets_ssl_key::       SSL key file to use when encrypting websocket connections
 # $websockets_ssl_cert::      SSL certificate file to use when encrypting websocket connections
 #
+# $smart_proxy::            Configure smart_proxy?
+#                           type:boolean
 class foreman (
   $foreman_url              = $foreman::params::foreman_url,
   $unattended               = $foreman::params::unattended,
@@ -223,6 +225,7 @@ class foreman (
   $websockets_encrypt       = $foreman::params::websockets_encrypt,
   $websockets_ssl_key       = $foreman::params::websockets_ssl_key,
   $websockets_ssl_cert      = $foreman::params::websockets_ssl_cert,
+  $smart_proxy            = $foreman::params::smart_proxy,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $foreman::db_type ? {
@@ -248,8 +251,12 @@ class foreman (
   class { 'foreman::config': } ~>
   class { 'foreman::database': } ~>
   class { 'foreman::service': } ->
-  Class['foreman'] ->
-  Foreman_smartproxy <| |>
+  Class['foreman']
+
+  if $smart_proxy {
+    Class['foreman'] ->
+    Foreman_smartproxy <| |>
+  }
 
   # Anchor these separately so as not to break
   # the notify between main classes
