@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.1
+* Ensure Foreman DB settings are initialised before Apache starts to prevent
+  race condition (#4611, #7353)
+* Remove timeout on apipie:cache rake task (#8381)
+* Fix puppetdb_foreman Debian package name
+
 ## 2.3.0
 * Add foreman_config_entry resource type and provider
 * Configure Brightbox Ruby NG PPA on Ubuntu 12.04 (#7227)
