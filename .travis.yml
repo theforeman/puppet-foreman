@@ -5,17 +5,20 @@ rvm:
   - 1.8.7
   - 1.9.3
   - 2.0.0
+  - 2.1.5
 env:
   - PUPPET_VERSION=2.7.0
-  - PUPPET_VERSION=3.2.0
-  - PUPPET_VERSION=3.3
+  - PUPPET_VERSION=3.5
 matrix:
-  allow_failures:
+  exclude:
     # No real support for Ruby 1.9.3 on Puppet 2.x
     - rvm: 1.9.3
       env: PUPPET_VERSION=2.7.0
-  exclude:
     # No support for Ruby 2.0 before Puppet 3.2
     - rvm: 2.0.0
       env: PUPPET_VERSION=2.7.0
+    # No support for Ruby 2.1 before Puppet 3.5
+    - rvm: 2.1.5
+      env: PUPPET_VERSION=2.7.0
 bundler_args: --without development
+sudo: false
