@@ -1,6 +1,8 @@
+<% unless @suburi %>
 PassengerAppRoot <%= @app_root %>
-<% if @scl_prefix and !@scl_prefix.empty? -%>
-  PassengerRuby /usr/bin/<%= @scl_prefix -%>-ruby
+<% end %>
+<% if @ruby and !@ruby.empty? -%>
+PassengerRuby <%= @ruby %>
 <% end -%>
 <%= "PassengerMinInstances #{@min_instances}\n" unless @min_instances == '0' -%>
 <%= "PassengerStartTimeout #{@start_timeout}\n" unless @start_timeout == '0' -%>

@@ -16,14 +16,14 @@ define foreman::install::repos::yum ($repo, $yumcode, $gpgcheck) {
     descr    => "Foreman ${repo} repository",
     baseurl  => "http://yum.theforeman.org/${repo_path}/${yumcode}/\$basearch",
     gpgcheck => $gpgcheck_enabled,
-    gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+    gpgkey   => "http://yum.theforeman.org/${repo_path}/RPM-GPG-KEY-foreman",
     enabled  => '1',
   }
   yumrepo { "${name}-source":
     descr    => "Foreman ${repo} source repository",
     baseurl  => "http://yum.theforeman.org/${repo_path}/${yumcode}/source",
     gpgcheck => $gpgcheck_enabled,
-    gpgkey   => 'http://yum.theforeman.org/RPM-GPG-KEY-foreman',
+    gpgkey   => "http://yum.theforeman.org/${repo_path}/RPM-GPG-KEY-foreman",
     enabled  => '0',
   }
 }

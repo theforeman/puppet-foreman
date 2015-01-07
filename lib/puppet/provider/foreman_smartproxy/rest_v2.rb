@@ -42,8 +42,10 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
 
   def create
     api.call(:create, {
-      'name' => resource[:name],
-      'url' => resource[:url]
+      :smart_proxy => {
+        :name => resource[:name],
+        :url  => resource[:url]
+      }
     })
   end
 
@@ -57,7 +59,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
   end
 
   def url=(value)
-    api.call(:update, :id => id, :url => value)
+    api.call(:update, { :id => id, :smart_proxy => { :url => value } })
   end
 
   def refresh_features!

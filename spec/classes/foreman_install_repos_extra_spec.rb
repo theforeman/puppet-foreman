@@ -1,112 +1,72 @@
 require 'spec_helper'
 
 describe 'foreman::install::repos::extra' do
-  let(:params) do
-    {
-      :configure_scl_repo  => true,
-      :configure_epel_repo => true,
-    }
-  end
 
-  context 'RHEL' do
-    let :facts do
-      {
-        :operatingsystem        => 'RedHat',
-        :operatingsystemrelease => '6.4',
-        :osfamily               => 'RedHat',
-      }
-    end
+  on_supported_os.each do |os, facts|
+    context "on #{os}" do
+      let(:facts) do
+        facts.merge({
+          :concat_basedir => '/tmp',
+        })
+      end
 
-    describe 'when fully enabled' do
-      it { should contain_yumrepo('epel').with({
-        :mirrorlist => 'https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch',
-        :gpgcheck   => 1,
-      }) }
-      it { should_not contain_package('centos-release-SCL') }
-      it { should_not contain_yumrepo('SCL') }
-    end
-  end
+      describe 'when repos are fully enabled' do
+        case facts[:osfamily]
+        when 'Debian'
+          if facts[:operatingsystem] == 'Ubuntu'
+            let(:params) do
+              {
+                :configure_brightbox_repo => true,
+              }
+            end
 
-  context 'RHEL 7' do
-    let :facts do
-      {
-        :operatingsystem        => 'RedHat',
-        :operatingsystemrelease => '7.0',
-        :osfamily               => 'RedHat',
-      }
-    end
+            it { should contain_class('apt') }
+            it { should contain_apt__ppa('ppa:brightbox/ruby-ng') }
+            it { should contain_alternatives('ruby') }
+            it { should contain_alternatives('gem') }
+          end
+        when 'RedHat'
+          if facts[:operatingsystem] != 'Fedora'
+            let(:params) do
+              {
+                :configure_scl_repo  => true,
+                :configure_epel_repo => true,
+              }
+            end
 
-    describe 'when fully enabled' do
-      it { should contain_yumrepo('epel').with({
-        :mirrorlist => 'https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch',
-        :gpgcheck   => 0,
-      }) }
-      it { should_not contain_package('centos-release-SCL') }
-      it { should_not contain_yumrepo('SCL') }
-    end
-  end
+            let(:gpgkey) do
+              case facts[:operatingsystemmajrelease]
+              when '6'
+                '0608B895'
+              when '7'
+                '352C64E5'
+              end
+            end
 
-  context 'CentOS' do
-    let :facts do
-      {
-        :operatingsystem        => 'CentOS',
-        :operatingsystemrelease => '6.4',
-        :osfamily               => 'RedHat',
-      }
-    end
+            it { should contain_yumrepo('epel').with({
+              :mirrorlist => "https://mirrors.fedoraproject.org/metalink?repo=epel-#{facts[:operatingsystemmajrelease]}&arch=$basearch",
+              :gpgcheck   => 1,
+              :gpgkey     => "https://fedoraproject.org/static/#{gpgkey}.txt",
+            }) }
+            it { should contain_package('foreman-release-scl') }
+          end
+        end
+      end
 
-    describe 'when fully enabled' do
-      it { should contain_yumrepo('epel').with_mirrorlist('https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch') }
-      it { should contain_package('centos-release-SCL') }
-      it { should_not contain_yumrepo('SCL') }
-    end
-  end
+      describe 'when fully disabled' do
+        let(:params) do
+          {
+            :configure_scl_repo       => false,
+            :configure_epel_repo      => false,
+            :configure_brightbox_repo => false,
+          }
+        end
 
-  context 'Scientific Linux' do
-    let :facts do
-      {
-        :operatingsystem        => 'Scientific',
-        :operatingsystemrelease => '6.4',
-        :osfamily               => 'RedHat',
-      }
-    end
-
-    describe 'when fully enabled' do
-      it { should contain_yumrepo('epel').with_mirrorlist('https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch') }
-      it { should_not contain_package('centos-release-SCL') }
-      it { should contain_yumrepo('SCL').with_baseurl('http://ftp.scientificlinux.org/linux/scientific/6/$basearch/external_products/softwarecollections/') }
-    end
-  end
-
-  context 'Fedora' do
-    let :facts do
-      {
-        :operatingsystem        => 'Fedora',
-        :operatingsystemrelease => '19',
-        :osfamily               => 'RedHat',
-      }
-    end
-
-    describe 'when fully enabled' do
-      it { should_not contain_yumrepo('epel') }
-      it { should_not contain_package('centos-release-SCL') }
-      it { should_not contain_yumrepo('SCL') }
-    end
-  end
-
-  context 'on debian' do
-    let :facts do
-      {
-        :operatingsystem        => 'Debian',
-        :operatingsystemrelease => 'wheezy',
-        :osfamily               => 'Debian',
-      }
-    end
-
-    describe 'when fully enabled' do
-      it { should_not contain_yumrepo('epel') }
-      it { should_not contain_package('centos-release-SCL') }
-      it { should_not contain_yumrepo('SCL') }
+        it { should_not contain_yumrepo('epel') }
+        it { should_not contain_package('foreman-release-scl') }
+        it { should_not contain_class('apt') }
+        it { should have_apt__ppa_resource_count(0) }
+      end
     end
   end
 end

@@ -1,3 +1,4 @@
+# Installs foreman-tasks plugin
 class foreman::plugin::tasks {
   case $::osfamily {
     'RedHat': {

@@ -1,3 +1,4 @@
+# Default parameters for foreman::plugin::discovery
 class foreman::plugin::discovery::params {
   $version         = 'latest'
   $source          = 'http://downloads.theforeman.org/discovery/releases/latest/'

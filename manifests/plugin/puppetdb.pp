@@ -1,3 +1,4 @@
+# Installs puppetdb_foreman plugin
 class foreman::plugin::puppetdb {
   case $::osfamily {
     'RedHat': {
@@ -11,7 +12,7 @@ class foreman::plugin::puppetdb {
       }
     }
     'Debian': {
-      $package = 'ruby-puppetdb_foreman'
+      $package = 'ruby-puppetdb-foreman'
     }
     'Linux': {
       case $::operatingsystem {

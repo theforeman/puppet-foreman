@@ -41,6 +41,19 @@ describe 'foreman::rake' do
         'environment' => ['HOME=/usr/share/foreman', 'SEED_USER=admin'],
         'logoutput'   => 'on_failure',
         'refreshonly' => true,
+        'timeout'     => nil,
+      })}
+    end
+
+    context 'with timeout' do
+      let(:params) { {'timeout' => 60 }}
+      it { should contain_exec('foreman-rake-db:migrate').with({
+        'command'     => '/usr/sbin/foreman-rake db:migrate',
+        'user'        => 'foreman',
+        'environment' => ['HOME=/usr/share/foreman'],
+        'timeout'     => 60,
+        'logoutput'   => 'on_failure',
+        'refreshonly' => true,
       })}
     end
   end

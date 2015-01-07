@@ -2,7 +2,9 @@
 class foreman::params {
 
 # Basic configurations
-  $foreman_url  = "https://${::fqdn}"
+  $foreman_url      = "https://${::fqdn}"
+  $foreman_user     = undef
+  $foreman_password = undef
   # Should foreman act as an external node classifier (manage puppet class
   # assignments)
   $enc          = true
@@ -25,12 +27,17 @@ class foreman::params {
   #define which interface passenger should listen on, undef means all interfaces
   $passenger_interface = ''
   # Choose whether you want to enable locations and organizations.
-  $locations_enabled      = false
-  $organizations_enabled  = false
-  $configure_epel_repo    = true
-  $configure_scl_repo     = true
+  $locations_enabled     = false
+  $organizations_enabled = false
 
-# Advance configurations - no need to change anything here by default
+  # Additional software repos
+  $configure_epel_repo      = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
+  # Only configure extra SCL repos on EL clones, RHEL itself usually has RHSCL
+  $configure_scl_repo       = ($::osfamily == 'RedHat' and $::operatingsystem != 'RedHat' and $::operatingsystem != 'Fedora')
+  # Only configure Brightbox PPA on Ubuntu 12.04 (precise)
+  $configure_brightbox_repo = ($::operatingsystem == 'Ubuntu' and $::operatingsystemrelease == '12.04')
+
+# Advanced configuration - no need to change anything here by default
   # if set to true, no repo will be added by this module, letting you to
   # set it to some custom location.
   $custom_repo = false
@@ -68,7 +75,8 @@ class foreman::params {
         'fedora': {
           $puppet_basedir  = '/usr/share/ruby/vendor_ruby/puppet'
           $yumcode = "f${::operatingsystemrelease}"
-          $passenger_scl = undef
+          $passenger_ruby = undef
+          $passenger_ruby_package = undef
           $plugin_prefix = 'rubygem-foreman_'
           case $::operatingsystemrelease {
             '19': {
@@ -91,7 +99,8 @@ class foreman::params {
             default => '/usr/share/ruby/vendor_ruby/puppet',
           }
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
-          $passenger_scl = 'ruby193'
+          $passenger_ruby = '/usr/bin/ruby193-ruby'
+          $passenger_ruby_package = 'ruby193-rubygem-passenger-native'
           $plugin_prefix = 'ruby193-rubygem-foreman_'
           $passenger_prestart = true
           $passenger_min_instances = 1
@@ -101,7 +110,14 @@ class foreman::params {
     }
     'Debian': {
       $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
-      $passenger_scl = undef
+      $passenger_ruby = $::operatingsystemrelease ? {
+        '12.04' => '/usr/bin/ruby1.9.1',
+        default => undef,
+      }
+      $passenger_ruby_package = $::operatingsystemrelease ? {
+        '12.04' => 'passenger-common1.9.1',
+        default => undef,
+      }
       $plugin_prefix = 'ruby-foreman-'
       $init_config = '/etc/default/foreman'
       $init_config_tmpl = 'foreman.default'
@@ -130,7 +146,8 @@ class foreman::params {
           $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
           $yumcode = 'el6'
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
-          $passenger_scl = 'ruby193'
+          $passenger_ruby = '/usr/bin/ruby193-ruby'
+          $passenger_ruby_package = 'ruby193-rubygem-passenger-native'
           $plugin_prefix = 'ruby193-rubygem-foreman_'
           $init_config = '/etc/sysconfig/foreman'
           $init_config_tmpl = 'foreman.sysconfig'
@@ -150,7 +167,8 @@ class foreman::params {
     windows: {
       $puppet_basedir = undef
       $yumcode = undef
-      $passenger_scl = undef
+      $passenger_ruby = undef
+      $passenger_ruby_package = undef
       $plugin_prefix = undef
     }
     default: {
@@ -159,7 +177,9 @@ class foreman::params {
   }
   $puppet_home = '/var/lib/puppet'
   $puppet_user = 'puppet'
+  $puppet_group = 'puppet'
   $lower_fqdn = downcase($::fqdn)
+  $passenger_scl = undef
 
   # If CA is specified, remote Foreman host will be verified in reports/ENC scripts
   $client_ssl_ca   = "${puppet_home}/ssl/certs/ca.pem"

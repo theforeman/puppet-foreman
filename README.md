@@ -4,16 +4,6 @@ Installs and configures Foreman.
 
 Part of the Foreman installer: http://github.com/theforeman/foreman-installer
 
-## ENC / Report Processors
-
-The current enc and report processor scripts are only compatible with Foreman 1.3.
-To get the old scripts, pass the appropriate API variables to `foreman::puppetmaster`
-
-    class { 'foreman::puppetmaster':
-      enc_api    => 'v1',
-      report_api => 'v1',
-    }
-
 ## Database support
 
 This module supports configuration of either SQLite, PostgreSQL or MySQL as the
@@ -23,6 +13,27 @@ parameter, or management disabled with `db_manage`.
 The default database is PostgreSQL, which will be fully installed and managed
 on the host this module is applied to.  If using MySQL, the puppetlabs-mysql
 module must be added to the modulepath, otherwise it's not required.
+
+## Support policy
+
+At any time, the module supports two releases, however the previous version
+may require parameters to be changed from their default values.  These should
+be noted below.
+
+Thus 'master' will support the upcoming major version and the current stable.
+The latest release (git tag, Puppet Forge) should support current and the
+previous stable release.
+
+## Foreman 1.6 support
+
+On Ubuntu 12.04 with Foreman 1.6, the move to configure Ruby 1.9 with Brightbox
+should be disabled:
+
+    class { 'foreman':
+      configure_brightbox_repo => false,
+      passenger_ruby           => '',
+      passenger_ruby_package   => '',
+    }
 
 # Contributing
 

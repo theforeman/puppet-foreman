@@ -85,9 +85,11 @@ describe 'foreman::config' do
       it 'should contain foreman::config::passenger' do
         should contain_class('foreman::config::passenger').
           with_listen_on_interface('').
-          with_scl_prefix('ruby193').
+          with_ruby('/usr/bin/ruby193-ruby').
           that_comes_before('Anchor[foreman::config_end]')
       end
+
+      it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }
     end
 
     describe 'without passenger' do
@@ -140,6 +142,46 @@ describe 'foreman::config' do
           with_content(/^:oauth_consumer_secret:\s*def$/).
           with({})
       end
+    end
+
+    describe 'with url ending with trailing slash' do
+      let :pre_condition do
+        "class {'foreman':
+          foreman_url => 'https://example.com/',
+        }"
+      end
+
+      it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }
+    end
+
+    describe 'with sub-uri' do
+      let :pre_condition do
+        "class {'foreman':
+          foreman_url => 'https://example.com/foreman',
+        }"
+      end
+
+      it { should contain_apache__vhost('foreman').with_custom_fragment(/Alias \/foreman/) }
+    end
+
+    describe 'with sub-uri ending with trailing slash' do
+      let :pre_condition do
+        "class {'foreman':
+          foreman_url => 'https://example.com/foreman/',
+        }"
+      end
+
+      it { should contain_apache__vhost('foreman').with_custom_fragment(/Alias \/foreman/) }
+    end
+
+    describe 'with sub-uri ending with more levels' do
+      let :pre_condition do
+        "class {'foreman':
+          foreman_url => 'https://example.com/apps/foreman/',
+        }"
+      end
+
+      it { should contain_apache__vhost('foreman').with_custom_fragment(/Alias \/apps\/foreman/) }
     end
   end
 
@@ -218,7 +260,7 @@ describe 'foreman::config' do
 
       it { should contain_class('foreman::config::passenger').with({
         :listen_on_interface => '',
-        :scl_prefix          => '',
+        :ruby                => '',
       })}
     end
   end
