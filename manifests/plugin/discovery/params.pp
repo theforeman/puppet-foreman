@@ -1,8 +1,9 @@
 # Default parameters for foreman::plugin::discovery
 class foreman::plugin::discovery::params {
-  $version         = 'latest'
-  $source          = 'http://downloads.theforeman.org/discovery/releases/latest/'
-  $initrd          = "foreman-discovery-image-${version}.el6.iso-img"
-  $kernel          = "foreman-discovery-image-${version}.el6.iso-vmlinuz"
-  $install_images  = false
+  include ::tftp::params
+
+  $install_images = false
+  $tftp_root      = $::tftp::params::root
+  $source_url     = 'http://downloads.theforeman.org/discovery/releases/latest/'
+  $image_name     = 'fdi-image-latest.tar'
 }

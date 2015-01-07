@@ -3,6 +3,9 @@ require 'spec_helper'
 describe 'foreman::cli' do
 
   on_supported_os.each do |os, facts|
+    next if only_test_os() and not only_test_os.include?(os)
+    next if exclude_test_os() and exclude_test_os.include?(os)
+
     context "on #{os}" do
       let(:facts) do
         facts.merge({
@@ -17,16 +20,15 @@ describe 'foreman::cli' do
           'password'    => 'secret',
         } end
 
-        it { should contain_package('foreman-cli').with_ensure('installed') }
+        it { should contain_package('foreman-cli').with_ensure('present') }
 
         describe '/etc/hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings' do
-            content = subject.resource('file', '/etc/hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
-            content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
+            verify_exact_contents(catalogue, '/etc/hammer/cli.modules.d/foreman.yml', [
               ":foreman:",
               "  :enable_module: true",
               "  :host: 'http://example.com'",
-            ]
+            ])
           end
         end
 
@@ -34,14 +36,13 @@ describe 'foreman::cli' do
           it { should contain_file('/root/.hammer/cli.modules.d/foreman.yml').with_replace(false) }
 
           it 'should contain settings' do
-            content = subject.resource('file', '/root/.hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
-            content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
+            verify_exact_contents(catalogue, '/root/.hammer/cli.modules.d/foreman.yml', [
               ":foreman:",
               "  :username: 'joe'",
               "  :password: 'secret'",
               "  :refresh_cache: false",
               "  :request_timeout: 120",
-            ]
+            ])
           end
         end
 
@@ -67,29 +68,27 @@ describe 'foreman::cli' do
            }"
         end
 
-        it { should contain_package('foreman-cli').with_ensure('installed') }
+        it { should contain_package('foreman-cli').with_ensure('present') }
 
         describe '/etc/hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings from foreman' do
-            content = subject.resource('file', '/etc/hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
-            content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
+            verify_exact_contents(catalogue, '/etc/hammer/cli.modules.d/foreman.yml', [
               ":foreman:",
               "  :enable_module: true",
               "  :host: 'https://#{facts[:fqdn]}'",
-            ]
+            ])
           end
         end
 
         describe '/root/.hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings from foreman' do
-            content = subject.resource('file', '/root/.hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
-            content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
+            verify_exact_contents(catalogue, '/root/.hammer/cli.modules.d/foreman.yml', [
               ":foreman:",
               "  :username: 'joe'",
               "  :password: 'secret'",
               "  :refresh_cache: false",
               "  :request_timeout: 120",
-            ]
+            ])
           end
         end
       end

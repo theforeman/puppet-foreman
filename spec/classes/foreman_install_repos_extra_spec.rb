@@ -3,6 +3,9 @@ require 'spec_helper'
 describe 'foreman::install::repos::extra' do
 
   on_supported_os.each do |os, facts|
+    next if only_test_os() and not only_test_os.include?(os)
+    next if exclude_test_os() and exclude_test_os.include?(os)
+
     context "on #{os}" do
       let(:facts) do
         facts.merge({
@@ -22,6 +25,7 @@ describe 'foreman::install::repos::extra' do
 
             it { should contain_class('apt') }
             it { should contain_apt__ppa('ppa:brightbox/ruby-ng') }
+            it { should contain_apt__ppa('ppa:brightbox/passenger-legacy') }
             it { should contain_alternatives('ruby') }
             it { should contain_alternatives('gem') }
           end

@@ -2,13 +2,13 @@ Puppet::Type.type(:foreman_config_entry).provide(:cli) do
 
   desc "foreman_config_entry's CLI provider"
 
-  confine :exists => '/usr/share/foreman/script/foreman-config'
+  confine :exists => '/usr/sbin/foreman-rake'
 
   mk_resource_methods
 
   def self.run_foreman_config(args = "", options = {})
     Dir.chdir('/usr/share/foreman') do
-      command = "/usr/share/foreman/script/foreman-config #{args}"
+      command = "/usr/sbin/foreman-rake -- config #{args}"
       if Puppet::PUPPETVERSION.to_f < 3.4
         old_home = ENV['HOME']
         begin
@@ -19,10 +19,11 @@ Puppet::Type.type(:foreman_config_entry).provide(:cli) do
         end
       else
         output = Puppet::Util::Execution.execute(command,
-          { :failonfail      => false,
-            :combine         => false,
-            :uid             => 'foreman',
-            :gid             => 'foreman' }.merge(options)
+          { :failonfail         => false,
+            :combine            => false,
+            :custom_environment => { 'HOME' => '/usr/share/foreman' },
+            :uid                => 'foreman',
+            :gid                => 'foreman' }.merge(options)
         )
         status = $?
       end
@@ -38,7 +39,7 @@ Puppet::Type.type(:foreman_config_entry).provide(:cli) do
     output = run_foreman_config
     return if output.nil?
     output.split("\n").map do |line|
-        name, value = line.split(':')
+        name, value = line.split(':', 2)
         new(
           :name  => name,
           :value => value.strip
@@ -73,7 +74,7 @@ Puppet::Type.type(:foreman_config_entry).provide(:cli) do
   end
 
   def value=(value)
-    return if dry
+    return if resource[:dry]
     run_foreman_config("-k '#{name}' -v '#{value}'", :combine => true, :failonfail => true)
     @property_hash[:value] = value
   end

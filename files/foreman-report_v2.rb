@@ -6,6 +6,7 @@
 require 'puppet'
 require 'net/http'
 require 'net/https'
+require 'rbconfig'
 require 'uri'
 require 'yaml'
 begin
@@ -23,12 +24,15 @@ rescue LoadError
   end
 end
 
-$settings_file = "/etc/puppet/foreman.yaml"
+if RbConfig::CONFIG['host_os'] =~ /freebsd|dragonfly/i
+  $settings_file = "/usr/local/etc/puppet/foreman.yaml"
+else
+  $settings_file = "/etc/puppet/foreman.yaml"
+end
 
 SETTINGS = YAML.load_file($settings_file)
 
 Puppet::Reports.register_report(:foreman) do
-  Puppet.settings.use(:reporting)
   desc "Sends reports directly to Foreman"
 
   def process

@@ -3,6 +3,9 @@ require 'spec_helper'
 describe 'foreman::config' do
 
   on_supported_os.each do |os, facts|
+    next if only_test_os() and not only_test_os.include?(os)
+    next if exclude_test_os() and exclude_test_os.include?(os)
+
     if facts[:osfamily] == 'RedHat'
       context "on #{os}" do
         let(:facts) do
@@ -30,9 +33,7 @@ describe 'foreman::config' do
           end
 
           it "will fail" do
-            expect {
-              should contain_exec('ipa-getkeytab')
-            }.to raise_error(Puppet::Error, /External authentication via IPA can only be enabled when passenger is used/)
+            should raise_error(Puppet::Error, /External authentication via IPA can only be enabled when passenger is used/)
           end
         end
 

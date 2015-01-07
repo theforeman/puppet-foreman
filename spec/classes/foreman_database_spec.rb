@@ -1,8 +1,11 @@
 require 'spec_helper'
 
-describe 'foreman::install' do
+describe 'foreman::database' do
 
   on_supported_os.each do |os, facts|
+    next if only_test_os() and not only_test_os.include?(os)
+    next if exclude_test_os() and exclude_test_os.include?(os)
+
     context "on #{os}" do
       let(:facts) do
         facts.merge({
@@ -22,7 +25,7 @@ describe 'foreman::install' do
         it { should contain_foreman__rake('db:migrate') }
         it { should contain_foreman_config_entry('db_pending_seed') }
         it { should contain_foreman__rake('db:seed') }
-        it { should contain_foreman__rake('apipie:cache') }
+        it { should contain_foreman__rake('apipie:cache:index') }
       end
 
       describe 'with seed parameters' do
@@ -38,6 +41,33 @@ describe 'foreman::install' do
           with_environment({
             'SEED_ADMIN_USER'     => 'joe',
             'SEED_ADMIN_PASSWORD' => 'secret',
+          })
+        }
+      end
+
+      describe 'with apipie_task' do
+        let :pre_condition do
+          "class {'foreman':
+             apipie_task => 'apipie:cache',
+           }"
+        end
+        it { should contain_foreman__rake('apipie:cache') }
+      end
+
+      describe 'with mysql db_type' do
+        let :pre_condition do
+          "class { 'foreman':
+            db_type => 'mysql'
+          }"
+        end
+
+        it { should_not contain_class('foreman::database::postgresql') }
+        it { should contain_class('foreman::database::mysql') }
+        it { should contain_class('mysql::server') }
+        it { should contain_class('mysql::server::account_security') }
+        it {
+          should contain_mysql__db('foreman').with({
+            :user => 'foreman',
           })
         }
       end

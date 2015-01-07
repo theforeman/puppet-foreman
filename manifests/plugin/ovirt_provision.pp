@@ -1,34 +1,14 @@
-# Installs ovirt_provision plugin
-class foreman::plugin::ovirt_provision {
-  case $::osfamily {
-    'RedHat': {
-      case $::operatingsystem {
-        'fedora': {
-          $package = 'rubygem-ovirt_provision_plugin'
-        }
-        default: {
-          $package = 'ruby193-rubygem-ovirt_provision_plugin'
-        }
-      }
-    }
-    'Debian': {
-      $package = 'ruby-ovirt-provision-plugin'
-    }
-    'Linux': {
-      case $::operatingsystem {
-        'Amazon': {
-          $package = 'ruby193-ovirt_provision_plugin'
-        }
-        default: {
-          fail("${::hostname}: ovirt_provision_plugin does not support operatingsystem ${::operatingsystem}")
-        }
-      }
-    }
-    default: {
-      fail("${::hostname}: ovirt_provision_plugin does not support osfamily ${::osfamily}")
-    }
-  }
-
+# = oVirt Provisioning Plugin
+#
+# Installs the ovirt_provision plugin
+#
+# === Parameters:
+#
+# $package:: Package name to install, use ruby193-rubygem-ovirt_provision_plugin on Foreman 1.8/1.9 on EL
+#
+class foreman::plugin::ovirt_provision (
+  $package = $foreman::plugin::ovirt_provision::params::package,
+) inherits foreman::plugin::ovirt_provision::params {
   foreman::plugin {'ovirt_provision':
     package => $package,
   }

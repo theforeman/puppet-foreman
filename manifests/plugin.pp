@@ -1,6 +1,9 @@
 # Installs the package for a given Foreman plugin
 define foreman::plugin(
-  $package = "${foreman::plugin_prefix}${title}"
+  $version     = $foreman::version,
+  $package     = "${foreman::plugin_prefix}${title}",
+  $config_file = "${foreman::plugin_config_dir}/foreman_${title}.yaml",
+  $config      = undef,
 ) {
   # Debian gem2deb converts underscores to hyphens
   case $::osfamily {
@@ -12,7 +15,17 @@ define foreman::plugin(
     }
   }
   package { $real_package:
-    ensure => installed,
-    notify => Class['foreman::service'],
+    ensure => $version,
+  }
+
+  if $config {
+    file { $config_file:
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => $config,
+      require => Package[$real_package],
+    }
   }
 }
