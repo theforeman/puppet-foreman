@@ -35,7 +35,7 @@
 #                             set it to some custom location.
 #                             type:boolean
 #
-# $repo::                     This can be stable, rc, or nightly
+# $repo::                     This can be stable, nightly or a specific version i.e. 1.7
 #
 # $configure_epel_repo::      If disabled the EPEL repo will not be configured on RedHat family systems.
 #                             type:boolean
