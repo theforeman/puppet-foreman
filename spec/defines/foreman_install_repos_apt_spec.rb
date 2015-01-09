@@ -19,12 +19,12 @@ describe 'foreman::install::repos::apt' do
     end
   end
 
-  context 'with repo => rc' do
-    let(:params) { {:repo => 'rc'} }
+  context 'with repo => 1.7' do
+    let(:params) { {:repo => '1.7'} }
 
-    it 'should add the rc repo' do
+    it 'should add the 1.7 repo' do
       should contain_file('/etc/apt/sources.list.d/foreman.list') \
-        .with_content("deb http://deb.theforeman.org/ squeeze rc\ndeb http://deb.theforeman.org/ plugins rc\n")
+        .with_content("deb http://deb.theforeman.org/ squeeze 1.7\ndeb http://deb.theforeman.org/ plugins 1.7\n")
     end
   end
 

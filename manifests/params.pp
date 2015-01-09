@@ -41,7 +41,7 @@ class foreman::params {
   # if set to true, no repo will be added by this module, letting you to
   # set it to some custom location.
   $custom_repo = false
-  # this can be stable, rc, or nightly
+  # this can be stable, or nightly
   $repo        = 'stable'
   $railspath   = '/usr/share'
   $app_root    = "${railspath}/foreman"
