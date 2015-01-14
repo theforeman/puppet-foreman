@@ -10,8 +10,8 @@ class foreman::params {
   $enc          = true
   # Should foreman receive reports from puppet
   $reports      = true
-  # Should foreman recive facts from puppet
-  $facts        = true
+  # Should foreman receive facts from puppet
+  $receive_facts = true
   # should foreman manage host provisioning as well
   $unattended   = true
   # Enable users authentication (default user:admin pw:changeme)
