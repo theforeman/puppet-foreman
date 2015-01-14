@@ -181,7 +181,6 @@ class foreman::params {
   $puppet_user = 'puppet'
   $puppet_group = 'puppet'
   $lower_fqdn = downcase($::fqdn)
-  $passenger_scl = undef
 
   # If CA is specified, remote Foreman host will be verified in reports/ENC scripts
   $client_ssl_ca   = "${puppet_home}/ssl/certs/ca.pem"
