@@ -36,7 +36,7 @@
 class foreman::config::passenger(
   $app_root            = $foreman::app_root,
   $listen_on_interface = $foreman::passenger_interface,
-  $ruby                = $foreman::real_passenger_ruby,
+  $ruby                = $foreman::passenger_ruby,
   $servername          = $foreman::servername,
   $ssl                 = $foreman::ssl,
   $ssl_ca              = $foreman::server_ssl_ca,
