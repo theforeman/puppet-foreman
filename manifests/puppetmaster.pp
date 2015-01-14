@@ -6,7 +6,7 @@ class foreman::puppetmaster (
   $foreman_password = $foreman::params::foreman_password,
   $reports          = $foreman::params::reports,
   $enc              = $foreman::params::enc,
-  $facts            = $foreman::params::facts,
+  $receive_facts    = $foreman::params::receive_facts,
   $puppet_home      = $foreman::params::puppet_home,
   $puppet_user      = $foreman::params::puppet_user,
   $puppet_group     = $foreman::params::puppet_group,
