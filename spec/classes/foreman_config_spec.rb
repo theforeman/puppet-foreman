@@ -20,7 +20,13 @@ describe 'foreman::config' do
 
     describe 'without parameters' do
       let :pre_condition do
-        "class {'foreman':}"
+        <<-eos
+          class{
+            'apache':
+              default_vhost => false,
+          }
+          include foreman
+        eos
       end
 
       it 'should set up the config' do
@@ -82,7 +88,7 @@ describe 'foreman::config' do
 
       it 'should contain foreman::config::passenger' do
         should contain_class('foreman::config::passenger').
-          with_listen_on_interface(nil).
+          with_ip(nil).
           with_ruby('/usr/bin/ruby193-ruby').
           that_comes_before('Anchor[foreman::config_end]')
       end
@@ -100,15 +106,15 @@ describe 'foreman::config' do
       it { should_not contain_class('foreman::config::passenger') }
     end
 
-    describe 'with passenger interface' do
+    describe 'with passenger ip' do
       let :pre_condition do
         "class {'foreman':
-          passenger_interface => 'lo',
+          passenger_ip => '127.0.0.1',
         }"
       end
 
       it { should contain_class('foreman::config::passenger').with({
-        :listen_on_interface => 'lo',
+        :ip => '127.0.0.1',
       })}
     end
 
@@ -323,7 +329,7 @@ describe 'foreman::config' do
       end
 
       it { should contain_class('foreman::config::passenger').with({
-        :listen_on_interface => nil,
+        :ip                  => nil,
         :ruby                => nil,
       })}
     end

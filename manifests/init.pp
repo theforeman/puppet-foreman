@@ -102,8 +102,7 @@
 #
 # $organizations_enabled::     	Enable organizations?
 #                              	type:boolean
-#
-# $passenger_interface::       	Defines which network interface passenger should listen on, undef means all interfaces
+# $passenger_ip::              	Defines which IP address passenger should listen on, undef means any IP address
 #
 # $passenger_prestart::        	Pre-start the first passenger worker instance process during httpd start.
 #                              	type:boolean
@@ -230,7 +229,7 @@ class foreman (
   $puppet_home               = $::foreman::params::puppet_home,
   $locations_enabled         = $::foreman::params::locations_enabled,
   $organizations_enabled     = $::foreman::params::organizations_enabled,
-  $passenger_interface       = $::foreman::params::passenger_interface,
+  $passenger_ip              = $::foreman::params::passenger_ip,
   $server_ssl_ca             = $::foreman::params::server_ssl_ca,
   $server_ssl_chain          = $::foreman::params::server_ssl_chain,
   $server_ssl_cert           = $::foreman::params::server_ssl_cert,
