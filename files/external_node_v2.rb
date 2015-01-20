@@ -14,7 +14,9 @@ $settings_file = "/etc/puppet/foreman.yaml"
 SETTINGS = YAML.load_file($settings_file)
 
 # Default external encoding
-Encoding.default_external = Encoding::UTF_8
+if defined?(Encoding)
+  Encoding.default_external = Encoding::UTF_8
+end
 
 def url
   SETTINGS[:url] || raise("Must provide URL in #{$settings_file}")
