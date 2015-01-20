@@ -13,6 +13,11 @@ $settings_file = "/etc/puppet/foreman.yaml"
 
 SETTINGS = YAML.load_file($settings_file)
 
+# Default external encoding
+if defined?(Encoding)
+  Encoding.default_external = Encoding::UTF_8
+end
+
 def url
   SETTINGS[:url] || raise("Must provide URL in #{$settings_file}")
 end
@@ -101,6 +106,14 @@ def build_body(certname,filename)
   facts        = File.read(filename)
   puppet_facts = YAML::load(facts.gsub(/\!ruby\/object.*$/,''))
   hostname     = puppet_facts['values']['fqdn'] || certname
+  
+  # filter any non-printable char from the value, if it is a String
+  puppet_facts['values'].each do |key, val|
+    if val.is_a? String
+      puppet_facts['values'][key] = val.scan(/[[:print:]]/).join
+    end
+  end
+  
   {'facts' => puppet_facts['values'], 'name' => hostname, 'certname' => certname}
 end
 
