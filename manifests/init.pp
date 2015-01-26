@@ -37,7 +37,7 @@
 # $configure_epel_repo::      If disabled the EPEL repo will not be configured on RedHat family systems.
 #                             type:boolean
 #
-# $configure_scl_repo::       If disabled the the SCL repo will not be configured on Red Hat clone systems.
+# $configure_scl_repo::       If disabled the SCL repo will not be configured on Red Hat clone systems.
 #                             (Currently only installs repos for CentOS and Scientific)
 #                             type:boolean
 #
