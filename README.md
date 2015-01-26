@@ -24,17 +24,6 @@ Thus 'master' will support the upcoming major version and the current stable.
 The latest release (git tag, Puppet Forge) should support current and the
 previous stable release.
 
-## Foreman 1.6 support
-
-On Ubuntu 12.04 with Foreman 1.6, the move to configure Ruby 1.9 with Brightbox
-should be disabled:
-
-    class { 'foreman':
-      configure_brightbox_repo => false,
-      passenger_ruby           => '',
-      passenger_ruby_package   => '',
-    }
-
 # Contributing
 
 * Fork the project
