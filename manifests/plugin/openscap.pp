@@ -7,8 +7,13 @@
 # $configure_openscap_repo::  Enable custom yum repo with packages needed for foreman_openscap,
 #                             type:boolean
 #
+# $scap_client_module_dir::   if you set a directory here, installer will upload foreman_scap_client
+#                             puppet module into this directory for you
+#                             e.g. /etc/puppet/environments/production/modules
+#
 class foreman::plugin::openscap (
   $configure_openscap_repo = true,
+  $scap_client_module_dir  = undef,
 ) {
   validate_bool($configure_openscap_repo)
 
@@ -37,6 +42,14 @@ class foreman::plugin::openscap (
       }
 
       foreman::plugin {'openscap': }
+
+      if $scap_client_module_dir {
+        file { "${scap_client_module_dir}/foreman_scap_client":
+          ensure  => directory,
+          source  => '/usr/share/foreman-installer/modules/foreman_scap_client',
+          recurse => true,
+        }
+      }
 
     }
     default: {
