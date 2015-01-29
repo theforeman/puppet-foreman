@@ -12,11 +12,11 @@
 #        foreman_user => 'my_api_foreman_user',
 #        foreman_pass => 'my_api_foreman_pass' }
 #
-# 'item' may be: hosts, puppetclasses, fact_values, environments, hostgroups
+# 'item' may be: environments, fact_values, hosts, hostgroups, puppetclasses, smart_proxies, subnets
 # 'search' is your actual search query.
-# 'per_page' specifies the maxmnum number of results you'd like to receive. 
+# 'per_page' specifies the maximum number of results you'd like to receive.
 #            This defaults to '20' which is consistent with what you'd get from
-#            Foreman if you didnt specify anything.
+#            Foreman if you didn't specify anything.
 # 'foreman_url' is your actual foreman server address
 # 'foreman_user' is the username of an account with API access
 # 'foreman_pass" is the password of an account with API access
@@ -25,7 +25,7 @@
 # $hosts = foreman($f)
 #
 # Note: If you're using this in a template, you may be receiving an array of
-# hashes. So you might need to use two loops to get the values you need. 
+# hashes. So you might need to use two loops to get the values you need.
 #
 # Happy Foreman API-ing!
 
@@ -47,7 +47,7 @@ module Puppet::Parser::Functions
     foreman_pass = args_hash["foreman_pass"] || "changeme"          # on the same box
 
     # extend this as required
-    searchable_items = %w{ hosts puppetclasses fact_values environments hostgroups }
+    searchable_items = %w{ environments fact_values hosts hostgroups puppetclasses smart_proxies subnets }
     raise Puppet::ParseError, "Foreman: Invalid item to search on: #{item}, must be one of #{searchable_items.join(", ")}." unless searchable_items.include?(item)
 
     begin
