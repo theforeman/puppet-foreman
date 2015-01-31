@@ -1,8 +1,31 @@
+[![Puppet Forge](http://img.shields.io/puppetforge/v/theforeman/foreman.svg)](https://forge.puppetlabs.com/theforeman/foreman)
+[![Build Status](https://travis-ci.org/theforeman/puppet-foreman.svg?branch=master)](https://travis-ci.org/theforeman/puppet-foreman)
+
 # Puppet module for managing Foreman
 
-Installs and configures Foreman.
+Installs and configures [Foreman](http://theforeman.org), part of the [Foreman
+installer](http://github.com/theforeman/foreman-installer) or to be used as a
+Puppet module.
 
-Part of the Foreman installer: http://github.com/theforeman/foreman-installer
+Many Foreman plugins can be installed by adding additional `foreman::plugin::*`
+classes, extra compute resource support via `foreman::compute::*` classes and
+the Hammer CLI can be installed by adding `foreman::cli`.
+
+By default, it configures Foreman to run under Apache and Passenger plus
+with a PostgreSQL database.  A standalone service can be configured instead by
+setting `passenger` to false, though this isn't recommended in production.
+
+The web interface is configured to use Puppet's SSL certificates by default, so
+ensure they're present first, reconfigure `server_ssl_*` or disable the `ssl`
+parameter.  When used with the 'puppet' module, it will generate a new CA and
+the required certificate.
+
+Lots of parameters are supplied to tune the default installation, which may be
+found in the class documentation at the top of each manifest.
+
+Other modules may be used in combination with this one: [puppet](https://github.com/theforeman/puppet-puppet)
+for managing a Puppet master and agent, and [foreman_proxy](https://github.com/theforeman/puppet-foreman_proxy)
+to configure Foreman's Smart Proxy and related services.
 
 ## Database support
 
@@ -29,6 +52,11 @@ previous stable release.
 * Fork the project
 * Commit and push until you are happy with your contribution
 * Send a pull request with a description of your changes
+
+See the CONTRIBUTING.md file for much more information.
+
+Adding new `foreman::plugin::*` classes is a very useful place to start
+contributing to this module.
 
 # More info
 
