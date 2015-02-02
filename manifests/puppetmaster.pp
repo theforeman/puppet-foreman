@@ -47,6 +47,7 @@ class foreman::puppetmaster (
       group   => 'root',
       source  => "puppet:///modules/${module_name}/foreman-report_${report_api}.rb",
       require => Exec['Create Puppet Reports dir'],
+      notify  => Class['::puppet::server::service'],
     }
   }
 
