@@ -40,18 +40,19 @@ class foreman::params {
 # Advanced configuration - no need to change anything here by default
   # if set to true, no repo will be added by this module, letting you to
   # set it to some custom location.
-  $custom_repo = false
+  $custom_repo       = false
   # this can be stable, or nightly
-  $repo        = 'stable'
-  $railspath   = '/usr/share'
-  $app_root    = "${railspath}/foreman"
-  $manage_user = true
-  $user        = 'foreman'
-  $group       = 'foreman'
-  $user_groups = ['puppet']
-  $environment = 'production'
-  $gpgcheck    = true
-  $version     = 'present'
+  $repo              = 'stable'
+  $railspath         = '/usr/share'
+  $app_root          = "${railspath}/foreman"
+  $plugin_config_dir = '/etc/foreman/plugins'
+  $manage_user       = true
+  $user              = 'foreman'
+  $group             = 'foreman'
+  $user_groups       = ['puppet']
+  $environment       = 'production'
+  $gpgcheck          = true
+  $version           = 'present'
 
   $puppetmaster_timeout = 60
 
