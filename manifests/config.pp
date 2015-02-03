@@ -32,7 +32,7 @@ class foreman::config {
     ensure  => directory,
   }
 
-  if $manage_user {
+  if $foreman::manage_user {
     user { $foreman::user:
       ensure  => 'present',
       shell   => '/bin/false',
