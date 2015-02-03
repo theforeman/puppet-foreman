@@ -1,5 +1,15 @@
 # Installs puppetdb_foreman plugin
-class foreman::plugin::puppetdb {
+#
+# === Parameters:
+#
+# $enabled::                Whether to enable the plugin
+#
+# $address::                URL of the puppetdb plugin should use to connect
+#
+class foreman::plugin::puppetdb(
+  $enabled = true,
+  $address = "https://puppetdb.${::domain}:8081/v2/commands",
+) {
   case $::osfamily {
     'RedHat': {
       case $::operatingsystem {
@@ -31,5 +41,6 @@ class foreman::plugin::puppetdb {
 
   foreman::plugin {'puppetdb':
     package => $package,
+    config  => template('foreman/puppetdb_plugin.yaml.erb'),
   }
 }
