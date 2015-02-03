@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.2
+* Refresh db:migrate if DB class changes (#9101)
+
 ## 2.3.1
 * Ensure Foreman DB settings are initialised before Apache starts to prevent
   race condition (#4611, #7353)
