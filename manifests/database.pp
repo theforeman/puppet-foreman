@@ -20,13 +20,13 @@ class foreman::database {
       $foreman_service = Class['foreman::service']
     }
 
-    class { $db_class: } ->
+    class { $db_class: } ~>
     foreman_config_entry { 'db_pending_migration':
       value          => false,
       dry            => true,
       ignore_missing => true,
     } ~>
-    foreman::rake { 'db:migrate': } ->
+    foreman::rake { 'db:migrate': } ~>
     foreman_config_entry { 'db_pending_seed':
       value          => false,
       dry            => true,
