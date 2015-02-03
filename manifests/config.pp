@@ -32,13 +32,15 @@ class foreman::config {
     ensure  => directory,
   }
 
-  user { $foreman::user:
-    ensure  => 'present',
-    shell   => '/bin/false',
-    comment => 'Foreman',
-    home    => $foreman::app_root,
-    gid     => $foreman::group,
-    groups  => $foreman::user_groups,
+  if $foreman::manage_user {
+    user { $foreman::user:
+      ensure  => 'present',
+      shell   => '/bin/false',
+      comment => 'Foreman',
+      home    => $foreman::app_root,
+      gid     => $foreman::group,
+      groups  => $foreman::user_groups,
+    }
   }
 
   # remove crons previously installed here, they've moved to the package's

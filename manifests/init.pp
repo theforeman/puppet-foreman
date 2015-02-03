@@ -80,6 +80,9 @@
 #
 # $app_root::                 Name of foreman root directory
 #
+# $manage_user::              Controls whether foreman module will manage the user on the system. (default true)
+#                             type:boolean
+#
 # $user::                     User under which foreman will run
 #
 # $group::                    Primary group for the Foreman user
@@ -189,6 +192,7 @@ class foreman (
   $db_sslmode               = 'UNSET',
   $db_pool                  = $foreman::params::db_pool,
   $app_root                 = $foreman::params::app_root,
+  $manage_user              = $foreman::params::manage_user,
   $user                     = $foreman::params::user,
   $group                    = $foreman::params::group,
   $user_groups              = $foreman::params::user_groups,
