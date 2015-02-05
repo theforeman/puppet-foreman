@@ -16,10 +16,7 @@ describe 'foreman::plugin' do
     } end
 
     it 'should install the correct package with notify' do
-      should contain_package('ruby193-rubygem-foreman_myplugin').with({
-        :ensure => 'installed',
-        :notify => 'Class[Foreman::Service]',
-      })
+      should contain_package('ruby193-rubygem-foreman_myplugin').with_ensure('installed')
     end
   end
 
@@ -29,10 +26,7 @@ describe 'foreman::plugin' do
     } end
 
     it 'should install the correct package with notify' do
-      should contain_package('myplugin').with({
-        :ensure => 'installed',
-        :notify => 'Class[Foreman::Service]',
-      })
+      should contain_package('myplugin').with_ensure('installed')
     end
   end
 
@@ -42,9 +36,7 @@ describe 'foreman::plugin' do
     } end
 
     it 'should use underscores' do
-      should contain_package('my_fun_plugin').with({
-        :ensure => 'installed',
-      })
+      should contain_package('my_fun_plugin').with_ensure('installed')
     end
   end
 
@@ -58,9 +50,7 @@ describe 'foreman::plugin' do
     } end
 
     it 'should use hyphens' do
-      should contain_package('my-fun-plugin').with({
-        :ensure => 'installed',
-      })
+      should contain_package('my-fun-plugin').with_ensure('installed')
     end
   end
 end
