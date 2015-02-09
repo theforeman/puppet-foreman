@@ -53,6 +53,8 @@ class foreman::params {
   $gpgcheck    = true
   $version     = 'present'
 
+  $puppetmaster_timeout = 60
+
   # when undef, foreman-selinux will be installed if SELinux is enabled
   # setting to false/true will override this check (e.g. set to false on 1.1)
   $selinux     = undef

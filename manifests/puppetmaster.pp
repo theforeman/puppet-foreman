@@ -11,6 +11,7 @@ class foreman::puppetmaster (
   $puppet_user      = $foreman::params::puppet_user,
   $puppet_group     = $foreman::params::puppet_group,
   $puppet_basedir   = $foreman::params::puppet_basedir,
+  $timeout          = $foreman::params::puppetmaster_timeout,
   $ssl_ca           = $foreman::params::client_ssl_ca,
   $ssl_cert         = $foreman::params::client_ssl_cert,
   $ssl_key          = $foreman::params::client_ssl_key,

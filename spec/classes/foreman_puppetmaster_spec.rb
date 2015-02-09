@@ -50,6 +50,7 @@ describe 'foreman::puppetmaster' do
           with_content(/^:password: ""$/).
           with_content(/^:puppetdir: "\/var\/lib\/puppet"$/).
           with_content(/^:facts: true$/).
+          with_content(/^:timeout: 60$/).
           with({
             :mode  => '0640',
             :owner => 'root',
