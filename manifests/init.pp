@@ -117,6 +117,8 @@
 #
 # $server_ssl_key::           Defines Apache mod_ssl SSLCertificateKeyFile setting in Foreman vhost conf file.
 #
+# $server_ssl_crl::           Defines the Apache mod_ssl SSLCARevocationFile setting in Foreman vhost conf file.
+#
 # $oauth_active::             Enable OAuth authentication for REST API
 #                             type:boolean
 #
@@ -205,6 +207,7 @@ class foreman (
   $server_ssl_chain         = $foreman::params::server_ssl_chain,
   $server_ssl_cert          = $foreman::params::server_ssl_cert,
   $server_ssl_key           = $foreman::params::server_ssl_key,
+  $server_ssl_crl           = $foreman::params::server_ssl_crl,
   $oauth_active             = $foreman::params::oauth_active,
   $oauth_map_users          = $foreman::params::oauth_map_users,
   $oauth_consumer_key       = $foreman::params::oauth_consumer_key,
