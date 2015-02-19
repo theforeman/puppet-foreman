@@ -47,6 +47,11 @@ Thus 'master' will support the upcoming major version and the current stable.
 The latest release (git tag, Puppet Forge) should support current and the
 previous stable release.
 
+### Foreman 1.7 compatibility notes
+
+* `foreman::compute::ec2` needs `package => 'foreman-compute'` on Foreman 1.7,
+  as the package has been renamed in newer versions.
+
 # Contributing
 
 * Fork the project
