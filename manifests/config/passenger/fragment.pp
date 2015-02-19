@@ -13,7 +13,7 @@ define foreman::config::passenger::fragment(
   require foreman::config::passenger
 
   file { "${apache::confd_dir}/05-foreman.d/${name}.conf":
-    ensure  => present,
+    ensure  => file,
     content => $content,
     owner   => 'root',
     group   => 'root',
@@ -23,7 +23,7 @@ define foreman::config::passenger::fragment(
 
   if $::foreman::config::passenger::ssl {
     file { "${apache::confd_dir}/05-foreman-ssl.d/${name}.conf":
-      ensure  => present,
+      ensure  => file,
       content => $ssl_content,
       owner   => 'root',
       group   => 'root',

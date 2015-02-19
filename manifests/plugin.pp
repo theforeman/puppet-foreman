@@ -2,7 +2,7 @@
 define foreman::plugin(
   $package     = "${foreman::plugin_prefix}${title}",
   $config_file = "${foreman::plugin_config_dir}/foreman_${title}.yaml",
-  $config      = '',
+  $config      = undef,
 ) {
   # Debian gem2deb converts underscores to hyphens
   case $::osfamily {

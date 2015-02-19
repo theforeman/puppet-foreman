@@ -16,7 +16,7 @@ class foreman::puppetmaster (
   $ssl_cert         = $foreman::params::client_ssl_cert,
   $ssl_key          = $foreman::params::client_ssl_key,
   $enc_api          = 'v2',
-  $report_api       = 'v2'
+  $report_api       = 'v2',
 ) inherits foreman::params {
 
   case $::osfamily {
@@ -39,7 +39,7 @@ class foreman::puppetmaster (
 
     exec { 'Create Puppet Reports dir':
       command => "/bin/mkdir -p ${puppet_basedir}/reports",
-      creates => "${puppet_basedir}/reports"
+      creates => "${puppet_basedir}/reports",
     }
     file {"${puppet_basedir}/reports/foreman.rb":
       mode    => '0644',

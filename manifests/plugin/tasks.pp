@@ -21,6 +21,6 @@ class foreman::plugin::tasks {
   } ~>
   service { 'foreman-tasks':
     ensure => running,
-    enable => true
+    enable => true,
   }
 }

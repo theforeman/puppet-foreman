@@ -51,7 +51,9 @@ class foreman::config::passenger(
   $start_timeout       = $foreman::passenger_start_timeout,
 ) {
   # validate parameter values
-  validate_string($listen_on_interface)
+  if $listen_on_interface {
+    validate_string($listen_on_interface)
+  }
   validate_string($servername)
   validate_bool($ssl)
   validate_bool($prestart)

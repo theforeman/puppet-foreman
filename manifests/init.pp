@@ -244,17 +244,17 @@ class foreman (
     fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
   }
 
-  class { 'foreman::install': } ~>
-  class { 'foreman::config': } ~>
-  class { 'foreman::database': } ~>
-  class { 'foreman::service': } ->
+  class { '::foreman::install': } ~>
+  class { '::foreman::config': } ~>
+  class { '::foreman::database': } ~>
+  class { '::foreman::service': } ->
   Class['foreman'] ->
   Foreman_smartproxy <| |>
 
   # Anchor these separately so as not to break
   # the notify between main classes
   Class['foreman::install'] ~>
-  class { 'foreman::compute': } ~>
+  class { '::foreman::compute': } ~>
   Class['foreman::service']
 
   Class['foreman::database']~>

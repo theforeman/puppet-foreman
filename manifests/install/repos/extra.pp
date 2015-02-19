@@ -34,13 +34,13 @@ class foreman::install::repos::extra(
       enabled  => 1,
       gpgcheck => 0,
       baseurl  => "http://copr-be.cloud.fedoraproject.org/results/adelton/identity_demo/epel-${osreleasemajor}-\$basearch/",
-      before   => [ Package['mod_authnz_pam', 'mod_lookup_identity', 'mod_intercept_form_submit', 'sssd-dbus'] ],
+      before   => Package['mod_authnz_pam', 'mod_lookup_identity', 'mod_intercept_form_submit', 'sssd-dbus'],
     }
   }
 
   if $configure_brightbox_repo {
-    include apt
-    apt::ppa { 'ppa:brightbox/ruby-ng': }
+    include ::apt
+    ::apt::ppa { 'ppa:brightbox/ruby-ng': }
 
     # Setting alternatives to manual mode prevents the installation of 1.9 from later
     # automatically switching them

@@ -25,7 +25,7 @@ class foreman::params {
   # force SSL (note: requires passenger)
   $ssl          = true
   #define which interface passenger should listen on, undef means all interfaces
-  $passenger_interface = ''
+  $passenger_interface = undef
   # Choose whether you want to enable locations and organizations.
   $locations_enabled     = false
   $organizations_enabled = false
@@ -174,7 +174,7 @@ class foreman::params {
       # Only the agent classes (cron / service) are supported for now, which
       # doesn't require any OS-specific params
     }
-    windows: {
+    'windows': {
       $puppet_basedir = undef
       $yumcode = undef
       $passenger_ruby = undef
