@@ -38,7 +38,7 @@ class foreman::cli (
     ensure => installed,
   } ->
   file { '/etc/hammer/cli.modules.d/foreman.yml':
-    ensure  => present,
+    ensure  => file,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
@@ -60,7 +60,7 @@ class foreman::cli (
       mode   => '0600',
     }
     file { '/root/.hammer/cli.modules.d/foreman.yml':
-      ensure  => present,
+      ensure  => file,
       owner   => 'root',
       group   => 'root',
       mode    => '0600',

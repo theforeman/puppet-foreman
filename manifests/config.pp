@@ -24,7 +24,7 @@ class foreman::config {
   }
 
   file { $foreman::init_config:
-    ensure  => present,
+    ensure  => file,
     content => template("foreman/${foreman::init_config_tmpl}.erb"),
   }
 
