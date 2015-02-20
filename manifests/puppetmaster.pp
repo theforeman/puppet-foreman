@@ -19,14 +19,9 @@ class foreman::puppetmaster (
   $report_api       = 'v2'
 ) inherits foreman::params {
 
-  case $::operatingsystem {
-    'Debian','Ubuntu': {
-      case $::lsbdistcodename {
-        'squeeze': { $json_package = 'libjson-ruby' }
-        default:   { $json_package = 'ruby-json' }
-      }
-    }
-    default:       { $json_package = 'rubygem-json' }
+  case $::osfamily {
+    'Debian': { $json_package = 'ruby-json' }
+    default:  { $json_package = 'rubygem-json' }
   }
 
   package { $json_package:

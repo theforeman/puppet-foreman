@@ -75,11 +75,8 @@ class foreman::config::passenger(
   # RedHat distros come with this enabled. Newer Debian and Ubuntu distros
   # comes also with this enabled. Only old Debian and Ubuntu distros (squeeze,
   # lucid, precise) needs hand-holding.
-  case $::lsbdistcodename {
-    'squeeze','lucid','precise': {
-      ::apache::mod { 'version': }
-    }
-    default: {}
+  if ($::operatingsystemrelease == '12.04') and ($::operatingsystem == 'Ubuntu') {
+    ::apache::mod { 'version': }
   }
 
   if $use_vhost {

@@ -128,13 +128,17 @@ class foreman::params {
       $init_config = '/etc/default/foreman'
       $init_config_tmpl = 'foreman.default'
 
-      case $::lsbdistcodename {
-        /^(squeeze|precise)$/: {
+      $osreleasemajor = regsubst($::operatingsystemrelease, '^(\d+)\..*$', '\1')
+
+      case $osreleasemajor {
+        '12': {
+          # 12 is Ubuntu/precise here, once precise support is dropped,
+          # this should be dropped to not collide with Debian 12
           $passenger_prestart = false
           $passenger_min_instances = undef
           $passenger_start_timeout = undef
         }
-        /^wheezy$/: {
+        '7': {
           $passenger_prestart = false
           $passenger_min_instances = 1
           $passenger_start_timeout = undef
