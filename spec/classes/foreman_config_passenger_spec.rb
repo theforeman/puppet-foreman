@@ -132,6 +132,28 @@ describe 'foreman::config::passenger' do
         should contain_apache__vhost('foreman-ssl').without_ssl_crl_chain
       end
     end
+
+    describe 'with vhost and ssl, no CRL explicitly' do
+      let :params do {
+        :app_root      => '/usr/share/foreman',
+        :use_vhost     => true,
+        :servername    => facts[:fqdn],
+        :ssl           => true,
+        :ssl_cert      => 'cert.pem',
+        :ssl_key       => 'key.pem',
+        :ssl_ca        => 'ca.pem',
+        :ssl_crl       => '',
+        :prestart      => true,
+        :min_instances => '1',
+        :start_timeout => '600',
+        :ruby          => '/usr/bin/ruby193-ruby'
+      } end
+
+      it do
+        should contain_apache__vhost('foreman-ssl').without_ssl_crl
+        should contain_apache__vhost('foreman-ssl').without_ssl_crl_chain
+      end
+    end
   end
 
   context 'on debian' do

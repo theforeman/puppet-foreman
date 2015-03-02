@@ -127,9 +127,12 @@ class foreman::config::passenger(
         true  => "https://${servername}",
         false => undef,
       }
-      $ssl_crl_check = $ssl_crl ? {
-        undef   => undef,
-        default => 'chain',
+      if $ssl_crl and $ssl_crl != '' {
+        $ssl_crl_real = $ssl_crl
+        $ssl_crl_check = 'chain'
+      } else {
+        $ssl_crl_real = undef
+        $ssl_crl_check = undef
       }
 
       file { "${apache::confd_dir}/05-foreman-ssl.d":
@@ -160,7 +163,7 @@ class foreman::config::passenger(
         ssl_key                 => $ssl_key,
         ssl_chain               => $ssl_chain,
         ssl_ca                  => $ssl_ca,
-        ssl_crl                 => $ssl_crl,
+        ssl_crl                 => $ssl_crl_real,
         ssl_crl_check           => $ssl_crl_check,
         ssl_verify_client       => 'optional',
         ssl_options             => '+StdEnvVars',
