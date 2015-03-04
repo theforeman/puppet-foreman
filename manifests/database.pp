@@ -1,7 +1,8 @@
 # Set up the foreman database
 class foreman::database {
   if $::foreman::db_manage {
-    validate_string($::foreman::admin_username, $::foreman::admin_password)
+    validate_string($::foreman::admin_username, $::foreman::admin_password, $::foreman::apipie_task)
+    validate_re($::foreman::apipie_task, '^apipie:')
 
     $db_class = "foreman::database::${::foreman::db_type}"
     $seed_env = {
@@ -35,7 +36,7 @@ class foreman::database {
     foreman::rake { 'db:seed':
       environment => delete_undef_values($seed_env),
     } ~>
-    foreman::rake { 'apipie:cache':
+    foreman::rake { $::foreman::apipie_task:
       timeout => 0,
     }
   }

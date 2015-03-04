@@ -71,6 +71,9 @@ class foreman::params {
   # Default database connection pool
   $db_pool = 5
 
+  # Apipie doc generation method (1.8+ should use index only)
+  $apipie_task = 'apipie:cache:index'
+
   # OS specific paths
   case $::osfamily {
     'RedHat': {
