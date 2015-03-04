@@ -49,6 +49,8 @@ previous stable release.
 
 ### Foreman 1.7 compatibility notes
 
+* set `apipie_task => 'apipie:cache'` as Foreman 1.7 packages didn't have
+  precompiled API docs
 * `foreman::compute::ec2` needs `package => 'foreman-compute'` on Foreman 1.7,
   as the package has been renamed in newer versions.
 

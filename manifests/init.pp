@@ -78,6 +78,9 @@
 # $db_pool::                  Database 'production' size of connection pool
 #                             type:integer
 #
+# $apipie_task::              Rake task to generate API documentation.
+#                             Use 'apipie:cache' on 1.7 or older, 'apipie:cache:index' on 1.8 or newer.
+#
 # $app_root::                 Name of foreman root directory
 #
 # $manage_user::              Controls whether foreman module will manage the user on the system. (default true)
@@ -193,6 +196,7 @@ class foreman (
   $db_password              = $foreman::params::db_password,
   $db_sslmode               = 'UNSET',
   $db_pool                  = $foreman::params::db_pool,
+  $apipie_task              = $foreman::params::apipie_task,
   $app_root                 = $foreman::params::app_root,
   $manage_user              = $foreman::params::manage_user,
   $user                     = $foreman::params::user,
