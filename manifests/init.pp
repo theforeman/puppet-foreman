@@ -249,7 +249,7 @@ class foreman (
   class { '::foreman::database': } ~>
   class { '::foreman::service': } ->
   Class['foreman'] ->
-  Foreman_smartproxy <| |>
+  Foreman_smartproxy <| base_url == $foreman_url |>
 
   # Anchor these separately so as not to break
   # the notify between main classes
