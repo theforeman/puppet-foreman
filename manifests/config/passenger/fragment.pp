@@ -7,28 +7,41 @@
 #  $ssl_content:: content of the ssl virtual host fragment
 #
 define foreman::config::passenger::fragment(
-  $content='',
-  $ssl_content='',
+  $content=undef,
+  $ssl_content=undef,
 ) {
   require foreman::config::passenger
 
-  file { "${apache::confd_dir}/05-foreman.d/${name}.conf":
-    ensure  => present,
-    content => $content,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    notify  => Class['apache::service'],
+  $http_path = "${apache::confd_dir}/05-foreman.d/${name}.conf"
+  $https_path = "${apache::confd_dir}/05-foreman-ssl.d/${name}.conf"
+
+  if $content and $content != '' {
+    file { $http_path:
+      ensure  => file,
+      content => $content,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+    }
+  } else {
+    file { $http_path:
+      ensure => absent,
+    }
   }
 
-  if $::foreman::config::passenger::ssl {
-    file { "${apache::confd_dir}/05-foreman-ssl.d/${name}.conf":
-      ensure  => present,
+  if $ssl_content and $ssl_content != '' and $::foreman::config::passenger::ssl {
+    file { $https_path:
+      ensure  => file,
       content => $ssl_content,
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      notify  => Class['apache::service'],
+    }
+  } else {
+    file { $https_path:
+      ensure => absent,
     }
   }
+
+  File[$http_path, $https_path] ~> Class['apache::service']
 }

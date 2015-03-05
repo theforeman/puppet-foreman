@@ -15,8 +15,8 @@ class foreman::database::postgresql {
     cwd => '/',
   }
 
-  include postgresql::client, postgresql::server
-  postgresql::server::db { $dbname:
+  include ::postgresql::client, ::postgresql::server
+  ::postgresql::server::db { $dbname:
     user     => $foreman::db_username,
     password => $password,
     owner    => $foreman::db_username,

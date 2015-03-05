@@ -62,7 +62,7 @@ describe 'foreman::config' do
           with_content(/^FOREMAN_USER=foreman$/).
           with_content(/^FOREMAN_ENV=production/).
           with_content(/^FOREMAN_USE_PASSENGER=1$/).
-          with_ensure('present')
+          with_ensure('file')
       end
 
       it { should contain_file('/usr/share/foreman').with_ensure('directory') }
@@ -84,7 +84,7 @@ describe 'foreman::config' do
 
       it 'should contain foreman::config::passenger' do
         should contain_class('foreman::config::passenger').
-          with_listen_on_interface('').
+          with_listen_on_interface(nil).
           with_ruby('/usr/bin/ruby193-ruby').
           that_comes_before('Anchor[foreman::config_end]')
       end
@@ -238,7 +238,7 @@ describe 'foreman::config' do
           with_content(/^FOREMAN_HOME=\/usr\/share\/foreman$/).
           with_content(/^FOREMAN_USER=foreman$/).
           with_content(/^FOREMAN_ENV=production/).
-          with_ensure('present')
+          with_ensure('file')
       end
 
       it { should contain_file('/usr/share/foreman').with_ensure('directory') }
@@ -259,7 +259,7 @@ describe 'foreman::config' do
       end
 
       it { should contain_class('foreman::config::passenger').with({
-        :listen_on_interface => '',
+        :listen_on_interface => nil,
         :ruby                => nil,
       })}
     end
