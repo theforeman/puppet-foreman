@@ -257,8 +257,10 @@ class foreman (
   class { '::foreman::compute': } ~>
   Class['foreman::service']
 
+  # lint:ignore:spaceship_operator_without_tag
   Class['foreman::database']~>
   Foreman::Plugin <| |> ~>
   Class['foreman::service']
+  # lint:endignore
 
 }
