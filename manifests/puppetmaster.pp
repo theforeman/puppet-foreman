@@ -47,7 +47,6 @@ class foreman::puppetmaster (
       group   => 'root',
       source  => "puppet:///modules/${module_name}/foreman-report_${report_api}.rb",
       require => Exec['Create Puppet Reports dir'],
-      notify  => Class['::puppet::server::service'],
     }
   }
 
@@ -64,14 +63,12 @@ class foreman::puppetmaster (
       owner                   => $puppet_user,
       group                   => $puppet_group,
       selinux_ignore_defaults => true,
-      require                 => Class['::puppet::server::install'],
     }
 
     file { "${puppet_home}/yaml/foreman":
-      ensure  => directory,
-      owner   => $puppet_user,
-      group   => $puppet_group,
-      require => Class['::puppet::server::install'],
+      ensure => directory,
+      owner  => $puppet_user,
+      group  => $puppet_group,
     }
   }
 }
