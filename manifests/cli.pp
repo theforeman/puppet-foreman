@@ -2,6 +2,8 @@
 #
 # This class installs the Hammer command line interface (CLI).
 #
+# === Parameters:
+#
 # $foreman_url::        URL on which Foreman runs
 #
 # $username::           Username for authentication
