@@ -1,5 +1,63 @@
 # Changelog
 
+## 3.0.0
+* New classes to install Foreman plugins:
+    * foreman::plugin::abrt to install ABRT support
+    * foreman::plugin::digitalocean for DigitalOcean compute resources
+    * foreman::plugin::docker for Docker container management
+    * foreman::plugin::openscap to install OpenSCAP support
+    * foreman::plugin::salt for Salt management support
+* New or changed parameters:
+    * Add db_pool parameter to control database connection pool size
+    * Add manage_user parameter to disable 'foreman' user resource
+    * Add server_ssl_crl parameter to change SSL CRL used
+    * Add apipie_task parameter for Foreman 1.7 compatibility
+    * Add puppet_user/group parameters to foreman::puppetmaster
+    * Add timeout parameter to foreman::puppetmaster, increase timeout from
+      10 to 60 seconds
+    * Add config/config_file parameters to foreman::plugin
+    * Add package parameter to foreman::compute::ec2 for Foreman 1.7
+      compatibility
+    * Rename facts parameter to receive_facts, due to trusted variables
+      conflict, an incompatible change (#8944)
+    * Changes to foreman::plugin::discovery parameters
+    * Remove deprecated passenger_scl parameter, use passenger_ruby and
+      passenger_ruby_package instead
+* Other features:
+    * Add support for Discovery Image 2.0 deployment
+    * Add support to deploy Foreman on sub-URI with Passenger by changing
+      the foreman_url parameter
+    * Configure foreman-plugins repo, remove unused 'rc' repo support (#8880)
+    * Enable SSL CRL checking to Foreman virtual host
+    * Add additional resource types to foreman() search function (#9155)
+* Other changes and fixes:
+    * Use pending DB migration/seed flags in Foreman to re-run DB tasks when
+      they fail on subsequent runs, requiring Foreman 1.7+ (#4611, #7353)
+    * Use puppetlabs/apache 1.2.0 features
+    * Improve ENC encoding handling to fix facts uploads from Windows
+    * Improve tests with rspec-puppet-facts
+    * Improvements for Puppet 4 and future parser support
+    * Refreshed README
+    * Fix apt-key installation from refreshonly to unless clause
+    * Fix dependency on LSB facts (#9449)
+    * Fix custom facts error when trying to load ruby-augeas
+    * Fix class parameters documentation display in foreman-installer (#6904)
+    * Fix mod_lookup_identity concatentation of multiple email addresses
+    * Fix hard references to theforeman/puppet in foreman::puppetmaster
+    * Fix foreman.yaml path in report processor comment
+    * Fix minimum adrien/alternatives version to released 0.3.0
+    * Fix spelling error in configure_scl_repo description
+    * Fix metadata.json quality issues, pinning dependencies
+
+## 2.3.2
+* Refresh db:migrate if DB class changes (#9101)
+
+## 2.3.1
+* Ensure Foreman DB settings are initialised before Apache starts to prevent
+  race condition (#4611, #7353)
+* Remove timeout on apipie:cache rake task (#8381)
+* Fix puppetdb_foreman Debian package name
+
 ## 2.3.0
 * Add foreman_config_entry resource type and provider
 * Configure Brightbox Ruby NG PPA on Ubuntu 12.04 (#7227)
