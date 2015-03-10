@@ -1,4 +1,12 @@
 # Provides support for oVirt compute resources
-class foreman::compute::ovirt {
-  realize Package['foreman-ovirt']
+#
+# === Parameters:
+#
+# $version::  Package version to install, defaults to installed
+#
+class foreman::compute::ovirt ( $version = 'installed' ) {
+  package { 'foreman-ovirt':
+    ensure => $version,
+    tag    => [ 'foreman-compute', ],
+  }
 }

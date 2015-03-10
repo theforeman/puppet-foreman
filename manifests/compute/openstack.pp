@@ -1,4 +1,4 @@
 # Provides support for OpenStack compute resources
 class foreman::compute::openstack {
-  realize Package['foreman-compute']
+  include ::foreman::compute::foreman_compute
 }

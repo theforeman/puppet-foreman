@@ -258,7 +258,7 @@ class foreman (
   # Anchor these separately so as not to break
   # the notify between main classes
   Class['foreman::install'] ~>
-  class { '::foreman::compute': } ~>
+  Package <| tag == 'foreman-compute' |> ~>
   Class['foreman::service']
 
   # lint:ignore:spaceship_operator_without_tag
