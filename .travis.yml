@@ -9,6 +9,7 @@ rvm:
 env:
   - PUPPET_VERSION=2.7.0
   - PUPPET_VERSION=3.5
+  - PUPPET_VERSION=3.5 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
 matrix:
   exclude:
     # No real support for Ruby 1.9.3 on Puppet 2.x
