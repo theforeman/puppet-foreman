@@ -23,6 +23,7 @@ gem 'puppet-blacksmith', '>= 3.1.0', {"groups"=>["development"]}
 gem 'rest-client', '< 1.7', {"platforms"=>["ruby_18"], "groups"=>["development"]}
 gem 'mime-types', '~> 1.0', {"platforms"=>["ruby_18"], "groups"=>["development"]}
 gem 'rspec-puppet-facts'
+gem 'metadata-json-lint'
 gem 'json'
 gem 'webmock'
 
