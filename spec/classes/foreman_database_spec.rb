@@ -50,6 +50,24 @@ describe 'foreman::install' do
         end
         it { should contain_foreman__rake('apipie:cache') }
       end
+
+      describe 'with mysql db_type' do
+        let :pre_condition do
+          "class { 'foreman':
+            db_type => 'mysql'
+          }"
+        end
+
+        it { should_not contain_class('foreman::database::postgresql') }
+        it { should contain_class('foreman::database::mysql') }
+        it { should contain_class('mysql::server') }
+        it { should contain_class('mysql::server::account_security') }
+        it {
+          should contain_mysql__db('foreman').with({
+            :user => 'foreman',
+          })
+        }
+      end
     end
   end
 end
