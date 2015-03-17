@@ -183,6 +183,18 @@ describe 'foreman::config' do
 
       it { should contain_apache__vhost('foreman').with_custom_fragment(/Alias \/apps\/foreman/) }
     end
+
+    describe 'with mysql db_type' do
+      let :pre_condition do
+        "class { 'foreman':
+          db_type => 'mysql',
+        }"
+      end
+
+      it 'should configure the mysql database' do
+        should contain_file('/etc/foreman/database.yml').with_content(/adapter: mysql2/)
+      end
+    end
   end
 
   context 'on debian' do
