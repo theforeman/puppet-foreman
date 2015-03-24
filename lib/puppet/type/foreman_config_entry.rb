@@ -7,7 +7,7 @@ Puppet::Type.newtype(:foreman_config_entry) do
   end
 
   newproperty(:value) do
-    desc 'The value of the parameter.'
+    desc "The value of the parameter. Hashes and Arrays are expected to be JSON encoded, escaping the quotes. '[\"localhost\"]' would represent an Array containing the string 'localhost'"
 
     munge { |val| val.to_s }
   end
