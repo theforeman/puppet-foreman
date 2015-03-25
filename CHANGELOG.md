@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.1
+* Fix support for mysql by removing inclusion of mysql class which was removed
+  by puppetlabs/mysql in version 3.0.0
+* Fix foreman_config_entry checking of dry parameter
+
 ## 3.0.0
 * New classes to install Foreman plugins:
     * foreman::plugin::abrt to install ABRT support
