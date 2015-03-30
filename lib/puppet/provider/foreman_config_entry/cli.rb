@@ -19,10 +19,11 @@ Puppet::Type.type(:foreman_config_entry).provide(:cli) do
         end
       else
         output = Puppet::Util::Execution.execute(command,
-          { :failonfail      => false,
-            :combine         => false,
-            :uid             => 'foreman',
-            :gid             => 'foreman' }.merge(options)
+          { :failonfail         => false,
+            :combine            => false,
+            :custom_environment => { 'HOME' => '/usr/share/foreman' },
+            :uid                => 'foreman',
+            :gid                => 'foreman' }.merge(options)
         )
         status = $?
       end
