@@ -2,13 +2,13 @@ Puppet::Type.type(:foreman_config_entry).provide(:cli) do
 
   desc "foreman_config_entry's CLI provider"
 
-  confine :exists => '/usr/share/foreman/script/foreman-config'
+  confine :exists => '/usr/sbin/foreman-rake'
 
   mk_resource_methods
 
   def self.run_foreman_config(args = "", options = {})
     Dir.chdir('/usr/share/foreman') do
-      command = "/usr/share/foreman/script/foreman-config #{args}"
+      command = "/usr/sbin/foreman-rake -- config #{args}"
       if Puppet::PUPPETVERSION.to_f < 3.4
         old_home = ENV['HOME']
         begin
