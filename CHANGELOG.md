@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.2
+* Fix default foreman::plugin::openscap parameter values
+* foreman_config_entry: ensure HOME is set on all Puppet versions
+* foreman_config_entry: change foreman-config to foreman-rake
+* spec fixes for concat_native changes
+
 ## 3.0.1
 * Fix support for mysql by removing inclusion of mysql class which was removed
   by puppetlabs/mysql in version 3.0.0
