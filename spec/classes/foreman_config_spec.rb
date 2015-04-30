@@ -36,6 +36,7 @@ describe 'foreman::config' do
           with_content(/^:oauth_map_users:\s*false$/).
           with_content(/^:oauth_consumer_key:\s*\w+$/).
           with_content(/^:oauth_consumer_secret:\s*\w+$/).
+          with_content(/^:websockets_encrypt:\s*on$/).
           with({})
 
         should contain_file('/etc/foreman/settings.yaml').with({

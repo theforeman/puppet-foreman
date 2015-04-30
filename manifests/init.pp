@@ -247,6 +247,7 @@ class foreman (
   if $passenger == false and $ipa_authentication {
     fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
   }
+  validate_bool($websockets_encrypt)
 
   class { '::foreman::install': } ~>
   class { '::foreman::config': } ~>
