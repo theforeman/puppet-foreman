@@ -21,12 +21,11 @@ describe 'foreman::cli' do
 
         describe '/etc/hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings' do
-            content = catalogue.resource('file', '/etc/hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
-            content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
+            verify_exact_contents(catalogue, '/etc/hammer/cli.modules.d/foreman.yml', [
               ":foreman:",
               "  :enable_module: true",
               "  :host: 'http://example.com'",
-            ]
+            ])
           end
         end
 
@@ -34,14 +33,13 @@ describe 'foreman::cli' do
           it { should contain_file('/root/.hammer/cli.modules.d/foreman.yml').with_replace(false) }
 
           it 'should contain settings' do
-            content = catalogue.resource('file', '/root/.hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
-            content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
+            verify_exact_contents(catalogue, '/root/.hammer/cli.modules.d/foreman.yml', [
               ":foreman:",
               "  :username: 'joe'",
               "  :password: 'secret'",
               "  :refresh_cache: false",
               "  :request_timeout: 120",
-            ]
+            ])
           end
         end
 
@@ -71,25 +69,23 @@ describe 'foreman::cli' do
 
         describe '/etc/hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings from foreman' do
-            content = catalogue.resource('file', '/etc/hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
-            content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
+            verify_exact_contents(catalogue, '/etc/hammer/cli.modules.d/foreman.yml', [
               ":foreman:",
               "  :enable_module: true",
               "  :host: 'https://#{facts[:fqdn]}'",
-            ]
+            ])
           end
         end
 
         describe '/root/.hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings from foreman' do
-            content = catalogue.resource('file', '/root/.hammer/cli.modules.d/foreman.yml').send(:parameters)[:content]
-            content.split("\n").reject { |c| c =~ /(^\s*#|^$)/ }.should == [
+            verify_exact_contents(catalogue, '/root/.hammer/cli.modules.d/foreman.yml', [
               ":foreman:",
               "  :username: 'joe'",
               "  :password: 'secret'",
               "  :refresh_cache: false",
               "  :request_timeout: 120",
-            ]
+            ])
           end
         end
       end
