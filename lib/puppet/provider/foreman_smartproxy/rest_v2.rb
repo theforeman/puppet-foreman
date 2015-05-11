@@ -2,6 +2,11 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
 
   confine :feature => :apipie_bindings
 
+  def raise_error(e)
+    body = JSON.parse(e.response)["error"]["full_messages"].join(" ") rescue 'N/A'
+    fail "Proxy #{resource[:name]} cannot be registered (#{e.message}): #{body}"
+  end
+
   # when both rest and rest_v2 providers are installed, use this one
   def self.specificity
     super + 1
@@ -30,6 +35,8 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
     else
       @proxy = api.call(:index, :search => "name=#{resource[:name]}")['results'][0]
     end
+  rescue Exception => e
+    raise_error e
   end
 
   def id
@@ -47,11 +54,15 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
         :url  => resource[:url]
       }
     })
+  rescue Exception => e
+    raise_error e
   end
 
   def destroy
     api.call(:destroy, :id => id)
     @proxy = nil
+  rescue Exception => e
+    raise_error e
   end
 
   def url
@@ -60,10 +71,14 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
 
   def url=(value)
     api.call(:update, { :id => id, :smart_proxy => { :url => value } })
+  rescue Exception => e
+    raise_error e
   end
 
   def refresh_features!
     api.call(:refresh, :id => id)
+  rescue Exception => e
+    raise_error e
   end
 
 end
