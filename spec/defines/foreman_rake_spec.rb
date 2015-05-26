@@ -28,7 +28,7 @@ describe 'foreman::rake' do
     it { should contain_exec('foreman-rake-db:migrate').with({
       'command'     => '/usr/sbin/foreman-rake db:migrate',
       'user'        => 'foreman',
-      'environment' => 'HOME=/usr/share/foreman',
+      'environment' => ['HOME=/usr/share/foreman'],
       'logoutput'   => 'on_failure',
       'refreshonly' => true,
     })}
