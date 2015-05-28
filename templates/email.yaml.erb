@@ -1,0 +1,9 @@
+# Outgoing email settings
+
+production:
+  delivery_method: :<%= @email_delivery_method %>
+  smtp_settings:
+    address: <%= @email_smtp_address %>
+    port: <%= @email_smtp_port %>
+    domain: <%= @email_smtp_domain %>
+    authentication: :<%= @email_smtp_authentication %>
