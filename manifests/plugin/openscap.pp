@@ -41,5 +41,9 @@ class foreman::plugin::openscap (
     }
   }
 
+  package { "openscap":
+    ensure => "installed"
+  }
+
   foreman::plugin {'openscap': }
 }
