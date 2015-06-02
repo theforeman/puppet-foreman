@@ -7,6 +7,8 @@
       Please make sure to set this param to true if you have already set it to
       true in the UI. As the default value in the params class is "false", and it
       will override your manual setting in the database.
+* Other features:
+    * Add hostgroup provider and type
 
 ## 5.1.0
 * New or changed parameters:
