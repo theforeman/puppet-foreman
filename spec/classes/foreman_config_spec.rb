@@ -35,6 +35,7 @@ describe 'foreman::config' do
           with_content(/^:oauth_consumer_key:\s*\w+$/).
           with_content(/^:oauth_consumer_secret:\s*\w+$/).
           with_content(/^:websockets_encrypt:\s*on$/).
+          with_content(/^:logging:\n\s*:level:\s*info$/).
           with({})
 
         should contain_concat('/etc/foreman/settings.yaml').with({
@@ -192,6 +193,19 @@ describe 'foreman::config' do
         should contain_file('/etc/foreman/database.yml').with_content(/adapter: mysql2/)
       end
     end
+
+    describe 'with loggers' do
+      let :pre_condition do
+        "class { 'foreman':
+          loggers => {'ldap' => true},
+        }"
+      end
+
+      it 'should set loggers config' do
+        should contain_concat__fragment('foreman_settings+01-header.yaml').
+          with_content(/^:loggers:\n\s+:ldap:\n\s+:enabled:\s*true$/)
+      end
+    end
   end
 
   context 'on debian' do
@@ -219,6 +233,8 @@ describe 'foreman::config' do
           with_content(/^:oauth_map_users:\s*false$/).
           with_content(/^:oauth_consumer_key:\s*\w+$/).
           with_content(/^:oauth_consumer_secret:\s*\w+$/).
+          with_content(/^:websockets_encrypt:\s*on$/).
+          with_content(/^:logging:\n\s*:level:\s*info$/).
           with({})
 
         should contain_concat('/etc/foreman/settings.yaml').with({

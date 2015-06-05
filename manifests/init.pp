@@ -168,6 +168,11 @@
 # $websockets_ssl_key::       SSL key file to use when encrypting websocket connections
 # $websockets_ssl_cert::      SSL certificate file to use when encrypting websocket connections
 #
+# $logging_level::            Logging level of the Foreman application (valid values: debug, info, warn, error, fatal)
+#
+# $loggers::                  Enable or disable specific loggers, e.g. {"sql" => true}
+#                             type:hash
+#
 class foreman (
   $foreman_url              = $foreman::params::foreman_url,
   $unattended               = $foreman::params::unattended,
@@ -234,6 +239,8 @@ class foreman (
   $websockets_encrypt       = $foreman::params::websockets_encrypt,
   $websockets_ssl_key       = $foreman::params::websockets_ssl_key,
   $websockets_ssl_cert      = $foreman::params::websockets_ssl_cert,
+  $logging_level            = $foreman::params::logging_level,
+  $loggers                  = $foreman::params::loggers,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $foreman::db_type ? {
@@ -248,6 +255,8 @@ class foreman (
     fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
   }
   validate_bool($websockets_encrypt)
+  validate_re($logging_level, '^(debug|info|warn|error|fatal)$')
+  validate_hash($loggers)
 
   class { '::foreman::install': } ~>
   class { '::foreman::config': } ~>

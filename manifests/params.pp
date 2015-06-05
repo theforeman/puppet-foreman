@@ -233,4 +233,8 @@ class foreman::params {
   $websockets_encrypt = true
   $websockets_ssl_key = $server_ssl_key
   $websockets_ssl_cert = $server_ssl_cert
+
+  # Application logging
+  $logging_level = 'info'
+  $loggers = {}
 }
