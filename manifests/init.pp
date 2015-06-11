@@ -112,6 +112,12 @@
 #
 # $passenger_start_timeout::  Amount of seconds to wait for Ruby application boot.
 #
+# $client_ssl_ca::            Defines CA to verify Foreman server cert against in /etc/puppet/foreman.yaml.
+#
+# $client_ssl_cert::          Defines SSL cert to use when connecting to Foreman in /etc/puppet/foreman.yaml
+#
+# $client_ssl_key::           Defines SSL key to use for cert when connecting to Foreman in /etc/puppet/foreman.yaml
+#
 # $server_ssl_ca::            Defines Apache mod_ssl SSLCACertificateFile setting in Foreman vhost conf file.
 #
 # $server_ssl_chain::         Defines Apache mod_ssl SSLCertificateChainFile setting in Foreman vhost conf file.
@@ -212,6 +218,9 @@ class foreman (
   $locations_enabled        = $foreman::params::locations_enabled,
   $organizations_enabled    = $foreman::params::organizations_enabled,
   $passenger_interface      = $foreman::params::passenger_interface,
+  $client_ssl_ca            = $foreman::params::client_ssl_ca,
+  $client_ssl_cert          = $foreman::params::client_ssl_cert,
+  $client_ssl_key           = $foreman::params::client_ssl_key,
   $server_ssl_ca            = $foreman::params::server_ssl_ca,
   $server_ssl_chain         = $foreman::params::server_ssl_chain,
   $server_ssl_cert          = $foreman::params::server_ssl_cert,
