@@ -19,6 +19,16 @@ class foreman::config {
     content => template('foreman/database.yml.erb'),
   }
 
+  if $foreman::email_delivery_method and !empty($foreman::email_delivery_method) {
+    file { "/etc/foreman/${foreman::email_conf}":
+      ensure  => file,
+      owner   => 'root',
+      group   => $foreman::group,
+      mode    => '0640',
+      content => template("foreman/${foreman::email_source}"),
+    }
+  }
+
   file { $foreman::init_config:
     ensure  => file,
     content => template("foreman/${foreman::init_config_tmpl}.erb"),

@@ -206,6 +206,49 @@ describe 'foreman::config' do
           with_content(/^:loggers:\n\s+:ldap:\n\s+:enabled:\s*true$/)
       end
     end
+
+    describe 'with email configured for SMTP' do
+      let :pre_condition do
+        "class {'foreman':
+           email_delivery_method => 'smtp',
+         }"
+      end
+
+      it 'should contain email.yaml with SMTP set' do
+        should contain_file('/etc/foreman/email.yaml').
+          with_content(/delivery_method: :smtp/).
+          with_ensure('file')
+      end
+    end
+
+    describe 'with email configured and authentication set to login' do
+      let :pre_condition do
+        "class {'foreman':
+          email_delivery_method => 'smtp',
+          email_smtp_authentication => 'login',
+        }"
+      end
+
+      it 'should contain email.yaml with login authentication' do
+        should contain_file('/etc/foreman/email.yaml').
+          with_content(/authentication: :login/).
+          with_ensure('file')
+      end
+    end
+
+    describe 'with email configured for sendmail' do
+      let :pre_condition do
+        "class {'foreman':
+          email_delivery_method => 'sendmail',
+        }"
+      end
+
+      it 'should contain email.yaml with sendmail' do
+        should contain_file('/etc/foreman/email.yaml').
+          with_content(/delivery_method: :sendmail/).
+          with_ensure('file')
+      end
+    end
   end
 
   context 'on debian' do

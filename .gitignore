@@ -34,3 +34,6 @@ spec/fixtures/
 ## Puppet module
 pkg/
 coverage/
+
+## InteliJ / RubyMine
+.idea

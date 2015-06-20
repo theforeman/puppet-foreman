@@ -74,6 +74,17 @@ class foreman::params {
   # Apipie doc generation method (1.8+ should use index only)
   $apipie_task = 'apipie:cache:index'
 
+  # Configure foreman email settings (email.yaml)
+  $email_conf                = 'email.yaml'
+  $email_source              = 'email.yaml.erb'
+  $email_delivery_method     = undef
+  $email_smtp_address        = undef
+  $email_smtp_port           = '25'
+  $email_smtp_domain         = undef
+  $email_smtp_authentication = 'none'
+  $email_smtp_user_name      = undef
+  $email_smtp_password       = undef
+
   # OS specific paths
   case $::osfamily {
     'RedHat': {
