@@ -1,5 +1,34 @@
 # Changelog
 
+## 4.0.0
+* New or changed parameters:
+    * Add logging_level and loggers parameters to control log config on
+      Foreman 1.9+ (#5838)
+    * Add email_* parameters to set up email.yml configuration
+* Other features:
+    * Replace theforeman/concat_native with puppetlabs/concat
+    * Add version parameter to foreman::compute::* classes
+    * Support foreman::plugin::tasks on Debian
+    * Improve smart proxy registration error message (#10466)
+* Other changes and fixes:
+    * Replace virtual resources in foreman::compute with classes
+    * Use foreman-rake console instead of foreman-config, requires 1.7+
+    * Fix support for puppetlabs/mysql 3.0
+    * Fix websockets_encrypt entry in config file as on/off
+    * Remove obsolete entries from settings.yaml
+    * Test under future parser
+
+## 3.0.2
+* Fix default foreman::plugin::openscap parameter values
+* foreman_config_entry: ensure HOME is set on all Puppet versions
+* foreman_config_entry: change foreman-config to foreman-rake
+* spec fixes for concat_native changes
+
+## 3.0.1
+* Fix support for mysql by removing inclusion of mysql class which was removed
+  by puppetlabs/mysql in version 3.0.0
+* Fix foreman_config_entry checking of dry parameter
+
 ## 3.0.0
 * New classes to install Foreman plugins:
     * foreman::plugin::abrt to install ABRT support

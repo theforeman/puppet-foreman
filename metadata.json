@@ -1,6 +1,6 @@
 {
   "name": "theforeman-foreman",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "author": "theforeman",
   "summary": "Foreman server configuration",
   "license": "GPL-3.0+",
@@ -78,7 +78,8 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8"
       ]
     },
     {
