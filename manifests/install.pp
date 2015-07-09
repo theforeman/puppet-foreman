@@ -44,6 +44,7 @@ class foreman::install {
         ensure  => installed,
         require => $repo,
       }
+      notice ('Using configure_ipa_repo is deprecated and no longer required.')
     }
   }
 

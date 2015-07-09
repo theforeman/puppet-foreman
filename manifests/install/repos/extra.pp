@@ -36,6 +36,7 @@ class foreman::install::repos::extra(
       baseurl  => "http://copr-be.cloud.fedoraproject.org/results/adelton/identity_demo/epel-${osreleasemajor}-\$basearch/",
       before   => Package['mod_authnz_pam', 'mod_lookup_identity', 'mod_intercept_form_submit', 'sssd-dbus'],
     }
+    notice ('Using configure_ipa_repo is deprecated and no longer needed. If you have already used it, disable and delete the repo.')
   }
 
   if $configure_brightbox_repo {

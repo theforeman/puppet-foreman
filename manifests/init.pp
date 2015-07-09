@@ -153,8 +153,8 @@
 #
 # $pam_service::               	PAM service used for host-based access control in IPA
 #
-# $configure_ipa_repo::        	Enable custom yum repo with packages needed for external authentication via IPA,
-#                              	this may be needed on RHEL 6.5 and older.
+# $configure_ipa_repo::        	DEPRECATED: Enable custom yum repo with packages needed for external authentication via IPA,
+#                              	this was needed on RHEL 6.5 and older, no longer required
 #                              	type:boolean
 #
 # $ipa_manage_sssd::           	If ipa_authentication is true, should the installer manage SSSD? You can disable it
