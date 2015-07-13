@@ -22,6 +22,7 @@ describe 'foreman::install::repos::extra' do
 
             it { should contain_class('apt') }
             it { should contain_apt__ppa('ppa:brightbox/ruby-ng') }
+            it { should contain_apt__ppa('ppa:brightbox/passenger-legacy') }
             it { should contain_alternatives('ruby') }
             it { should contain_alternatives('gem') }
           end
