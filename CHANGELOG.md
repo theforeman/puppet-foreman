@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.1
+* Fix missing brightbox/passenger-legacy PPA on Ubuntu 12.04 (#11069)
+
 ## 4.0.0
 * New or changed parameters:
     * Add logging_level and loggers parameters to control log config on
