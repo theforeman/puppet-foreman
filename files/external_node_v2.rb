@@ -7,9 +7,14 @@
 # If --push-facts is given as the only arg, it uploads facts for all hosts and then exits.
 # Useful in scenarios where the ENC isn't used.
 
+require 'rbconfig'
 require 'yaml'
 
-$settings_file = "/etc/puppet/foreman.yaml"
+if RbConfig::CONFIG['host_os'] =~ /freebsd|dragonfly/i
+  $settings_file = "/usr/local/etc/puppet/foreman.yaml"
+else
+  $settings_file = "/etc/puppet/foreman.yaml"
+end
 
 SETTINGS = YAML.load_file($settings_file)
 

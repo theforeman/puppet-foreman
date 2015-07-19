@@ -90,6 +90,8 @@ class foreman::params {
     'RedHat': {
       $init_config = '/etc/sysconfig/foreman'
       $init_config_tmpl = 'foreman.sysconfig'
+      $puppet_etcdir = '/etc/puppet'
+      $puppet_home = '/var/lib/puppet'
 
       case $::operatingsystem {
         'fedora': {
@@ -130,6 +132,8 @@ class foreman::params {
     }
     'Debian': {
       $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
+      $puppet_etcdir = '/etc/puppet'
+      $puppet_home = '/var/lib/puppet'
       $passenger_ruby = $::operatingsystemrelease ? {
         '12.04' => '/usr/bin/ruby1.9.1',
         default => undef,
@@ -168,6 +172,8 @@ class foreman::params {
       case $::operatingsystem {
         'Amazon': {
           $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
+          $puppet_etcdir = '/etc/puppet'
+          $puppet_home = '/var/lib/puppet'
           $yumcode = 'el6'
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
           $passenger_ruby = '/usr/bin/ruby193-ruby'
@@ -188,8 +194,15 @@ class foreman::params {
       # Only the agent classes (cron / service) are supported for now, which
       # doesn't require any OS-specific params
     }
+    /^(FreeBSD|DragonFly)$/: {
+      $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/local/lib/ruby/site_ruby/\1/puppet')
+      $puppet_etcdir = '/usr/local/etc/puppet'
+      $puppet_home = '/var/puppet'
+    }
     'windows': {
       $puppet_basedir = undef
+      $puppet_etcdir = undef
+      $puppet_home = undef
       $yumcode = undef
       $passenger_ruby = undef
       $passenger_ruby_package = undef
@@ -199,7 +212,6 @@ class foreman::params {
       fail("${::hostname}: This module does not support osfamily ${::osfamily}")
     }
   }
-  $puppet_home = '/var/lib/puppet'
   $puppet_user = 'puppet'
   $puppet_group = 'puppet'
   $lower_fqdn = downcase($::fqdn)

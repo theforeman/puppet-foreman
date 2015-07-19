@@ -1,5 +1,12 @@
+require 'rbconfig'
 require 'spec_helper'
 require 'yaml'
+
+if RbConfig::CONFIG['host_os'] =~ /freebsd|dragonfly/i
+  $settings_file = "/usr/local/etc/puppet/foreman.yaml"
+else
+  $settings_file = "/etc/puppet/foreman.yaml"
+end
 
 describe 'foreman_report_processor' do
   yaml_text = <<-EOF
@@ -9,7 +16,7 @@ describe 'foreman_report_processor' do
 :puppet_home: "/var/lib/puppet"
   EOF
   yaml = YAML.load(yaml_text)
-  YAML.stubs(:load_file).with("/etc/puppet/foreman.yaml").returns(yaml)
+  YAML.stubs(:load_file).with($settings_file).returns(yaml)
   eval File.read(File.join(File.dirname(__FILE__), '../..', 'files', 'foreman-report_v2.rb'))
   let(:processor) { Puppet::Reports.report(:foreman) }
 

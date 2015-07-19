@@ -21,7 +21,7 @@ describe 'foreman::puppetmaster' do
         should contain_file('/usr/lib/ruby/site_ruby/1.8/puppet/reports/foreman.rb').with({
           :mode    => '0644',
           :owner   => 'root',
-          :group   => 'root',
+          :group   => '0',
           :source  => 'puppet:///modules/foreman/foreman-report_v2.rb',
           :require => 'Exec[Create Puppet Reports dir]',
         })
@@ -102,7 +102,7 @@ describe 'foreman::puppetmaster' do
         should contain_file('/usr/share/ruby/vendor_ruby/puppet/reports/foreman.rb').with({
           :mode    => '0644',
           :owner   => 'root',
-          :group   => 'root',
+          :group   => '0',
           :source  => 'puppet:///modules/foreman/foreman-report_v2.rb',
           :require => 'Exec[Create Puppet Reports dir]',
         })
@@ -132,7 +132,7 @@ describe 'foreman::puppetmaster' do
         should contain_file('/usr/share/ruby/vendor_ruby/puppet/reports/foreman.rb').with({
           :mode    => '0644',
           :owner   => 'root',
-          :group   => 'root',
+          :group   => '0',
           :source  => 'puppet:///modules/foreman/foreman-report_v2.rb',
           :require => 'Exec[Create Puppet Reports dir]',
         })
@@ -163,7 +163,7 @@ describe 'foreman::puppetmaster' do
         should contain_file('/usr/lib/ruby/site_ruby/1.8/puppet/reports/foreman.rb').with({
           :mode    => '0644',
           :owner   => 'root',
-          :group   => 'root',
+          :group   => '0',
           :source  => 'puppet:///modules/foreman/foreman-report_v2.rb',
           :require => 'Exec[Create Puppet Reports dir]',
         })
@@ -193,7 +193,7 @@ describe 'foreman::puppetmaster' do
         should contain_file('/usr/lib/ruby/vendor_ruby/puppet/reports/foreman.rb').with({
           :mode    => '0644',
           :owner   => 'root',
-          :group   => 'root',
+          :group   => '0',
           :source  => 'puppet:///modules/foreman/foreman-report_v2.rb',
           :require => 'Exec[Create Puppet Reports dir]',
         })
@@ -201,6 +201,65 @@ describe 'foreman::puppetmaster' do
 
       it 'should install json package' do
         should contain_package('ruby-json').with_ensure('installed')
+      end
+    end
+  end
+
+  context 'FreeBSD' do
+    let :facts do
+      {
+        :fqdn            => 'hostname.example.org',
+        :rubyversion     => '2.1.6',
+        :operatingsystem => 'FreeBSD',
+        :osfamily        => 'FreeBSD',
+      }
+    end
+
+    describe 'without custom parameters' do
+      it 'should set up reports' do
+        should contain_exec('Create Puppet Reports dir').with({
+          :command => '/bin/mkdir -p /usr/local/lib/ruby/site_ruby/2.1/puppet/reports',
+          :creates => '/usr/local/lib/ruby/site_ruby/2.1/puppet/reports',
+        })
+
+        should contain_file('/usr/local/lib/ruby/site_ruby/2.1/puppet/reports/foreman.rb').with({
+          :mode    => '0644',
+          :owner   => 'root',
+          :group   => '0',
+          :source  => 'puppet:///modules/foreman/foreman-report_v2.rb',
+          :require => 'Exec[Create Puppet Reports dir]',
+        })
+      end
+
+      it 'should set up enc' do
+        should contain_file('/usr/local/etc/puppet/node.rb').with({
+          :mode   => '0550',
+          :owner  => 'puppet',
+          :group  => 'puppet',
+          :source => 'puppet:///modules/foreman/external_node_v2.rb',
+        })
+      end
+
+      it 'should install json package' do
+        should contain_package('rubygem-json').with_ensure('installed')
+      end
+
+      it 'should create puppet.yaml' do
+        should contain_file('/usr/local/etc/puppet/foreman.yaml').
+          with_content(/^:url: "https:\/\/#{facts[:fqdn]}"$/).
+          with_content(/^:ssl_ca: "\/var\/puppet\/ssl\/certs\/ca.pem"$/).
+          with_content(/^:ssl_cert: "\/var\/puppet\/ssl\/certs\/#{facts[:fqdn]}.pem"$/).
+          with_content(/^:ssl_key: "\/var\/puppet\/ssl\/private_keys\/#{facts[:fqdn]}.pem"$/).
+          with_content(/^:user: ""$/).
+          with_content(/^:password: ""$/).
+          with_content(/^:puppetdir: "\/var\/puppet"$/).
+          with_content(/^:facts: true$/).
+          with_content(/^:timeout: 60$/).
+          with({
+            :mode  => '0640',
+            :owner => 'root',
+            :group => 'puppet',
+          })
       end
     end
   end

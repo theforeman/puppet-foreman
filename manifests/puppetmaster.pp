@@ -11,6 +11,7 @@ class foreman::puppetmaster (
   $puppet_user      = $foreman::params::puppet_user,
   $puppet_group     = $foreman::params::puppet_group,
   $puppet_basedir   = $foreman::params::puppet_basedir,
+  $puppet_etcdir    = $foreman::params::puppet_etcdir,
   $timeout          = $foreman::params::puppetmaster_timeout,
   $ssl_ca           = $foreman::params::client_ssl_ca,
   $ssl_cert         = $foreman::params::client_ssl_cert,
@@ -28,7 +29,7 @@ class foreman::puppetmaster (
     ensure  => installed,
   }
 
-  file {'/etc/puppet/foreman.yaml':
+  file {"${puppet_etcdir}/foreman.yaml":
     content => template("${module_name}/puppet.yaml.erb"),
     mode    => '0640',
     owner   => 'root',
@@ -44,14 +45,14 @@ class foreman::puppetmaster (
     file {"${puppet_basedir}/reports/foreman.rb":
       mode    => '0644',
       owner   => 'root',
-      group   => 'root',
+      group   => '0',
       source  => "puppet:///modules/${module_name}/foreman-report_${report_api}.rb",
       require => Exec['Create Puppet Reports dir'],
     }
   }
 
   if $enc {
-    file { '/etc/puppet/node.rb':
+    file { "${puppet_etcdir}/node.rb":
       source => "puppet:///modules/${module_name}/external_node_${enc_api}.rb",
       mode   => '0550',
       owner  => $puppet_user,
