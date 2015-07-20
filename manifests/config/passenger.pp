@@ -11,6 +11,9 @@
 #
 # $servername::             Servername for the vhost.
 #
+# $serveraliases::          Serveraliases for the vhost.
+#                           type:array
+#
 # $ssl::                    Whether to enable SSL.
 #
 # $ssl_cert::               Location of the SSL certificate file.
@@ -42,6 +45,7 @@ class foreman::config::passenger(
   $listen_on_interface = $::foreman::passenger_interface,
   $ruby                = $::foreman::passenger_ruby,
   $servername          = $::foreman::servername,
+  $serveraliases       = $::foreman::serveraliases,
   $ssl                 = $::foreman::ssl,
   $ssl_ca              = $::foreman::server_ssl_ca,
   $ssl_chain           = $::foreman::server_ssl_chain,
@@ -125,7 +129,7 @@ class foreman::config::passenger(
       port                    => 80,
       priority                => '05',
       servername              => $servername,
-      serveraliases           => ['foreman'],
+      serveraliases           => $serveraliases,
       custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_virt_host_include.erb',
                                           'foreman/_suburi.conf.erb'),
     }
@@ -165,7 +169,7 @@ class foreman::config::passenger(
         port                    => 443,
         priority                => '05',
         servername              => $servername,
-        serveraliases           => ['foreman'],
+        serveraliases           => $serveraliases,
         ssl                     => true,
         ssl_cert                => $ssl_cert,
         ssl_certs_dir           => $ssl_certs_dir,
