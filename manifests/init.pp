@@ -29,6 +29,9 @@
 #
 # $servername::                 Server name of the VirtualHost in the webserver
 #
+# $serveraliases::              Server aliases of the VirtualHost in the webserver
+#                               type:array
+#
 # $ssl::                        Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
 #                               type:boolean
 #
@@ -206,6 +209,7 @@ class foreman (
   $plugin_prefix             = $::foreman::params::plugin_prefix,
   $use_vhost                 = $::foreman::params::use_vhost,
   $servername                = $::foreman::params::servername,
+  $serveraliases             = $::foreman::params::serveraliases,
   $ssl                       = $::foreman::params::ssl,
   $custom_repo               = $::foreman::params::custom_repo,
   $repo                      = $::foreman::params::repo,
@@ -291,6 +295,7 @@ class foreman (
   validate_bool($websockets_encrypt)
   validate_re($logging_level, '^(debug|info|warn|error|fatal)$')
   validate_hash($loggers)
+  validate_array($serveraliases)
   if $email_delivery_method {
     validate_re($email_delivery_method, ['^sendmail$', '^smtp$'], "email_delivery_method can be either sendmail or smtp, not ${email_delivery_method}")
   }

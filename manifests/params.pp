@@ -8,23 +8,25 @@ class foreman::params {
   $foreman_password = undef
   # Should foreman act as an external node classifier (manage puppet class
   # assignments)
-  $enc          = true
+  $enc            = true
   # Should foreman receive reports from puppet
-  $reports      = true
+  $reports        = true
   # Should foreman receive facts from puppet
-  $receive_facts = true
+  $receive_facts  = true
   # should foreman manage host provisioning as well
-  $unattended   = true
+  $unattended     = true
   # Enable users authentication (default user:admin pw:changeme)
   $authentication = true
   # configure foreman via apache and passenger
-  $passenger    = true
+  $passenger      = true
   # Enclose apache configuration in <VirtualHost>...</VirtualHost>
-  $use_vhost    = true
+  $use_vhost      = true
   # Server name of the VirtualHost
-  $servername   = $::fqdn
+  $servername     = $::fqdn
+  # Server aliases of the VirtualHost
+  $serveraliases  = [ 'foreman' ]
   # force SSL (note: requires passenger)
-  $ssl          = true
+  $ssl            = true
   #define which interface passenger should listen on, undef means all interfaces
   $passenger_interface = undef
   # Choose whether you want to enable locations and organizations.
