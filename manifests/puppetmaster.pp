@@ -63,6 +63,7 @@ class foreman::puppetmaster (
       ensure                  => directory,
       owner                   => $puppet_user,
       group                   => $puppet_group,
+      mode                    => '0750',
       selinux_ignore_defaults => true,
     }
 
