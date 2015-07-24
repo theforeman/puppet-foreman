@@ -16,4 +16,9 @@ end
 PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp", "vendor/**/*.pp"]
 PuppetLint.configuration.log_format = '%{path}:%{linenumber}:%{KIND}: %{message}'
 
+require 'puppet-lint-param-docs/tasks'
+PuppetLintParamDocs.define_selective do |config|
+  config.pattern = []
+end
+
 task :default => [:validate, :lint, :spec]
