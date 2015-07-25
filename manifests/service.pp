@@ -1,11 +1,11 @@
 # Configure the foreman service
 class foreman::service {
-  case $foreman::passenger {
+  case $::foreman::passenger {
     true: {
       exec {'restart_foreman':
         command     => "/bin/touch ${foreman::app_root}/tmp/restart.txt",
         refreshonly => true,
-        cwd         => $foreman::app_root,
+        cwd         => $::foreman::app_root,
         path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
       }
 

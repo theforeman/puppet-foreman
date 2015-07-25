@@ -2,6 +2,6 @@
 class foreman::database::sqlite {
   exec { 'create':
     command => '/usr/sbin/foreman-rake db:create',
-    creates => "${foreman::app_root}/db/production.sqlite3",
+    creates => "${::foreman::app_root}/db/production.sqlite3",
   }
 }

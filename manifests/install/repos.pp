@@ -9,7 +9,7 @@ define foreman::install::repos(
     'RedHat': {
       ::foreman::install::repos::yum {$name:
         repo     => $repo,
-        yumcode  => $foreman::params::yumcode,
+        yumcode  => $::foreman::params::yumcode,
         gpgcheck => $gpgcheck,
       }
     }
@@ -23,7 +23,7 @@ define foreman::install::repos(
         'Amazon': {
           ::foreman::install::repos::yum {$name:
             repo     => $repo,
-            yumcode  => $foreman::params::yumcode,
+            yumcode  => $::foreman::params::yumcode,
             gpgcheck => $gpgcheck,
           }
         }

@@ -15,7 +15,7 @@ class foreman::database {
       'SEED_LOCATION'         => $::foreman::initial_location,
     }
 
-    if $foreman::passenger {
+    if $::foreman::passenger {
       $foreman_service = Class['apache::service']
     } else {
       $foreman_service = Class['foreman::service']
