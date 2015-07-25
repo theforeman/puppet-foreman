@@ -1,40 +1,41 @@
 require 'spec_helper'
 
 describe 'foreman::rake' do
-  let :default_facts do
-    {
-      :concat_basedir => '/tmp',
-      :interfaces     => '',
-    }
-  end
-
-  let :pre_condition do
-    "class { 'foreman':
-      db_manage => false,
-     }"
-  end
 
   let(:title) { 'db:migrate' }
 
   context 'on RedHat' do
     let :facts do
-      default_facts.merge({
-        :operatingsystem        => 'RedHat',
-        :operatingsystemrelease => '6.4',
-        :osfamily               => 'RedHat',
-      })
+      on_supported_os['redhat-7-x86_64']
     end
 
-    it { should contain_exec('foreman-rake-db:migrate').with({
-      'command'     => '/usr/sbin/foreman-rake db:migrate',
-      'user'        => 'foreman',
-      'environment' => ['HOME=/usr/share/foreman'],
-      'logoutput'   => 'on_failure',
-      'refreshonly' => true,
-    })}
+    context 'without parameters' do
+      # These parameters are inherited normally, but here we cheat for performance
+      let :params do
+        {
+          :user     => 'foreman',
+          :app_root => '/usr/share/foreman',
+        }
+      end
+
+      it { should contain_exec('foreman-rake-db:migrate').with({
+        'command'     => '/usr/sbin/foreman-rake db:migrate',
+        'user'        => 'foreman',
+        'environment' => ['HOME=/usr/share/foreman'],
+        'logoutput'   => 'on_failure',
+        'refreshonly' => true,
+      })}
+    end
 
     context 'with environment' do
-      let(:params) { {'environment' => {'SEED_USER' => 'admin'}} }
+      let :params do
+        {
+          :environment => {'SEED_USER' => 'admin'},
+          :user        => 'foreman',
+          :app_root    => '/usr/share/foreman',
+        }
+      end
+
       it { should contain_exec('foreman-rake-db:migrate').with({
         'command'     => '/usr/sbin/foreman-rake db:migrate',
         'user'        => 'foreman',
@@ -46,7 +47,14 @@ describe 'foreman::rake' do
     end
 
     context 'with timeout' do
-      let(:params) { {'timeout' => 60 }}
+      let :params do
+        {
+          :timeout  => 60,
+          :user     => 'foreman',
+          :app_root => '/usr/share/foreman',
+        }
+      end
+
       it { should contain_exec('foreman-rake-db:migrate').with({
         'command'     => '/usr/sbin/foreman-rake db:migrate',
         'user'        => 'foreman',
