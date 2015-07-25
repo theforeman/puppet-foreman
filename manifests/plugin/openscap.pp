@@ -8,7 +8,7 @@
 #                             type:boolean
 #
 class foreman::plugin::openscap (
-  $configure_openscap_repo = $foreman::plugin::openscap::params::configure_openscap_repo,
+  $configure_openscap_repo = $::foreman::plugin::openscap::params::configure_openscap_repo,
 ) inherits foreman::plugin::openscap::params {
   validate_bool($configure_openscap_repo)
 

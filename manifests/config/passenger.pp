@@ -19,6 +19,8 @@
 #
 # $ssl_ca::                 Location of the SSL CA file
 #
+# $ssl_chain::              Location of the SSL chain file
+#
 # $ssl_crl::                Location of the SSL certificate revocation list file
 #
 # $use_vhost::              Whether to install a vhost. Note that using ssl and
@@ -34,21 +36,21 @@
 # $start_timeout::          Amount of seconds to wait for Ruby application boot.
 #
 class foreman::config::passenger(
-  $app_root            = $foreman::app_root,
-  $listen_on_interface = $foreman::passenger_interface,
-  $ruby                = $foreman::passenger_ruby,
-  $servername          = $foreman::servername,
-  $ssl                 = $foreman::ssl,
-  $ssl_ca              = $foreman::server_ssl_ca,
-  $ssl_chain           = $foreman::server_ssl_chain,
-  $ssl_cert            = $foreman::server_ssl_cert,
-  $ssl_key             = $foreman::server_ssl_key,
-  $ssl_crl             = $foreman::server_ssl_crl,
-  $use_vhost           = $foreman::use_vhost,
-  $user                = $foreman::user,
-  $prestart            = $foreman::passenger_prestart,
-  $min_instances       = $foreman::passenger_min_instances,
-  $start_timeout       = $foreman::passenger_start_timeout,
+  $app_root            = $::foreman::app_root,
+  $listen_on_interface = $::foreman::passenger_interface,
+  $ruby                = $::foreman::passenger_ruby,
+  $servername          = $::foreman::servername,
+  $ssl                 = $::foreman::ssl,
+  $ssl_ca              = $::foreman::server_ssl_ca,
+  $ssl_chain           = $::foreman::server_ssl_chain,
+  $ssl_cert            = $::foreman::server_ssl_cert,
+  $ssl_key             = $::foreman::server_ssl_key,
+  $ssl_crl             = $::foreman::server_ssl_crl,
+  $use_vhost           = $::foreman::use_vhost,
+  $user                = $::foreman::user,
+  $prestart            = $::foreman::passenger_prestart,
+  $min_instances       = $::foreman::passenger_min_instances,
+  $start_timeout       = $::foreman::passenger_start_timeout,
 ) {
   # validate parameter values
   if $listen_on_interface {
@@ -59,7 +61,7 @@ class foreman::config::passenger(
   validate_bool($prestart)
 
   $docroot = "${app_root}/public"
-  $suburi_parts = split($foreman::foreman_url, '/')
+  $suburi_parts = split($::foreman::foreman_url, '/')
   $suburi_parts_count = size($suburi_parts) - 1
   if $suburi_parts_count >= 3 {
     $suburi_without_slash = join(values_at($suburi_parts, ["3-${suburi_parts_count}"]), '/')

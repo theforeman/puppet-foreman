@@ -15,10 +15,10 @@
 # $image_name::      tarball with images
 #
 class foreman::plugin::discovery (
-  $install_images = $foreman::plugin::discovery::params::install_images,
-  $tftp_root      = $foreman::plugin::discovery::params::tftp_root,
-  $source_url     = $foreman::plugin::discovery::params::source_url,
-  $image_name     = $foreman::plugin::discovery::params::image_name,
+  $install_images = $::foreman::plugin::discovery::params::install_images,
+  $tftp_root      = $::foreman::plugin::discovery::params::tftp_root,
+  $source_url     = $::foreman::plugin::discovery::params::source_url,
+  $image_name     = $::foreman::plugin::discovery::params::image_name,
 ) inherits foreman::plugin::discovery::params {
 
   $tftp_root_clean = regsubst($tftp_root, '/$', '')
