@@ -279,6 +279,7 @@ class foreman (
   } else {
     $db_adapter_real = $db_adapter
   }
+  validate_bool($passenger)
   if $passenger == false and $ipa_authentication {
     fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
   }
