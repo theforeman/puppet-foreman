@@ -24,8 +24,8 @@ class foreman::params {
   $servername   = $::fqdn
   # force SSL (note: requires passenger)
   $ssl          = true
-  #define which interface passenger should listen on, undef means all interfaces
-  $passenger_interface = undef
+  # Define which IP address passenger should listen on, undef means any IP address
+  $passenger_ip = undef
   # Choose whether you want to enable locations and organizations.
   $locations_enabled     = false
   $organizations_enabled = false
