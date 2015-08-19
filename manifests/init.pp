@@ -24,6 +24,9 @@
 #
 # $servername::               Server name of the VirtualHost in the webserver
 #
+# $serveraliases::            Server aliases of the VirtualHost in the webserver
+#                             type:array
+#
 # $ssl::                      Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
 #                             type:boolean
 #
@@ -177,6 +180,7 @@ class foreman (
   $passenger_ruby_package   = $foreman::params::passenger_ruby_package,
   $use_vhost                = $foreman::params::use_vhost,
   $servername               = $foreman::params::servername,
+  $serveraliases            = $foreman::params::serveraliases,
   $ssl                      = $foreman::params::ssl,
   $custom_repo              = $foreman::params::custom_repo,
   $repo                     = $foreman::params::repo,
