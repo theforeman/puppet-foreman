@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.3
+* Fix missing brightbox/passenger-legacy PPA on Ubuntu 12.04 (#11069)
+
 ## 3.0.2
 * Fix default foreman::plugin::openscap parameter values
 * foreman_config_entry: ensure HOME is set on all Puppet versions
