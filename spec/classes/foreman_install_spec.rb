@@ -32,7 +32,7 @@ describe 'foreman::install' do
       it { should contain_package('foreman-postgresql').with_ensure('present') }
       it { should contain_package('foreman-postgresql').that_requires('Foreman::Install::Repos[foreman]') }
       it { should contain_package('foreman-postgresql').that_requires('Class[foreman::install::repos::extra]') }
-      it { should contain_package('ruby193-rubygem-passenger-native') }
+      it { should contain_package('tfm-rubygem-passenger-native') }
     end
 
     describe 'with version' do
