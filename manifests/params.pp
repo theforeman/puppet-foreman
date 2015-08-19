@@ -121,9 +121,9 @@ class foreman::params {
             default => '/usr/share/ruby/vendor_ruby/puppet',
           }
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
-          $passenger_ruby = '/usr/bin/ruby193-ruby'
-          $passenger_ruby_package = 'ruby193-rubygem-passenger-native'
-          $plugin_prefix = 'ruby193-rubygem-foreman_'
+          $passenger_ruby = '/usr/bin/tfm-ruby'
+          $passenger_ruby_package = 'tfm-rubygem-passenger-native'
+          $plugin_prefix = 'tfm-rubygem-foreman_'
           $passenger_prestart = true
           $passenger_min_instances = 1
           $passenger_start_timeout = 600
@@ -176,9 +176,9 @@ class foreman::params {
           $puppet_home = '/var/lib/puppet'
           $yumcode = 'el6'
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
-          $passenger_ruby = '/usr/bin/ruby193-ruby'
-          $passenger_ruby_package = 'ruby193-rubygem-passenger-native'
-          $plugin_prefix = 'ruby193-rubygem-foreman_'
+          $passenger_ruby = '/usr/bin/tfm-ruby'
+          $passenger_ruby_package = 'tfm-rubygem-passenger-native'
+          $plugin_prefix = 'tfm-rubygem-foreman_'
           $init_config = '/etc/sysconfig/foreman'
           $init_config_tmpl = 'foreman.sysconfig'
           $passenger_prestart = true

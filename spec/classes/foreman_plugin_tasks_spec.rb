@@ -24,7 +24,7 @@ describe 'foreman::plugin::tasks' do
     end
 
     it 'should call the plugin' do
-      should contain_foreman__plugin('tasks').with_package('ruby193-rubygem-foreman-tasks')
+      should contain_foreman__plugin('tasks').with_package('tfm-rubygem-foreman-tasks')
       should contain_service('foreman-tasks').with('ensure' => 'running', 'enable' => 'true', 'name' => 'foreman-tasks')
     end
   end

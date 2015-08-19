@@ -16,7 +16,7 @@ describe 'foreman::plugin' do
     } end
 
     it 'should install the correct package' do
-      should contain_package('ruby193-rubygem-foreman_myplugin').with_ensure('installed')
+      should contain_package('tfm-rubygem-foreman_myplugin').with_ensure('installed')
     end
 
     it 'should not contain the config file' do

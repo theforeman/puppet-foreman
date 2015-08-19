@@ -83,7 +83,7 @@ describe 'foreman::config' do
       it 'should contain foreman::config::passenger' do
         should contain_class('foreman::config::passenger').
           with_listen_on_interface(nil).
-          with_ruby('/usr/bin/ruby193-ruby').
+          with_ruby('/usr/bin/tfm-ruby').
           that_comes_before('Anchor[foreman::config_end]')
       end
 

@@ -1,34 +1,14 @@
-# Installs puppetdb_foreman plugin
-class foreman::plugin::puppetdb {
-  case $::osfamily {
-    'RedHat': {
-      case $::operatingsystem {
-        'fedora': {
-          $package = 'rubygem-puppetdb_foreman'
-        }
-        default: {
-          $package = 'ruby193-rubygem-puppetdb_foreman'
-        }
-      }
-    }
-    'Debian': {
-      $package = 'ruby-puppetdb-foreman'
-    }
-    'Linux': {
-      case $::operatingsystem {
-        'Amazon': {
-          $package = 'ruby193-rubygem-puppetdb_foreman'
-        }
-        default: {
-          fail("${::hostname}: puppetdb_foreman does not support operatingsystem ${::operatingsystem}")
-        }
-      }
-    }
-    default: {
-      fail("${::hostname}: puppetdb_foreman does not support osfamily ${::osfamily}")
-    }
-  }
-
+# = PuppetDB Foreman plugin
+#
+# Installs the puppetdb_foreman plugin
+#
+# === Parameters:
+#
+# $package:: Package name to install, use ruby193-rubygem-puppetdb_foreman on Foreman 1.8/1.9 on EL
+#
+class foreman::plugin::puppetdb(
+  $package = $foreman::plugin::puppetdb::params::package,
+) inherits foreman::plugin::puppetdb::params {
   foreman::plugin {'puppetdb':
     package => $package,
   }
