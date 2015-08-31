@@ -19,6 +19,8 @@
 # $passenger_ruby_package::    	Package to install to provide Passenger libraries for the active Ruby
 #                              	interpreter
 #
+# $plugin_prefix::              String which is prepended to the package name
+#
 # $use_vhost::                 	Enclose apache configuration in <VirtualHost>...</VirtualHost>
 #                              	type:boolean
 #
@@ -199,6 +201,7 @@ class foreman (
   $passenger                 = $::foreman::params::passenger,
   $passenger_ruby            = $::foreman::params::passenger_ruby,
   $passenger_ruby_package    = $::foreman::params::passenger_ruby_package,
+  $plugin_prefix             = $::foreman::params::plugin_prefix,
   $use_vhost                 = $::foreman::params::use_vhost,
   $servername                = $::foreman::params::servername,
   $ssl                       = $::foreman::params::ssl,
