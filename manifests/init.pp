@@ -2,193 +2,193 @@
 #
 # === Parameters:
 #
-# $foreman_url::		URL on which foreman is going to run
+# $foreman_url::                URL on which foreman is going to run
 #
-# $unattended::			Should foreman manage host provisioning as well
-#				type:boolean
+# $unattended::                 Should foreman manage host provisioning as well
+#                               type:boolean
 #
-# $authentication::		Enable user authentication. Initial credentials are set using admin_username
-#				and admin_password.
-#				type:boolean
+# $authentication::             Enable user authentication. Initial credentials are set using admin_username
+#                               and admin_password.
+#                               type:boolean
 #
-# $passenger::			Configure foreman via apache and passenger
-#				type:boolean
+# $passenger::                  Configure foreman via apache and passenger
+#                               type:boolean
 #
-# $passenger_ruby::		Ruby interpreter used to run Foreman under Passenger
+# $passenger_ruby::             Ruby interpreter used to run Foreman under Passenger
 #
-# $passenger_ruby_package::	Package to install to provide Passenger libraries for the active Ruby
-#				interpreter
+# $passenger_ruby_package::     Package to install to provide Passenger libraries for the active Ruby
+#                               interpreter
 #
 # $plugin_prefix::              String which is prepended to the plugin package names
 #
-# $use_vhost::			Enclose apache configuration in <VirtualHost>...</VirtualHost>
-#				type:boolean
+# $use_vhost::                  Enclose apache configuration in <VirtualHost>...</VirtualHost>
+#                               type:boolean
 #
-# $servername::			Server name of the VirtualHost in the webserver
+# $servername::                 Server name of the VirtualHost in the webserver
 #
-# $ssl::			Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
-#				type:boolean
+# $ssl::                        Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
+#                               type:boolean
 #
-# $custom_repo::		No need to change anything here by default
-#				if set to true, no repo will be added by this module, letting you to
-#				set it to some custom location.
-#				type:boolean
+# $custom_repo::                No need to change anything here by default
+#                               if set to true, no repo will be added by this module, letting you to
+#                               set it to some custom location.
+#                               type:boolean
 #
-# $repo::			This can be stable, nightly or a specific version i.e. 1.7
+# $repo::                       This can be stable, nightly or a specific version i.e. 1.7
 #
-# $configure_epel_repo::	If disabled the EPEL repo will not be configured on RedHat family systems.
-#				type:boolean
+# $configure_epel_repo::        If disabled the EPEL repo will not be configured on RedHat family systems.
+#                               type:boolean
 #
-# $configure_scl_repo::		If disabled the SCL repo will not be configured on Red Hat clone systems.
-#				(Currently only installs repos for CentOS and Scientific)
-#				type:boolean
+# $configure_scl_repo::         If disabled the SCL repo will not be configured on Red Hat clone systems.
+#                               (Currently only installs repos for CentOS and Scientific)
+#                               type:boolean
 #
-# $configure_brightbox_repo::	Configure the Brightbox PPA for Ubuntu, providing updated Ruby and
-#				Passenger packages
-#				type:boolean
+# $configure_brightbox_repo::   Configure the Brightbox PPA for Ubuntu, providing updated Ruby and
+#                               Passenger packages
+#                               type:boolean
 #
-# $selinux::			when undef, foreman-selinux will be installed if SELinux is enabled
-#				setting to false/true will override this check (e.g. set to false on 1.1)
-#				type:boolean
+# $selinux::                    when undef, foreman-selinux will be installed if SELinux is enabled
+#                               setting to false/true will override this check (e.g. set to false on 1.1)
+#                               type:boolean
 #
-# $gpgcheck::			turn on/off gpg check in repo files (effective only on RedHat family systems)
-#				type:boolean
+# $gpgcheck::                   turn on/off gpg check in repo files (effective only on RedHat family systems)
+#                               type:boolean
 #
-# $version::			foreman package version, it's passed to ensure parameter of package resource
-#				can be set to specific version number, 'latest', 'present' etc.
+# $version::                    foreman package version, it's passed to ensure parameter of package resource
+#                               can be set to specific version number, 'latest', 'present' etc.
 #
-# $db_manage::			if enabled, will install and configure the database server on this host
-#				type:boolean
+# $db_manage::                  if enabled, will install and configure the database server on this host
+#                               type:boolean
 #
-# $db_type::			Database 'production' type (valid types: mysql/postgresql/sqlite)
+# $db_type::                    Database 'production' type (valid types: mysql/postgresql/sqlite)
 #
-# $db_adapter::			Database 'production' adapter
+# $db_adapter::                 Database 'production' adapter
 #
-# $db_host::			Database 'production' host
+# $db_host::                    Database 'production' host
 #
-# $db_port::			Database 'production' port
-#				type:integer
+# $db_port::                    Database 'production' port
+#                               type:integer
 #
-# $db_database::		Database 'production' database (e.g. foreman)
+# $db_database::                Database 'production' database (e.g. foreman)
 #
-# $db_username::		Database 'production' user (e.g. foreman)
+# $db_username::                Database 'production' user (e.g. foreman)
 #
-# $db_password::		Database 'production' password (default is random)
+# $db_password::                Database 'production' password (default is random)
 #
-# $db_sslmode::			Database 'production' ssl mode
+# $db_sslmode::                 Database 'production' ssl mode
 #
-# $db_pool::			Database 'production' size of connection pool
-#				type:integer
+# $db_pool::                    Database 'production' size of connection pool
+#                               type:integer
 #
-# $apipie_task::		Rake task to generate API documentation.
-#				Use 'apipie:cache' on 1.7 or older, 'apipie:cache:index' on 1.8 or newer.
+# $apipie_task::                Rake task to generate API documentation.
+#                               Use 'apipie:cache' on 1.7 or older, 'apipie:cache:index' on 1.8 or newer.
 #
-# $app_root::			Name of foreman root directory
+# $app_root::                   Name of foreman root directory
 #
-# $manage_user::		Controls whether foreman module will manage the user on the system. (default true)
-#				type:boolean
+# $manage_user::                Controls whether foreman module will manage the user on the system. (default true)
+#                               type:boolean
 #
-# $user::			User under which foreman will run
+# $user::                       User under which foreman will run
 #
-# $group::			Primary group for the Foreman user
+# $group::                      Primary group for the Foreman user
 #
-# $user_groups::		Additional groups for the Foreman user
-#				type:array
+# $user_groups::                Additional groups for the Foreman user
+#                               type:array
 #
-# $environment::		Rails environment of foreman
+# $environment::                Rails environment of foreman
 #
-# $puppet_home::		Puppet home directory
+# $puppet_home::                Puppet home directory
 #
-# $locations_enabled::		Enable locations?
-#				type:boolean
+# $locations_enabled::          Enable locations?
+#                               type:boolean
 #
-# $organizations_enabled::	Enable organizations?
-#				type:boolean
+# $organizations_enabled::      Enable organizations?
+#                               type:boolean
 #
-# $passenger_interface::	Defines which network interface passenger should listen on, undef means all interfaces
+# $passenger_interface::        Defines which network interface passenger should listen on, undef means all interfaces
 #
-# $passenger_prestart::		Pre-start the first passenger worker instance process during httpd start.
-#				type:boolean
+# $passenger_prestart::         Pre-start the first passenger worker instance process during httpd start.
+#                               type:boolean
 #
-# $passenger_min_instances::	Minimum passenger worker instances to keep when application is idle.
+# $passenger_min_instances::    Minimum passenger worker instances to keep when application is idle.
 #
-# $passenger_start_timeout::	Amount of seconds to wait for Ruby application boot.
+# $passenger_start_timeout::    Amount of seconds to wait for Ruby application boot.
 #
-# $server_ssl_ca::		Defines Apache mod_ssl SSLCACertificateFile setting in Foreman vhost conf file.
+# $server_ssl_ca::              Defines Apache mod_ssl SSLCACertificateFile setting in Foreman vhost conf file.
 #
-# $server_ssl_chain::		Defines Apache mod_ssl SSLCertificateChainFile setting in Foreman vhost conf file.
+# $server_ssl_chain::           Defines Apache mod_ssl SSLCertificateChainFile setting in Foreman vhost conf file.
 #
-# $server_ssl_cert::		Defines Apache mod_ssl SSLCertificateFile setting in Foreman vhost conf file.
+# $server_ssl_cert::            Defines Apache mod_ssl SSLCertificateFile setting in Foreman vhost conf file.
 #
-# $server_ssl_key::		Defines Apache mod_ssl SSLCertificateKeyFile setting in Foreman vhost conf file.
+# $server_ssl_key::             Defines Apache mod_ssl SSLCertificateKeyFile setting in Foreman vhost conf file.
 #
-# $server_ssl_crl::		Defines the Apache mod_ssl SSLCARevocationFile setting in Foreman vhost conf file.
+# $server_ssl_crl::             Defines the Apache mod_ssl SSLCARevocationFile setting in Foreman vhost conf file.
 #
-# $oauth_active::		Enable OAuth authentication for REST API
-#				type:boolean
+# $oauth_active::               Enable OAuth authentication for REST API
+#                               type:boolean
 #
-# $oauth_map_users::		Should foreman use the foreman_user header to identify API user?
-#				type:boolean
+# $oauth_map_users::            Should foreman use the foreman_user header to identify API user?
+#                               type:boolean
 #
-# $oauth_consumer_key::		OAuth consumer key
+# $oauth_consumer_key::         OAuth consumer key
 #
-# $oauth_consumer_secret::	OAuth consumer secret
+# $oauth_consumer_secret::      OAuth consumer secret
 #
-# $admin_username::		Username for the initial admin user
+# $admin_username::             Username for the initial admin user
 #
-# $admin_password::		Password of the initial admin user, default is randomly generated
+# $admin_password::             Password of the initial admin user, default is randomly generated
 #
-# $admin_first_name::		First name of the initial admin user
+# $admin_first_name::           First name of the initial admin user
 #
-# $admin_last_name::		Last name of the initial admin user
+# $admin_last_name::            Last name of the initial admin user
 #
-# $admin_email::		E-mail address of the initial admin user
+# $admin_email::                E-mail address of the initial admin user
 #
-# $initial_organization::	Name of an initial organization
+# $initial_organization::       Name of an initial organization
 #
-# $initial_location::		Name of an initial location
+# $initial_location::           Name of an initial location
 #
-# $ipa_authentication::		Enable configuration for external authentication via IPA
-#				type:boolean
+# $ipa_authentication::         Enable configuration for external authentication via IPA
+#                               type:boolean
 #
-# $http_keytab::		Path to keytab to be used for Kerberos authentication on the WebUI
+# $http_keytab::                Path to keytab to be used for Kerberos authentication on the WebUI
 #
-# $pam_service::		PAM service used for host-based access control in IPA
+# $pam_service::                PAM service used for host-based access control in IPA
 #
-# $configure_ipa_repo::		DEPRECATED: Enable custom yum repo with packages needed for external authentication via IPA,
-#				this was needed on RHEL 6.5 and older, no longer required
-#				type:boolean
+# $configure_ipa_repo::         DEPRECATED: Enable custom yum repo with packages needed for external authentication via IPA,
+#                               this was needed on RHEL 6.5 and older, no longer required
+#                               type:boolean
 #
-# $ipa_manage_sssd::		If ipa_authentication is true, should the installer manage SSSD? You can disable it
-#				if you use another module for SSSD configuration
-#				type:boolean
+# $ipa_manage_sssd::            If ipa_authentication is true, should the installer manage SSSD? You can disable it
+#                               if you use another module for SSSD configuration
+#                               type:boolean
 #
-# $websockets_encrypt::		Whether to encrypt websocket connections
-#				type:boolean
+# $websockets_encrypt::         Whether to encrypt websocket connections
+#                               type:boolean
 #
-# $websockets_ssl_key::		SSL key file to use when encrypting websocket connections
+# $websockets_ssl_key::         SSL key file to use when encrypting websocket connections
 #
-# $websockets_ssl_cert::	SSL certificate file to use when encrypting websocket connections
+# $websockets_ssl_cert::        SSL certificate file to use when encrypting websocket connections
 #
 # $logging_level::              Logging level of the Foreman application (valid values: debug, info, warn, error, fatal)
 #
 # $loggers::                    Enable or disable specific loggers, e.g. {"sql" => true}
 #                               type:hash
 #
-# $email_conf::			email configuration file, defaults to /etc/foreman/email.yaml
+# $email_conf::                 email configuration file, defaults to /etc/foreman/email.yaml
 #
-# $email_source::		template to use for email configuration file
+# $email_source::               template to use for email configuration file
 #
-# $email_delivery_method::	can be sendmail or smtp regarding to foreman documentation
+# $email_delivery_method::      can be sendmail or smtp regarding to foreman documentation
 #
-# $email_smtp_address::		if delivery_method is smtp, this should contain an valid smtp host
+# $email_smtp_address::         if delivery_method is smtp, this should contain an valid smtp host
 #
-# $email_smtp_port::		smtp port, defaults to 25
+# $email_smtp_port::            smtp port, defaults to 25
 #                               type: integer
 #
-# $email_smtp_domain::		email domain
+# $email_smtp_domain::          email domain
 #
-# $email_smtp_authentication::	authentication settings, can be none or login, defaults to none
+# $email_smtp_authentication::  authentication settings, can be none or login, defaults to none
 #
 # $email_smtp_user_name::       user_name for mail server auth, if authentication login
 #
