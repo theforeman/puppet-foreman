@@ -155,10 +155,6 @@
 #
 # $pam_service::                PAM service used for host-based access control in IPA
 #
-# $configure_ipa_repo::         DEPRECATED: Enable custom yum repo with packages needed for external authentication via IPA,
-#                               this was needed on RHEL 6.5 and older, no longer required
-#                               type:boolean
-#
 # $ipa_manage_sssd::            If ipa_authentication is true, should the installer manage SSSD? You can disable it
 #                               if you use another module for SSSD configuration
 #                               type:boolean
@@ -256,7 +252,6 @@ class foreman (
   $ipa_authentication        = $::foreman::params::ipa_authentication,
   $http_keytab               = $::foreman::params::http_keytab,
   $pam_service               = $::foreman::params::pam_service,
-  $configure_ipa_repo        = $::foreman::params::configure_ipa_repo,
   $ipa_manage_sssd           = $::foreman::params::ipa_manage_sssd,
   $websockets_encrypt        = $::foreman::params::websockets_encrypt,
   $websockets_ssl_key        = $::foreman::params::websockets_ssl_key,

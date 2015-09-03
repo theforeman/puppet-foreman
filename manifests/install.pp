@@ -39,13 +39,6 @@ class foreman::install {
       ensure  => $::foreman::version,
       require => $repo,
     }
-    if $::foreman::ipa_authentication and $::foreman::configure_ipa_repo and $::foreman::osreleasemajor == '6' {
-      package { 'mod_lookup_identity-selinux':
-        ensure  => installed,
-        require => $repo,
-      }
-      notice ('Using configure_ipa_repo is deprecated and no longer required.')
-    }
   }
 
   if $::foreman::passenger and $::foreman::passenger_ruby_package {
