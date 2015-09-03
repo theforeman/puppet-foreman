@@ -249,7 +249,6 @@ class foreman::params {
   $ipa_authentication = false
   $http_keytab = '/etc/httpd/conf/http.keytab'
   $pam_service = 'foreman'
-  $configure_ipa_repo = false
   $ipa_manage_sssd = true
 
   # Websockets
