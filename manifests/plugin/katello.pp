@@ -119,7 +119,7 @@ class foreman::plugin::katello (
     }
   }
 
-  include foreman::plugin::tasks
+  include ::foreman::plugin::tasks
 
   foreman::config::passenger::fragment { 'katello':
     content     => template("${module_name}/plugins/katello_httpd.erb"),
