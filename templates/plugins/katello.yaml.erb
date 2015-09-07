@@ -1,0 +1,41 @@
+common:
+
+  rest_client_timeout: <%= @rest_client_timeout %>
+  post_sync_url: <%= @post_sync_url %>
+
+  elastic_index: <%= @elastic_index %>
+  elastic_url: <%= @elastic_url %>
+
+  candlepin:
+    url: <%= @candlepin_url %>
+    oauth_key: <%= @candlepin_oauth_key %>
+    oauth_secret: <%= @candlepin_oauth_secret %>
+
+  pulp:
+    url: <%= @pulp_url %>
+    oauth_key: <%= @pulp_oauth_key %>
+    oauth_secret: <%= @pulp_oauth_secret %>
+
+  qpid:
+    url: <%= @qpid_url %>
+    subscriptions_queue_address: <%= @qpid_subscriptions_queue_address %>
+
+# Logging configuration can be changed by uncommenting the loggers
+# section and the logger configuration desired.
+# 
+:katello:
+  :loggers:
+    :glue:
+      :enabled: <%= @loggers_glue %>
+    :pulp_rest:
+      :enabled: <%= @loggers_pulp_rest %>
+    :cp_rest:
+      :enabled: <%= @loggers_cp_rest %>
+    :cp_proxy:
+      :enabled: <%= @loggers_cp_proxy %>
+    :action:
+      :enabled: <%= @loggers_action %>
+    :tire_rest:
+      :enabled: <%= @loggers_tire_rest %>
+    :manifest_import_logger:
+      :enabled: <%= @loggers_manifest_import_logger %>
