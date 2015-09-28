@@ -198,6 +198,7 @@ def upload_facts(certname, req)
   uri = URI.parse("#{url}/api/hosts/facts")
   begin
     res = initialize_http(uri)
+    res.read_timeout = SETTINGS[:timeout]
     res.start { |http| http.request(req) }
     cache("#{certname}-push-facts", "Facts from this host were last pushed to #{uri} at #{Time.now}\n")
   rescue => e
