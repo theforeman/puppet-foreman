@@ -227,7 +227,7 @@ class foreman::params {
   $server_ssl_chain = "${puppet_home}/ssl/certs/ca.pem"
   $server_ssl_cert  = "${puppet_home}/ssl/certs/${lower_fqdn}.pem"
   $server_ssl_key   = "${puppet_home}/ssl/private_keys/${lower_fqdn}.pem"
-  $server_ssl_crl   = "${puppet_home}/ssl/ca/ca_crl.pem"
+  $server_ssl_crl   = "${puppet_home}/ssl/crl.pem"
 
   # We need the REST API interface with OAuth for some REST Puppet providers
   $oauth_active = true
