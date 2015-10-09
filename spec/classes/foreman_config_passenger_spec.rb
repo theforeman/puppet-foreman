@@ -104,7 +104,7 @@ describe 'foreman::config::passenger' do
           :ssl_ca                  => params[:ssl_ca],
           :ssl_crl                 => params[:ssl_crl],
           :ssl_verify_client       => 'optional',
-          :ssl_options             => '+StdEnvVars',
+          :ssl_options             => '+StdEnvVars +ExportCertData',
           :ssl_verify_depth        => '3',
           :ssl_crl_check           => 'chain',
           :custom_fragment         => %r{^<Directory #{params[:app_root]}/public>$},

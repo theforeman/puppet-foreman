@@ -170,7 +170,7 @@ class foreman::config::passenger(
         ssl_crl                 => $ssl_crl_real,
         ssl_crl_check           => $ssl_crl_check,
         ssl_verify_client       => 'optional',
-        ssl_options             => '+StdEnvVars',
+        ssl_options             => '+StdEnvVars +ExportCertData',
         ssl_verify_depth        => '3',
         custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_ssl_virt_host_include.erb',
                                             'foreman/_suburi.conf.erb'),
