@@ -1,5 +1,35 @@
 # Changelog
 
+## 5.0.0
+* New or changed parameters:
+    * Add package parameter to foreman::plugin::ovirt_provision, puppetdb and
+      tasks classes
+    * Add plugin_prefix parameter to main class to override package prefixes
+    * Removed the configure_ipa_repo parameter
+* Other features:
+    * Support Puppet master (ENC etc.) setup on FreeBSD
+    * Add foreman::plugin::remote_execution class for remote execution plugin
+    * Add foreman::plugin::dhcp_browser class for DHCP browser plugin
+* Other changes and fixes:
+    * Explicitly set permissions on yaml directory
+    * Use absolute variables throughout manifests
+    * Do not install Passenger packages when passenger parameter is false
+    * Change case statement for service management to an if statement
+    * Change EL RPM package prefix to 'tfm' for Foreman 1.10
+    * Allow newer puppetlabs/apt 2.x module
+    * Set PostgreSQL database encoding to UTF-8 (#11681)
+    * Move Discovery plugin paramater validation into conditional
+    * Set HTTP timeout in ENC script according to timeout setting
+    * Prefer Puppet agent SSL CRL for Apache virtualhost configuration
+    * Remove cache_data/random_password in favor of puppet/extlib module
+    * Add ExportCertData option to Apache SSL virtualhost
+    * Fix README typos
+* Compatibility warnings:
+    * Foreman 1.9 or older users on EL must set additional parameters to
+      change package prefixes, see the README.md for details
+    * The configure_ipa_repo parameter was removed
+    * The cache_data/random_password parser functions were removed
+
 ## 4.0.1
 * Fix missing brightbox/passenger-legacy PPA on Ubuntu 12.04 (#11069)
 
