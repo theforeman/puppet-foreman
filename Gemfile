@@ -28,5 +28,6 @@ gem 'metadata-json-lint'
 gem 'rspec', '< 3.2.0', {"platforms"=>["ruby_18"]}
 gem 'json'
 gem 'webmock'
+gem 'addressable', '< 2.4', {"platforms"=>["ruby_18"]}
 
 # vim:ft=ruby

@@ -3,6 +3,11 @@ Gemfile:
   extra:
     - gem: json
     - gem: webmock
+    - gem: addressable
+      version: '< 2.4'
+      options:
+        platforms:
+        - 'ruby_18'
 Rakefile:
   param_docs_pattern:
     - manifests/cli.pp
