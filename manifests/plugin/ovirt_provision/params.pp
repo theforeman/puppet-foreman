@@ -24,6 +24,9 @@ class foreman::plugin::ovirt_provision::params {
         }
       }
     }
+    /^(FreeBSD|DragonFly)$/: {
+      # do nothing to not break foreman-installer
+    }
     default: {
       fail("${::hostname}: ovirt_provision_plugin does not support osfamily ${::osfamily}")
     }

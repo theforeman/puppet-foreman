@@ -24,6 +24,9 @@ class foreman::plugin::puppetdb::params {
         }
       }
     }
+    /^(FreeBSD|DragonFly)$/: {
+      # do nothing to not break foreman-installer
+    }
     default: {
       fail("${::hostname}: puppetdb_foreman does not support osfamily ${::osfamily}")
     }
