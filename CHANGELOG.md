@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.1
+* Remove fail() from plugin params classes when running on FreeBSD
+* Test speed improvements
+
 ## 5.0.0
 * New or changed parameters:
     * Add package parameter to foreman::plugin::ovirt_provision, puppetdb and
