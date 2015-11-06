@@ -2,18 +2,21 @@ require 'spec_helper'
 
 describe 'foreman::plugin::discovery' do
   on_supported_os.each do |os, facts|
-    if facts[:os] == 'Fedora'
-      let(:facts) { facts }
+    let(:facts) { facts }
 
-      context 'with enabled image installation' do
+    context "on #{os}" do
+
+      it { should contain_foreman__plugin('discovery') }
+
+      describe 'without paramaters' do
+        it { should_not contain_foreman__remote_file('/var/lib/tftpboot/boot/fdi-image-latest.tar') }
+      end
+
+      describe 'with install_images => true' do
         let :params do
           {
             :install_images => true
           }
-        end
-
-        it 'should call the plugin' do
-          should contain_foreman__plugin('discovery')
         end
 
         it 'should download and install tarball' do
@@ -28,23 +31,6 @@ describe 'foreman::plugin::discovery' do
             'cwd' => '/var/lib/tftpboot/boot',
             'creates' => '/var/lib/tftpboot/boot/fdi-image/initrd0.img',
           })
-        end
-
-      end
-
-      context 'with disabled image installation' do
-        let :params do
-          {
-            :install_images => false
-          }
-        end
-
-        it 'should call the plugin' do
-          should contain_foreman__plugin('discovery')
-        end
-
-        it 'should not download and install tarball' do
-          should_not contain_foreman__remote_file('/var/lib/tftpboot/boot/fdi-image-latest.tar')
         end
       end
     end
