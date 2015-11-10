@@ -51,6 +51,10 @@ class foreman::config::passenger(
   $prestart            = $::foreman::passenger_prestart,
   $min_instances       = $::foreman::passenger_min_instances,
   $start_timeout       = $::foreman::passenger_start_timeout,
+  $infrastructure_port = 9070,
+  $client_ca           = $::foreman::client_ssl_ca,
+  $client_key          = $::foreman::client_ssl_key,
+  $client_cert         = $::foreman::client_ssl_cert,
 ) {
   # validate parameter values
   if $listen_on_interface {
@@ -148,7 +152,7 @@ class foreman::config::passenger(
         recurse => true,
       }
 
-      apache::vhost { 'foreman-ssl':
+      apache::vhost { 'foreman-infrastructure':
         add_default_charset     => 'UTF-8',
         docroot                 => $docroot,
         ip                      => $listen_interface,
@@ -158,10 +162,10 @@ class foreman::config::passenger(
         passenger_pre_start     => $https_prestart,
         passenger_start_timeout => $start_timeout,
         passenger_ruby          => $ruby,
-        port                    => 443,
+        port                    => $infrastructure_port,
         priority                => '05',
         servername              => $servername,
-        serveraliases           => ['foreman'],
+        serveraliases           => ['foreman_infra'],
         ssl                     => true,
         ssl_cert                => $ssl_cert,
         ssl_key                 => $ssl_key,
@@ -174,6 +178,67 @@ class foreman::config::passenger(
         ssl_verify_depth        => '3',
         custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_ssl_virt_host_include.erb',
                                             'foreman/_suburi.conf.erb'),
+      }
+
+      $bundle_cert_dir = '/usr/share/foreman/ssl'
+      $client_bundle = "${bundle_cert_dir}/client_bundle.pem"
+
+      file { $bundle_cert_dir:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => $::foreman::group,
+        mode   => '0750',
+      }
+
+      concat {$client_bundle:
+        owner => 'root',
+        group => $::foreman::group,
+        mode  => '0640',
+      }
+
+      concat::fragment{ 'client_key':
+        target => $client_bundle,
+        source => $client_key,
+        order  => '01',
+      }
+
+      concat::fragment{ 'client_cert':
+        target => $client_bundle,
+        source => $client_cert,
+        order  => '02',
+      }
+
+      $infrastructure_url = "https://${servername}:${infrastructure_port}"
+      $infrastructure_redirection_path = '/'
+      apache::vhost { 'foreman-ssl':
+        add_default_charset => 'UTF-8',
+        docroot             => $docroot,
+        ip                  => $listen_interface,
+        options             => ['SymLinksIfOwnerMatch'],
+        port                => 443,
+        priority            => '05',
+        servername          => $servername,
+        serveraliases       => ['foreman'],
+        ssl                 => true,
+        ssl_cert            => $ssl_cert,
+        ssl_key             => $ssl_key,
+        ssl_chain           => $ssl_chain,
+        ssl_ca              => $ssl_ca,
+        ssl_crl             => $ssl_crl_real,
+        ssl_crl_check       => $ssl_crl_check,
+        ssl_verify_client   => 'optional',
+        ssl_options         => '+StdEnvVars +ExportCertData',
+        ssl_verify_depth    => '3',
+        ssl_proxyengine     => true,
+        proxy_pass          => [{
+          'path'         => $infrastructure_redirection_path,
+          'url'          => $infrastructure_url,
+          'reverse_urls' => [$infrastructure_redirection_path, $infrastructure_url]
+        }],
+        custom_fragment     => "
+        SSLProxyCACertificateFile ${client_ca}
+        SSLProxyMachineCertificateFile ${client_bundle}
+        ",
       }
     }
   } else {
