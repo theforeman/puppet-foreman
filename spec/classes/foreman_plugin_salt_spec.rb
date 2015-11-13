@@ -6,4 +6,5 @@ describe 'foreman::plugin::salt' do
   end
 
   it { should contain_foreman__plugin('salt') }
+  it { should contain_foreman__plugin('tasks') }
 end

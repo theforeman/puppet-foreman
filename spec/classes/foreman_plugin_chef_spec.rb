@@ -6,4 +6,5 @@ describe 'foreman::plugin::chef' do
   end
 
   it { should contain_foreman__plugin('chef') }
+  it { should contain_foreman__plugin('tasks') }
 end
