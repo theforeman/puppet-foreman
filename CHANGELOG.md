@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.2
+* Install tasks plugin with remote_execution, chef and salt
+
 ## 5.0.1
 * Remove fail() from plugin params classes when running on FreeBSD
 * Test speed improvements
