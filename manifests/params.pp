@@ -1,8 +1,9 @@
 # The foreman default parameters
 class foreman::params {
+  $lower_fqdn = downcase($::fqdn)
 
 # Basic configurations
-  $foreman_url      = "https://${::fqdn}"
+  $foreman_url      = "https://${lower_fqdn}"
   $foreman_user     = undef
   $foreman_password = undef
   # Should foreman act as an external node classifier (manage puppet class
@@ -214,7 +215,6 @@ class foreman::params {
   }
   $puppet_user = 'puppet'
   $puppet_group = 'puppet'
-  $lower_fqdn = downcase($::fqdn)
 
   # If CA is specified, remote Foreman host will be verified in reports/ENC scripts
   $client_ssl_ca   = "${puppet_home}/ssl/certs/ca.pem"
