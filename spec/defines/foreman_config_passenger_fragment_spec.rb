@@ -29,6 +29,7 @@ describe 'foreman::config::passenger::fragment' do
               min_instances => '1',
               start_timeout => '600',
               use_vhost     => true,
+              foreman_url   => 'https://#{facts[:fqdn]}',
           }"
         end
 
@@ -66,6 +67,7 @@ describe 'foreman::config::passenger::fragment' do
               min_instances => '1',
               start_timeout => '600',
               use_vhost     => true,
+              foreman_url   => 'https://#{facts[:fqdn]}',
           }"
         end
 

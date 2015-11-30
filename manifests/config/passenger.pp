@@ -51,6 +51,7 @@ class foreman::config::passenger(
   $prestart            = $::foreman::passenger_prestart,
   $min_instances       = $::foreman::passenger_min_instances,
   $start_timeout       = $::foreman::passenger_start_timeout,
+  $foreman_url         = $::foreman::foreman_url,
 ) {
   # validate parameter values
   if $listen_on_interface {
@@ -61,7 +62,7 @@ class foreman::config::passenger(
   validate_bool($prestart)
 
   $docroot = "${app_root}/public"
-  $suburi_parts = split($::foreman::foreman_url, '/')
+  $suburi_parts = split($foreman_url, '/')
   $suburi_parts_count = size($suburi_parts) - 1
   if $suburi_parts_count >= 3 {
     $suburi_without_slash = join(values_at($suburi_parts, ["3-${suburi_parts_count}"]), '/')

@@ -21,6 +21,7 @@ describe 'foreman::config::passenger' do
           :prestart      => true,
           :min_instances => '1',
           :start_timeout => '600',
+          :foreman_url   => "https://#{facts[:fqdn]}",
         } end
 
         it 'should include apache with modules' do
@@ -49,6 +50,7 @@ describe 'foreman::config::passenger' do
           :min_instances => 1,
           :start_timeout => 600,
           :ruby          => '/usr/bin/tfm-ruby',
+          :foreman_url   => "https://#{facts[:fqdn]}",
         } end
 
         case facts[:osfamily]
@@ -130,6 +132,7 @@ describe 'foreman::config::passenger' do
           :min_instances => 1,
           :start_timeout => 600,
           :ruby          => '/usr/bin/tfm-ruby',
+          :foreman_url   => "https://#{facts[:fqdn]}",
         } end
 
         it do
@@ -152,6 +155,7 @@ describe 'foreman::config::passenger' do
           :min_instances => 1,
           :start_timeout => 600,
           :ruby          => '/usr/bin/tfm-ruby',
+          :foreman_url   => "https://#{facts[:fqdn]}",
         } end
 
         it do
@@ -171,6 +175,7 @@ describe 'foreman::config::passenger' do
           :prestart      => false,
           :min_instances => Undef.new,
           :start_timeout => Undef.new,
+          :foreman_url   => "https://#{facts[:fqdn]}",
         } end
 
         it 'should not include a pre-start' do
