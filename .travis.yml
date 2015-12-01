@@ -11,14 +11,14 @@ env:
   - PUPPET_VERSION=4.0 ONLY_OS=centos-7-x86_64,ubuntu-14-x86_64
   - PUPPET_VERSION=3.5 ONLY_OS=centos-7-x86_64,ubuntu-14-x86_64 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
   - PUPPET_VERSION=3.5 ONLY_OS=centos-7-x86_64,ubuntu-14-x86_64
-  # Test FreeBSD explicitly so we can exclude ruby 1.8.7 tests
-  - PUPPET_VERSION=4.0 ONLY_OS=freebsd-9-amd64,freebsd-10-amd64
-  - PUPPET_VERSION=3.5 ONLY_OS=freebsd-9-amd64,freebsd-10-amd64 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
-  - PUPPET_VERSION=3.5 ONLY_OS=freebsd-9-amd64,freebsd-10-amd64
+  # Test operating systems with ruby 1.8.7 explicitly so we can exclude ruby 1.8.7 tests for other OS
+  - PUPPET_VERSION=4.0 ONLY_OS=ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64
+  - PUPPET_VERSION=3.5 ONLY_OS=ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
+  - PUPPET_VERSION=3.5 ONLY_OS=ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64
   # Test the rest of the supported platforms
-  - PUPPET_VERSION=4.0 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,freebsd-9-amd64,freebsd-10-amd64
-  - PUPPET_VERSION=3.5 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,freebsd-9-amd64,freebsd-10-amd64 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
-  - PUPPET_VERSION=3.5 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,freebsd-9-amd64,freebsd-10-amd64
+  - PUPPET_VERSION=4.0 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64
+  - PUPPET_VERSION=3.5 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
+  - PUPPET_VERSION=3.5 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64
   # Only test Puppet 2.7 on ubuntu 12 and centos 6
   - PUPPET_VERSION=2.7.0 ONLY_OS=ubuntu-12-x86_64,centos-6-x86_64
 matrix:
@@ -37,13 +37,17 @@ matrix:
     - rvm: 1.8.7
       env: PUPPET_VERSION=4.0 ONLY_OS=centos-7-x86_64,ubuntu-14-x86_64
     - rvm: 1.8.7
-      env: PUPPET_VERSION=4.0 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,freebsd-9-amd64,freebsd-10-amd64
+      env: PUPPET_VERSION=4.0 ONLY_OS=ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64
     - rvm: 1.8.7
-      env: PUPPET_VERSION=4.0 ONLY_OS=freebsd-9-amd64,freebsd-10-amd64
-    # Exclude FreeBSD tests on Ruby 1.8.7
+      env: PUPPET_VERSION=4.0 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64
+    # Exclude tests on OS that do not ship with Ruby 1.8.7
     - rvm: 1.8.7
-      env: PUPPET_VERSION=3.5 ONLY_OS=freebsd-9-amd64,freebsd-10-amd64 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
+      env: PUPPET_VERSION=3.5 ONLY_OS=centos-7-x86_64,ubuntu-14-x86_64
     - rvm: 1.8.7
-      env: PUPPET_VERSION=3.5 ONLY_OS=freebsd-9-amd64,freebsd-10-amd64
+      env: PUPPET_VERSION=3.5 ONLY_OS=centos-7-x86_64,ubuntu-14-x86_64 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
+    - rvm: 1.8.7
+      env: PUPPET_VERSION=3.5 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64
+    - rvm: 1.8.7
+      env: PUPPET_VERSION=3.5 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
 bundler_args: --without development
 sudo: false
