@@ -5,14 +5,22 @@ describe 'foreman::plugin::discovery' do
     next if only_test_os() and not only_test_os.include?(os)
     next if exclude_test_os() and exclude_test_os.include?(os)
 
-    let(:facts) { facts }
-
     context "on #{os}" do
+      let(:facts) { facts }
+
+      case facts[:operatingsystem]
+        when 'Debian'
+          tftproot = '/srv/tftp'
+        when 'FreeBSD'
+          tftproot = '/tftpboot'
+        else
+          tftproot = '/var/lib/tftpboot'
+      end
 
       it { should contain_foreman__plugin('discovery') }
 
       describe 'without paramaters' do
-        it { should_not contain_foreman__remote_file('/var/lib/tftpboot/boot/fdi-image-latest.tar') }
+        it { should_not contain_foreman__remote_file("#{tftproot}/boot/fdi-image-latest.tar") }
       end
 
       describe 'with install_images => true' do
@@ -23,7 +31,7 @@ describe 'foreman::plugin::discovery' do
         end
 
         it 'should download and install tarball' do
-          should contain_foreman__remote_file('/var/lib/tftpboot/boot/fdi-image-latest.tar').
+          should contain_foreman__remote_file("#{tftproot}/boot/fdi-image-latest.tar").
             with_remote_location('http://downloads.theforeman.org/discovery/releases/latest/fdi-image-latest.tar')
         end
 
@@ -31,8 +39,8 @@ describe 'foreman::plugin::discovery' do
           should contain_exec('untar fdi-image-latest.tar').with({
             'command' => 'tar xf fdi-image-latest.tar',
             'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-            'cwd' => '/var/lib/tftpboot/boot',
-            'creates' => '/var/lib/tftpboot/boot/fdi-image/initrd0.img',
+            'cwd' => "#{tftproot}/boot",
+            'creates' => "#{tftproot}/boot/fdi-image/initrd0.img",
           })
         end
       end
