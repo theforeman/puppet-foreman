@@ -63,7 +63,7 @@ class foreman::config {
         fail("${::hostname}: The system does not seem to be IPA-enrolled")
       }
 
-      if $::foreman::selinux or (str2bool($::selinux) and $::foreman::selinux != false) {
+      if $::foreman::selinux or (str2bool($::selinux_enforced) and $::foreman::selinux != false) {
         selboolean { 'allow_httpd_mod_auth_pam':
           persistent => true,
           value      => 'on',

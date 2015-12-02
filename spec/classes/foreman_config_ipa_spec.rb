@@ -78,11 +78,11 @@ describe 'foreman::config' do
             describe 'on non-selinux' do
               let :facts do
                 facts.merge({
-                  :concat_basedir => '/tmp',
-                  :interfaces     => '',
+                  :concat_basedir     => '/tmp',
+                  :interfaces         => '',
                   :default_ipa_server => 'ipa.example.com',
-                  :default_ipa_realm => 'REALM',
-                  :selinux => 'false',
+                  :default_ipa_realm  => 'REALM',
+                  :selinux_enforced   => 'false',
                 })
               end
 
@@ -92,11 +92,11 @@ describe 'foreman::config' do
             describe 'on selinux system but disabled by user' do
               let :facts do
                 facts.merge({
-                  :concat_basedir => '/tmp',
-                  :interfaces     => '',
+                  :concat_basedir     => '/tmp',
+                  :interfaces         => '',
                   :default_ipa_server => 'ipa.example.com',
-                  :default_ipa_realm => 'REALM',
-                  :selinux => 'true',
+                  :default_ipa_realm  => 'REALM',
+                  :selinux_enforced   => 'true',
                 })
               end
 
@@ -114,11 +114,11 @@ describe 'foreman::config' do
             describe 'on selinux system with enabled by user' do
               let :facts do
                 facts.merge({
-                  :concat_basedir => '/tmp',
-                  :interfaces     => '',
+                  :concat_basedir     => '/tmp',
+                  :interfaces         => '',
                   :default_ipa_server => 'ipa.example.com',
-                  :default_ipa_realm => 'REALM',
-                  :selinux => 'true',
+                  :default_ipa_realm  => 'REALM',
+                  :selinux_enforced   => 'true',
                 })
               end
 
@@ -136,11 +136,11 @@ describe 'foreman::config' do
             describe 'on selinux' do
               let :facts do
                 facts.merge({
-                  :concat_basedir => '/tmp',
-                  :interfaces     => '',
+                  :concat_basedir     => '/tmp',
+                  :interfaces         => '',
                   :default_ipa_server => 'ipa.example.com',
-                  :default_ipa_realm => 'REALM',
-                  :selinux => 'true',
+                  :default_ipa_realm  => 'REALM',
+                  :selinux_enforced   => 'true',
                 })
               end
 

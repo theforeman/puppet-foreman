@@ -123,8 +123,8 @@ describe 'foreman::install' do
         context 'with SELinux enabled' do
           let :facts do
             facts.merge({
-              :concat_basedir => '/tmp',
-              :selinux        => true,
+              :concat_basedir   => '/tmp',
+              :selinux_enforced => true,
             })
           end
 
@@ -159,8 +159,8 @@ describe 'foreman::install' do
         context 'with SELinux disabled' do
           let :facts do
             facts.merge({
-              :concat_basedir => '/tmp',
-              :selinux        => false,
+              :concat_basedir   => '/tmp',
+              :selinux_enforced => false,
             })
           end
 
