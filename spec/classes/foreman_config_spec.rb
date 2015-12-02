@@ -25,6 +25,7 @@ describe 'foreman::config' do
             with_content(/^:require_ssl:\s*true$/).
             with_content(/^:locations_enabled:\s*false$/).
             with_content(/^:organizations_enabled:\s*false$/).
+            with_content(/^:puppetrun:\s*false$/).
             with_content(/^:oauth_active:\s*true$/).
             with_content(/^:oauth_map_users:\s*false$/).
             with_content(/^:oauth_consumer_key:\s*\w+$/).

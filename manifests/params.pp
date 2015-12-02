@@ -256,4 +256,7 @@ class foreman::params {
   # Application logging
   $logging_level = 'info'
   $loggers = {}
+
+  # Starting puppet runs with foreman
+  $puppetrun = false
 }

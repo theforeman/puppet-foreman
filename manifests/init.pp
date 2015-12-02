@@ -4,6 +4,9 @@
 #
 # $foreman_url::                URL on which foreman is going to run
 #
+# $puppetrun::                  Should foreman be able to start puppetruns on nodes
+#                               type: boolean
+#
 # $unattended::                 Should foreman manage host provisioning as well
 #                               type:boolean
 #
@@ -192,6 +195,7 @@
 #
 class foreman (
   $foreman_url               = $::foreman::params::foreman_url,
+  $puppetrun                 = $::foreman::params::puppetrun,
   $unattended                = $::foreman::params::unattended,
   $authentication            = $::foreman::params::authentication,
   $passenger                 = $::foreman::params::passenger,
@@ -287,6 +291,7 @@ class foreman (
   if $email_delivery_method {
     validate_re($email_delivery_method, ['^sendmail$', '^smtp$'], "email_delivery_method can be either sendmail or smtp, not ${email_delivery_method}")
   }
+  validate_bool($puppetrun)
 
   class { '::foreman::install': } ~>
   class { '::foreman::config': } ~>
