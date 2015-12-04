@@ -90,8 +90,8 @@ describe 'foreman::config' do
         it 'should contain foreman::config::passenger' do
           if facts[:osfamily] == 'RedHat' and facts[:operatingsystem] != 'Fedora'
             passenger_ruby = '/usr/bin/tfm-ruby'
-          elsif os == 'ubuntu-12-x86_64'
-            passenger_ruby = '/usr/bin/ruby1.9.1'
+          elsif facts[:osfamily] == 'Debian'
+            passenger_ruby = '/usr/bin/foreman-ruby'
           else
             passenger_ruby = nil
           end

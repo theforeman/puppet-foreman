@@ -135,10 +135,7 @@ class foreman::params {
       $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
       $puppet_etcdir = '/etc/puppet'
       $puppet_home = '/var/lib/puppet'
-      $passenger_ruby = $::operatingsystemrelease ? {
-        '12.04' => '/usr/bin/ruby1.9.1',
-        default => undef,
-      }
+      $passenger_ruby = '/usr/bin/foreman-ruby'
       $passenger_ruby_package = $::operatingsystemrelease ? {
         '12.04' => 'passenger-common1.9.1',
         default => undef,
