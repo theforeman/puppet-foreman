@@ -11,7 +11,7 @@ else
   gem 'rspec', '~> 3.0'
 end
 gem 'rake'
-gem 'rspec-puppet', '~> 2.0'
+gem 'rspec-puppet', '~> 2.3'
 gem 'puppetlabs_spec_helper', '>= 0.8.0'
 gem 'puppet-lint', '>= 1'
 gem 'puppet-lint-unquoted_string-check'

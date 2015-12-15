@@ -50,29 +50,6 @@ def verify_concat_fragment_exact_contents(subject, title, expected_lines)
     expect(content.split(/\n/).reject { |line| line =~ /(^#|^$|^\s+#)/ }).to eq(expected_lines)
 end
 
-# See https://github.com/rodjek/rspec-puppet/issues/329
-# Without this patch the @@cache variable grows huge and causes memory usage issues
-# with a large amount of examples.
-module RSpec::Puppet
-  module Support
-    def build_catalog(*args)
-      if @@cache.has_key?(args)
-        @@cache[args]
-      else
-        @@cache = {}
-        @@cache[args] ||= self.build_catalog_without_cache(*args)
-      end
-    end
-  end
-end
-
-# See https://github.com/rodjek/rspec-puppet/pull/333
-# Prevents each generated catalog being held in memory after the example group has
-# completed.
-RSpec.configure do |c|
-  c.after(:each) { @catalogue = nil }
-end
-
 def static_fixture_path
   File.join(File.dirname(__FILE__), 'static_fixtures')
 end
