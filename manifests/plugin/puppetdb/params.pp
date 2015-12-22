@@ -31,4 +31,6 @@ class foreman::plugin::puppetdb::params {
       fail("${::hostname}: puppetdb_foreman does not support osfamily ${::osfamily}")
     }
   }
+  $address = 'https://localhost:8081/v2/commands'
+  $dashboard_address = 'http://localhost:8080/dashboard'
 }
