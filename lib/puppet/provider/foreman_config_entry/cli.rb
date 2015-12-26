@@ -39,7 +39,7 @@ Puppet::Type.type(:foreman_config_entry).provide(:cli) do
     output = run_foreman_config
     return if output.nil?
     output.split("\n").map do |line|
-        name, value = line.split(':')
+        name, value = line.split(':', 2)
         new(
           :name  => name,
           :value => value.strip
