@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.1.0
+* New or changed parameters:
+    * Add address and dashboard_address paramters to foreman::plugin::puppetdb
+      The default is set to 'localhost', which might require adjustments in
+      setups already using foreman::plugin::puppetdb
+
 ## 5.0.2
 * Install tasks plugin with remote_execution, chef and salt
 
