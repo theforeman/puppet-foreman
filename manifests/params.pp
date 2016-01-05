@@ -1,8 +1,9 @@
 # The foreman default parameters
 class foreman::params {
+  $lower_fqdn = downcase($::fqdn)
 
 # Basic configurations
-  $foreman_url      = "https://${::fqdn}"
+  $foreman_url      = "https://${lower_fqdn}"
   $foreman_user     = undef
   $foreman_password = undef
   # Should foreman act as an external node classifier (manage puppet class
@@ -67,7 +68,7 @@ class foreman::params {
   $db_username = 'foreman'
   # Generate and cache the password on the master once
   # In multi-puppetmaster setups, the user should specify their own
-  $db_password = cache_data('db_password', random_password(32))
+  $db_password = cache_data('foreman_cache_data', 'db_password', random_password(32))
   # Default database connection pool
   $db_pool = 5
 
@@ -134,10 +135,7 @@ class foreman::params {
       $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
       $puppet_etcdir = '/etc/puppet'
       $puppet_home = '/var/lib/puppet'
-      $passenger_ruby = $::operatingsystemrelease ? {
-        '12.04' => '/usr/bin/ruby1.9.1',
-        default => undef,
-      }
+      $passenger_ruby = '/usr/bin/foreman-ruby'
       $passenger_ruby_package = $::operatingsystemrelease ? {
         '12.04' => 'passenger-common1.9.1',
         default => undef,
@@ -214,7 +212,6 @@ class foreman::params {
   }
   $puppet_user = 'puppet'
   $puppet_group = 'puppet'
-  $lower_fqdn = downcase($::fqdn)
 
   # If CA is specified, remote Foreman host will be verified in reports/ENC scripts
   $client_ssl_ca   = "${puppet_home}/ssl/certs/ca.pem"
@@ -227,17 +224,17 @@ class foreman::params {
   $server_ssl_chain = "${puppet_home}/ssl/certs/ca.pem"
   $server_ssl_cert  = "${puppet_home}/ssl/certs/${lower_fqdn}.pem"
   $server_ssl_key   = "${puppet_home}/ssl/private_keys/${lower_fqdn}.pem"
-  $server_ssl_crl   = "${puppet_home}/ssl/ca/ca_crl.pem"
+  $server_ssl_crl   = "${puppet_home}/ssl/crl.pem"
 
   # We need the REST API interface with OAuth for some REST Puppet providers
   $oauth_active = true
   $oauth_map_users = false
-  $oauth_consumer_key = cache_data('oauth_consumer_key', random_password(32))
-  $oauth_consumer_secret = cache_data('oauth_consumer_secret', random_password(32))
+  $oauth_consumer_key = cache_data('foreman_cache_data', 'oauth_consumer_key', random_password(32))
+  $oauth_consumer_secret = cache_data('foreman_cache_data', 'oauth_consumer_secret', random_password(32))
 
   # Initial admin account details
   $admin_username = 'admin'
-  $admin_password = cache_data('admin_password', random_password(16))
+  $admin_password = cache_data('foreman_cache_data', 'admin_password', random_password(16))
   $admin_first_name = undef
   $admin_last_name = undef
   $admin_email = undef
@@ -249,7 +246,6 @@ class foreman::params {
   $ipa_authentication = false
   $http_keytab = '/etc/httpd/conf/http.keytab'
   $pam_service = 'foreman'
-  $configure_ipa_repo = false
   $ipa_manage_sssd = true
 
   # Websockets

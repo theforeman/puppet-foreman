@@ -21,16 +21,17 @@ class foreman::plugin::discovery (
   $image_name     = $::foreman::plugin::discovery::params::image_name,
 ) inherits foreman::plugin::discovery::params {
 
-  $tftp_root_clean = regsubst($tftp_root, '/$', '')
   validate_bool($install_images)
-  validate_absolute_path($tftp_root_clean)
-  validate_string($source_url)
-  validate_string($image_name)
 
   foreman::plugin {'discovery':
   }
 
   if $install_images {
+    $tftp_root_clean = regsubst($tftp_root, '/$', '')
+    validate_absolute_path($tftp_root_clean)
+    validate_string($source_url)
+    validate_string($image_name)
+
     foreman::remote_file {"${tftp_root_clean}/boot/${image_name}":
       remote_location => "${source_url}${image_name}",
       mode            => '0644',

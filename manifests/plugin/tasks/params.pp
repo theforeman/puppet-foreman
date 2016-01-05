@@ -16,6 +16,9 @@ class foreman::plugin::tasks::params {
       $package = 'ruby-foreman-tasks'
       $service = 'ruby-foreman-tasks'
     }
+    /^(FreeBSD|DragonFly)$/: {
+      # do nothing to not break foreman-installer
+    }
     default: {
       fail("${::hostname}: foreman-tasks does not support osfamily ${::osfamily}")
     }

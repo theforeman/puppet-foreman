@@ -4,6 +4,9 @@ describe 'foreman::config::passenger::fragment' do
   let(:title) { 'test' }
 
   on_supported_os.each do |os, facts|
+    next if only_test_os() and not only_test_os.include?(os)
+    next if exclude_test_os() and exclude_test_os.include?(os)
+
     context "on #{os}" do
       let :facts do
         facts.merge(:concat_basedir => '/tmp')
@@ -26,6 +29,7 @@ describe 'foreman::config::passenger::fragment' do
               min_instances => '1',
               start_timeout => '600',
               use_vhost     => true,
+              foreman_url   => 'https://#{facts[:fqdn]}',
           }"
         end
 
@@ -63,6 +67,7 @@ describe 'foreman::config::passenger::fragment' do
               min_instances => '1',
               start_timeout => '600',
               use_vhost     => true,
+              foreman_url   => 'https://#{facts[:fqdn]}',
           }"
         end
 

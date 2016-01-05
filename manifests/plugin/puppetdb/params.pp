@@ -24,8 +24,13 @@ class foreman::plugin::puppetdb::params {
         }
       }
     }
+    /^(FreeBSD|DragonFly)$/: {
+      # do nothing to not break foreman-installer
+    }
     default: {
       fail("${::hostname}: puppetdb_foreman does not support osfamily ${::osfamily}")
     }
   }
+  $address = 'https://localhost:8081/v2/commands'
+  $dashboard_address = 'http://localhost:8080/dashboard'
 }

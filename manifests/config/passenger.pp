@@ -51,6 +51,7 @@ class foreman::config::passenger(
   $prestart            = $::foreman::passenger_prestart,
   $min_instances       = $::foreman::passenger_min_instances,
   $start_timeout       = $::foreman::passenger_start_timeout,
+  $foreman_url         = $::foreman::foreman_url,
 ) {
   # validate parameter values
   if $listen_on_interface {
@@ -61,7 +62,7 @@ class foreman::config::passenger(
   validate_bool($prestart)
 
   $docroot = "${app_root}/public"
-  $suburi_parts = split($::foreman::foreman_url, '/')
+  $suburi_parts = split($foreman_url, '/')
   $suburi_parts_count = size($suburi_parts) - 1
   if $suburi_parts_count >= 3 {
     $suburi_without_slash = join(values_at($suburi_parts, ["3-${suburi_parts_count}"]), '/')
@@ -170,7 +171,7 @@ class foreman::config::passenger(
         ssl_crl                 => $ssl_crl_real,
         ssl_crl_check           => $ssl_crl_check,
         ssl_verify_client       => 'optional',
-        ssl_options             => '+StdEnvVars',
+        ssl_options             => '+StdEnvVars +ExportCertData',
         ssl_verify_depth        => '3',
         custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_ssl_virt_host_include.erb',
                                             'foreman/_suburi.conf.erb'),
