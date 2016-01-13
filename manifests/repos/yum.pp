@@ -20,23 +20,29 @@ define foreman::repos::yum ($repo, $yumcode, $gpgcheck) {
     default   => $gpgcheck_enabled_default,
   }
   yumrepo { $name:
-    descr    => "Foreman ${repo} repository",
+    descr    => "Foreman ${repo}",
     baseurl  => "http://yum.theforeman.org/${repo_path}/${yumcode}/\$basearch",
     gpgcheck => $gpgcheck_enabled,
     gpgkey   => "http://yum.theforeman.org/${repo_path}/RPM-GPG-KEY-foreman",
     enabled  => '1',
   }
+  yumrepo { "${name}-source":
+    descr    => "Foreman ${repo} - source",
+    baseurl  => "http://yum.theforeman.org/${repo_path}/${yumcode}/source",
+    gpgcheck => $gpgcheck_enabled,
+    gpgkey   => "http://yum.theforeman.org/${repo_path}/RPM-GPG-KEY-foreman",
+    enabled  => '0',
+  }
   yumrepo { "${name}-plugins":
-    descr    => "Foreman ${repo} plugins repository",
+    descr    => "Foreman plugins ${repo}",
     baseurl  => "http://yum.theforeman.org/${plugins_repo_path}/${yumcode}/\$basearch",
     gpgcheck => '0',
     enabled  => '1',
   }
-  yumrepo { "${name}-source":
-    descr    => "Foreman ${repo} source repository",
-    baseurl  => "http://yum.theforeman.org/${repo_path}/${yumcode}/source",
-    gpgcheck => $gpgcheck_enabled,
-    gpgkey   => "http://yum.theforeman.org/${repo_path}/RPM-GPG-KEY-foreman",
+  yumrepo { "${name}-plugins-source":
+    descr    => "Foreman plugins ${repo} - source",
+    baseurl  => "http://yum.theforeman.org/${plugins_repo_path}/${yumcode}/source",
+    gpgcheck => '0',
     enabled  => '0',
   }
 }
