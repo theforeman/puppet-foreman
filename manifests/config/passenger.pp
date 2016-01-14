@@ -15,6 +15,8 @@
 #
 # $ssl_cert::               Location of the SSL certificate file.
 #
+# $ssl_certs_dir::          Location of additional certificates for SSL client authentication.
+#
 # $ssl_key::                Location of the SSL key file.
 #
 # $ssl_ca::                 Location of the SSL CA file
@@ -44,6 +46,7 @@ class foreman::config::passenger(
   $ssl_ca              = $::foreman::server_ssl_ca,
   $ssl_chain           = $::foreman::server_ssl_chain,
   $ssl_cert            = $::foreman::server_ssl_cert,
+  $ssl_certs_dir       = $::foreman::server_ssl_certs_dir,
   $ssl_key             = $::foreman::server_ssl_key,
   $ssl_crl             = $::foreman::server_ssl_crl,
   $use_vhost           = $::foreman::use_vhost,
@@ -165,6 +168,7 @@ class foreman::config::passenger(
         serveraliases           => ['foreman'],
         ssl                     => true,
         ssl_cert                => $ssl_cert,
+        ssl_certs_dir           => $ssl_certs_dir,
         ssl_key                 => $ssl_key,
         ssl_chain               => $ssl_chain,
         ssl_ca                  => $ssl_ca,

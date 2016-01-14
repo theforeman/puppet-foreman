@@ -123,6 +123,8 @@
 #
 # $server_ssl_cert::            Defines Apache mod_ssl SSLCertificateFile setting in Foreman vhost conf file.
 #
+# $server_ssl_certs_dir::       Defines Apache mod_ssl SSLCACertificatePath setting in Foreman vhost conf file.
+#
 # $server_ssl_key::             Defines Apache mod_ssl SSLCertificateKeyFile setting in Foreman vhost conf file.
 #
 # $server_ssl_crl::             Defines the Apache mod_ssl SSLCARevocationFile setting in Foreman vhost conf file.
@@ -237,6 +239,7 @@ class foreman (
   $server_ssl_ca             = $::foreman::params::server_ssl_ca,
   $server_ssl_chain          = $::foreman::params::server_ssl_chain,
   $server_ssl_cert           = $::foreman::params::server_ssl_cert,
+  $server_ssl_certs_dir      = $::foreman::params::server_ssl_certs_dir,
   $server_ssl_key            = $::foreman::params::server_ssl_key,
   $server_ssl_crl            = $::foreman::params::server_ssl_crl,
   $oauth_active              = $::foreman::params::oauth_active,
