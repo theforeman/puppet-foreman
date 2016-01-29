@@ -22,7 +22,7 @@
     },
     {
       "name": "puppetlabs/apache",
-      "version_requirement": ">= 1.2.0 < 2.0.0"
+      "version_requirement": ">= 1.2.0 < 1.8.0"
     },
     {
       "name": "puppetlabs/apt",
