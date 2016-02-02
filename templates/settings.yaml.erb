@@ -8,6 +8,7 @@
 :require_ssl: <%= scope.lookupvar("foreman::ssl") %>
 :locations_enabled: <%= scope.lookupvar("foreman::locations_enabled") %>
 :organizations_enabled: <%= scope.lookupvar("foreman::organizations_enabled") %>
+:puppetrun: <%= scope.lookupvar("foreman::puppetrun") %>
 
 # The following values are used for providing default settings during db migrate
 :oauth_active: <%= scope.lookupvar("foreman::oauth_active") %>

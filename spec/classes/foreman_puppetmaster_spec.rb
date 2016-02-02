@@ -67,7 +67,7 @@ describe 'foreman::puppetmaster' do
         end
 
         it 'should install json package' do
-          should contain_package(json_package).with_ensure('installed')
+          should contain_package(json_package).with_ensure('present')
         end
 
         it 'should create puppet.yaml' do
@@ -140,7 +140,7 @@ describe 'foreman::puppetmaster' do
       end
 
       it 'should install json package' do
-        should contain_package('rubygem-json').with_ensure('installed')
+        should contain_package('rubygem-json').with_ensure('present')
       end
     end
   end

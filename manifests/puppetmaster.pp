@@ -25,9 +25,7 @@ class foreman::puppetmaster (
     default:  { $json_package = 'rubygem-json' }
   }
 
-  package { $json_package:
-    ensure  => installed,
-  }
+  ensure_packages([$json_package])
 
   file {"${puppet_etcdir}/foreman.yaml":
     content => template("${module_name}/puppet.yaml.erb"),

@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+* New or changed parameters:
+    * Add puppetrun parameter to foreman init class. This allows you to enable the
+      "Run puppet" button(and functionality) on individual host pages.
+      Please make sure to set this param to true if you have already set it to
+      true in the UI. As the default value in the params class is "false", and it
+      will override your manual setting in the database.
+
 ## 5.1.0
 * New or changed parameters:
     * Add address and dashboard_address paramters to foreman::plugin::puppetdb

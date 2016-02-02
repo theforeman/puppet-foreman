@@ -4,6 +4,9 @@
 #
 # $foreman_url::                URL on which foreman is going to run
 #
+# $puppetrun::                  Should foreman be able to start puppetruns on nodes
+#                               type: boolean
+#
 # $unattended::                 Should foreman manage host provisioning as well
 #                               type:boolean
 #
@@ -120,6 +123,8 @@
 #
 # $server_ssl_cert::            Defines Apache mod_ssl SSLCertificateFile setting in Foreman vhost conf file.
 #
+# $server_ssl_certs_dir::       Defines Apache mod_ssl SSLCACertificatePath setting in Foreman vhost conf file.
+#
 # $server_ssl_key::             Defines Apache mod_ssl SSLCertificateKeyFile setting in Foreman vhost conf file.
 #
 # $server_ssl_crl::             Defines the Apache mod_ssl SSLCARevocationFile setting in Foreman vhost conf file.
@@ -192,6 +197,7 @@
 #
 class foreman (
   $foreman_url               = $::foreman::params::foreman_url,
+  $puppetrun                 = $::foreman::params::puppetrun,
   $unattended                = $::foreman::params::unattended,
   $authentication            = $::foreman::params::authentication,
   $passenger                 = $::foreman::params::passenger,
@@ -233,6 +239,7 @@ class foreman (
   $server_ssl_ca             = $::foreman::params::server_ssl_ca,
   $server_ssl_chain          = $::foreman::params::server_ssl_chain,
   $server_ssl_cert           = $::foreman::params::server_ssl_cert,
+  $server_ssl_certs_dir      = $::foreman::params::server_ssl_certs_dir,
   $server_ssl_key            = $::foreman::params::server_ssl_key,
   $server_ssl_crl            = $::foreman::params::server_ssl_crl,
   $oauth_active              = $::foreman::params::oauth_active,
@@ -287,6 +294,7 @@ class foreman (
   if $email_delivery_method {
     validate_re($email_delivery_method, ['^sendmail$', '^smtp$'], "email_delivery_method can be either sendmail or smtp, not ${email_delivery_method}")
   }
+  validate_bool($puppetrun)
 
   class { '::foreman::install': } ~>
   class { '::foreman::config': } ~>
