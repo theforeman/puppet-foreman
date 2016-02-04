@@ -13,12 +13,32 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
   end
 
   def api
+    if resource[:consumer_key]
+      key = resource[:consumer_key]
+    else
+      begin
+        key = YAML.load_file('/etc/foreman/settings.yaml')[:oauth_consumer_key]
+      rescue
+        fail "Smartproxy #{resource[:name]} cannot be registered: No OAUTH Consumer Key available"
+      end
+    end
+
+    if resource[:consumer_secret]
+      secret = resource[:consumer_secret]
+    else
+      begin
+        secret = YAML.load_file('/etc/foreman/settings.yaml')[:oauth_consumer_secret]
+      rescue
+        fail "Smartproxy #{resource[:name]} cannot be registered: No OAUTH Consumer Secret available"
+      end
+    end
+
     @api ||= ApipieBindings::API.new({
       :uri => resource[:base_url],
       :api_version => 2,
       :oauth => {
-        :consumer_key    => resource[:consumer_key],
-        :consumer_secret => resource[:consumer_secret]
+        :consumer_key    => key,
+        :consumer_secret => secret
       },
       :timeout => resource[:timeout],
       :headers => {
