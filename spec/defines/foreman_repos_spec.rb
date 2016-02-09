@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'foreman::install::repos' do
+describe 'foreman::repos' do
   let(:title) { 'foreman' }
 
   on_supported_os.each do |os, facts|
@@ -24,13 +24,13 @@ describe 'foreman::install::repos' do
             yumcode = "el#{facts[:operatingsystemmajrelease]}"
           end
 
-          it { should contain_foreman__install__repos__yum('foreman').with({
+          it { should contain_foreman__repos__yum('foreman').with({
             :repo     => 'stable',
             :yumcode  => yumcode,
             :gpgcheck => true,
           }) }
         when 'Debian'
-          it { should contain_foreman__install__repos__apt('foreman').with_repo('stable') }
+          it { should contain_foreman__repos__apt('foreman').with_repo('stable') }
         end
       end
     end
@@ -50,7 +50,7 @@ describe 'foreman::install::repos' do
     let(:params) { {:repo => 'stable'} }
 
     it do
-      should contain_foreman__install__repos__yum('foreman').with({
+      should contain_foreman__repos__yum('foreman').with({
         :repo     => 'stable',
         :yumcode  => 'el6',
         :gpgcheck => true,

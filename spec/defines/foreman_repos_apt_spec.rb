@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'foreman::install::repos::apt' do
+describe 'foreman::repos::apt' do
   let(:title) { 'foreman' }
 
   let :facts do

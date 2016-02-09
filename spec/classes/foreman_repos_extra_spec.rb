@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'foreman::install::repos::extra' do
+describe 'foreman::repos::extra' do
 
   on_supported_os.each do |os, facts|
     next if only_test_os() and not only_test_os.include?(os)
