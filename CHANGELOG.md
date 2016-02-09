@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.2.0
+* Compatibility warnings:
+    * `foreman::install::repos` has been moved to `foreman::repos`.
+      The old define has been deprecated and will issue a warning.
+
 ## 5.1.0
 * New classes to install Foreman plugins:
     * foreman::plugin::ansible to install Ansible support

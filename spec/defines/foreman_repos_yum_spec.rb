@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 
-describe 'foreman::install::repos::yum' do
+describe 'foreman::repos::yum' do
   let(:title) { 'foreman' }
 
   context 'with repo => stable' do

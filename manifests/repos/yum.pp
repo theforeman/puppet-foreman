@@ -1,5 +1,5 @@
 # Install a yum repo
-define foreman::install::repos::yum ($repo, $yumcode, $gpgcheck) {
+define foreman::repos::yum ($repo, $yumcode, $gpgcheck) {
   $repo_path = $repo ? {
     'stable'      => 'releases/latest',
     /^releases\// => $repo,

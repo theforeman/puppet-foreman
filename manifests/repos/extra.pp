@@ -1,5 +1,5 @@
 # Configure thirdparty repos
-class foreman::install::repos::extra(
+class foreman::repos::extra(
   $configure_epel_repo      = $::foreman::configure_epel_repo,
   $configure_scl_repo       = $::foreman::configure_scl_repo,
   $ipa_authentication       = $::foreman::ipa_authentication,

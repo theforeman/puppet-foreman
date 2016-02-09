@@ -1,5 +1,5 @@
 # Install an apt repo
-define foreman::install::repos::apt ($repo) {
+define foreman::repos::apt ($repo) {
   file { "/etc/apt/sources.list.d/${name}.list":
     content => "deb http://deb.theforeman.org/ ${::lsbdistcodename} ${repo}\ndeb http://deb.theforeman.org/ plugins ${repo}\n",
   } ->

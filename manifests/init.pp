@@ -315,6 +315,7 @@ class foreman (
   }
   validate_bool($puppetrun)
 
+  class { '::foreman::repo': } ~>
   class { '::foreman::install': } ~>
   class { '::foreman::config': } ~>
   class { '::foreman::database': } ~>

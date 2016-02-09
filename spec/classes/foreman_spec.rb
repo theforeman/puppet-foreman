@@ -12,6 +12,7 @@ describe 'foreman' do
         })
       end
 
+      it { should contain_class('foreman::repo').that_notifies('Class[foreman::install]') }
       it { should contain_class('foreman::install') }
       it { should contain_class('foreman::config') }
       it { should contain_class('foreman::database') }
