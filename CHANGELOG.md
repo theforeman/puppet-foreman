@@ -1,22 +1,39 @@
 # Changelog
 
-## Unreleased
-* New or changed parameters:
-    * Add puppetrun parameter to foreman init class. This allows you to enable the
-      "Run puppet" button(and functionality) on individual host pages.
-      Please make sure to set this param to true if you have already set it to
-      true in the UI. As the default value in the params class is "false", and it
-      will override your manual setting in the database.
-* Other features:
-    * Add hostgroup provider and type
-
 ## 5.1.0
+* New classes to install Foreman plugins:
+    * foreman::plugin::ansible to install Ansible support
+    * foreman::plugin::cockpit to install Cockpit support
+    * foreman::plugin::memcache to install memcache support
 * New or changed parameters:
-    * Add address and dashboard_address paramters to foreman::plugin::puppetdb
-      The default is set to 'localhost', which might require adjustments in
-      setups already using foreman::plugin::puppetdb
+    * Add puppetrun parameter, allowing you to enable the
+      "Run puppet" button (and functionality) on individual host pages
+    * Add address and dashboard_address parameters to foreman::plugin::puppetdb
+    * Add ssl_certs_dir parameter to control SSLCACertificatePath, disabled by
+      default
+    * Add serveraliases parameter to manage virtual host aliases
 * Other features:
-    * Add foreman::plugin::memcache class for memcache plugin
+    * Support and test with Puppet 4
+    * Add hostgroup provider and type
+    * Add filter_result parameter to foreman() search function, to filter out a
+      single or set of fields from the results
+    * Load OAuth keys in providers from /etc/foreman/settings.yaml if possible
+* Other changes and fixes:
+    * Support Puppet 3.0 minimum
+    * Support Fedora 21, add Ubuntu 16.04
+    * Use lower case FQDN to access Foreman smart proxy registration (#8389)
+    * Configure PassengerRuby to use foreman-ruby symlink on Debian/Ubuntu
+    * Fix key/value splitting in foreman_config_entry resource
+    * Fix qualified call to postgresql defined type (GH-386)
+    * Fix installation of the JSON package to use ensure_packages
+    * Fix installation of remote execution plugin to restart foreman-tasks
+* Compatibility warnings:
+    * The puppetrun setting is now managed, ensure the parameter is set to true
+      if you have already set it to true in the UI.  The default value in the
+      params class is "false", and it will override your manual setting in the
+      database.
+    * Users of the puppetdb class may need to set address/dashboard_address
+      parameters, which are now managed and default to "localhost".
 
 ## 5.0.2
 * Install tasks plugin with remote_execution, chef and salt
