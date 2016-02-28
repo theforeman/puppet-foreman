@@ -1,44 +1,52 @@
 # Configure foreman
 class foreman::config {
-  concat_build {'foreman_settings':
-    order => ['*.yaml'],
-  }
-
-  concat_fragment {'foreman_settings+01-header.yaml':
+  concat::fragment {'foreman_settings+01-header.yaml':
+    target  => '/etc/foreman/settings.yaml',
     content => template('foreman/settings.yaml.erb'),
+    order   => '01',
   }
 
-  file {'/etc/foreman/settings.yaml':
-    source  => concat_output('foreman_settings'),
-    require => Concat_build['foreman_settings'],
-    owner   => 'root',
-    group   => $foreman::group,
-    mode    => '0640',
+  concat {'/etc/foreman/settings.yaml':
+    owner => 'root',
+    group => $::foreman::group,
+    mode  => '0640',
   }
 
   file { '/etc/foreman/database.yml':
     owner   => 'root',
-    group   => $foreman::group,
+    group   => $::foreman::group,
     mode    => '0640',
     content => template('foreman/database.yml.erb'),
   }
 
-  file { $foreman::init_config:
-    ensure  => present,
+  if $::foreman::email_delivery_method and !empty($::foreman::email_delivery_method) {
+    file { "/etc/foreman/${foreman::email_conf}":
+      ensure  => file,
+      owner   => 'root',
+      group   => $::foreman::group,
+      mode    => '0640',
+      content => template("foreman/${foreman::email_source}"),
+    }
+  }
+
+  file { $::foreman::init_config:
+    ensure  => file,
     content => template("foreman/${foreman::init_config_tmpl}.erb"),
   }
 
-  file { $foreman::app_root:
+  file { $::foreman::app_root:
     ensure  => directory,
   }
 
-  user { $foreman::user:
-    ensure  => 'present',
-    shell   => '/bin/false',
-    comment => 'Foreman',
-    home    => $foreman::app_root,
-    gid     => $foreman::group,
-    groups  => $foreman::user_groups,
+  if $::foreman::manage_user {
+    user { $::foreman::user:
+      ensure  => 'present',
+      shell   => '/bin/false',
+      comment => 'Foreman',
+      home    => $::foreman::app_root,
+      gid     => $::foreman::group,
+      groups  => $::foreman::user_groups,
+    }
   }
 
   # remove crons previously installed here, they've moved to the package's
@@ -47,15 +55,15 @@ class foreman::config {
     ensure  => absent,
   }
 
-  if $foreman::passenger  {
+  if $::foreman::passenger  {
     class { '::foreman::config::passenger': } -> anchor { 'foreman::config_end': }
 
-    if $foreman::ipa_authentication {
-      if $::default_ipa_server == '' or $::default_ipa_realm == '' {
+    if $::foreman::ipa_authentication {
+      if !$::default_ipa_server or empty($::default_ipa_server) or !$::default_ipa_realm or empty($::default_ipa_realm) {
         fail("${::hostname}: The system does not seem to be IPA-enrolled")
       }
 
-      if $foreman::selinux or (str2bool($::selinux) and $foreman::selinux != false) {
+      if $::foreman::selinux or (str2bool($::selinux) and $::foreman::selinux != false) {
         selboolean { 'allow_httpd_mod_auth_pam':
           persistent => true,
           value      => 'on',
@@ -69,7 +77,7 @@ class foreman::config {
         }
       }
 
-      if $foreman::ipa_manage_sssd {
+      if $::foreman::ipa_manage_sssd {
         service { 'sssd':
           ensure  => running,
           enable  => true,
@@ -90,28 +98,28 @@ class foreman::config {
           && KRB5CCNAME=KEYRING:session:get-http-service-keytab kinit -k \
           && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -s ${::default_ipa_server} -k ${foreman::http_keytab} -p HTTP/${::fqdn} \
           && kdestroy -c KEYRING:session:get-http-service-keytab",
-        creates => $foreman::http_keytab,
+        creates => $::foreman::http_keytab,
       } ->
-      file { $foreman::http_keytab:
+      file { $::foreman::http_keytab:
         ensure => file,
         owner  => apache,
         mode   => '0600',
       }
 
-      passenger::fragment { 'intercept_form_submit':
+      ::foreman::config::passenger::fragment { 'intercept_form_submit':
         ssl_content => template('foreman/intercept_form_submit.conf.erb'),
       }
 
-      passenger::fragment { 'lookup_identity':
+      ::foreman::config::passenger::fragment { 'lookup_identity':
         ssl_content => template('foreman/lookup_identity.conf.erb'),
       }
 
-      passenger::fragment { 'auth_kerb':
+      ::foreman::config::passenger::fragment { 'auth_kerb':
         ssl_content => template('foreman/auth_kerb.conf.erb'),
       }
 
 
-      if $foreman::ipa_manage_sssd {
+      if $::foreman::ipa_manage_sssd {
         $sssd_services = ensure_value_in_string($::sssd_services, ['ifp'], ', ')
 
         $sssd_ldap_user_extra_attrs = ensure_value_in_string($::sssd_ldap_user_extra_attrs, ['email:mail', 'lastname:sn', 'firstname:givenname'], ', ')
@@ -133,8 +141,10 @@ class foreman::config {
         }
       }
 
-      concat_fragment {'foreman_settings+02-authorize_login_delegation.yaml':
+      concat::fragment {'foreman_settings+02-authorize_login_delegation.yaml':
+        target  => '/etc/foreman/settings.yaml',
         content => template('foreman/settings-external-auth.yaml.erb'),
+        order   => '02',
       }
     }
   }

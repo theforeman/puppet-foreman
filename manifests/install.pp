@@ -1,20 +1,20 @@
 # Install the needed packages for foreman
 class foreman::install {
-  if ! $foreman::custom_repo {
+  if ! $::foreman::custom_repo {
     foreman::install::repos { 'foreman':
-      repo     => $foreman::repo,
-      gpgcheck => $foreman::gpgcheck,
+      repo     => $::foreman::repo,
+      gpgcheck => $::foreman::gpgcheck,
     }
   }
 
   class { '::foreman::install::repos::extra': }
 
-  $repo = $foreman::custom_repo ? {
+  $repo = $::foreman::custom_repo ? {
     true    => Class['foreman::install::repos::extra'],
     default => [Class['foreman::install::repos::extra'], Foreman::Install::Repos['foreman']],
   }
 
-  case $foreman::db_type {
+  case $::foreman::db_type {
     'sqlite': {
       case $::operatingsystem {
         'Debian','Ubuntu': { $package = 'foreman-sqlite3' }
@@ -30,37 +30,26 @@ class foreman::install {
   }
 
   package { $package:
-    ensure  => $foreman::version,
+    ensure  => $::foreman::version,
     require => $repo,
   }
 
-  if $foreman::selinux or (str2bool($::selinux) and $foreman::selinux != false) {
+  if $::foreman::selinux or (str2bool($::selinux) and $::foreman::selinux != false) {
     package { 'foreman-selinux':
-      ensure  => $foreman::version,
+      ensure  => $::foreman::version,
       require => $repo,
-    }
-    if $foreman::ipa_authentication and $foreman::configure_ipa_repo and $foreman::osreleasemajor == '6' {
-      package { 'mod_lookup_identity-selinux':
-        ensure  => installed,
-        require => $repo,
-      }
     }
   }
 
-  if $::foreman::passenger_ruby_package or $::foreman::passenger_scl {
-    # passenger_scl is deprecated, but keep fallback for SCL OSes
-    $real_passenger_ruby_package = $::foreman::passenger_scl ? {
-      undef   => $::foreman::passenger_ruby_package,
-      default => "${::foreman::passenger_scl}-rubygem-passenger-native",
-    }
-    package { $real_passenger_ruby_package:
+  if $::foreman::passenger and $::foreman::passenger_ruby_package {
+    package { $::foreman::passenger_ruby_package:
       ensure  => installed,
       require => Class['apache'],
       before  => Class['apache::service'],
     }
   }
 
-  if $foreman::ipa_authentication {
+  if $::foreman::ipa_authentication {
     case $::osfamily {
       'RedHat': {
         # The apache::mod's need to be in install to break circular dependencies
@@ -74,7 +63,7 @@ class foreman::install {
       }
     }
 
-    if $foreman::ipa_manage_sssd {
+    if $::foreman::ipa_manage_sssd {
       package { 'sssd-dbus':
         ensure => installed,
       }

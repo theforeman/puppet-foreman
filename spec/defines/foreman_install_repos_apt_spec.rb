@@ -1,13 +1,10 @@
 require 'spec_helper'
 
-
 describe 'foreman::install::repos::apt' do
   let(:title) { 'foreman' }
 
   let :facts do
-    {
-      :lsbdistcodename => 'squeeze',
-    }
+    on_supported_os['debian-7-x86_64']
   end
 
   context 'with repo => stable' do
@@ -15,16 +12,16 @@ describe 'foreman::install::repos::apt' do
 
     it 'should add the stable repo' do
       should contain_file('/etc/apt/sources.list.d/foreman.list') \
-        .with_content("deb http://deb.theforeman.org/ squeeze stable\ndeb http://deb.theforeman.org/ plugins stable\n")
+        .with_content("deb http://deb.theforeman.org/ wheezy stable\ndeb http://deb.theforeman.org/ plugins stable\n")
     end
   end
 
-  context 'with repo => rc' do
-    let(:params) { {:repo => 'rc'} }
+  context 'with repo => 1.7' do
+    let(:params) { {:repo => '1.7'} }
 
-    it 'should add the rc repo' do
+    it 'should add the 1.7 repo' do
       should contain_file('/etc/apt/sources.list.d/foreman.list') \
-        .with_content("deb http://deb.theforeman.org/ squeeze rc\ndeb http://deb.theforeman.org/ plugins rc\n")
+        .with_content("deb http://deb.theforeman.org/ wheezy 1.7\ndeb http://deb.theforeman.org/ plugins 1.7\n")
     end
   end
 
@@ -33,7 +30,7 @@ describe 'foreman::install::repos::apt' do
 
     it 'should add the nightly repo' do
       should contain_file('/etc/apt/sources.list.d/foreman.list') \
-        .with_content("deb http://deb.theforeman.org/ squeeze nightly\ndeb http://deb.theforeman.org/ plugins nightly\n")
+        .with_content("deb http://deb.theforeman.org/ wheezy nightly\ndeb http://deb.theforeman.org/ plugins nightly\n")
     end
   end
 

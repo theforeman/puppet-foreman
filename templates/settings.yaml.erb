@@ -3,15 +3,12 @@
 ---
 <%= @header %>
 
-#your default puppet server - can be overridden in the host level
-#if none specified, plain "puppet" will be used.
-#:puppet_server: puppet
 :unattended: <%= scope.lookupvar("foreman::unattended") %>
-:puppetconfdir: /etc/puppet/puppet.conf
 :login: <%= scope.lookupvar("foreman::authentication") %>
 :require_ssl: <%= scope.lookupvar("foreman::ssl") %>
 :locations_enabled: <%= scope.lookupvar("foreman::locations_enabled") %>
 :organizations_enabled: <%= scope.lookupvar("foreman::organizations_enabled") %>
+:puppetrun: <%= scope.lookupvar("foreman::puppetrun") %>
 
 # The following values are used for providing default settings during db migrate
 :oauth_active: <%= scope.lookupvar("foreman::oauth_active") %>
@@ -20,6 +17,18 @@
 :oauth_consumer_secret: <%= scope.lookupvar("foreman::oauth_consumer_secret") %>
 
 # Websockets
-:websockets_encrypt: <%= scope.lookupvar("foreman::websockets_encrypt") %>
+:websockets_encrypt: <%= scope.lookupvar("foreman::websockets_encrypt") ? 'on' : 'off' %>
 :websockets_ssl_key: <%= scope.lookupvar("foreman::websockets_ssl_key") %>
 :websockets_ssl_cert: <%= scope.lookupvar("foreman::websockets_ssl_cert") %>
+
+# Log settings for the current environment can be adjusted by adding them
+# here. For example, if you want to increase the log level.
+:logging:
+  :level: <%= scope.lookupvar("foreman::logging_level") %>
+
+# Individual logging types can be toggled on/off here
+:loggers:
+<% scope.lookupvar("foreman::loggers").each do |logger,enabled| -%>
+  :<%= logger %>:
+    :enabled: <%= enabled %>
+<% end -%>
