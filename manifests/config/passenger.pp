@@ -2,63 +2,77 @@
 #
 # === Parameters:
 #
-# $app_root::               Root of the application.
+# $app_root::                 Root of the application.
 #
-# $listen_on_interface::    Specify which interface to bind passenger to.
-#                           Defaults to all interfaces.
+# $listen_on_interface::      Specify which interface to bind passenger to.
+#                             Defaults to all interfaces.
 #
-# $ruby::                   Path to Ruby interpreter
+# $ruby::                     Path to Ruby interpreter
 #
-# $servername::             Servername for the vhost.
+# $servername::               Servername for the vhost.
 #
-# $serveraliases::          Serveraliases for the vhost.
-#                           type:array
+# $serveraliases::            Serveraliases for the vhost.
+#                             type:array
 #
-# $ssl::                    Whether to enable SSL.
+# $ssl::                      Whether to enable SSL.
 #
-# $ssl_cert::               Location of the SSL certificate file.
+# $ssl_cert::                 Location of the SSL certificate file.
 #
-# $ssl_certs_dir::          Location of additional certificates for SSL client authentication.
+# $ssl_certs_dir::            Location of additional certificates for SSL client authentication.
 #
-# $ssl_key::                Location of the SSL key file.
+# $ssl_key::                  Location of the SSL key file.
 #
-# $ssl_ca::                 Location of the SSL CA file
+# $ssl_ca::                   Location of the SSL CA file
 #
-# $ssl_chain::              Location of the SSL chain file
+# $ssl_chain::                Location of the SSL chain file
 #
-# $ssl_crl::                Location of the SSL certificate revocation list file
+# $ssl_crl::                  Location of the SSL certificate revocation list file
 #
-# $use_vhost::              Whether to install a vhost. Note that using ssl and
-#                           no vhost is unsupported.
+# $use_vhost::                Whether to install a vhost. Note that using ssl and
+#                             no vhost is unsupported.
 #
-# $user::                   The user under which the application runs.
+# $user::                     The user under which the application runs.
 #
-# $prestart::               Pre-start the first passenger worker instance process during httpd start.
-#                           type:boolean
+# $prestart::                 Pre-start the first passenger worker instance process during httpd start.
+#                             type:boolean
 #
-# $min_instances::          Minimum passenger worker instances to keep when application is idle.
+# $min_instances::            Minimum passenger worker instances to keep when application is idle.
 #
-# $start_timeout::          Amount of seconds to wait for Ruby application boot.
+# $start_timeout::            Amount of seconds to wait for Ruby application boot.
+#
+# $keepalive::                Enable KeepAlive setting of Apache?
+#                             type:boolean
+#
+# $max_keepalive_requests::   MaxKeepAliveRequests setting of Apache
+#                             (Number of requests allowed on a persistent connection)
+#                             type:integer
+#
+# $keepalive_timeout::        KeepAliveTimeout setting of Apache
+#                             (Seconds the server will wait for subsequent requests on a persistent connection)
+#                             type:integer
 #
 class foreman::config::passenger(
-  $app_root            = $::foreman::app_root,
-  $listen_on_interface = $::foreman::passenger_interface,
-  $ruby                = $::foreman::passenger_ruby,
-  $servername          = $::foreman::servername,
-  $serveraliases       = $::foreman::serveraliases,
-  $ssl                 = $::foreman::ssl,
-  $ssl_ca              = $::foreman::server_ssl_ca,
-  $ssl_chain           = $::foreman::server_ssl_chain,
-  $ssl_cert            = $::foreman::server_ssl_cert,
-  $ssl_certs_dir       = $::foreman::server_ssl_certs_dir,
-  $ssl_key             = $::foreman::server_ssl_key,
-  $ssl_crl             = $::foreman::server_ssl_crl,
-  $use_vhost           = $::foreman::use_vhost,
-  $user                = $::foreman::user,
-  $prestart            = $::foreman::passenger_prestart,
-  $min_instances       = $::foreman::passenger_min_instances,
-  $start_timeout       = $::foreman::passenger_start_timeout,
-  $foreman_url         = $::foreman::foreman_url,
+  $app_root               = $::foreman::app_root,
+  $listen_on_interface    = $::foreman::passenger_interface,
+  $ruby                   = $::foreman::passenger_ruby,
+  $servername             = $::foreman::servername,
+  $serveraliases          = $::foreman::serveraliases,
+  $ssl                    = $::foreman::ssl,
+  $ssl_ca                 = $::foreman::server_ssl_ca,
+  $ssl_chain              = $::foreman::server_ssl_chain,
+  $ssl_cert               = $::foreman::server_ssl_cert,
+  $ssl_certs_dir          = $::foreman::server_ssl_certs_dir,
+  $ssl_key                = $::foreman::server_ssl_key,
+  $ssl_crl                = $::foreman::server_ssl_crl,
+  $use_vhost              = $::foreman::use_vhost,
+  $user                   = $::foreman::user,
+  $prestart               = $::foreman::passenger_prestart,
+  $min_instances          = $::foreman::passenger_min_instances,
+  $start_timeout          = $::foreman::passenger_start_timeout,
+  $foreman_url            = $::foreman::foreman_url,
+  $keepalive              = $::foreman::keepalive,
+  $max_keepalive_requests = $::foreman::max_keepalive_requests,
+  $keepalive_timeout      = $::foreman::keepalive_timeout,
 ) {
   # validate parameter values
   if $listen_on_interface {
@@ -67,6 +81,9 @@ class foreman::config::passenger(
   validate_string($servername)
   validate_bool($ssl)
   validate_bool($prestart)
+  validate_bool($keepalive)
+  validate_integer($max_keepalive_requests)
+  validate_integer($keepalive_timeout)
 
   $docroot = "${app_root}/public"
   $suburi_parts = split($foreman_url, '/')
@@ -131,7 +148,7 @@ class foreman::config::passenger(
       servername              => $servername,
       serveraliases           => $serveraliases,
       custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_virt_host_include.erb',
-                                          'foreman/_suburi.conf.erb'),
+                                          'foreman/_suburi.conf.erb', 'foreman/_keepalive.erb'),
     }
 
     if $ssl {
@@ -182,7 +199,7 @@ class foreman::config::passenger(
         ssl_options             => '+StdEnvVars +ExportCertData',
         ssl_verify_depth        => '3',
         custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_ssl_virt_host_include.erb',
-                                            'foreman/_suburi.conf.erb'),
+                                            'foreman/_suburi.conf.erb', 'foreman/_keepalive.erb'),
       }
     }
   } else {

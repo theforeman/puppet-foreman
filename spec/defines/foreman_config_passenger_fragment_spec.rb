@@ -22,14 +22,17 @@ describe 'foreman::config::passenger::fragment' do
       context 'with ssl turned off' do
         let :pre_condition do
           "class { '::foreman::config::passenger':
-              app_root      => '/usr/share/foreman',
-              ssl           => false,
-              user          => 'foreman',
-              prestart      => true,
-              min_instances => '1',
-              start_timeout => '600',
-              use_vhost     => true,
-              foreman_url   => 'https://#{facts[:fqdn]}',
+              app_root               => '/usr/share/foreman',
+              ssl                    => false,
+              user                   => 'foreman',
+              prestart               => true,
+              min_instances          => '1',
+              start_timeout          => '600',
+              use_vhost              => true,
+              foreman_url            => 'https://#{facts[:fqdn]}',
+              keepalive              => true,
+              max_keepalive_requests => 100,
+              keepalive_timeout      => 5,
           }"
         end
 
@@ -60,14 +63,17 @@ describe 'foreman::config::passenger::fragment' do
       context 'with ssl turned on' do
         let :pre_condition do
           "class { '::foreman::config::passenger':
-              app_root      => '/usr/share/foreman',
-              ssl           => true,
-              user          => 'foreman',
-              prestart      => true,
-              min_instances => '1',
-              start_timeout => '600',
-              use_vhost     => true,
-              foreman_url   => 'https://#{facts[:fqdn]}',
+              app_root                => '/usr/share/foreman',
+              ssl                     => true,
+              user                    => 'foreman',
+              prestart                => true,
+              min_instances           => '1',
+              start_timeout           => '600',
+              use_vhost               => true,
+              foreman_url             => 'https://#{facts[:fqdn]}',
+              keepalive               => true,
+              max_keepalive_requests  => 100,
+              keepalive_timeout       => 5,
           }"
         end
 

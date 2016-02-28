@@ -132,6 +132,17 @@
 #
 # $server_ssl_crl::             Defines the Apache mod_ssl SSLCARevocationFile setting in Foreman vhost conf file.
 #
+# $keepalive::                  Enable KeepAlive setting of Apache?
+#                               type:boolean
+#
+# $max_keepalive_requests::     MaxKeepAliveRequests setting of Apache
+#                               (Number of requests allowed on a persistent connection)
+#                               type:integer
+#
+# $keepalive_timeout::          KeepAliveTimeout setting of Apache
+#                               (Seconds the server will wait for subsequent requests on a persistent connection)
+#                               type:integer
+#
 # $oauth_active::               Enable OAuth authentication for REST API
 #                               type:boolean
 #
@@ -246,6 +257,9 @@ class foreman (
   $server_ssl_certs_dir      = $::foreman::params::server_ssl_certs_dir,
   $server_ssl_key            = $::foreman::params::server_ssl_key,
   $server_ssl_crl            = $::foreman::params::server_ssl_crl,
+  $keepalive                 = $::foreman::params::keepalive,
+  $max_keepalive_requests    = $::foreman::params::max_keepalive_requests,
+  $keepalive_timeout         = $::foreman::params::keepalive_timeout,
   $oauth_active              = $::foreman::params::oauth_active,
   $oauth_map_users           = $::foreman::params::oauth_map_users,
   $oauth_consumer_key        = $::foreman::params::oauth_consumer_key,

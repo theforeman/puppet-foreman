@@ -15,13 +15,17 @@ describe 'foreman::config::passenger' do
 
       describe 'with minimal parameters' do
         let :params do {
-          :app_root      => '/usr/share/foreman',
-          :ssl           => false,
-          :user          => 'foreman',
-          :prestart      => true,
-          :min_instances => '1',
-          :start_timeout => '600',
-          :foreman_url   => "https://#{facts[:fqdn]}",
+          :app_root               => '/usr/share/foreman',
+          :ssl                    => false,
+          :user                   => 'foreman',
+          :prestart               => true,
+          :min_instances          => '1',
+          :start_timeout          => '600',
+          :foreman_url            => "https://#{facts[:fqdn]}",
+          :keepalive              => true,
+          :max_keepalive_requests => 100,
+          :keepalive_timeout      => 5,
+
         } end
 
         it 'should include apache with modules' do
@@ -38,21 +42,24 @@ describe 'foreman::config::passenger' do
 
       describe 'with vhost and ssl' do
         let :params do {
-          :app_root      => '/usr/share/foreman',
-          :use_vhost     => true,
-          :servername    => facts[:fqdn],
-          :serveraliases => ['foreman', 'also.foreman'],
-          :ssl           => true,
-          :ssl_cert      => 'cert.pem',
-          :ssl_certs_dir => '',
-          :ssl_key       => 'key.pem',
-          :ssl_ca        => 'ca.pem',
-          :ssl_crl       => 'crl.pem',
-          :prestart      => true,
-          :min_instances => 1,
-          :start_timeout => 600,
-          :ruby          => '/usr/bin/tfm-ruby',
-          :foreman_url   => "https://#{facts[:fqdn]}",
+          :app_root               => '/usr/share/foreman',
+          :use_vhost              => true,
+          :servername             => facts[:fqdn],
+          :serveraliases          => ['foreman', 'also.foreman'],
+          :ssl                    => true,
+          :ssl_cert               => 'cert.pem',
+          :ssl_certs_dir          => '',
+          :ssl_key                => 'key.pem',
+          :ssl_ca                 => 'ca.pem',
+          :ssl_crl                => 'crl.pem',
+          :prestart               => true,
+          :min_instances          => 1,
+          :start_timeout          => 600,
+          :ruby                   => '/usr/bin/tfm-ruby',
+          :foreman_url            => "https://#{facts[:fqdn]}",
+          :keepalive              => true,
+          :max_keepalive_requests => 100,
+          :keepalive_timeout      => 5,
         } end
 
         case facts[:osfamily]
@@ -124,19 +131,22 @@ describe 'foreman::config::passenger' do
 
       describe 'with vhost and ssl, no CRL' do
         let :params do {
-          :app_root      => '/usr/share/foreman',
-          :use_vhost     => true,
-          :servername    => facts[:fqdn],
-          :serveraliases => ['foreman', 'also.foreman'],
-          :ssl           => true,
-          :ssl_cert      => 'cert.pem',
-          :ssl_key       => 'key.pem',
-          :ssl_ca        => 'ca.pem',
-          :prestart      => true,
-          :min_instances => 1,
-          :start_timeout => 600,
-          :ruby          => '/usr/bin/tfm-ruby',
-          :foreman_url   => "https://#{facts[:fqdn]}",
+          :app_root               => '/usr/share/foreman',
+          :use_vhost              => true,
+          :servername             => facts[:fqdn],
+          :serveraliases          => ['foreman', 'also.foreman'],
+          :ssl                    => true,
+          :ssl_cert               => 'cert.pem',
+          :ssl_key                => 'key.pem',
+          :ssl_ca                 => 'ca.pem',
+          :prestart               => true,
+          :min_instances          => 1,
+          :start_timeout          => 600,
+          :ruby                   => '/usr/bin/tfm-ruby',
+          :foreman_url            => "https://#{facts[:fqdn]}",
+          :keepalive              => true,
+          :max_keepalive_requests => 100,
+          :keepalive_timeout      => 5,
         } end
 
         it do
@@ -147,20 +157,23 @@ describe 'foreman::config::passenger' do
 
       describe 'with vhost and ssl, no CRL explicitly' do
         let :params do {
-          :app_root      => '/usr/share/foreman',
-          :use_vhost     => true,
-          :servername    => facts[:fqdn],
-          :serveraliases => ['foreman', 'also.foreman'],
-          :ssl           => true,
-          :ssl_cert      => 'cert.pem',
-          :ssl_key       => 'key.pem',
-          :ssl_ca        => 'ca.pem',
-          :ssl_crl       => '',
-          :prestart      => true,
-          :min_instances => 1,
-          :start_timeout => 600,
-          :ruby          => '/usr/bin/tfm-ruby',
-          :foreman_url   => "https://#{facts[:fqdn]}",
+          :app_root               => '/usr/share/foreman',
+          :use_vhost              => true,
+          :servername             => facts[:fqdn],
+          :serveraliases          => ['foreman', 'also.foreman'],
+          :ssl                    => true,
+          :ssl_cert               => 'cert.pem',
+          :ssl_key                => 'key.pem',
+          :ssl_ca                 => 'ca.pem',
+          :ssl_crl                => '',
+          :prestart               => true,
+          :min_instances          => 1,
+          :start_timeout          => 600,
+          :ruby                   => '/usr/bin/tfm-ruby',
+          :foreman_url            => "https://#{facts[:fqdn]}",
+          :keepalive              => true,
+          :max_keepalive_requests => 100,
+          :keepalive_timeout      => 5,
         } end
 
         it do
@@ -171,16 +184,19 @@ describe 'foreman::config::passenger' do
 
       describe 'without prestart, min_instances and start_timeout' do
         let :params do {
-          :app_root      => '/usr/share/foreman',
-          :use_vhost     => true,
-          :ssl           => true,
-          :ssl_cert      => 'cert.pem',
-          :ssl_key       => 'key.pem',
-          :ssl_ca        => 'ca.pem',
-          :prestart      => false,
-          :min_instances => Undef.new,
-          :start_timeout => Undef.new,
-          :foreman_url   => "https://#{facts[:fqdn]}",
+          :app_root               => '/usr/share/foreman',
+          :use_vhost              => true,
+          :ssl                    => true,
+          :ssl_cert               => 'cert.pem',
+          :ssl_key                => 'key.pem',
+          :ssl_ca                 => 'ca.pem',
+          :prestart               => false,
+          :min_instances          => Undef.new,
+          :start_timeout          => Undef.new,
+          :foreman_url            => "https://#{facts[:fqdn]}",
+          :keepalive              => true,
+          :max_keepalive_requests => 100,
+          :keepalive_timeout      => 5,
         } end
 
         it 'should not include a pre-start' do
@@ -203,6 +219,36 @@ describe 'foreman::config::passenger' do
           should contain_apache__vhost('foreman-ssl').without_passenger_ruby
         end
       end
+
+      describe 'with keepalive parameters set' do
+        let :params do {
+            :app_root               => '/usr/share/foreman',
+            :use_vhost              => true,
+            :servername             => facts[:fqdn],
+            :serveraliases          => ['foreman', 'also.foreman'],
+            :ssl                    => true,
+            :ssl_cert               => 'cert.pem',
+            :ssl_certs_dir          => '',
+            :ssl_key                => 'key.pem',
+            :ssl_ca                 => 'ca.pem',
+            :ssl_crl                => 'crl.pem',
+            :prestart               => true,
+            :min_instances          => 1,
+            :start_timeout          => 600,
+            :ruby                   => '/usr/bin/tfm-ruby',
+            :foreman_url            => "https://#{facts[:fqdn]}",
+            :keepalive              => false,
+            :max_keepalive_requests => 10,
+            :keepalive_timeout      => 15
+        } end
+
+        it 'should set the respective parameters in the template' do
+          should contain_apache__vhost('foreman').with({
+            :custom_fragment => %r{.*KeepAlive Off\nMaxKeepAliveRequests 10\nKeepAliveTimeout 15$}
+        })
+        end
+      end
+
     end
   end
 end
