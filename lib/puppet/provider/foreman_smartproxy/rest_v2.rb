@@ -4,7 +4,9 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
 
   def raise_error(e)
     body = JSON.parse(e.response)["error"]["full_messages"].join(" ") rescue 'N/A'
-    fail "Proxy #{resource[:name]} cannot be registered (#{e.message}): #{body}"
+    fail "Smart proxy #{resource[:name]} could not be registered. Ensure that the Foreman service is started, " +
+         "and both the Foreman and Proxy hostnames resolve.  Consult /var/log/foreman-proxy/proxy.log and " +
+         "/var/log/foreman/production.log for more information. #{e.message}: #{body}"
   end
 
   # when both rest and rest_v2 providers are installed, use this one
@@ -19,7 +21,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
       begin
         key = YAML.load_file('/etc/foreman/settings.yaml')[:oauth_consumer_key]
       rescue
-        fail "Smartproxy #{resource[:name]} cannot be registered: No OAUTH Consumer Key available"
+        fail "Smart proxy #{resource[:name]} cannot be registered: No OAUTH Consumer Key available"
       end
     end
 
@@ -29,7 +31,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
       begin
         secret = YAML.load_file('/etc/foreman/settings.yaml')[:oauth_consumer_secret]
       rescue
-        fail "Smartproxy #{resource[:name]} cannot be registered: No OAUTH Consumer Secret available"
+        fail "Smart proxy #{resource[:name]} cannot be registered: No OAUTH Consumer Secret available"
       end
     end
 
