@@ -81,6 +81,7 @@ class foreman::config::passenger(
   include ::apache
   include ::apache::mod::headers
   include ::apache::mod::passenger
+  include ::apache::mod::status
   Class['::apache'] -> anchor { 'foreman::config::passenger_end': }
 
   # Ensure the Version module is loaded as we need it in the Foreman vhosts
