@@ -66,9 +66,27 @@ class foreman::puppetmaster (
     }
 
     file { "${puppet_home}/yaml/foreman":
-      ensure => directory,
-      owner  => $puppet_user,
-      group  => $puppet_group,
+      ensure  => directory,
+      owner   => $puppet_user,
+      group   => $puppet_group,
+      mode    => '0750',
+      require => Class['::puppet::server::install'],
+    }
+
+    file { "${puppet_home}/yaml/node":
+      ensure  => directory,
+      owner   => $puppet_user,
+      group   => $puppet_group,
+      mode    => '0750',
+      require => Class['::puppet::server::install'],
+    }
+
+    file { "${puppet_home}/yaml/facts":
+      ensure  => directory,
+      owner   => $puppet_user,
+      group   => $puppet_group,
+      mode    => '0750',
+      require => Class['::puppet::server::install'],
     }
   }
 }
