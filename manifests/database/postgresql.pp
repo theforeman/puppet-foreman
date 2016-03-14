@@ -25,5 +25,9 @@ class foreman::database::postgresql {
     locale   => 'en_US.utf8',
   }
 
+  postgresql::server::config_entry { 'log_line_prefix':
+    value => '%t ',
+  }
+
   Postgresql::Server::Role[$::foreman::db_username] -> Postgresql::Server::Database[$dbname]
 }
