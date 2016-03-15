@@ -11,9 +11,9 @@ require 'rbconfig'
 require 'yaml'
 
 if RbConfig::CONFIG['host_os'] =~ /freebsd|dragonfly/i
-  $settings_file = "/usr/local/etc/puppet/foreman.yaml"
+  $settings_file = '/usr/local/etc/puppet/foreman.yaml'
 else
-  $settings_file = "/etc/puppet/foreman.yaml"
+  $settings_file = File.exist?('/etc/puppetlabs/puppet/foreman.yaml') ? '/etc/puppetlabs/puppet/foreman.yaml' : '/etc/puppet/foreman.yaml'
 end
 
 SETTINGS = YAML.load_file($settings_file)
