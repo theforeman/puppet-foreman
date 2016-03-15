@@ -105,6 +105,8 @@
 #
 # $puppet_home::                Puppet home directory
 #
+# $puppet_ssldir::              Puppet SSL directory
+#
 # $locations_enabled::          Enable locations?
 #                               type:boolean
 #
@@ -248,6 +250,7 @@ class foreman (
   $user_groups               = $::foreman::params::user_groups,
   $environment               = $::foreman::params::environment,
   $puppet_home               = $::foreman::params::puppet_home,
+  $puppet_ssldir             = $::foreman::params::puppet_ssldir,
   $locations_enabled         = $::foreman::params::locations_enabled,
   $organizations_enabled     = $::foreman::params::organizations_enabled,
   $passenger_interface       = $::foreman::params::passenger_interface,

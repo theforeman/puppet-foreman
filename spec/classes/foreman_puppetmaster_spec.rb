@@ -120,6 +120,8 @@ describe 'foreman::puppetmaster' do
         :operatingsystem => 'Amazon',
         :rubyversion     => '1.8.7',
         :osfamily        => 'Linux',
+        :puppetversion   => Puppet.version,
+        :rubysitedir     => '/usr/lib/ruby/site_ruby',
       }
     end
 

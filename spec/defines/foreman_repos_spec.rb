@@ -44,6 +44,8 @@ describe 'foreman::repos' do
         :operatingsystemrelease => '6.4',
         :osfamily               => 'Linux',
         :rubyversion            => '1.8.7',
+        :rubysitedir            => '/usr/lib/ruby/site_ruby',
+        :puppetversion          => Puppet.version,
       }
     end
 

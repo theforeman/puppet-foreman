@@ -215,19 +215,32 @@ class foreman::params {
   $puppet_user = 'puppet'
   $puppet_group = 'puppet'
 
+  if versioncmp($::puppetversion, '4.0') < 0 {
+    $aio_package = false
+  } elsif $::osfamily == 'Windows' or $::rubysitedir =~ /\/opt\/puppetlabs\/puppet/ {
+    $aio_package = true
+  } else {
+    $aio_package = false
+  }
+
+  $puppet_ssldir = $aio_package ? {
+    true    => '/etc/puppetlabs/puppet/ssl',
+    default => "${puppet_home}/ssl"
+  }
+
   # If CA is specified, remote Foreman host will be verified in reports/ENC scripts
-  $client_ssl_ca   = "${puppet_home}/ssl/certs/ca.pem"
+  $client_ssl_ca   = "${puppet_ssldir}/certs/ca.pem"
   # Used to authenticate to Foreman, required if require_ssl_puppetmasters is enabled
-  $client_ssl_cert = "${puppet_home}/ssl/certs/${lower_fqdn}.pem"
-  $client_ssl_key  = "${puppet_home}/ssl/private_keys/${lower_fqdn}.pem"
+  $client_ssl_cert = "${puppet_ssldir}/certs/${lower_fqdn}.pem"
+  $client_ssl_key  = "${puppet_ssldir}/private_keys/${lower_fqdn}.pem"
 
   # Set these values if you want Passenger to serve a CA-provided cert instead of puppet's
-  $server_ssl_ca    = "${puppet_home}/ssl/certs/ca.pem"
-  $server_ssl_chain = "${puppet_home}/ssl/certs/ca.pem"
-  $server_ssl_cert  = "${puppet_home}/ssl/certs/${lower_fqdn}.pem"
+  $server_ssl_ca    = "${puppet_ssldir}/certs/ca.pem"
+  $server_ssl_chain = "${puppet_ssldir}/certs/ca.pem"
+  $server_ssl_cert  = "${puppet_ssldir}/certs/${lower_fqdn}.pem"
   $server_ssl_certs_dir = '' # lint:ignore:empty_string_assignment - this must be empty since we override a default
-  $server_ssl_key   = "${puppet_home}/ssl/private_keys/${lower_fqdn}.pem"
-  $server_ssl_crl   = "${puppet_home}/ssl/crl.pem"
+  $server_ssl_key   = "${puppet_ssldir}/private_keys/${lower_fqdn}.pem"
+  $server_ssl_crl   = "${puppet_ssldir}/crl.pem"
 
   # We need the REST API interface with OAuth for some REST Puppet providers
   $oauth_active = true
