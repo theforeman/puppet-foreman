@@ -42,7 +42,7 @@
 #
 # $repo::                       This can be stable, nightly or a specific version i.e. 1.7
 #
-# $configure_epel_repo::        If disabled the EPEL repo will not be configured on RedHat family systems.
+# $configure_epel_repo::        If disabled the EPEL repo will not be configured on Red Hat family systems.
 #                               type:boolean
 #
 # $configure_scl_repo::         If disabled the SCL repo will not be configured on Red Hat clone systems.
