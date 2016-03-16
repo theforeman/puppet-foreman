@@ -6,13 +6,13 @@ describe 'foreman' do
   let(:scope) { PuppetlabsSpec::PuppetInternals.scope }
 
   it 'should exist' do
-    Puppet::Parser::Functions.function('foreman').should == 'function_foreman'
+    expect(Puppet::Parser::Functions.function('foreman')).to eq 'function_foreman'
   end
 
   it 'should throw an error with no arguments' do
-    lambda {
+    expect(lambda {
       scope.function_foreman([])
-    }.should(raise_error(Puppet::ParseError))
+    }). to raise_error(Puppet::ParseError)
   end
 
   # TODO: Test functionality of the actual function.
