@@ -112,6 +112,13 @@ def build_body(certname,filename)
   puppet_facts = YAML::load(facts.gsub(/\!ruby\/object.*$/,''))
   hostname     = puppet_facts['values']['fqdn'] || certname
   
+  begin
+    require 'facter'
+    puppet_facts['values']['puppetmaster_fqdn'] = Facter.value(:fqdn).to_s
+  rescue LoadError => e
+    puppet_facts['values']['puppetmaster_fqdn'] = `hostname -f`.strip
+  end
+  
   # filter any non-printable char from the value, if it is a String
   puppet_facts['values'].each do |key, val|
     if val.is_a? String
