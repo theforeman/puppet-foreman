@@ -332,6 +332,10 @@ class foreman (
   Package <| tag == 'foreman-compute' |> ~>
   Class['foreman::service']
 
+  Class['foreman::repo'] ~>
+  Package <| tag == 'foreman::cli' |> ~>
+  Class['foreman']
+
   # lint:ignore:spaceship_operator_without_tag
   Class['foreman::database']~>
   Foreman::Plugin <| |> ~>

@@ -17,6 +17,16 @@ describe 'foreman' do
       it { should contain_class('foreman::config') }
       it { should contain_class('foreman::database') }
       it { should contain_class('foreman::service') }
+
+      describe 'with foreman::cli' do
+        let :pre_condition do
+          "class { 'foreman': }
+           class { 'foreman::cli': }"
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { should contain_package('foreman-cli').that_subscribes_to('Class[foreman::repo]') }
+      end
     end
   end
 end
