@@ -34,8 +34,10 @@ database for Foreman. The database type can be changed using the `db_type`
 parameter, or management disabled with `db_manage`.
 
 The default database is PostgreSQL, which will be fully installed and managed
-on the host this module is applied to. If using MySQL, the puppetlabs-mysql
-module must be added to the modulepath, otherwise it's not required.
+on the host this module is applied to. Databases will be created with using the
+`en_US.utf8` locale, which means a respective OS locale must be available on
+the database host. If using MySQL, the puppetlabs-mysql module must be added to
+the modulepath, otherwise it's not required.
 
 ## Support policy
 
