@@ -122,6 +122,8 @@
 #
 # $passenger_start_timeout::    Amount of seconds to wait for Ruby application boot.
 #
+# $vhost_priority::             Defines Apache vhost priority for the Foreman vhost conf file.
+#
 # $server_ssl_ca::              Defines Apache mod_ssl SSLCACertificateFile setting in Foreman vhost conf file.
 #
 # $server_ssl_chain::           Defines Apache mod_ssl SSLCertificateChainFile setting in Foreman vhost conf file.
@@ -254,6 +256,7 @@ class foreman (
   $locations_enabled         = $::foreman::params::locations_enabled,
   $organizations_enabled     = $::foreman::params::organizations_enabled,
   $passenger_interface       = $::foreman::params::passenger_interface,
+  $vhost_priority            = $::foreman::params::vhost_priority,
   $server_ssl_ca             = $::foreman::params::server_ssl_ca,
   $server_ssl_chain          = $::foreman::params::server_ssl_chain,
   $server_ssl_cert           = $::foreman::params::server_ssl_cert,
