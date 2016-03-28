@@ -2,7 +2,6 @@
 # This file is managed centrally by modulesync
 #   https://github.com/theforeman/foreman-installer-modulesync
 rvm:
-  - 1.8.7
   - 1.9.3
   - 2.0.0
   - 2.1.5
@@ -22,23 +21,19 @@ env:
 matrix:
   fast_finish: true
   exclude:
-    # No support for Ruby 1.8.7 on Puppet 4.x
-    - rvm: 1.8.7
+    # No support for Ruby 1.9.3 on Puppet 4.x
+    - rvm: 1.9.3
       env: PUPPET_VERSION=4.0 ONLY_OS=centos-7-x86_64,ubuntu-14-x86_64
-    - rvm: 1.8.7
+    - rvm: 1.9.3
       env: PUPPET_VERSION=4.0 ONLY_OS=ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64
-    - rvm: 1.8.7
+    - rvm: 1.9.3
       env: PUPPET_VERSION=4.0 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64
-    # Exclude tests on OS that do not ship with Ruby 1.8.7
-    - rvm: 1.8.7
-      env: PUPPET_VERSION=3.5 ONLY_OS=centos-7-x86_64,ubuntu-14-x86_64
-    - rvm: 1.8.7
-      env: PUPPET_VERSION=3.5 ONLY_OS=centos-7-x86_64,ubuntu-14-x86_64 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
-    - rvm: 1.8.7
-      env: PUPPET_VERSION=3.5 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64
-    - rvm: 1.8.7
-      env: PUPPET_VERSION=3.5 EXCLUDE_OS=centos-7-x86_64,ubuntu-14-x86_64,ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
   include:
+    # Only platforms left to support ruby 1.8.7
+    - rvm: 1.8.7
+      env: PUPPET_VERSION=3.5 ONLY_OS=ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64
+    - rvm: 1.8.7
+      env: PUPPET_VERSION=3.5 ONLY_OS=ubuntu-12-x86_64,redhat-6-x86_64,scientific-6-x86_64,centos-6-x86_64,debian-6-x86_64 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
     # Only Puppet 4.x supports Ruby 2.2. Also limit the OS set we test Ruby 2.2 with.
     - rvm: 2.2.3
       env: PUPPET_VERSION=4.0 ONLY_OS=debian-8-x86_64,centos-7-x86_64,ubuntu-14-x86_64,freebsd-10-amd64
