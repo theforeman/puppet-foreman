@@ -23,6 +23,7 @@ describe 'foreman::config::passenger::fragment' do
         let :pre_condition do
           "class { '::foreman::config::passenger':
               app_root               => '/usr/share/foreman',
+              priority               => '05',
               ssl                    => false,
               user                   => 'foreman',
               prestart               => true,
@@ -64,6 +65,7 @@ describe 'foreman::config::passenger::fragment' do
         let :pre_condition do
           "class { '::foreman::config::passenger':
               app_root                => '/usr/share/foreman',
+              priority                => '05',
               ssl                     => true,
               user                    => 'foreman',
               prestart                => true,

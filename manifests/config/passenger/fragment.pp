@@ -12,8 +12,10 @@ define foreman::config::passenger::fragment(
 ) {
   require foreman::config::passenger
 
-  $http_path = "${::apache::confd_dir}/05-foreman.d/${name}.conf"
-  $https_path = "${::apache::confd_dir}/05-foreman-ssl.d/${name}.conf"
+  $_priority = $foreman::config::passenger::priority
+
+  $http_path = "${::apache::confd_dir}/${_priority}-foreman.d/${name}.conf"
+  $https_path = "${::apache::confd_dir}/${_priority}-foreman-ssl.d/${name}.conf"
 
   if $content and $content != '' {
     file { $http_path:

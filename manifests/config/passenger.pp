@@ -9,6 +9,8 @@
 #
 # $ruby::                     Path to Ruby interpreter
 #
+# $priority::                 Apache vhost priority
+#
 # $servername::               Servername for the vhost.
 #
 # $serveraliases::            Serveraliases for the vhost.
@@ -55,6 +57,7 @@ class foreman::config::passenger(
   $app_root               = $::foreman::app_root,
   $listen_on_interface    = $::foreman::passenger_interface,
   $ruby                   = $::foreman::passenger_ruby,
+  $priority               = $::foreman::vhost_priority,
   $servername             = $::foreman::servername,
   $serveraliases          = $::foreman::serveraliases,
   $ssl                    = $::foreman::ssl,
@@ -84,6 +87,7 @@ class foreman::config::passenger(
   validate_bool($keepalive)
   validate_integer($max_keepalive_requests)
   validate_integer($keepalive_timeout)
+  validate_string($priority)
 
   $docroot = "${app_root}/public"
   $suburi_parts = split($foreman_url, '/')
@@ -124,7 +128,7 @@ class foreman::config::passenger(
       false => undef,
     }
 
-    file { "${apache::confd_dir}/05-foreman.d":
+    file { "${apache::confd_dir}/${priority}-foreman.d":
       ensure  => 'directory',
       owner   => 'root',
       group   => 'root',
@@ -144,7 +148,7 @@ class foreman::config::passenger(
       passenger_start_timeout => $start_timeout,
       passenger_ruby          => $ruby,
       port                    => 80,
-      priority                => '05',
+      priority                => $priority,
       servername              => $servername,
       serveraliases           => $serveraliases,
       custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_virt_host_include.erb',
@@ -164,7 +168,7 @@ class foreman::config::passenger(
         $ssl_crl_check = undef
       }
 
-      file { "${apache::confd_dir}/05-foreman-ssl.d":
+      file { "${apache::confd_dir}/${priority}-foreman-ssl.d":
         ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
@@ -184,7 +188,7 @@ class foreman::config::passenger(
         passenger_start_timeout => $start_timeout,
         passenger_ruby          => $ruby,
         port                    => 443,
-        priority                => '05',
+        priority                => $priority,
         servername              => $servername,
         serveraliases           => $serveraliases,
         ssl                     => true,

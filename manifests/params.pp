@@ -234,6 +234,8 @@ class foreman::params {
   $client_ssl_cert = "${puppet_ssldir}/certs/${lower_fqdn}.pem"
   $client_ssl_key  = "${puppet_ssldir}/private_keys/${lower_fqdn}.pem"
 
+  $vhost_priority = '05'
+
   # Set these values if you want Passenger to serve a CA-provided cert instead of puppet's
   $server_ssl_ca    = "${puppet_ssldir}/certs/ca.pem"
   $server_ssl_chain = "${puppet_ssldir}/certs/ca.pem"

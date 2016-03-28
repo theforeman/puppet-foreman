@@ -44,6 +44,7 @@ describe 'foreman::config::passenger' do
         let :params do {
           :app_root               => '/usr/share/foreman',
           :use_vhost              => true,
+          :priority               => '05',
           :servername             => facts[:fqdn],
           :serveraliases          => ['foreman', 'also.foreman'],
           :ssl                    => true,
@@ -159,6 +160,7 @@ describe 'foreman::config::passenger' do
         let :params do {
           :app_root               => '/usr/share/foreman',
           :use_vhost              => true,
+          :priority               => '05',
           :servername             => facts[:fqdn],
           :serveraliases          => ['foreman', 'also.foreman'],
           :ssl                    => true,
@@ -186,6 +188,7 @@ describe 'foreman::config::passenger' do
         let :params do {
           :app_root               => '/usr/share/foreman',
           :use_vhost              => true,
+          :priority               => '05',
           :ssl                    => true,
           :ssl_cert               => 'cert.pem',
           :ssl_key                => 'key.pem',
@@ -223,6 +226,7 @@ describe 'foreman::config::passenger' do
       describe 'with keepalive parameters set' do
         let :params do {
             :app_root               => '/usr/share/foreman',
+            :priority               => '05',
             :use_vhost              => true,
             :servername             => facts[:fqdn],
             :serveraliases          => ['foreman', 'also.foreman'],
