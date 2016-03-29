@@ -53,10 +53,10 @@ Puppet::Type.type(:foreman_config_entry).provide(:cli) do
     resources.each do |name, resource|
       provider = entries.find { |entry| entry.name == name }
       if provider.nil? && resource[:ignore_missing]
-        # just consider it has a value we exepcted
+        # just assume it already has the value we expect
         provider = new(:name => name, :value => resource[:value])
       end
-      resources[name].provider = provider
+      resources[name].provider = provider if provider
     end
   end
 
