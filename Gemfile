@@ -12,7 +12,7 @@ if RUBY_VERSION.start_with? '1.8'
 else
   gem 'rake'
   gem 'rspec', '~> 3.0'
-  gem 'rspec-puppet-facts'
+  gem 'rspec-puppet-facts', '>= 1.5'
 end
 gem 'rspec-puppet', '~> 2.3'
 gem 'puppetlabs_spec_helper', '>= 0.8.0'
