@@ -20,7 +20,7 @@ describe 'foreman::cli' do
           'password'    => 'secret',
         } end
 
-        it { should contain_package('foreman-cli').with_ensure('installed') }
+        it { should contain_package('foreman-cli').with_ensure('present') }
 
         describe '/etc/hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings' do
@@ -68,7 +68,7 @@ describe 'foreman::cli' do
            }"
         end
 
-        it { should contain_package('foreman-cli').with_ensure('installed') }
+        it { should contain_package('foreman-cli').with_ensure('present') }
 
         describe '/etc/hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings from foreman' do
