@@ -49,6 +49,12 @@ Thus 'master' will support the upcoming major version and the current stable.
 The latest release (git tag, Puppet Forge) should support current and the
 previous stable release.
 
+### Foreman 1.11 compatibility notes
+
+* `foreman::compute::openstack` and `foreman::compute::rackspace` need
+  `package => 'foreman-compute'` on Foreman 1.11 or older, as the package has
+  been split up in newer versions.
+
 ### Foreman 1.8/1.9 compatibility notes
 
 On EL or Amazon, set:
