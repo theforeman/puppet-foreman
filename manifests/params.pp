@@ -56,6 +56,7 @@ class foreman::params {
   $environment       = 'production'
   $gpgcheck          = true
   $version           = 'present'
+  $plugin_version    = 'present'
 
   $puppetmaster_timeout = 60
 
