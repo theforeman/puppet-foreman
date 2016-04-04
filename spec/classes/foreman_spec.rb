@@ -27,6 +27,18 @@ describe 'foreman' do
         it { is_expected.to compile.with_all_deps }
         it { should contain_package('foreman-cli').that_subscribes_to('Class[foreman::repo]') }
       end
+
+      describe 'with foreman::providers' do
+        let :pre_condition do
+          "class { 'foreman': }
+           class { 'foreman::providers':
+             apipie_bindings_package => 'apipie-bindings',
+           }"
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { should contain_package('apipie-bindings').that_subscribes_to('Class[foreman::repo]') }
+      end
     end
   end
 end
