@@ -1,3 +1,6 @@
+# Uses foreman_api to manage smart proxies
+#
+# This provider is deprecated and will be removed, prefer rest_v2.
 Puppet::Type.type(:foreman_smartproxy).provide(:rest) do
 
   confine :feature => :foreman_api

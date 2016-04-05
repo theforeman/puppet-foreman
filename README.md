@@ -77,6 +77,24 @@ If using `foreman::plugin::ovirt_provision`, puppetdb or tasks, also set the
 * `foreman::compute::ec2` needs `package => 'foreman-compute'` on Foreman 1.7,
   as the package has been renamed in newer versions.
 
+## Types and providers
+
+`foreman_config_entry` can be used to manage settings in Foreman's database, as
+seen in _Administer > Settings_. Provides:
+
+* `cli` provider uses `foreman-rake` to change settings (default)
+
+`foreman_hostgroup` can create and manage host group in Foreman's database.
+Providers:
+
+* `rest_v2` provider uses API v2 with apipie-bindings and OAuth (default)
+
+`foreman_smartproxy` can create and manage registered smart proxies in
+Foreman's database. Providers:
+
+* `rest_v2` provider uses API v2 with apipie-bindings and OAuth (default)
+* `rest` provider uses API v1 with the foreman_api gem and OAuth (deprecated)
+
 # Contributing
 
 * Fork the project
