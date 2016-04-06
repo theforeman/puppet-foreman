@@ -1,7 +1,8 @@
 # Installs the package for a given Foreman plugin
 define foreman::plugin(
-  $package     = "${foreman::plugin_prefix}${title}",
-  $config_file = "${foreman::plugin_config_dir}/foreman_${title}.yaml",
+  $version     = $foreman::plugin_version,
+  $package     = "${foreman::params::plugin_prefix}${title}",
+  $config_file = "${foreman::params::plugin_config_dir}/foreman_${title}.yaml",
   $config      = undef,
 ) {
   # Debian gem2deb converts underscores to hyphens
@@ -14,7 +15,7 @@ define foreman::plugin(
     }
   }
   package { $real_package:
-    ensure => installed,
+    ensure => $version,
   }
 
   if $config {

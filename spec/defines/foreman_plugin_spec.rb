@@ -31,7 +31,7 @@ describe 'foreman::plugin' do
           when 'Debian'
             package_name = 'ruby-foreman-myplugin'
           end
-          should contain_package(package_name).with_ensure('installed')
+          should contain_package(package_name).with_ensure('present')
         end
 
         it 'should not contain the config file' do
@@ -45,7 +45,7 @@ describe 'foreman::plugin' do
         } end
 
         it 'should install the correct package' do
-          should contain_package('myplugin').with_ensure('installed')
+          should contain_package('myplugin').with_ensure('present')
         end
       end
 
@@ -61,7 +61,7 @@ describe 'foreman::plugin' do
                          when 'Debian'
                            'my-fun-plugin'
                          end
-          should contain_package(package_name).with_ensure('installed')
+          should contain_package(package_name).with_ensure('present')
         end
       end
 

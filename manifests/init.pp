@@ -63,6 +63,9 @@
 # $version::                    foreman package version, it's passed to ensure parameter of package resource
 #                               can be set to specific version number, 'latest', 'present' etc.
 #
+# $plugin_version::             foreman plugins package version, it's passed to ensure parameter of package resource
+#                               can be set to 'installed', 'latest', 'present' only
+#
 # $db_manage::                  if enabled, will install and configure the database server on this host
 #                               type:boolean
 #
@@ -234,6 +237,7 @@ class foreman (
   $selinux                   = $::foreman::params::selinux,
   $gpgcheck                  = $::foreman::params::gpgcheck,
   $version                   = $::foreman::params::version,
+  $plugin_version            = $::foreman::params::plugin_version,
   $db_manage                 = $::foreman::params::db_manage,
   $db_type                   = $::foreman::params::db_type,
   $db_adapter                = 'UNSET',
@@ -314,6 +318,7 @@ class foreman (
   }
   validate_bool($websockets_encrypt)
   validate_re($logging_level, '^(debug|info|warn|error|fatal)$')
+  validate_re($plugin_version, '^(installed|present|latest)$')
   validate_hash($loggers)
   validate_array($serveraliases)
   if $email_delivery_method {
