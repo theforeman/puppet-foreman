@@ -92,7 +92,8 @@ Providers:
 `foreman_smartproxy` can create and manage registered smart proxies in
 Foreman's database. Providers:
 
-* `rest_v2` provider uses API v2 with apipie-bindings and OAuth (default)
+* `rest_v3` provider uses API v2 with Ruby HTTP library, OAuth and JSON (default)
+* `rest_v2` provider uses API v2 with apipie-bindings and OAuth
 * `rest` provider uses API v1 with the foreman_api gem and OAuth (deprecated)
 
 # Contributing

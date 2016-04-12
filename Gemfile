@@ -35,5 +35,6 @@ gem 'metadata-json-lint'
 gem 'json'
 gem 'webmock'
 gem 'addressable', '< 2.4', {"platforms"=>["ruby_18"]}
+gem 'oauth'
 
 # vim:ft=ruby

@@ -8,6 +8,7 @@ Gemfile:
       options:
         platforms:
         - 'ruby_18'
+    - gem: oauth
 Rakefile:
   param_docs_pattern:
     - manifests/cli.pp
