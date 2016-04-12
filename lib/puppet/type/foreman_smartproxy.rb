@@ -23,6 +23,10 @@ Puppet::Type.newtype(:foreman_smartproxy) do
     desc 'Foreman oauth consumer_secret'
   end
 
+  newparam(:ssl_ca) do
+    desc 'Foreman SSL CA (certificate authority) for verification'
+  end
+
   newproperty(:url) do
     desc 'The url of the smartproxy'
     isrequired

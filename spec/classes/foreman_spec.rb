@@ -32,6 +32,7 @@ describe 'foreman' do
         let :pre_condition do
           "class { 'foreman': }
            class { 'foreman::providers':
+             apipie_bindings => true,
              apipie_bindings_package => 'apipie-bindings',
            }"
         end

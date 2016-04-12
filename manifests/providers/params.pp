@@ -1,26 +1,48 @@
 # foreman::providers default parameters
 class foreman::providers::params {
   # Dependency packages for different providers supplied in this module
-  $apipie_bindings = true
+  $oauth = true
+  $json = (versioncmp($::rubyversion, '1.9') < 0)
+  $apipie_bindings = false
   $foreman_api = false
 
   # OS specific package names
   case $::osfamily {
     'RedHat': {
+      if versioncmp($::puppetversion, '4.0') >= 0 {
+        $oauth_package = 'puppet-agent-oauth'
+      } else {
+        $oauth_package = 'rubygem-oauth'
+      }
+      $json_package = 'rubygem-json'
       $apipie_bindings_package = 'rubygem-apipie-bindings'
       $foreman_api_package = 'rubygem-foreman_api'
     }
     'Debian': {
+      if versioncmp($::puppetversion, '4.0') >= 0 {
+        $oauth_package = 'puppet-agent-oauth'
+      } else {
+        $oauth_package = 'ruby-oauth'
+      }
+      $json_package = 'ruby-json'
       $apipie_bindings_package = 'ruby-apipie-bindings'
       $foreman_api_package = 'ruby-foreman-api'
     }
     'FreeBSD': {
+      $oauth_package = 'rubygem-oauth'
+      $json_package = 'rubygem-json'
       $apipie_bindings_package = 'rubygem-apipie-bindings'
       $foreman_api_package = 'rubygem-foreman_api'
     }
     'Linux': {
       case $::operatingsystem {
         'Amazon': {
+          if versioncmp($::puppetversion, '4.0') >= 0 {
+            $oauth_package = 'puppet-agent-oauth'
+          } else {
+            $oauth_package = 'rubygem-oauth'
+          }
+          $json_package = 'rubygem-json'
           $apipie_bindings_package = 'rubygem-apipie-bindings'
           $foreman_api_package = 'rubygem-foreman_api'
         }
