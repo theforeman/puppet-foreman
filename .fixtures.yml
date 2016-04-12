@@ -2,9 +2,7 @@ fixtures:
   repositories:
     alternatives:     'git://github.com/adrienthebo/puppet-alternatives'
     apache:           'git://github.com/puppetlabs/puppetlabs-apache'
-    apt:
-      repo:           'git://github.com/puppetlabs/puppetlabs-apt'
-      branch:         '1.8.x'
+    apt:              'git://github.com/puppetlabs/puppetlabs-apt'
     concat:           'git://github.com/puppetlabs/puppetlabs-concat'
     mysql:            'git://github.com/puppetlabs/puppetlabs-mysql'
     postgresql:       'git://github.com/puppetlabs/puppetlabs-postgresql'

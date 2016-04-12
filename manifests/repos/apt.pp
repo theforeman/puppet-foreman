@@ -1,14 +1,26 @@
 # Install an apt repo
 define foreman::repos::apt ($repo) {
-  file { "/etc/apt/sources.list.d/${name}.list":
-    content => "deb http://deb.theforeman.org/ ${::lsbdistcodename} ${repo}\ndeb http://deb.theforeman.org/ plugins ${repo}\n",
-  } ->
-  exec { "foreman-key-${name}":
-    command => '/usr/bin/wget -q http://deb.theforeman.org/foreman.asc -O- | /usr/bin/apt-key add -',
-    unless  => '/usr/bin/apt-key list | /bin/grep -q "Foreman Automatic Signing Key"',
-  } ~>
-  exec { "update-apt-${name}":
-    command     => '/usr/bin/apt-get update',
-    refreshonly => true,
+
+  include ::apt
+
+  Apt::Source {
+    location => 'http://deb.theforeman.org/',
+    key      => {
+      id     => 'AE0AF310E2EA96B6B6F4BD726F8600B9563278F6',
+      source => 'https://pgp.mit.edu/pks/lookup?op=get&search=0x6F8600B9563278F6',
+    },
+    include  => {
+      src => false,
+    },
   }
+
+  ::apt::source { $name:
+    repos => $repo,
+  }
+
+  ::apt::source { "${name}-plugins":
+    release => 'plugins',
+    repos   => $repo,
+  }
+
 }
