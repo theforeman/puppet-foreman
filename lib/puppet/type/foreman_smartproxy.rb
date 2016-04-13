@@ -46,7 +46,11 @@ Puppet::Type.newtype(:foreman_smartproxy) do
   end
 
   def refresh
-    provider.refresh_features! if provider.respond_to?(:refresh_features!)
+    if @parameters[:ensure].retrieve == :present
+      provider.refresh_features! if provider.respond_to?(:refresh_features!)
+    else
+      debug 'Skipping refresh; smart proxy is not registered'
+    end
   end
 
 end
