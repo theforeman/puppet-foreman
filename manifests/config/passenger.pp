@@ -81,6 +81,16 @@ class foreman::config::passenger(
   include ::apache
   include ::apache::mod::headers
   include ::apache::mod::passenger
+
+  #make sure Passenger module not loaded twice on RHEL/CenotOS 6
+  if $::osfamily == 'RedHat' and $::apache::version::distrelease == '6' {
+    file_line { 'do_not_load_twice':
+      path => '/etc/httpd/conf.d/passenger.conf',
+      line => '#LoadModule passenger_module modules/mod_passenger.so',
+      match => '^LoadModule passenger_module modules/mod_passenger.so$',
+    }
+  }
+
   Class['::apache'] -> anchor { 'foreman::config::passenger_end': }
 
   # Ensure the Version module is loaded as we need it in the Foreman vhosts
