@@ -41,27 +41,19 @@ class foreman::providers(
   validate_string($oauth_package, $json_package, $apipie_bindings_package, $foreman_api_package)
 
   if $oauth {
-    package { $oauth_package:
-      ensure => installed,
-    }
+    ensure_packages([$oauth_package])
   }
 
   if $json {
-    package { $json_package:
-      ensure => installed,
-    }
+    ensure_packages([$json_package])
   }
 
   if $apipie_bindings {
-    package { $apipie_bindings_package:
-      ensure => installed,
-    }
+    ensure_packages([$apipie_bindings_package])
   }
 
   if $foreman_api {
     warning('Using foreman_api providers is deprecated, use rest_v2 with apipie-bindings instead')
-    package { $foreman_api_package:
-      ensure => installed,
-    }
+    ensure_packages([$foreman_api_package])
   }
 }

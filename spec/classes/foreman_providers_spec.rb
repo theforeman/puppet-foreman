@@ -24,7 +24,7 @@ describe 'foreman::providers' do
 
       context 'with defaults' do
         if facts[:rubyversion].start_with?('1.8')
-          it { should contain_package(json).with_ensure('installed') }
+          it { should contain_package(json).with_ensure('present') }
         else
           it { should_not contain_package(json) }
         end
@@ -34,12 +34,12 @@ describe 'foreman::providers' do
 
       context 'with defaults on Puppet 3' do
         let(:facts) { facts.merge(:puppetversion => '3.8.6') }
-        it { should contain_package(oauth_os).with_ensure('installed') }
+        it { should contain_package(oauth_os).with_ensure('present') }
       end
 
       context 'with defaults on Puppet 4' do
         let(:facts) { facts.merge(:puppetversion => '4.0.0') }
-        it { should contain_package('puppet-agent-oauth').with_ensure('installed') }
+        it { should contain_package('puppet-agent-oauth').with_ensure('present') }
       end
 
       context 'with foreman_api only' do
@@ -49,7 +49,7 @@ describe 'foreman::providers' do
         } end
 
         it { should_not contain_package(apipie_bindings) }
-        it { should contain_package(foreman_api).with_ensure('installed') }
+        it { should contain_package(foreman_api).with_ensure('present') }
       end
 
       context 'with apipie_bindings => true' do
@@ -57,7 +57,7 @@ describe 'foreman::providers' do
           'apipie_bindings' => true,
         } end
 
-        it { should contain_package(apipie_bindings).with_ensure('installed') }
+        it { should contain_package(apipie_bindings).with_ensure('present') }
       end
 
       context 'with json => true' do
@@ -65,7 +65,7 @@ describe 'foreman::providers' do
           'json' => true,
         } end
 
-        it { should contain_package(json).with_ensure('installed') }
+        it { should contain_package(json).with_ensure('present') }
       end
 
       context 'with oauth => true' do
@@ -74,7 +74,7 @@ describe 'foreman::providers' do
           'oauth' => true,
         } end
 
-        it { should contain_package(oauth_os).with_ensure('installed') }
+        it { should contain_package(oauth_os).with_ensure('present') }
       end
     end
   end
