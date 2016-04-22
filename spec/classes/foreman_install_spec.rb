@@ -19,7 +19,7 @@ describe 'foreman::install' do
 
         case facts[:osfamily]
         when 'RedHat'
-          configure_scl_repo = (facts[:operatingsystem] != 'RedHat' and facts[:operatingsystem] != 'Fedora')
+          configure_scl_repo = (facts[:operatingsystem] != 'Fedora')
 
           it { should contain_foreman__repos('foreman') }
           it { should contain_class('foreman::repos::extra').with({

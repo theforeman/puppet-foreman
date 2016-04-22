@@ -35,8 +35,8 @@ class foreman::params {
 
   # Additional software repos
   $configure_epel_repo      = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
-  # Only configure extra SCL repos on EL clones, RHEL itself usually has RHSCL
-  $configure_scl_repo       = ($::osfamily == 'RedHat' and $::operatingsystem != 'RedHat' and $::operatingsystem != 'Fedora')
+  # Only configure extra SCL repos on EL
+  $configure_scl_repo       = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
   # Only configure Brightbox PPA on Ubuntu 12.04 (precise)
   $configure_brightbox_repo = ($::operatingsystem == 'Ubuntu' and $::operatingsystemrelease == '12.04')
 
