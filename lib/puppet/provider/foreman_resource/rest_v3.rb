@@ -54,7 +54,7 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
     OAuth::AccessToken.new(oauth_consumer)
   end
 
-  def request(method, path, params = {}, data = nil, headers = {})
+  def request(method, path, params = {}, data = {}, headers = {})
     base_url = resource[:base_url]
     base_url += '/' unless base_url.end_with?('/')
 
@@ -70,7 +70,11 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
     attempts = 0
     begin
       debug("Making #{method} request to #{uri}")
-      response = oauth_consumer.request(method, uri.to_s, generate_token, {}, data, headers)
+      if [:post, :put, :patch].include?(method)
+        response = oauth_consumer.request(method, uri.to_s, generate_token, {}, data, headers)
+      else
+        response = oauth_consumer.request(method, uri.to_s, generate_token, {}, headers)
+      end
       debug("Received response #{response.code} from request to #{uri}")
       response
     rescue Timeout::Error => te
