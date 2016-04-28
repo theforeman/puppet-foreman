@@ -33,7 +33,7 @@ gem 'rest-client', '< 1.7', {"platforms"=>["ruby_18"], "groups"=>["development"]
 gem 'mime-types', '~> 1.0', {"platforms"=>["ruby_18"], "groups"=>["development"]}
 gem 'metadata-json-lint'
 gem 'json'
-gem 'webmock'
+gem 'webmock', '< 2.0'
 gem 'addressable', '< 2.4', {"platforms"=>["ruby_18"]}
 gem 'oauth'
 
