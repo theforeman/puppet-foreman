@@ -340,7 +340,7 @@ if __FILE__ == $0 then
       # query External node
       begin
         result = ""
-        timeout(tsecs) do
+        Timeout.timeout(tsecs) do
           result = enc(certname)
           cache(certname, result)
         end
