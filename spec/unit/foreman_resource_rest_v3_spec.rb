@@ -74,12 +74,12 @@ describe provider_class do
 
     it 'makes request via consumer and returns response' do
       response = mock(:code => '200')
-      consumer.expects(:request).with(:get, 'https://foreman.example.com/api/v2/example', is_a(OAuth::AccessToken), {}, nil, is_a(Hash)).returns(response)
+      consumer.expects(:request).with(:get, 'https://foreman.example.com/api/v2/example', is_a(OAuth::AccessToken), {}, is_a(Hash)).returns(response)
       expect(provider.request(:get, 'api/v2/example')).to eq(response)
     end
 
     it 'specifies foreman_user header' do
-      consumer.expects(:request).with(:get, anything, anything, anything, anything, has_entry('foreman_user', 'admin')).returns(mock(:code => '200'))
+      consumer.expects(:request).with(:get, anything, anything, anything, has_entry('foreman_user', 'admin')).returns(mock(:code => '200'))
       provider.request(:get, 'api/v2/example')
     end
 
@@ -89,12 +89,12 @@ describe provider_class do
     end
 
     it 'passes data' do
-      consumer.expects(:request).with(:get, anything, anything, anything, 'test', anything).returns(mock(:code => '200'))
-      provider.request(:get, 'api/v2/example', {}, 'test')
+      consumer.expects(:request).with(:post, anything, anything, anything, 'test', anything).returns(mock(:code => '200'))
+      provider.request(:post, 'api/v2/example', {}, 'test')
     end
 
     it 'merges headers' do
-      consumer.expects(:request).with(:get, anything, anything, anything, anything, has_entries('test' => 'value', 'Accept' => 'application/json')).returns(mock(:code => '200'))
+      consumer.expects(:request).with(:get, anything, anything, anything, has_entries('test' => 'value', 'Accept' => 'application/json')).returns(mock(:code => '200'))
       provider.request(:get, 'api/v2/example', {}, nil, {'test' => 'value'})
     end
 
