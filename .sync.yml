@@ -3,6 +3,7 @@ Gemfile:
   extra:
     - gem: json
     - gem: webmock
+      version: '< 2.0'
     - gem: addressable
       version: '< 2.4'
       options:
