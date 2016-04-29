@@ -54,7 +54,7 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
     OAuth::AccessToken.new(oauth_consumer)
   end
 
-  def request(method, path, params = {}, data = {}, headers = {})
+  def request(method, path, params = {}, data = nil, headers = {})
     base_url = resource[:base_url]
     base_url += '/' unless base_url.end_with?('/')
 

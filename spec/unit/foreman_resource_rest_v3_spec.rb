@@ -72,10 +72,16 @@ describe provider_class do
     let(:consumer) { mock('oauth_consumer') }
     let(:effective_user) { 'admin' }
 
-    it 'makes request via consumer and returns response' do
+    it 'makes GET request via consumer and returns response' do
       response = mock(:code => '200')
       consumer.expects(:request).with(:get, 'https://foreman.example.com/api/v2/example', is_a(OAuth::AccessToken), {}, is_a(Hash)).returns(response)
       expect(provider.request(:get, 'api/v2/example')).to eq(response)
+    end
+
+    it 'makes PUT request via consumer and returns response' do
+      response = mock(:code => '200')
+      consumer.expects(:request).with(:put, 'https://foreman.example.com/api/v2/example', is_a(OAuth::AccessToken), {}, nil, is_a(Hash)).returns(response)
+      expect(provider.request(:put, 'api/v2/example')).to eq(response)
     end
 
     it 'specifies foreman_user header' do
