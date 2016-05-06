@@ -1,5 +1,11 @@
 # Configure foreman
 class foreman::config {
+  # Ensure 'puppet' user group is present before managing foreman user
+  # Relationship is duplicated there as defined() is parse-order dependent
+  if defined(Class['puppet::server::install']) {
+    Class['puppet::server::install'] -> Class['foreman::config']
+  }
+
   concat::fragment {'foreman_settings+01-header.yaml':
     target  => '/etc/foreman/settings.yaml',
     content => template('foreman/settings.yaml.erb'),
