@@ -138,6 +138,12 @@
 # $server_ssl_key::             Defines Apache mod_ssl SSLCertificateKeyFile setting in Foreman vhost conf file.
 #
 # $server_ssl_crl::             Defines the Apache mod_ssl SSLCARevocationFile setting in Foreman vhost conf file.
+# 
+# $client_ssl_ca::              Defines the SSL CA used to communicate with Foreman Proxies
+#
+# $client_ssl_cert::            Defines the SSL certificate used to communicate with Foreman Proxies
+#
+# $client_ssl_key::             Defines the SSL private key used to communicate with Foreman Proxies
 #
 # $keepalive::                  Enable KeepAlive setting of Apache?
 #                               type:boolean
@@ -267,6 +273,9 @@ class foreman (
   $server_ssl_certs_dir      = $::foreman::params::server_ssl_certs_dir,
   $server_ssl_key            = $::foreman::params::server_ssl_key,
   $server_ssl_crl            = $::foreman::params::server_ssl_crl,
+  $client_ssl_ca             = $::foreman::params::server_ssl_ca,
+  $client_ssl_cert           = $::foreman::params::server_ssl_cert,
+  $client_ssl_key            = $::foreman::params::server_ssl_key,
   $keepalive                 = $::foreman::params::keepalive,
   $max_keepalive_requests    = $::foreman::params::max_keepalive_requests,
   $keepalive_timeout         = $::foreman::params::keepalive_timeout,
