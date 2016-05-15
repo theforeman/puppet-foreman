@@ -22,6 +22,11 @@
 :websockets_ssl_key: <%= scope.lookupvar("foreman::websockets_ssl_key") %>
 :websockets_ssl_cert: <%= scope.lookupvar("foreman::websockets_ssl_cert") %>
 
+# SSL-settings
+:ssl_certificate: <%= scope.lookupvar("foreman::client_ssl_cert") %>
+:ssl_ca_file: <%= scope.lookupvar("foreman::client_ssl_ca") %>
+:ssl_priv_key: <%= scope.lookupvar("foreman::client_ssl_key") %>
+
 # Log settings for the current environment can be adjusted by adding them
 # here. For example, if you want to increase the log level.
 :logging:

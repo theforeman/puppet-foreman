@@ -32,6 +32,9 @@ describe 'foreman::config' do
             with_content(/^:oauth_consumer_key:\s*\w+$/).
             with_content(/^:oauth_consumer_secret:\s*\w+$/).
             with_content(/^:websockets_encrypt:\s*on$/).
+            with_content(%r{^:ssl_certificate:\s*/var/lib/puppet/ssl/certs/foo\.example\.com\.pem$}).
+            with_content(%r{^:ssl_ca_file:\s*/var/lib/puppet/ssl/certs/ca.pem$}).
+            with_content(%r{^:ssl_priv_key:\s*/var/lib/puppet/ssl/private_keys/foo\.example\.com\.pem$}).
             with_content(/^:logging:\n\s*:level:\s*info$/).
             with({})
 
