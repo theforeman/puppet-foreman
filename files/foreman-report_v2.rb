@@ -42,6 +42,9 @@ Puppet::Reports.register_report(:foreman) do
 
       uri = URI.parse(foreman_url)
       http = Net::HTTP.new(uri.host, uri.port)
+      if SETTINGS[:report_timeout]
+        http.read_timeout = SETTINGS[:report_timeout]
+      end
       http.use_ssl     = uri.scheme == 'https'
       if http.use_ssl?
         if SETTINGS[:ssl_ca] && !SETTINGS[:ssl_ca].empty?

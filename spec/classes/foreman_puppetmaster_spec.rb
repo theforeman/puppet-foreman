@@ -81,6 +81,7 @@ describe 'foreman::puppetmaster' do
             with_content(%r{^:puppetdir: "#{puppet_vardir}"$}).
             with_content(/^:facts: true$/).
             with_content(/^:timeout: 60$/).
+            with_content(/^:report_timeout: 60$/).
             with({
               :mode  => '0640',
               :owner => 'root',

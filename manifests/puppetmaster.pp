@@ -13,6 +13,7 @@ class foreman::puppetmaster (
   $puppet_basedir   = $::foreman::params::puppet_basedir,
   $puppet_etcdir    = $::foreman::params::puppet_etcdir,
   $timeout          = $::foreman::params::puppetmaster_timeout,
+  $report_timeout   = $::foreman::params::puppetmaster_report_timeout,
   $ssl_ca           = $::foreman::params::client_ssl_ca,
   $ssl_cert         = $::foreman::params::client_ssl_cert,
   $ssl_key          = $::foreman::params::client_ssl_key,
