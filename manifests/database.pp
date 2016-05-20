@@ -26,6 +26,11 @@ class foreman::database {
       value => false,
       dry   => true,
     } ~>
+    exec { 'restart-services':
+      command => '/usr/bin/katello-service restart &> /dev/null && /usr/sbin/service-wait foreman-tasks restart &> /dev/null ',
+      timeout     => 1800,
+      require => Package['katello-service'],
+    } ~>
     foreman::rake { 'db:migrate': } ~>
     foreman_config_entry { 'db_pending_seed':
       value  => false,
