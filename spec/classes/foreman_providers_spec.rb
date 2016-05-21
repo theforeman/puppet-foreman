@@ -37,8 +37,16 @@ describe 'foreman::providers' do
         it { should contain_package(oauth_os).with_ensure('present') }
       end
 
-      context 'with defaults on Puppet 4' do
+      context 'with defaults on Puppet 4 non-AIO' do
         let(:facts) { facts.merge(:puppetversion => '4.0.0') }
+        it { should contain_package(oauth_os).with_ensure('present') }
+      end
+
+      context 'with defaults on Puppet 4 AIO' do
+        let(:facts) { facts.merge(
+          :puppetversion => '4.0.0',
+          :rubysitedir => '/opt/puppetlabs/puppet/lib/ruby/site_ruby/2.1.0'
+        ) }
         it { should contain_package('puppet-agent-oauth').with_ensure('present') }
       end
 

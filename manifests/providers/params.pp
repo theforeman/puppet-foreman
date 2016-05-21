@@ -9,7 +9,7 @@ class foreman::providers::params {
   # OS specific package names
   case $::osfamily {
     'RedHat': {
-      if versioncmp($::puppetversion, '4.0') >= 0 {
+      if $::rubysitedir =~ /\/opt\/puppetlabs\/puppet/ {
         $oauth_package = 'puppet-agent-oauth'
       } else {
         $oauth_package = 'rubygem-oauth'
@@ -19,7 +19,7 @@ class foreman::providers::params {
       $foreman_api_package = 'rubygem-foreman_api'
     }
     'Debian': {
-      if versioncmp($::puppetversion, '4.0') >= 0 {
+      if $::rubysitedir =~ /\/opt\/puppetlabs\/puppet/ {
         $oauth_package = 'puppet-agent-oauth'
       } else {
         $oauth_package = 'ruby-oauth'
@@ -37,7 +37,7 @@ class foreman::providers::params {
     'Linux': {
       case $::operatingsystem {
         'Amazon': {
-          if versioncmp($::puppetversion, '4.0') >= 0 {
+          if $::rubysitedir =~ /\/opt\/puppetlabs\/puppet/ {
             $oauth_package = 'puppet-agent-oauth'
           } else {
             $oauth_package = 'rubygem-oauth'
