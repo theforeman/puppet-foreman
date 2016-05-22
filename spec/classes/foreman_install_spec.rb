@@ -35,7 +35,7 @@ describe 'foreman::install' do
             it { should contain_package('tfm-rubygem-passenger-native') }
           end
         when 'Debian'
-          configure_brightbox_repo = os == 'ubuntu-12-x86_64'
+          configure_brightbox_repo = os.start_with?('ubuntu-12')
 
           it { should contain_foreman__repos('foreman') }
           it { should contain_class('foreman::repos::extra').with({
