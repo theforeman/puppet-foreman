@@ -9,7 +9,9 @@ describe provider_class do
       :base_url => 'https://foreman.example.com',
       :consumer_key => 'oauth_key',
       :consumer_secret => 'oauth_secret',
-      :effective_user => 'admin'
+      :effective_user => 'admin',
+      :organizations => ['Default Organization', 'ACME Organization'],
+      :locations => ['Default Location']
     )
   end
 
@@ -22,6 +24,9 @@ describe provider_class do
   describe '#create' do
     it 'sends POST request' do
       provider.expects(:request).with(:post, 'api/v2/smart_proxies', {}, is_a(String)).returns(mock(:code => '201'))
+      provider.expects(:request).with(:get, 'api/v2/organizations', {:search => 'name="Default Organization"'}).returns(mock(:code => '201', :body => {:results => [{:id => 10}]}.to_json))
+      provider.expects(:request).with(:get, 'api/v2/organizations', {:search => 'name="ACME Organization"'}).returns(mock(:code => '201', :body => {:results => [{:id => 11}]}.to_json))
+      provider.expects(:request).with(:get, 'api/v2/locations', {:search => 'name="Default Location"'}).returns(mock(:code => '201', :body => {:results => [{:id => 12}]}.to_json))
       provider.create
     end
   end

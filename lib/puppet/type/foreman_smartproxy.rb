@@ -33,6 +33,14 @@ Puppet::Type.newtype(:foreman_smartproxy) do
     newvalues(URI.regexp)
   end
 
+  newproperty(:organizations, :array_matching => :all) do
+    desc 'The organizations to add to the smartproxy'
+  end
+
+  newproperty(:locations, :array_matching => :all) do
+    desc 'The locations to add to the smartproxy'
+  end
+
   newparam(:timeout) do
     desc "Timeout for HTTP(s) requests"
 
@@ -56,5 +64,4 @@ Puppet::Type.newtype(:foreman_smartproxy) do
       debug 'Skipping refresh; smart proxy is not registered'
     end
   end
-
 end

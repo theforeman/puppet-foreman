@@ -45,7 +45,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
         :foreman_user => resource[:effective_user],
       },
       :apidoc_cache_base_dir => File.join(Puppet[:vardir], 'apipie_bindings')
-    }).resource(:smart_proxies)
+    })
   end
 
   # proxy hash or nil
@@ -53,7 +53,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
     if @proxy
       @proxy
     else
-      @proxy = api.call(:index, :search => "name=\"#{resource[:name]}\"")['results'][0]
+      @proxy = api.resource(:smart_proxies).call(:index, :search => "name=\"#{resource[:name]}\"")['results'][0]
     end
   rescue Exception => e
     raise_error e
@@ -68,18 +68,18 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
   end
 
   def create
-    api.call(:create, {
+    api.resource(:smart_proxies).call(:create, {
       :smart_proxy => {
         :name => resource[:name],
         :url  => resource[:url]
-      }
+      }.merge(taxonomy_params)
     })
   rescue Exception => e
     raise_error e
   end
 
   def destroy
-    api.call(:destroy, :id => id)
+    api.resource(:smart_proxies).call(:destroy, :id => id)
     @proxy = nil
   rescue Exception => e
     raise_error e
@@ -101,4 +101,34 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
     raise_error e
   end
 
+  def taxonomy_params
+    params = {}
+    params[:organization_ids] = organization_ids if organization_ids
+    params[:location_ids] = location_ids if location_ids
+    params
+  end
+
+  def organization_ids
+    @organization_ids ||= taxonomy_ids(:organization, resource[:organizations])
+  end
+
+  def location_ids
+    @location_ids ||= taxonomy_ids(:location, resource[:locations])
+  end
+
+  def taxonomy_ids(type, names)
+    return unless names && names.any?
+    ids = []
+    names.each do |name|
+      results = api.resource("#{type}s".to_sym).call(:index, :search => %{name="#{name}"})['results']
+      if results.any?
+        ids << results[0]['id']
+      else
+        fail "Could not find #{type} #{name}"
+      end
+    end
+    ids
+  rescue Exception => e
+    raise_error e
+  end
 end
