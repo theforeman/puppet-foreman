@@ -1,10 +1,10 @@
 Puppet::Type.newtype(:foreman_smartproxy) do
-  desc 'foreman_smartproxy registers a smartproxy in foreman.'
+  desc 'foreman_smartproxy registers a smart proxy in foreman.'
 
   ensurable
 
   newparam(:name, :namevar => true) do
-    desc 'The name of the smartproxy.'
+    desc 'The name of the smart proxy.'
   end
 
   newparam(:base_url) do
@@ -28,17 +28,17 @@ Puppet::Type.newtype(:foreman_smartproxy) do
   end
 
   newproperty(:url) do
-    desc 'The url of the smartproxy'
+    desc 'The url of the smart proxy'
     isrequired
     newvalues(URI.regexp)
   end
 
   newproperty(:organizations, :array_matching => :all) do
-    desc 'The organizations to add to the smartproxy'
+    desc 'The organizations to add to the smart proxy'
   end
 
   newproperty(:locations, :array_matching => :all) do
-    desc 'The locations to add to the smartproxy'
+    desc 'The locations to add to the smart proxy'
   end
 
   newparam(:timeout) do

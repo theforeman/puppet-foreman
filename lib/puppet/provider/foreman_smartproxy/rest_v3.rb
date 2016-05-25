@@ -18,7 +18,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v3, :parent => Puppet::Type
   end
 
   def create
-    post_data = {:smart_proxy => {:name => resource[:name], :url => resource[:url]}.merge(taxonomy_params)}.to_json
+    post_data = {:smart_proxy => {:name => resource[:name], :url => resource[:url]}.merge(taxonomy_params)}
     r = request(:post, 'api/v2/smart_proxies', {}, post_data)
     raise Puppet::Error.new("Proxy #{resource[:name]} cannot be registered: #{error_message(r)}") unless success?(r)
   end
@@ -34,7 +34,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v3, :parent => Puppet::Type
   end
 
   def url=(value)
-    post_data = {:smart_proxy => {:url => value}}.to_json
+    post_data = {:smart_proxy => {:url => value}}
     r = request(:put, "api/v2/smart_proxies/#{id}", {}, post_data)
     raise Puppet::Error.new("Proxy #{resource[:name]} cannot be updated: #{error_message(r)}") unless success?(r)
   end
@@ -49,6 +49,26 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v3, :parent => Puppet::Type
     params[:organization_ids] = organization_ids if organization_ids
     params[:location_ids] = location_ids if location_ids
     params
+  end
+
+  def organizations
+    proxy ? proxy['organizations'].map { |org| org['name'] } : nil
+  end
+
+  def organizations=(value)
+    data = {:smart_proxy => {:organization_ids => taxonomy_ids(:organization, value)}}
+    r = request(:put, "api/v2/smart_proxies/#{id}", {}, data)
+    raise Puppet::Error.new("Proxy #{resource[:name]} cannot be updated: #{error_message(r)}") unless success?(r)
+  end
+
+  def locations
+    proxy ? proxy['locations'].map { |loc| loc['name'] } : nil
+  end
+
+  def locations=(value)
+    data = {:smart_proxy => {:location_ids => taxonomy_ids(:location, value)}}
+    r = request(:put, "api/v2/smart_proxies/#{id}", {}, data)
+    raise Puppet::Error.new("Proxy #{resource[:name]} cannot be updated: #{error_message(r)}") unless success?(r)
   end
 
   def organization_ids
