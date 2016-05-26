@@ -69,6 +69,11 @@ describe provider_class do
       provider.expects(:request).with(:get, 'api/v2/smart_proxies', :search => 'name="proxy.example.com"').returns(
         mock('response', :body => {:results => [{:id => 1, :name => 'proxy.example.com'}]}.to_json, :code => '200')
       )
+
+      provider.expects(:request).with(:get, 'api/v2/smart_proxies/1').returns(
+        mock('response', :body => {:id => 1, :name => 'proxy.example.com'}.to_json, :code => '200')
+      )
+
       expect(provider.proxy['id']).to eq(1)
       expect(provider.proxy['name']).to eq('proxy.example.com')
     end

@@ -53,7 +53,8 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
     if @proxy
       @proxy
     else
-      @proxy = api.resource(:smart_proxies).call(:index, :search => "name=\"#{resource[:name]}\"")['results'][0]
+      proxy_id = api.resource(:smart_proxies).call(:index, :search => "name=\"#{resource[:name]}\"")['results'][0]['id']
+      @proxy = api.resource(:smart_proxies).call(:show, :id => proxy_id) if proxy_id
     end
   rescue Exception => e
     raise_error e
