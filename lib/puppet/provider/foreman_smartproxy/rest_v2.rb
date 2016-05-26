@@ -102,21 +102,21 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v2) do
   end
 
   def organizations
-    proxy['organizations'] ? proxy['organizations'].map { |org| org['name'] } : nil
+    proxy ? proxy['organizations'].map { |org| org['name'] } : nil
   end
 
   def organizations=(value)
-    api.resource(:smart_proxies).call(:update, { :id => id, :smart_proxy => { :organization_ids => taxonomy_ids(:organizations, value) } })
+    api.resource(:smart_proxies).call(:update, { :id => id, :smart_proxy => { :organization_ids => taxonomy_ids(:organization, value) } })
   rescue Exception => e
     raise_error e
   end
 
   def locations
-    proxy['locations'] ? proxy['locations'].map { |loc| loc['name'] } : nil
+    proxy ? proxy['locations'].map { |loc| loc['name'] } : nil
   end
 
   def locations=(value)
-    api.resource(:smart_proxies).call(:update, { :id => id, :smart_proxy => { :location_ids => taxonomy_ids(:locations, value) } })
+    api.resource(:smart_proxies).call(:update, { :id => id, :smart_proxy => { :location_ids => taxonomy_ids(:location, value) } })
   rescue Exception => e
     raise_error e
   end

@@ -34,11 +34,11 @@ Puppet::Type.newtype(:foreman_smartproxy) do
   end
 
   newproperty(:organizations, :array_matching => :all) do
-    desc 'The organizations to add to the smart proxy'
+    desc 'Names of the organizations to add to the smart proxy'
   end
 
   newproperty(:locations, :array_matching => :all) do
-    desc 'The locations to add to the smart proxy'
+    desc 'Names of the locations to add to the smart proxy'
   end
 
   newparam(:timeout) do
