@@ -1,9 +1,45 @@
 # Changelog
 
 ## 5.2.0
+* New or changed parameters:
+    * Add client_ssl_* parameters to control SSL cert used by Foreman to
+      communicate with its smart proxies (GH-441)
+    * Add puppet_ssldir parameter, supporting new AIO paths and setting the
+      `puppetssldir` value in settings.yaml
+    * Add keepalive, max_keepalive_requests and keepalive_timeout parameters,
+      defaulting to enabled for performance (#8489)
+    * Add vhost_priority parameter to control Apache vhost priority (GH-418)
+    * Add plugin_version parameter to change ensure property of plugin packages
+* Other features:
+    * Search for ENC/report configuration in Puppet AIO paths (GH-413)
+    * Support report_timeout configuration in report processor
+    * Add 'puppetmaster_fqdn' value to ENC facts upload
+    * Add foreman::providers class to install type/provider dependencies
+    * Document types/providers available in this module
+    * Add rest_v3 provider for foreman_smartproxy with minimal dependencies,
+      also supplied for AIO (#14455)
+* Other changes and fixes:
+    * Change apt repository configuration to use puppetlabs-apt 2.x (GH-428)
+    * Change configure_scl_repo to true on RHEL for 1.12 compatibility
+    * Manage ENC YAML directories, modes and ownership (GH-242)
+    * Fix inconsistencies in Yum repos versus foreman-release (GH-388)
+    * Fix nil provider error in foreman_config_entry prefetching (GH-420)
+    * Fix foreman_smartproxy idempotency for proxy names with spaces (GH-421)
+    * Fix foreman_smartproxy to only refresh when currently registered (GH-431)
+    * Fix timeout usage warning in ENC under Ruby 2.3 (GH-438)
+    * Fix ordering of Puppet server installation before Foreman user (#14942)
+    * Fix ordering of foreman::cli after repo setup
+    * Change Red Hat name in parameter docs (#14197)
+    * Note requirement for en_US.utf8 locale (GH-417)
 * Compatibility warnings:
     * `foreman::install::repos` has been moved to `foreman::repos`.
       The old define has been deprecated and will issue a warning.
+    * `foreman::compute::openstack` and `foreman::compute::rackspace` default
+      to Foreman 1.12 package names, pass `package => 'foreman-compute'` for
+      pre-1.12 compatibility.
+    * `rest` provider for foreman_smartproxy is deprecated, use rest_v3 or v2
+    * `foreman::plugin::openscap` has configure_openscap_repo disabled by
+      default, OS repos should now supply dependencies (#14520)
 
 ## 5.1.0
 * New classes to install Foreman plugins:
