@@ -23,14 +23,14 @@ define foreman::repos::yum ($repo, $yumcode, $gpgcheck) {
     descr    => "Foreman ${repo}",
     baseurl  => "http://yum.theforeman.org/${repo_path}/${yumcode}/\$basearch",
     gpgcheck => $gpgcheck_enabled,
-    gpgkey   => "http://yum.theforeman.org/${repo_path}/RPM-GPG-KEY-foreman",
+    gpgkey   => "https://yum.theforeman.org/${repo_path}/RPM-GPG-KEY-foreman",
     enabled  => '1',
   }
   yumrepo { "${name}-source":
     descr    => "Foreman ${repo} - source",
     baseurl  => "http://yum.theforeman.org/${repo_path}/${yumcode}/source",
     gpgcheck => $gpgcheck_enabled,
-    gpgkey   => "http://yum.theforeman.org/${repo_path}/RPM-GPG-KEY-foreman",
+    gpgkey   => "https://yum.theforeman.org/${repo_path}/RPM-GPG-KEY-foreman",
     enabled  => '0',
   }
   yumrepo { "${name}-plugins":
