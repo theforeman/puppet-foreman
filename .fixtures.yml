@@ -1,14 +1,13 @@
 fixtures:
   repositories:
-    alternatives:     'git://github.com/adrienthebo/puppet-alternatives'
     apache:           'git://github.com/puppetlabs/puppetlabs-apache'
     apt:              'git://github.com/puppetlabs/puppetlabs-apt'
     concat:           'git://github.com/puppetlabs/puppetlabs-concat'
+    extlib:           'git://github.com/puppet-community/puppet-extlib'
     mysql:            'git://github.com/puppetlabs/puppetlabs-mysql'
     postgresql:       'git://github.com/puppetlabs/puppetlabs-postgresql'
     puppet:           'git://github.com/theforeman/puppet-puppet'
     stdlib:           'git://github.com/puppetlabs/puppetlabs-stdlib'
-    extlib:           'git://github.com/puppet-community/puppet-extlib'
     tftp:             'git://github.com/theforeman/puppet-tftp'
 
 

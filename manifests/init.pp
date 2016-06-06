@@ -49,10 +49,6 @@
 #                               (Currently only installs repos for CentOS and Scientific)
 #                               type:boolean
 #
-# $configure_brightbox_repo::   Configure the Brightbox PPA for Ubuntu, providing updated Ruby and
-#                               Passenger packages
-#                               type:boolean
-#
 # $selinux::                    when undef, foreman-selinux will be installed if SELinux is enabled
 #                               setting to false/true will override this check (e.g. set to false on 1.1)
 #                               type:boolean
@@ -88,9 +84,6 @@
 #
 # $db_pool::                    Database 'production' size of connection pool
 #                               type:integer
-#
-# $apipie_task::                Rake task to generate API documentation.
-#                               Use 'apipie:cache' on 1.7 or older, 'apipie:cache:index' on 1.8 or newer.
 #
 # $app_root::                   Name of foreman root directory
 #
@@ -138,7 +131,7 @@
 # $server_ssl_key::             Defines Apache mod_ssl SSLCertificateKeyFile setting in Foreman vhost conf file.
 #
 # $server_ssl_crl::             Defines the Apache mod_ssl SSLCARevocationFile setting in Foreman vhost conf file.
-# 
+#
 # $client_ssl_ca::              Defines the SSL CA used to communicate with Foreman Proxies
 #
 # $client_ssl_cert::            Defines the SSL certificate used to communicate with Foreman Proxies
@@ -239,7 +232,6 @@ class foreman (
   $repo                      = $::foreman::params::repo,
   $configure_epel_repo       = $::foreman::params::configure_epel_repo,
   $configure_scl_repo        = $::foreman::params::configure_scl_repo,
-  $configure_brightbox_repo  = $::foreman::params::configure_brightbox_repo,
   $selinux                   = $::foreman::params::selinux,
   $gpgcheck                  = $::foreman::params::gpgcheck,
   $version                   = $::foreman::params::version,
@@ -254,7 +246,6 @@ class foreman (
   $db_password               = $::foreman::params::db_password,
   $db_sslmode                = 'UNSET',
   $db_pool                   = $::foreman::params::db_pool,
-  $apipie_task               = $::foreman::params::apipie_task,
   $app_root                  = $::foreman::params::app_root,
   $manage_user               = $::foreman::params::manage_user,
   $user                      = $::foreman::params::user,

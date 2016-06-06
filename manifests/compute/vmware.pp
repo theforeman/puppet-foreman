@@ -1,3 +1,5 @@
+# = Foreman VMware compute resource support
+#
 # Provides support for VMware compute resources
 #
 # === Parameters:

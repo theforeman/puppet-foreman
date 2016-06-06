@@ -49,33 +49,9 @@ Thus 'master' will support the upcoming major version and the current stable.
 The latest release (git tag, Puppet Forge) should support current and the
 previous stable release.
 
-### Foreman 1.11 compatibility notes
+### Foreman version compatibility notes
 
-* `foreman::compute::openstack` and `foreman::compute::rackspace` need
-  `package => 'foreman-compute'` on Foreman 1.11 or older, as the package has
-  been split up in newer versions.
-
-### Foreman 1.8/1.9 compatibility notes
-
-On EL or Amazon, set:
-
-    passenger_ruby         => '/usr/bin/ruby193-ruby',
-    passenger_ruby_package => 'ruby193-rubygem-passenger-native',
-    plugin_prefix          => 'ruby193-rubygem-foreman_',
-
-If using `foreman::plugin::ovirt_provision`, puppetdb or tasks, also set the
-`package` parameter as appropriate to:
-
-    ruby193-rubygem-foreman-tasks
-    ruby193-rubygem-ovirt_provision_plugin
-    ruby193-rubygem-puppetdb_foreman
-
-### Foreman 1.7 compatibility notes
-
-* set `apipie_task => 'apipie:cache'` as Foreman 1.7 packages didn't have
-  precompiled API docs
-* `foreman::compute::ec2` needs `package => 'foreman-compute'` on Foreman 1.7,
-  as the package has been renamed in newer versions.
+For Foreman 1.11 or older, please use the 5.x release series of this module.
 
 ## Types and providers
 
@@ -94,7 +70,6 @@ Foreman's database. Providers:
 
 * `rest_v3` provider uses API v2 with Ruby HTTP library, OAuth and JSON (default)
 * `rest_v2` provider uses API v2 with apipie-bindings and OAuth
-* `rest` provider uses API v1 with the foreman_api gem and OAuth (deprecated)
 
 # Contributing
 

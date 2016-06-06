@@ -1,3 +1,5 @@
+# = Foreman Google Compute Engine compute resource support
+#
 # Provides support for Google Compute Engine compute resources
 #
 # === Parameters:

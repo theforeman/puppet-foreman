@@ -18,8 +18,8 @@ describe 'foreman::repos' do
         case facts[:osfamily]
         when 'RedHat'
           case os
-          when 'fedora-19-x86_64'
-            yumcode = 'f19'
+          when 'fedora-24-x86_64'
+            yumcode = 'f24'
           else
             yumcode = "el#{facts[:operatingsystemmajrelease]}"
           end

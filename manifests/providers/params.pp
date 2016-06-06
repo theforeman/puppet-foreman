@@ -4,7 +4,6 @@ class foreman::providers::params {
   $oauth = true
   $json = (versioncmp($::rubyversion, '1.9') < 0)
   $apipie_bindings = false
-  $foreman_api = false
 
   # OS specific package names
   case $::osfamily {
@@ -16,7 +15,6 @@ class foreman::providers::params {
       }
       $json_package = 'rubygem-json'
       $apipie_bindings_package = 'rubygem-apipie-bindings'
-      $foreman_api_package = 'rubygem-foreman_api'
     }
     'Debian': {
       if $::rubysitedir =~ /\/opt\/puppetlabs\/puppet/ {
@@ -26,13 +24,11 @@ class foreman::providers::params {
       }
       $json_package = 'ruby-json'
       $apipie_bindings_package = 'ruby-apipie-bindings'
-      $foreman_api_package = 'ruby-foreman-api'
     }
     'FreeBSD': {
       $oauth_package = 'rubygem-oauth'
       $json_package = 'rubygem-json'
       $apipie_bindings_package = 'rubygem-apipie-bindings'
-      $foreman_api_package = 'rubygem-foreman_api'
     }
     'Linux': {
       case $::operatingsystem {
@@ -44,7 +40,6 @@ class foreman::providers::params {
           }
           $json_package = 'rubygem-json'
           $apipie_bindings_package = 'rubygem-apipie-bindings'
-          $foreman_api_package = 'rubygem-foreman_api'
         }
         default: {
           fail("${::hostname}: This class does not support operatingsystem ${::operatingsystem}")

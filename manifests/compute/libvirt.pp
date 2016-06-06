@@ -1,3 +1,5 @@
+# = Foreman LibVirt compute resource support
+#
 # Provides support for Libvirt compute resources
 #
 # === Parameters:

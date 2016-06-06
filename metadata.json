@@ -17,10 +17,6 @@
       "version_requirement": ">= 1.4.0 < 2.0.0"
     },
     {
-      "name": "adrien/alternatives",
-      "version_requirement": ">= 0.3.0 < 1.0.0"
-    },
-    {
       "name": "puppetlabs/apache",
       "version_requirement": ">= 1.2.0 < 2.0.0"
     },
@@ -76,20 +72,18 @@
     {
       "operatingsystem": "Fedora",
       "operatingsystemrelease": [
-        "21"
+        "24"
       ]
     },
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "7",
         "8"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "12.04",
         "14.04",
         "16.04"
       ]

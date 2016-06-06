@@ -104,14 +104,6 @@ class foreman::config::passenger(
   include ::apache::mod::passenger
   Class['::apache'] -> anchor { 'foreman::config::passenger_end': }
 
-  # Ensure the Version module is loaded as we need it in the Foreman vhosts
-  # RedHat distros come with this enabled. Newer Debian and Ubuntu distros
-  # comes also with this enabled. Only old Debian and Ubuntu distros (squeeze,
-  # lucid, precise) needs hand-holding.
-  if ($::operatingsystemrelease == '12.04') and ($::operatingsystem == 'Ubuntu') {
-    ::apache::mod { 'version': }
-  }
-
   if $use_vhost {
     # Workaround so apache::vhost doesn't attempt to create a directory
     file { $docroot: }

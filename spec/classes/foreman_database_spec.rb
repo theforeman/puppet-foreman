@@ -45,15 +45,6 @@ describe 'foreman::database' do
         }
       end
 
-      describe 'with apipie_task' do
-        let :pre_condition do
-          "class {'foreman':
-             apipie_task => 'apipie:cache',
-           }"
-        end
-        it { should contain_foreman__rake('apipie:cache') }
-      end
-
       describe 'with mysql db_type' do
         let :pre_condition do
           "class { 'foreman':

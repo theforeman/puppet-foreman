@@ -25,7 +25,6 @@ describe 'foreman::install' do
           it { should contain_class('foreman::repos::extra').with({
             :configure_scl_repo       => configure_scl_repo,
             :configure_epel_repo      => facts[:operatingsystem] != 'Fedora',
-            :configure_brightbox_repo => false,
           })}
           it { should contain_package('foreman-postgresql').with_ensure('present') }
           it { should contain_package('foreman-postgresql') }
@@ -35,21 +34,14 @@ describe 'foreman::install' do
             it { should contain_package('tfm-rubygem-passenger-native') }
           end
         when 'Debian'
-          configure_brightbox_repo = os.start_with?('ubuntu-12')
-
           it { should contain_foreman__repos('foreman') }
           it { should contain_class('foreman::repos::extra').with({
             :configure_scl_repo       => false,
             :configure_epel_repo      => false,
-            :configure_brightbox_repo => configure_brightbox_repo,
           })}
           it { should contain_package('foreman-postgresql').with_ensure('present') }
           it { should contain_package('foreman-postgresql') }
           it { should contain_package('foreman-postgresql') }
-
-          if configure_brightbox_repo
-            it { should contain_package('passenger-common1.9.1') }
-          end
         end
       end
 

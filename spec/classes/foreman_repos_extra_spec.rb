@@ -15,20 +15,6 @@ describe 'foreman::repos::extra' do
 
       describe 'when repos are fully enabled' do
         case facts[:osfamily]
-        when 'Debian'
-          if facts[:operatingsystem] == 'Ubuntu'
-            let(:params) do
-              {
-                :configure_brightbox_repo => true,
-              }
-            end
-
-            it { should contain_class('apt') }
-            it { should contain_apt__ppa('ppa:brightbox/ruby-ng') }
-            it { should contain_apt__ppa('ppa:brightbox/passenger-legacy') }
-            it { should contain_alternatives('ruby') }
-            it { should contain_alternatives('gem') }
-          end
         when 'RedHat'
           if facts[:operatingsystem] != 'Fedora'
             let(:params) do
@@ -62,7 +48,6 @@ describe 'foreman::repos::extra' do
           {
             :configure_scl_repo       => false,
             :configure_epel_repo      => false,
-            :configure_brightbox_repo => false,
           }
         end
 

@@ -1,3 +1,5 @@
+# = Foreman oVirt compute resource support
+#
 # Provides support for oVirt compute resources
 #
 # === Parameters:

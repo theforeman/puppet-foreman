@@ -29,6 +29,10 @@ class foreman::params {
   $ssl            = true
   #define which interface passenger should listen on, undef means all interfaces
   $passenger_interface = undef
+  # further passenger parameters
+  $passenger_prestart = true
+  $passenger_min_instances = 1
+  $passenger_start_timeout = 600
   # Choose whether you want to enable locations and organizations.
   $locations_enabled     = false
   $organizations_enabled = false
@@ -37,8 +41,6 @@ class foreman::params {
   $configure_epel_repo      = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
   # Only configure extra SCL repos on EL
   $configure_scl_repo       = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
-  # Only configure Brightbox PPA on Ubuntu 12.04 (precise)
-  $configure_brightbox_repo = ($::operatingsystem == 'Ubuntu' and $::operatingsystemrelease == '12.04')
 
 # Advanced configuration - no need to change anything here by default
   # if set to true, no repo will be added by this module, letting you to
@@ -76,9 +78,6 @@ class foreman::params {
   # Default database connection pool
   $db_pool = 5
 
-  # Apipie doc generation method (1.8+ should use index only)
-  $apipie_task = 'apipie:cache:index'
-
   # Configure foreman email settings (email.yaml)
   $email_conf                = 'email.yaml'
   $email_source              = 'email.yaml.erb'
@@ -105,18 +104,6 @@ class foreman::params {
           $passenger_ruby = undef
           $passenger_ruby_package = undef
           $plugin_prefix = 'rubygem-foreman_'
-          case $::operatingsystemrelease {
-            '19': {
-              $passenger_prestart = false
-              $passenger_min_instances = 1
-              $passenger_start_timeout = undef
-            }
-            default: {
-              $passenger_prestart = true
-              $passenger_min_instances = 1
-              $passenger_start_timeout = 600
-            }
-          }
         }
         default: {
           $osreleasemajor = regsubst($::operatingsystemrelease, '^(\d+)\..*$', '\1')
@@ -129,9 +116,6 @@ class foreman::params {
           $passenger_ruby = '/usr/bin/tfm-ruby'
           $passenger_ruby_package = 'tfm-rubygem-passenger-native'
           $plugin_prefix = 'tfm-rubygem-foreman_'
-          $passenger_prestart = true
-          $passenger_min_instances = 1
-          $passenger_start_timeout = 600
         }
       }
     }
@@ -140,35 +124,10 @@ class foreman::params {
       $puppet_etcdir = '/etc/puppet'
       $puppet_home = '/var/lib/puppet'
       $passenger_ruby = '/usr/bin/foreman-ruby'
-      $passenger_ruby_package = $::operatingsystemrelease ? {
-        '12.04' => 'passenger-common1.9.1',
-        default => undef,
-      }
+      $passenger_ruby_package = undef
       $plugin_prefix = 'ruby-foreman-'
       $init_config = '/etc/default/foreman'
       $init_config_tmpl = 'foreman.default'
-
-      $osreleasemajor = regsubst($::operatingsystemrelease, '^(\d+)\..*$', '\1')
-
-      case $osreleasemajor {
-        '12': {
-          # 12 is Ubuntu/precise here, once precise support is dropped,
-          # this should be dropped to not collide with Debian 12
-          $passenger_prestart = false
-          $passenger_min_instances = undef
-          $passenger_start_timeout = undef
-        }
-        '7': {
-          $passenger_prestart = false
-          $passenger_min_instances = 1
-          $passenger_start_timeout = undef
-        }
-        default: {
-          $passenger_prestart = true
-          $passenger_min_instances = 1
-          $passenger_start_timeout = 600
-        }
-      }
     }
     'Linux': {
       case $::operatingsystem {
@@ -183,9 +142,6 @@ class foreman::params {
           $plugin_prefix = 'tfm-rubygem-foreman_'
           $init_config = '/etc/sysconfig/foreman'
           $init_config_tmpl = 'foreman.sysconfig'
-          $passenger_prestart = true
-          $passenger_min_instances = 1
-          $passenger_start_timeout = 600
         }
         default: {
           fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")

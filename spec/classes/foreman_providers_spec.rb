@@ -14,12 +14,10 @@ describe 'foreman::providers' do
         oauth_os = 'rubygem-oauth'
         json = 'rubygem-json'
         apipie_bindings = 'rubygem-apipie-bindings'
-        foreman_api = 'rubygem-foreman_api'
       when 'Debian'
         oauth_os = 'ruby-oauth'
         json = 'ruby-json'
         apipie_bindings = 'ruby-apipie-bindings'
-        foreman_api = 'ruby-foreman-api'
       end
 
       context 'with defaults' do
@@ -29,7 +27,6 @@ describe 'foreman::providers' do
           it { should_not contain_package(json) }
         end
         it { should_not contain_package(apipie_bindings) }
-        it { should_not contain_package(foreman_api) }
       end
 
       context 'with defaults on Puppet 3' do
@@ -48,16 +45,6 @@ describe 'foreman::providers' do
           :rubysitedir => '/opt/puppetlabs/puppet/lib/ruby/site_ruby/2.1.0'
         ) }
         it { should contain_package('puppet-agent-oauth').with_ensure('present') }
-      end
-
-      context 'with foreman_api only' do
-        let(:params) do {
-          'apipie_bindings' => false,
-          'foreman_api' => true,
-        } end
-
-        it { should_not contain_package(apipie_bindings) }
-        it { should contain_package(foreman_api).with_ensure('present') }
       end
 
       context 'with apipie_bindings => true' do
