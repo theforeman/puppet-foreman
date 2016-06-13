@@ -3,7 +3,9 @@ fixtures:
     apache:           'git://github.com/puppetlabs/puppetlabs-apache'
     apt:              'git://github.com/puppetlabs/puppetlabs-apt'
     concat:           'git://github.com/puppetlabs/puppetlabs-concat'
-    extlib:           'git://github.com/puppet-community/puppet-extlib'
+    extlib:
+      repo: 'git://github.com/puppet-community/puppet-extlib'
+      ref:  'v0.11.3'
     mysql:            'git://github.com/puppetlabs/puppetlabs-mysql'
     postgresql:       'git://github.com/puppetlabs/puppetlabs-postgresql'
     puppet:           'git://github.com/theforeman/puppet-puppet'
