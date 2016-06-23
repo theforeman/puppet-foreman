@@ -10,7 +10,7 @@ define foreman::config::passenger::fragment(
   $content=undef,
   $ssl_content=undef,
 ) {
-  require foreman::config::passenger
+  require ::foreman::config::passenger
 
   $_priority = $foreman::config::passenger::priority
 
