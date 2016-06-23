@@ -24,7 +24,7 @@
 #
 # $plugin_prefix::              String which is prepended to the plugin package names
 #
-# $use_vhost::                  Enclose apache configuration in <VirtualHost>...</VirtualHost>
+# $use_vhost::                  Enclose apache configuration in VirtualHost tags
 #                               type:boolean
 #
 # $servername::                 Server name of the VirtualHost in the webserver
