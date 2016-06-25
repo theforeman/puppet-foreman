@@ -253,6 +253,69 @@ describe 'foreman::config::passenger' do
         end
       end
 
+      describe 'with a different priority set' do
+        let :params do {
+          :app_root               => '/usr/share/foreman',
+          :use_vhost              => true,
+          :priority               => '20',
+          :servername             => facts[:fqdn],
+          :serveraliases          => ['foreman', 'also.foreman'],
+          :ssl                    => true,
+          :ssl_cert               => 'cert.pem',
+          :ssl_certs_dir          => '',
+          :ssl_key                => 'key.pem',
+          :ssl_ca                 => 'ca.pem',
+          :ssl_crl                => 'crl.pem',
+          :prestart               => true,
+          :min_instances          => 1,
+          :start_timeout          => 600,
+          :ruby                   => '/usr/bin/tfm-ruby',
+          :foreman_url            => "https://#{facts[:fqdn]}",
+          :keepalive              => true,
+          :max_keepalive_requests => 100,
+          :keepalive_timeout      => 5,
+        } end
+
+        case facts[:osfamily]
+          when 'RedHat'
+            http_dir = '/etc/httpd'
+          when 'Debian'
+            http_dir = '/etc/apache2'
+        end
+
+        it 'should contain virt host plugin dir' do
+          should_not contain_file("#{http_dir}/conf.d/05-foreman.d")
+          should contain_file("#{http_dir}/conf.d/20-foreman.d").with_ensure('directory')
+        end
+
+        it 'should contain ssl virt host plugin dir' do
+          should_not contain_file("#{http_dir}/conf.d/05-foreman-ssl.d")
+          should contain_file("#{http_dir}/conf.d/20-foreman-ssl.d").with_ensure('directory')
+        end
+
+        it 'should include a http vhost' do
+          should contain_apache__vhost('foreman').
+            with({
+              :priority        => '20',
+              :custom_fragment => /20-foreman\.d/,
+            }).
+            without({
+              :custom_fragment => /05-foreman\.d/,
+            })
+        end
+
+        it 'should include a http ssl vhost' do
+          should contain_apache__vhost('foreman-ssl').
+            with({
+              :priority        => '20',
+              :ssl             => true,
+              :custom_fragment => /20-foreman-ssl\.d/,
+            }).
+            without({
+              :custom_fragment => /05-foreman-ssl\.d/,
+            })
+        end
+      end
     end
   end
 end
