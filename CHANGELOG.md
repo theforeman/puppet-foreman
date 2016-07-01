@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.2.1
+* Fix Apache config includes when VirtualHost priority is changed
+
 ## 5.2.0
 * New or changed parameters:
     * Add client_ssl_* parameters to control SSL cert used by Foreman to
