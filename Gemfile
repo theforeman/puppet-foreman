@@ -31,6 +31,7 @@ gem 'simplecov'
 gem 'puppet-blacksmith', '>= 3.1.0', {"groups"=>["development"]}
 gem 'rest-client', '< 1.7', {"platforms"=>["ruby_18"], "groups"=>["development"]}
 gem 'mime-types', '~> 1.0', {"platforms"=>["ruby_18"], "groups"=>["development"]}
+gem 'json', '~> 1.0', {"platforms"=>["ruby_18", "ruby_19"], "groups"=>["test"]}
 gem 'json_pure', '~> 1.0', {"platforms"=>["ruby_18", "ruby_19"], "groups"=>["test"]}
 gem 'metadata-json-lint'
 gem 'json'
