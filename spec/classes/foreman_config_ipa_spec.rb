@@ -75,6 +75,18 @@ describe 'foreman::config' do
 
             it { should contain_exec('ipa-getkeytab') }
 
+            it 'should contain Passenger fragments' do
+              should contain_foreman__config__passenger__fragment('intercept_form_submit').
+                with_ssl_content(/^\s*InterceptFormPAMService foreman$/)
+
+              should contain_foreman__config__passenger__fragment('lookup_identity')
+
+              should contain_foreman__config__passenger__fragment('auth_kerb').
+                with_ssl_content(%r{^\s*KrbAuthRealms REALM$}).
+                with_ssl_content(%r{^\s*Krb5KeyTab /etc/httpd/conf/http.keytab$}).
+                with_ssl_content(%r{^\s*require pam-account foreman$})
+            end
+
             describe 'on non-selinux' do
               let :facts do
                 facts.merge({
