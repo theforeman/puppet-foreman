@@ -18,4 +18,4 @@ FOREMAN_HOME=<%= scope.lookupvar('::foreman::app_root') %>
 FOREMAN_USER=<%= scope.lookupvar('::foreman::user') %>
 
 # the rails environment in which foreman runs
-FOREMAN_ENV=<%= scope.lookupvar('::foreman::environment') %>
+FOREMAN_ENV=<%= scope.lookupvar('::foreman::rails_env') %>

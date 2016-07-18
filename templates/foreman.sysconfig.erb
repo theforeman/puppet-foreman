@@ -10,7 +10,7 @@ FOREMAN_HOME=<%= scope.lookupvar('::foreman::app_root') %>
 FOREMAN_USER=<%= scope.lookupvar('::foreman::user') %>
 
 # the rails environment in which foreman runs
-FOREMAN_ENV=<%= scope.lookupvar('::foreman::environment') %>
+FOREMAN_ENV=<%= scope.lookupvar('::foreman::rails_env') %>
 
 # if we're using passenger or not
 # if set to 1, init script will do a railsrestart on 'restart' and will refuse

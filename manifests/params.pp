@@ -55,7 +55,7 @@ class foreman::params {
   $user              = 'foreman'
   $group             = 'foreman'
   $user_groups       = ['puppet']
-  $environment       = 'production'
+  $rails_env         = 'production'
   $gpgcheck          = true
   $version           = 'present'
   $plugin_version    = 'present'
