@@ -247,7 +247,9 @@ def watch_and_send_facts(parallel)
 
   inotify = Inotify.new
 
-  inotify.add_watch("#{puppetdir}/yaml/facts", Inotify::CREATE)
+  # actually we need only MOVED_TO events because puppet uses File.rename after tmp file created and flushed.
+  # see lib/puppet/util.rb near line 469
+  inotify.add_watch("#{puppetdir}/yaml/facts", Inotify::CREATE | Inotify::MOVED_TO )
 
   yamls = Dir["#{puppetdir}/yaml/facts/*.yaml"]
 
@@ -268,7 +270,9 @@ def watch_and_send_facts(parallel)
     add_watch = false
 
     if !fn
-      fn = ev.name
+      # inotify returns basename for renamed file as ev.name
+      # but we need full path
+      fn = "#{puppetdir}/yaml/facts/#{ev.name}"
       add_watch = true
     end
 
