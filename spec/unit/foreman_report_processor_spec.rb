@@ -23,7 +23,7 @@ describe 'foreman_report_processor' do
   describe "making a connection" do
     subject { YAML.load_file("#{static_fixture_path}/report-format-0.yaml").extend(processor) }
     it "should connect to the URL in the processor" do
-      stub = stub_request(:post, "http://localhost:3000/api/reports")
+      stub = stub_request(:post, "http://localhost:3000/api/config_reports")
       subject.process
       expect(stub).to have_been_requested
     end

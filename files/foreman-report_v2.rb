@@ -58,13 +58,13 @@ Puppet::Reports.register_report(:foreman) do
           http.key  = OpenSSL::PKey::RSA.new(File.read(SETTINGS[:ssl_key]), nil)
         end
       end
-      req = Net::HTTP::Post.new("#{uri.path}/api/reports")
+      req = Net::HTTP::Post.new("#{uri.path}/api/config_reports")
       req.add_field('Accept', 'application/json,version=2' )
       req.content_type = 'application/json'
-      req.body         = {'report' => generate_report}.to_json
+      req.body         = {'config_report' => generate_report}.to_json
       response = http.request(req)
     rescue Exception => e
-      raise Puppet::Error, "Could not send report to Foreman at #{foreman_url}/api/reports: #{e}\n#{e.backtrace}"
+      raise Puppet::Error, "Could not send report to Foreman at #{foreman_url}/api/config_reports: #{e}\n#{e.backtrace}"
     end
   end
 
