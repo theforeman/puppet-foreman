@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.2.2
+* Fix interpolation of IPA variables in Apache configs (#15642)
+* Fix inotify detection of new facts in node.rb watch facts
+
 ## 5.2.1
 * Fix Apache config includes when VirtualHost priority is changed
 
