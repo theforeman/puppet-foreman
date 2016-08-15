@@ -108,6 +108,15 @@ describe 'foreman::install' do
         it { should contain_package('foreman-mysql2') }
       end
 
+      describe 'with unknown DB type' do
+        let :pre_condition do
+          "class {'foreman':
+            db_type => 'unknown',
+           }"
+        end
+        it { should raise_error(Puppet::Error, /unknown database type/) }
+      end
+
       if facts[:osfamily] == 'RedHat'
         context 'with SELinux enabled' do
           let :facts do

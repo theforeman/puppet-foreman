@@ -14,6 +14,9 @@ class foreman::install {
     'mysql': {
       $package = 'foreman-mysql2'
     }
+    default: {
+      fail("${::hostname}: unknown database type ${::foreman::db_type}")
+    }
   }
 
   package { $package:
