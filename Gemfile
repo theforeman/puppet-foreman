@@ -16,7 +16,7 @@ else
 end
 gem 'rspec-puppet', '~> 2.3'
 gem 'puppetlabs_spec_helper', '>= 0.8.0'
-gem 'puppet-lint', '>= 1'
+gem 'puppet-lint', '>= 2'
 gem 'puppet-lint-unquoted_string-check'
 gem 'puppet-lint-empty_string-check'
 gem 'puppet-lint-spaceship_operator_without_tag-check'
