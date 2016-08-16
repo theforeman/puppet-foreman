@@ -102,6 +102,8 @@ def process_all_facts(http_requests)
       elsif req
         upload_facts(certname, req)
       end
+    else
+      $stderr.puts "Fact file #{f} does not contain any fact"
     end
   end
 end
@@ -206,8 +208,15 @@ def upload_facts(certname, req)
   begin
     res = initialize_http(uri)
     res.read_timeout = SETTINGS[:timeout]
-    res.start { |http| http.request(req) }
-    cache("#{certname}-push-facts", "Facts from this host were last pushed to #{uri} at #{Time.now}\n")
+    res.start do |http|
+      response = http.request(req)
+      if response.code.start_with?('2')
+        cache("#{certname}-push-facts", "Facts from this host were last pushed to #{uri} at #{Time.now}\n")
+      else
+        $stderr.puts "During the fact upload the server responded with: #{response.code} #{response.message}. Error is ignored and the execution continues."
+        $stderr.puts response.body
+      end
+    end
   rescue => e
     raise "Could not send facts to Foreman: #{e}"
   end
