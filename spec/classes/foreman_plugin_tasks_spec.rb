@@ -10,6 +10,8 @@ describe 'foreman::plugin::tasks' do
         facts
       end
 
+      let(:pre_condition) { 'include foreman' }
+
       case facts[:osfamily]
       when 'RedHat'
         package_name = case facts[:operatingsystem]

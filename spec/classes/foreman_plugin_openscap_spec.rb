@@ -10,6 +10,8 @@ describe 'foreman::plugin::openscap' do
         facts
       end
 
+      let(:pre_condition) { 'include foreman' }
+
       it 'should call the plugin' do
          should contain_foreman__plugin('openscap')
       end

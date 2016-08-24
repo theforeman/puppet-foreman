@@ -10,6 +10,8 @@ describe 'foreman::plugin::ovirt_provision' do
         facts
       end
 
+      let(:pre_condition) { 'include foreman' }
+
       if facts[:operatingsystem] == 'Fedora'
         it 'should call the plugin' do
           should contain_foreman__plugin('ovirt_provision').with_package('rubygem-ovirt_provision_plugin')

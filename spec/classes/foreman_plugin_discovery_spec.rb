@@ -8,6 +8,8 @@ describe 'foreman::plugin::discovery' do
     context "on #{os}" do
       let(:facts) { facts }
 
+      let(:pre_condition) { 'include foreman' }
+
       case facts[:operatingsystem]
         when 'Debian'
           tftproot = '/srv/tftp'

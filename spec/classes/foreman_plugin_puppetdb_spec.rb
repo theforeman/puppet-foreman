@@ -10,6 +10,8 @@ describe 'foreman::plugin::puppetdb' do
         facts
       end
 
+      let(:pre_condition) { 'include foreman' }
+
       if facts[:operatingsystem] == 'Fedora'
         it 'should call the plugin' do
           should contain_foreman__plugin('puppetdb').with_package('rubygem-puppetdb_foreman')

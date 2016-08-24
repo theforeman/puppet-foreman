@@ -64,14 +64,19 @@ describe 'foreman::config' do
           end
 
           describe 'enrolled system' do
-            let :facts do
+            let :enrolled_facts do
               facts.merge({
                 :concat_basedir => '/tmp',
                 :interfaces     => '',
                 :default_ipa_server => 'ipa.example.com',
                 :default_ipa_realm => 'REALM',
+                :sssd_services => 'ifp',
+                :sssd_ldap_user_extra_attrs => '',
+                :sssd_allowed_uids => '',
+                :sssd_user_attributes => '',
               })
             end
+            let(:facts) { enrolled_facts }
 
             it { should contain_exec('ipa-getkeytab') }
 
@@ -89,11 +94,7 @@ describe 'foreman::config' do
 
             describe 'on non-selinux' do
               let :facts do
-                facts.merge({
-                  :concat_basedir => '/tmp',
-                  :interfaces     => '',
-                  :default_ipa_server => 'ipa.example.com',
-                  :default_ipa_realm => 'REALM',
+                enrolled_facts.merge({
                   :selinux => 'false',
                 })
               end
@@ -103,11 +104,7 @@ describe 'foreman::config' do
 
             describe 'on selinux system but disabled by user' do
               let :facts do
-                facts.merge({
-                  :concat_basedir => '/tmp',
-                  :interfaces     => '',
-                  :default_ipa_server => 'ipa.example.com',
-                  :default_ipa_realm => 'REALM',
+                enrolled_facts.merge({
                   :selinux => 'true',
                 })
               end
@@ -125,11 +122,7 @@ describe 'foreman::config' do
 
             describe 'on selinux system with enabled by user' do
               let :facts do
-                facts.merge({
-                  :concat_basedir => '/tmp',
-                  :interfaces     => '',
-                  :default_ipa_server => 'ipa.example.com',
-                  :default_ipa_realm => 'REALM',
+                enrolled_facts.merge({
                   :selinux => 'true',
                 })
               end
@@ -147,11 +140,7 @@ describe 'foreman::config' do
 
             describe 'on selinux' do
               let :facts do
-                facts.merge({
-                  :concat_basedir => '/tmp',
-                  :interfaces     => '',
-                  :default_ipa_server => 'ipa.example.com',
-                  :default_ipa_realm => 'REALM',
+                enrolled_facts.merge({
                   :selinux => 'true',
                 })
               end

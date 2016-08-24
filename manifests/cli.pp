@@ -30,9 +30,15 @@ class foreman::cli (
   $request_timeout    = $::foreman::cli::params::request_timeout,
 ) inherits foreman::cli::params {
   # Inherit URL & auth parameters from foreman class if possible
-  $foreman_url_real = pick($foreman_url, $::foreman::foreman_url)
-  $username_real    = pick($username, $::foreman::admin_username)
-  $password_real    = pick($password, $::foreman::admin_password)
+  if defined('$foreman::foreman_url') {
+    $foreman_url_real = pick($foreman_url, $::foreman::foreman_url)
+    $username_real    = pick($username, $::foreman::admin_username)
+    $password_real    = pick($password, $::foreman::admin_password)
+  } else {
+    $foreman_url_real = $foreman_url
+    $username_real    = $username
+    $password_real    = $password
+  }
   validate_string($foreman_url_real, $username_real, $password_real)
   validate_bool($manage_root_config, $refresh_cache)
 
