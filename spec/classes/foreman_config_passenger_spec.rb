@@ -111,6 +111,9 @@ describe 'foreman::config::passenger' do
             :passenger_pre_start     => "http://#{facts[:fqdn]}",
             :passenger_start_timeout => 600,
             :passenger_ruby          => '/usr/bin/tfm-ruby',
+            :keepalive               => 'on',
+            :max_keepalive_requests  => 100,
+            :keepalive_timeout       => 5,
             :custom_fragment         => %r{^<Directory #{params[:app_root]}/public>$},
           })
         end
@@ -140,6 +143,9 @@ describe 'foreman::config::passenger' do
             :ssl_options             => '+StdEnvVars +ExportCertData',
             :ssl_verify_depth        => '3',
             :ssl_crl_check           => 'chain',
+            :keepalive               => 'on',
+            :max_keepalive_requests  => 100,
+            :keepalive_timeout       => 5,
             :custom_fragment         => %r{^<Directory #{params[:app_root]}/public>$},
           })
         end
@@ -203,10 +209,13 @@ describe 'foreman::config::passenger' do
             :keepalive_timeout      => 15
         } end
 
-        it 'should set the respective parameters in the template' do
-          should contain_apache__vhost('foreman').with({
-            :custom_fragment => %r{.*KeepAlive Off\nMaxKeepAliveRequests 10\nKeepAliveTimeout 15$}
-        })
+        it 'should set the respective parameters' do
+          should contain_apache__vhost('foreman').with_keepalive('off')
+          should contain_apache__vhost('foreman').with_max_keepalive_requests(10)
+          should contain_apache__vhost('foreman').with_keepalive_timeout(15)
+          should contain_apache__vhost('foreman-ssl').with_keepalive('off')
+          should contain_apache__vhost('foreman-ssl').with_max_keepalive_requests(10)
+          should contain_apache__vhost('foreman-ssl').with_keepalive_timeout(15)
         end
       end
 

@@ -129,6 +129,11 @@ class foreman::config::passenger(
       recurse => true,
     }
 
+    $keepalive_onoff = $keepalive ? {
+      true    => 'on',
+      default => 'off',
+    }
+
     apache::vhost { 'foreman':
       add_default_charset     => 'UTF-8',
       docroot                 => $docroot,
@@ -143,8 +148,11 @@ class foreman::config::passenger(
       priority                => $priority,
       servername              => $servername,
       serveraliases           => $serveraliases,
+      keepalive               => $keepalive_onoff,
+      max_keepalive_requests  => $max_keepalive_requests,
+      keepalive_timeout       => $keepalive_timeout,
       custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_virt_host_include.erb',
-                                          'foreman/_suburi.conf.erb', 'foreman/_keepalive.erb'),
+                                          'foreman/_suburi.conf.erb'),
     }
 
     if $ssl {
@@ -194,8 +202,11 @@ class foreman::config::passenger(
         ssl_verify_client       => 'optional',
         ssl_options             => '+StdEnvVars +ExportCertData',
         ssl_verify_depth        => '3',
+        keepalive               => $keepalive_onoff,
+        max_keepalive_requests  => $max_keepalive_requests,
+        keepalive_timeout       => $keepalive_timeout,
         custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_ssl_virt_host_include.erb',
-                                            'foreman/_suburi.conf.erb', 'foreman/_keepalive.erb'),
+                                            'foreman/_suburi.conf.erb'),
       }
     }
   } else {
