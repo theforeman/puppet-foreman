@@ -40,6 +40,11 @@
       Header set Content-Encoding gzip
       SetEnv no-gzip
     </FilesMatch>
+    <FilesMatch \.svg\.gz$>
+      ForceType image/svg+xml
+      Header set Content-Encoding gzip
+      SetEnv no-gzip
+    </FilesMatch>
   </IfModule>
 
 </Directory>
