@@ -29,7 +29,8 @@ describe 'foreman_external_node' do
     webstub = stub_request(:post, "http://localhost:3000/api/hosts/facts").with(:body => {"fake"=>"data"})
 
     enc.stubs(:stat_file).with('fake.host.fqdn.com-push-facts').returns("/tmp/fake.host.fqdn.com-push-facts.yaml")
-    File.stubs(:exists?).returns(false)
+    File.stubs(:exists?).with('/tmp/fake.host.fqdn.com-push-facts.yaml').returns(false)
+    File.stubs(:exists?).returns(true)
     File.stubs(:stat).returns(stub(:mtime => Time.now.utc))
     enc.stubs(:build_body).returns({'fake' => 'data'})
 
