@@ -55,7 +55,7 @@ describe 'foreman_external_node' do
   it "should NOT connect to the URL in the manifest" do
 
     enc.stubs(:stat_file).with('fake.host.fqdn.com-push-facts').returns("/tmp/fake.host.fqdn.com-push-facts.yaml")
-    # first :exists? call is for 'push-facts'; second one for non-existant facts
+    # first :exists? call is for 'push-facts'; second one for non-existent facts
     File.stubs(:exists?).returns(false,false)
     File.stubs(:stat).returns(stub(:mtime => Time.now.utc))
     enc.stubs(:build_body).returns({'fake' => 'data'})
