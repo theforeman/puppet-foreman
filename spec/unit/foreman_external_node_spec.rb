@@ -60,7 +60,7 @@ describe 'foreman_external_node' do
     File.stubs(:stat).returns(stub(:mtime => Time.now.utc))
     enc.stubs(:build_body).returns({'fake' => 'data'})
 
-    req = enc.generate_fact_request('fake.host.fqdn.com',"non-existent-facts.yaml")
+    req = enc.generate_fact_request('fake.host.fqdn.com','non-existent-facts.yaml')
     expect(req).to be_nil
 
   end
