@@ -151,7 +151,7 @@ def generate_fact_request(certname, filename)
   # Temp file keeping the last run time
   stat = stat_file("#{certname}-push-facts")
   last_run = File.exists?(stat) ? File.stat(stat).mtime.utc : Time.now - 365*24*60*60
-  last_fact = File.stat(filename).mtime.utc
+  last_fact = File.exists?(filename) ? File.stat(filename).mtime.utc : Time.at(0)
   if last_fact > last_run
     begin
       uri = URI.parse("#{url}/api/hosts/facts")
