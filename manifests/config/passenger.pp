@@ -16,6 +16,12 @@
 # $serveraliases::            Serveraliases for the vhost.
 #                             type:array
 #
+# $server_port::              Port for Apache to listen on HTTP requests
+#                             type:integer
+#
+# $server_ssl_port::          Port for Apache to listen on HTTPS requests
+#                             type:integer
+#
 # $ssl::                      Whether to enable SSL.
 #
 # $ssl_cert::                 Location of the SSL certificate file.
@@ -60,6 +66,8 @@ class foreman::config::passenger(
   $priority               = $::foreman::vhost_priority,
   $servername             = $::foreman::servername,
   $serveraliases          = $::foreman::serveraliases,
+  $server_port            = $::foreman::server_port,
+  $server_ssl_port        = $::foreman::server_ssl_port,
   $ssl                    = $::foreman::ssl,
   $ssl_ca                 = $::foreman::server_ssl_ca,
   $ssl_chain              = $::foreman::server_ssl_chain,
@@ -88,6 +96,8 @@ class foreman::config::passenger(
   validate_integer($max_keepalive_requests)
   validate_integer($keepalive_timeout)
   validate_string($priority)
+  validate_integer($server_port)
+  validate_integer($server_ssl_port)
 
   $docroot = "${app_root}/public"
   $suburi_parts = split($foreman_url, '/')
@@ -116,7 +126,7 @@ class foreman::config::passenger(
     }
 
     $http_prestart = $prestart ? {
-      true  => "http://${servername}",
+      true  => "http://${servername}:${server_port}",
       false => undef,
     }
 
@@ -144,7 +154,7 @@ class foreman::config::passenger(
       passenger_pre_start     => $http_prestart,
       passenger_start_timeout => $start_timeout,
       passenger_ruby          => $ruby,
-      port                    => 80,
+      port                    => $server_port,
       priority                => $priority,
       servername              => $servername,
       serveraliases           => $serveraliases,
@@ -157,7 +167,7 @@ class foreman::config::passenger(
 
     if $ssl {
       $https_prestart = $prestart ? {
-        true  => "https://${servername}",
+        true  => "https://${servername}:${server_ssl_port}",
         false => undef,
       }
       if $ssl_crl and $ssl_crl != '' {
@@ -187,7 +197,7 @@ class foreman::config::passenger(
         passenger_pre_start     => $https_prestart,
         passenger_start_timeout => $start_timeout,
         passenger_ruby          => $ruby,
-        port                    => 443,
+        port                    => $server_ssl_port,
         priority                => $priority,
         servername              => $servername,
         serveraliases           => $serveraliases,
