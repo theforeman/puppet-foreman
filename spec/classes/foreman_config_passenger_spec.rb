@@ -37,7 +37,8 @@ describe 'foreman::config::passenger' do
           :keepalive              => true,
           :max_keepalive_requests => 100,
           :keepalive_timeout      => 5,
-
+          :server_port            => 80,
+          :server_ssl_port        => 443,
         } end
 
         it 'should include apache with modules' do
@@ -76,6 +77,8 @@ describe 'foreman::config::passenger' do
           :keepalive              => true,
           :max_keepalive_requests => 100,
           :keepalive_timeout      => 5,
+          :server_port            => 80,
+          :server_ssl_port        => 443,
         } end
 
         case facts[:osfamily]
@@ -108,7 +111,7 @@ describe 'foreman::config::passenger' do
             :options                 => ['SymLinksIfOwnerMatch'],
             :port                    => 80,
             :passenger_min_instances => 1,
-            :passenger_pre_start     => "http://#{facts[:fqdn]}",
+            :passenger_pre_start     => "http://#{facts[:fqdn]}:80",
             :passenger_start_timeout => 600,
             :passenger_ruby          => '/usr/bin/tfm-ruby',
             :keepalive               => 'on',
@@ -129,7 +132,7 @@ describe 'foreman::config::passenger' do
             :options                 => ['SymLinksIfOwnerMatch'],
             :port                    => 443,
             :passenger_min_instances => 1,
-            :passenger_pre_start     => "https://#{facts[:fqdn]}",
+            :passenger_pre_start     => "https://#{facts[:fqdn]}:443",
             :passenger_start_timeout => 600,
             :passenger_ruby          => '/usr/bin/tfm-ruby',
             :ssl                     => true,
@@ -175,6 +178,8 @@ describe 'foreman::config::passenger' do
           :keepalive              => true,
           :max_keepalive_requests => 100,
           :keepalive_timeout      => 5,
+          :server_port            => 80,
+          :server_ssl_port        => 443,
         } end
 
         it do
@@ -206,7 +211,9 @@ describe 'foreman::config::passenger' do
             :foreman_url            => "https://#{facts[:fqdn]}",
             :keepalive              => false,
             :max_keepalive_requests => 10,
-            :keepalive_timeout      => 15
+            :keepalive_timeout      => 15,
+            :server_port            => 80,
+            :server_ssl_port        => 443,
         } end
 
         it 'should set the respective parameters' do
@@ -243,6 +250,8 @@ describe 'foreman::config::passenger' do
           :keepalive              => true,
           :max_keepalive_requests => 100,
           :keepalive_timeout      => 5,
+          :server_port            => 80,
+          :server_ssl_port        => 443,
         } end
 
         case facts[:osfamily]
@@ -283,6 +292,43 @@ describe 'foreman::config::passenger' do
             without({
               :custom_fragment => /05-foreman-ssl\.d/,
             })
+        end
+      end
+
+
+      describe 'with different ports set' do
+        let :params do {
+          :app_root               => '/usr/share/foreman',
+          :listen_on_interface    => '192.168.0.1',
+          :use_vhost              => true,
+          :priority               => '20',
+          :servername             => facts[:fqdn],
+          :serveraliases          => ['foreman', 'also.foreman'],
+          :ssl                    => true,
+          :ssl_cert               => 'cert.pem',
+          :ssl_certs_dir          => '',
+          :ssl_key                => 'key.pem',
+          :ssl_ca                 => 'ca.pem',
+          :ssl_crl                => 'crl.pem',
+          :ssl_chain              => 'ca.pem',
+          :prestart               => true,
+          :user                   => 'foreman',
+          :min_instances          => 1,
+          :start_timeout          => 600,
+          :ruby                   => '/usr/bin/tfm-ruby',
+          :foreman_url            => "https://#{facts[:fqdn]}",
+          :keepalive              => true,
+          :max_keepalive_requests => 100,
+          :keepalive_timeout      => 5,
+          :server_port            => 8080,
+          :server_ssl_port        => 8443,
+        } end
+
+        it 'should set the respective parameters' do
+          should contain_apache__vhost('foreman').with_port(8080)
+          should contain_apache__vhost('foreman').with_passenger_pre_start("http://#{facts[:fqdn]}:8080")
+          should contain_apache__vhost('foreman-ssl').with_port(8443)
+          should contain_apache__vhost('foreman-ssl').with_passenger_pre_start("https://#{facts[:fqdn]}:8443")
         end
       end
     end

@@ -120,6 +120,12 @@
 #
 # $vhost_priority::             Defines Apache vhost priority for the Foreman vhost conf file.
 #
+# $server_port::                Defines Apache port for HTTP requests
+#                               type:integer
+#
+# $server_ssl_port::            Defines Apache port for HTTPS reqquests
+#                               type:integer
+#
 # $server_ssl_ca::              Defines Apache mod_ssl SSLCACertificateFile setting in Foreman vhost conf file.
 #
 # $server_ssl_chain::           Defines Apache mod_ssl SSLCertificateChainFile setting in Foreman vhost conf file.
@@ -258,6 +264,8 @@ class foreman (
   $organizations_enabled     = $::foreman::params::organizations_enabled,
   $passenger_interface       = $::foreman::params::passenger_interface,
   $vhost_priority            = $::foreman::params::vhost_priority,
+  $server_port               = $::foreman::params::server_port,
+  $server_ssl_port           = $::foreman::params::server_ssl_port,
   $server_ssl_ca             = $::foreman::params::server_ssl_ca,
   $server_ssl_chain          = $::foreman::params::server_ssl_chain,
   $server_ssl_cert           = $::foreman::params::server_ssl_cert,

@@ -44,6 +44,8 @@ describe 'foreman::config::passenger::fragment' do
               keepalive               => true,
               max_keepalive_requests  => 100,
               keepalive_timeout       => 5,
+              server_port             => 80,
+              server_ssl_port         => 443,
           }"
         end
 
@@ -96,6 +98,8 @@ describe 'foreman::config::passenger::fragment' do
               keepalive               => true,
               max_keepalive_requests  => 100,
               keepalive_timeout       => 5,
+              server_port             => 80,
+              server_ssl_port         => 443,
           }"
         end
 

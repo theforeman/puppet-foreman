@@ -85,6 +85,8 @@ describe 'foreman' do
           :organizations_enabled     => true,
           :passenger_interface       => 'lo0',
           :vhost_priority            => '5',
+          :server_port               => 80,
+          :server_ssl_port           => 443,
           :server_ssl_ca             => '/etc/ssl/certs/ca.pem',
           :server_ssl_chain          => '/etc/ssl/certs/ca.pem',
           :server_ssl_cert           => '/etc/ssl/certs/snakeoil.pem',
