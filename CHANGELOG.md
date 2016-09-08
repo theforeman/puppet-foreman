@@ -1,5 +1,41 @@
 # Changelog
 
+## 6.0.0
+* New classes to install Foreman plugins:
+    * foreman::plugin::azure to install Azure compute resource plugin
+    * foreman::plugin::expire_hosts to install expire hosts plugin
+    * foreman::plugin::host_extra_validator to install hostname validator plugin
+* New or changed parameters:
+    * Add server_port, server_ssl_port parameters to change Apache vhost ports
+    * Rename environment parameter to rails_env to fix compatibility with data
+      bindings
+* Other changes and fixes:
+    * node.rb: skip facts upload when facts file is missing, retrieves ENC
+      output anyway
+    * node.rb: improve logging for empty facts and failed fact uploads
+    * Change reports upload to use new config_reports API
+    * Change Yum GPG key URLs to HTTPS
+    * Fix missing default parameters for strict variables compatibility,
+      requiring Puppet 3.7.5 or higher
+    * Add SVG images to automatic gzip serving list
+    * Move keepalive settings from a template to apache::vhost parameters
+    * List Fedora 24 compatibility
+* Compatibility warnings:
+    * Requires Puppet 3.6 or higher to use the module
+    * environment parameter renamed to rails_env
+    * Remove Debian 7 (Wheezy) and Ubuntu 12.04 (Precise) support
+    * Remove configure_openscap_repo parameter from `foreman::plugin::openscap`
+    * Remove rest (v1) smart proxy provider and foreman_api installation
+    * Remove `foreman::install::repos` define, use `foreman::repos`
+    * Remove `apipie_task` parameter
+
+## 5.2.2
+* Fix interpolation of IPA variables in Apache configs (#15642)
+* Fix inotify detection of new facts in node.rb watch facts
+
+## 5.2.1
+* Fix Apache config includes when VirtualHost priority is changed
+
 ## 5.2.0
 * New or changed parameters:
     * Add client_ssl_* parameters to control SSL cert used by Foreman to
