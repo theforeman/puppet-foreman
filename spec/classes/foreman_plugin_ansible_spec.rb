@@ -8,4 +8,5 @@ describe 'foreman::plugin::ansible' do
   let(:pre_condition) { 'include foreman' }
 
   it { should contain_foreman__plugin('ansible') }
+  it { should contain_foreman__plugin('tasks') }
 end
