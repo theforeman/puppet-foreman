@@ -1,0 +1,30 @@
+:foreman-tasks:
+#
+# Logging configuration can be changed by uncommenting the loggers
+# section and the logger configuration desired.
+#
+  :loggers:
+    :dynflow:
+      :enabled: <%= @logger_dynflow %>
+    :action:
+      :enabled: <%= @logger_action %>
+
+# Cleaning configuration: how long should the actions be kept before deleted
+# by `rake foreman_tasks:clean` task
+#
+<% unless [nil, :undefined, :undef, ''].include?(@cleanup_after) -%>
+  :cleanup:
+    :after: <%= @cleanup_after %>
+<%- else -%>
+#  :cleanup:
+#
+# the period after which to delete all the tasks (by default all tasks are not being deleted after some period)
+#
+#    :after: 7d
+<%- end -%>
+#
+# per action settings to override the default defined in the actions (self.cleanup_after method)
+#
+#  :actions:
+#    - :name: Actions::Foreman::Host::ImportFacts
+#      :after: 10d
