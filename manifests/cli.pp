@@ -12,26 +12,29 @@
 #
 # === Advanced parameters:
 #
-# $manage_root_config:: Whether to manage /root/.hammer configuration.
-#                       type:boolean
+# $manage_root_config::   Whether to manage /root/.hammer configuration.
+#                         type:boolean
 #
-# $refresh_cache::      Check API documentation cache status on each request
-#                       type:boolean
+# $refresh_cache::        Check API documentation cache status on each request
+#                         type:boolean
 #
-# $request_timeout::    API request timeout, set -1 for infinity
-#                       type:integer
+# $request_timeout::      API request timeout, set -1 for infinity
+#                         type:integer
 #
-# $version::            foreman-cli package version, it's passed to ensure parameter of package resource
-#                       can be set to specific version number, 'latest', 'present' etc.
+# $hammer_plugin_prefix:: Hammer plugin package prefix based normally on platform
+#
+# $version::              foreman-cli package version, it's passed to ensure parameter of package resource
+#                         can be set to specific version number, 'latest', 'present' etc.
 #
 class foreman::cli (
-  $foreman_url        = $::foreman::cli::params::foreman_url,
-  $version            = $::foreman::cli::params::version,
-  $manage_root_config = $::foreman::cli::params::manage_root_config,
-  $username           = $::foreman::cli::params::username,
-  $password           = $::foreman::cli::params::password,
-  $refresh_cache      = $::foreman::cli::params::refresh_cache,
-  $request_timeout    = $::foreman::cli::params::request_timeout,
+  $foreman_url          = $::foreman::cli::params::foreman_url,
+  $version              = $::foreman::cli::params::version,
+  $manage_root_config   = $::foreman::cli::params::manage_root_config,
+  $username             = $::foreman::cli::params::username,
+  $password             = $::foreman::cli::params::password,
+  $refresh_cache        = $::foreman::cli::params::refresh_cache,
+  $request_timeout      = $::foreman::cli::params::request_timeout,
+  $hammer_plugin_prefix = $::foreman::cli::params::hammer_plugin_prefix,
 ) inherits foreman::cli::params {
   # Inherit URL & auth parameters from foreman class if possible
   #
