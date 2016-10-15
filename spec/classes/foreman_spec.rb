@@ -73,6 +73,7 @@ describe 'foreman' do
           :db_password               => 'secret',
           :db_sslmode                => 'UNSET',
           :db_pool                   => 5,
+          :db_manage_rake            => true,
           :app_root                  => '/usr/share/foreman',
           :manage_user               => false,
           :user                      => 'foreman',

@@ -85,6 +85,9 @@
 # $db_pool::                    Database 'production' size of connection pool
 #                               type:integer
 #
+# $db_manage_rake::             if enabled, will run rake jobs, which depend on the database
+#                               type:boolean
+#
 # $app_root::                   Name of foreman root directory
 #
 # $manage_user::                Controls whether foreman module will manage the user on the system. (default true)
@@ -252,6 +255,7 @@ class foreman (
   $db_password               = $::foreman::params::db_password,
   $db_sslmode                = 'UNSET',
   $db_pool                   = $::foreman::params::db_pool,
+  $db_manage_rake            = $::foreman::params::db_manage_rake,
   $app_root                  = $::foreman::params::app_root,
   $manage_user               = $::foreman::params::manage_user,
   $user                      = $::foreman::params::user,
@@ -363,5 +367,4 @@ class foreman (
   Foreman::Plugin <| |> ~>
   Class['foreman::service']
   # lint:endignore
-
 }

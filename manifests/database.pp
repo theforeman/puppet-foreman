@@ -1,9 +1,20 @@
 # Set up the foreman database
 class foreman::database {
   if $::foreman::db_manage {
-    validate_string($::foreman::admin_username, $::foreman::admin_password)
-
     $db_class = "foreman::database::${::foreman::db_type}"
+
+    $after_db_notify = $::foreman::db_manage_rake ? {
+      true    => Foreman_config_entry['db_pending_migration'],
+      default => undef,
+    }
+
+    class { $db_class:
+      notify => $after_db_notify,
+    }
+  }
+
+  if $::foreman::db_manage_rake {
+    validate_string($::foreman::admin_username, $::foreman::admin_password)
     $seed_env = {
       'SEED_ADMIN_USER'       => $::foreman::admin_username,
       'SEED_ADMIN_PASSWORD'   => $::foreman::admin_password,
@@ -20,7 +31,6 @@ class foreman::database {
       $foreman_service = Class['foreman::service']
     }
 
-    class { $db_class: } ~>
     foreman_config_entry { 'db_pending_migration':
       value => false,
       dry   => true,

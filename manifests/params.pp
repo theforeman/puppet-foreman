@@ -77,6 +77,8 @@ class foreman::params {
   $db_password = cache_data('foreman_cache_data', 'db_password', random_password(32))
   # Default database connection pool
   $db_pool = 5
+  # if enabled, will run rake jobs, which depend on the database
+  $db_manage_rake = true
 
   # Configure foreman email settings (email.yaml)
   $email_conf                = 'email.yaml'
