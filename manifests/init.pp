@@ -2,10 +2,57 @@
 #
 # === Parameters:
 #
-# $foreman_url::                URL on which foreman is going to run
+# $admin_username::             Username for the initial admin user
+#
+# $admin_password::             Password of the initial admin user, default is randomly generated
+#
+# $admin_first_name::           First name of the initial admin user
+#
+# $admin_last_name::            Last name of the initial admin user
+#
+# $admin_email::                E-mail address of the initial admin user
+#
+# $db_manage::                  if enabled, will install and configure the database server on this host
+#                               type:boolean
+#
+# $db_type::                    Database 'production' type (valid types: mysql/postgresql/sqlite)
+#
+# $email_delivery_method::      can be sendmail or smtp
+#
+# $email_smtp_address::         if delivery_method is smtp, this should contain an valid smtp host
+#
+# $email_smtp_port::            smtp port, defaults to 25
+#                               type:integer
+#
+# $email_smtp_domain::          email domain
+#
+# $email_smtp_authentication::  authentication settings, can be none or login, defaults to none
+#
+# $email_smtp_user_name::       user_name for mail server auth, if authentication login
+#
+# $email_smtp_password::        password for mail server auth, if authentication login
+#
+# $locations_enabled::          Enable locations?
+#                               type:boolean
+#
+# $organizations_enabled::      Enable organizations?
+#                               type:boolean
+#
+# $initial_organization::       Name of an initial organization
+#
+# $initial_location::           Name of an initial location
+#
+# $ipa_authentication::         Enable configuration for external authentication via IPA
+#                               type:boolean
 #
 # $puppetrun::                  Should foreman be able to start puppetruns on nodes
 #                               type: boolean
+#
+# === Advanced parameters:
+#
+# $email_source::               template to use for email configuration file
+#
+# $foreman_url::                URL on which foreman is going to run
 #
 # $unattended::                 Should foreman manage host provisioning as well
 #                               type:boolean
@@ -62,11 +109,6 @@
 # $plugin_version::             foreman plugins package version, it's passed to ensure parameter of package resource
 #                               can be set to 'installed', 'latest', 'present' only
 #
-# $db_manage::                  if enabled, will install and configure the database server on this host
-#                               type:boolean
-#
-# $db_type::                    Database 'production' type (valid types: mysql/postgresql/sqlite)
-#
 # $db_adapter::                 Database 'production' adapter
 #
 # $db_host::                    Database 'production' host
@@ -105,12 +147,6 @@
 # $puppet_home::                Puppet home directory
 #
 # $puppet_ssldir::              Puppet SSL directory
-#
-# $locations_enabled::          Enable locations?
-#                               type:boolean
-#
-# $organizations_enabled::      Enable organizations?
-#                               type:boolean
 #
 # $passenger_interface::        Defines which network interface passenger should listen on, undef means all interfaces
 #
@@ -168,23 +204,6 @@
 #
 # $oauth_consumer_secret::      OAuth consumer secret
 #
-# $admin_username::             Username for the initial admin user
-#
-# $admin_password::             Password of the initial admin user, default is randomly generated
-#
-# $admin_first_name::           First name of the initial admin user
-#
-# $admin_last_name::            Last name of the initial admin user
-#
-# $admin_email::                E-mail address of the initial admin user
-#
-# $initial_organization::       Name of an initial organization
-#
-# $initial_location::           Name of an initial location
-#
-# $ipa_authentication::         Enable configuration for external authentication via IPA
-#                               type:boolean
-#
 # $http_keytab::                Path to keytab to be used for Kerberos authentication on the WebUI
 #
 # $pam_service::                PAM service used for host-based access control in IPA
@@ -206,23 +225,6 @@
 #                               type:hash
 #
 # $email_conf::                 email configuration file, defaults to /etc/foreman/email.yaml
-#
-# $email_source::               template to use for email configuration file
-#
-# $email_delivery_method::      can be sendmail or smtp regarding to foreman documentation
-#
-# $email_smtp_address::         if delivery_method is smtp, this should contain an valid smtp host
-#
-# $email_smtp_port::            smtp port, defaults to 25
-#                               type: integer
-#
-# $email_smtp_domain::          email domain
-#
-# $email_smtp_authentication::  authentication settings, can be none or login, defaults to none
-#
-# $email_smtp_user_name::       user_name for mail server auth, if authentication login
-#
-# $email_smtp_password::        password for mail server auth, if authentication login
 #
 class foreman (
   $foreman_url               = $::foreman::params::foreman_url,
