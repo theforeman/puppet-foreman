@@ -71,6 +71,8 @@ class Http_Fact_Requests
   end
 end
 
+class FactUploadError < StandardError; end
+
 require 'etc'
 require 'net/http'
 require 'net/https'
@@ -218,7 +220,8 @@ def upload_facts(certname, req)
       end
     end
   rescue => e
-    raise "Could not send facts to Foreman: #{e}"
+    $stderr.puts "During fact upload occured an exception: #{e}"
+    raise FactUploadError, "Could not send facts to Foreman: #{e}"
   end
 end
 
@@ -342,22 +345,24 @@ if __FILE__ == $0 then
       upload_facts_parallel(http_fact_requests)
     else
       certname = ARGV[0] || raise("Must provide certname as an argument")
-      # send facts to Foreman - enable 'facts' setting to activate
-      # if you use this option below, make sure that you don't send facts to foreman via the rake task or push facts alternatives.
-      #
-      if SETTINGS[:facts]
-        req = generate_fact_request certname, "#{puppetdir}/yaml/facts/#{certname}.yaml"
-        upload_facts(certname, req)
-      end
+
       #
       # query External node
       begin
         result = ""
         Timeout.timeout(tsecs) do
+          # send facts to Foreman - enable 'facts' setting to activate
+          # if you use this option below, make sure that you don't send facts to foreman via the rake task or push facts alternatives.
+          #
+          if SETTINGS[:facts]
+            req = generate_fact_request certname, "#{puppetdir}/yaml/facts/#{certname}.yaml"
+            upload_facts(certname, req)
+          end
+
           result = enc(certname)
           cache(certname, result)
         end
-      rescue TimeoutError, SocketError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED
+      rescue TimeoutError, SocketError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, FactUploadError
         # Read from cache, we got some sort of an error.
         result = read_cache(certname)
       end
