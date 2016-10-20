@@ -31,6 +31,14 @@ def exclude_test_os
   end
 end
 
+# Use the above environment variables to limit the platforms under test
+def on_os_under_test
+  on_supported_os.reject do |os, facts|
+    (only_test_os() && !only_test_os.include?(os)) ||
+      (exclude_test_os() && exclude_test_os.include?(os))
+  end
+end
+
 def get_content(subject, title)
   content = subject.resource('file', title).send(:parameters)[:content]
   content.split(/\n/).reject { |line| line =~ /(^#|^$|^\s+#)/ }
