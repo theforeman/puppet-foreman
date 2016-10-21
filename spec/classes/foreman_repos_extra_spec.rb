@@ -7,11 +7,7 @@ describe 'foreman::repos::extra' do
     next if exclude_test_os() and exclude_test_os.include?(os)
 
     context "on #{os}" do
-      let(:facts) do
-        facts.merge({
-          :concat_basedir => '/tmp',
-        })
-      end
+      let :facts do facts end
 
       describe 'when repos are fully enabled' do
         case facts[:osfamily]

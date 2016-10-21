@@ -8,9 +8,7 @@ describe 'foreman::config::passenger::fragment' do
     next if exclude_test_os() and exclude_test_os.include?(os)
 
     context "on #{os}" do
-      let :facts do
-        facts.merge(:concat_basedir => '/tmp')
-      end
+      let :facts do facts end
 
       confd_dir = case facts[:osfamily]
                   when 'RedHat'

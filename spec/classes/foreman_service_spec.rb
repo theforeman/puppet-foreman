@@ -4,7 +4,7 @@ describe 'foreman::service' do
 
   context 'with inherited parameters' do
     let :facts do
-      on_supported_os['redhat-7-x86_64'].merge({:concat_basedir => '/doesnotexist'})
+      on_supported_os['redhat-7-x86_64']
     end
 
     let :pre_condition do

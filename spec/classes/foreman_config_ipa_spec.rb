@@ -10,8 +10,7 @@ describe 'foreman::config' do
       context "on #{os}" do
         let(:facts) do
           facts.merge({
-            :concat_basedir => '/tmp',
-            :interfaces     => '',
+            :interfaces => '',
           })
         end
 
@@ -66,8 +65,7 @@ describe 'foreman::config' do
           describe 'enrolled system' do
             let :enrolled_facts do
               facts.merge({
-                :concat_basedir => '/tmp',
-                :interfaces     => '',
+                :interfaces => '',
                 :default_ipa_server => 'ipa.example.com',
                 :default_ipa_realm => 'REALM',
                 :sssd_services => 'ifp',

@@ -7,10 +7,6 @@ describe 'foreman::puppetmaster' do
 
     context "on #{os}" do
       let :facts do
-        facts = facts.merge({
-          :concat_basedir => '/tmp',
-        })
-
         if facts[:osfamily] == 'RedHat' and facts[:operatingsystemmajrelease] == '6'
           facts[:rubyversion] = '1.8.7'
         end

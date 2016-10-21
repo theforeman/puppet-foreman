@@ -9,8 +9,7 @@ describe 'foreman::database' do
     context "on #{os}" do
       let(:facts) do
         facts.merge({
-          :concat_basedir => '/tmp',
-          :interfaces     => '',
+          :interfaces => '',
         })
       end
 
