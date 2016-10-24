@@ -20,8 +20,6 @@ describe 'foreman::install' do
             :configure_epel_repo      => facts[:operatingsystem] != 'Fedora',
           })}
           it { should contain_package('foreman-postgresql').with_ensure('present') }
-          it { should contain_package('foreman-postgresql') }
-          it { should contain_package('foreman-postgresql') }
 
           if facts[:operatingsystem] != 'Fedora'
             it { should contain_package('tfm-rubygem-passenger-native') }
@@ -33,8 +31,6 @@ describe 'foreman::install' do
             :configure_epel_repo      => false,
           })}
           it { should contain_package('foreman-postgresql').with_ensure('present') }
-          it { should contain_package('foreman-postgresql') }
-          it { should contain_package('foreman-postgresql') }
         end
       end
 
@@ -47,8 +43,6 @@ describe 'foreman::install' do
 
         it { should contain_foreman__repos('foreman') }
         it { should contain_package('foreman-postgresql').with_ensure('latest') }
-        it { should contain_package('foreman-postgresql') }
-        it { should contain_package('foreman-postgresql') }
       end
 
       describe 'with custom repo' do
@@ -72,9 +66,7 @@ describe 'foreman::install' do
         case facts[:osfamily]
         when 'RedHat'
           it { should contain_package('foreman-sqlite') }
-          it { should contain_package('foreman-sqlite') }
         when 'Debian'
-          it { should contain_package('foreman-sqlite3') }
           it { should contain_package('foreman-sqlite3') }
         end
       end
@@ -87,7 +79,6 @@ describe 'foreman::install' do
         end
 
         it { should contain_package('foreman-postgresql') }
-        it { should contain_package('foreman-postgresql') }
       end
 
       describe 'with mysql' do
@@ -97,7 +88,6 @@ describe 'foreman::install' do
            }"
         end
 
-        it { should contain_package('foreman-mysql2') }
         it { should contain_package('foreman-mysql2') }
       end
 
@@ -121,7 +111,6 @@ describe 'foreman::install' do
               "class {'foreman': }"
             end
             it { should contain_package('foreman-selinux') }
-            it { should contain_package('foreman-selinux') }
           end
 
           describe 'with selinux false' do
@@ -139,7 +128,6 @@ describe 'foreman::install' do
                  selinux => true,
                }"
             end
-            it { should contain_package('foreman-selinux') }
             it { should contain_package('foreman-selinux') }
           end
         end
@@ -171,7 +159,6 @@ describe 'foreman::install' do
                  selinux => true,
                }"
             end
-            it { should contain_package('foreman-selinux') }
             it { should contain_package('foreman-selinux') }
           end
         end
