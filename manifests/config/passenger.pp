@@ -112,6 +112,7 @@ class foreman::config::passenger(
   include ::apache
   include ::apache::mod::headers
   include ::apache::mod::passenger
+  include ::apache::mod::status
   Class['::apache'] -> anchor { 'foreman::config::passenger_end': }
 
   if $use_vhost {
