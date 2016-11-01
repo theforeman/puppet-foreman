@@ -150,9 +150,14 @@ class foreman::params {
         }
       }
     }
-    /(ArchLinux|Suse)/: {
+    'Suse': {
       # Only the agent classes (cron / service) are supported for now, which
       # doesn't require any OS-specific params
+    }
+    'Archlinux': {
+      $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/vendor_ruby/\1/puppet')
+      $puppet_etcdir = '/etc/puppetlabs/puppet'
+      $puppet_home = '/var/lib/puppet'
     }
     /^(FreeBSD|DragonFly)$/: {
       $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/local/lib/ruby/site_ruby/\1/puppet')
