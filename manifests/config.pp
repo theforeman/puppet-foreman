@@ -65,7 +65,7 @@ class foreman::config {
     class { '::foreman::config::passenger': } -> anchor { 'foreman::config_end': }
 
     if $::foreman::ipa_authentication {
-      if !defined('$::default_ipa_server') or empty($::default_ipa_server) or !$::default_ipa_realm or empty($::default_ipa_realm) {
+      if !defined('$default_ipa_server') or empty($::default_ipa_server) or !defined('$default_ipa_realm') or empty($::default_ipa_realm) {
         fail("${::hostname}: The system does not seem to be IPA-enrolled")
       }
 
