@@ -21,8 +21,12 @@
 # $request_timeout::    API request timeout, set -1 for infinity
 #                       type:integer
 #
+# $version::            foreman-cli package version, it's passed to ensure parameter of package resource
+#                       can be set to specific version number, 'latest', 'present' etc.
+#
 class foreman::cli (
   $foreman_url        = $::foreman::cli::params::foreman_url,
+  $version            = $::foreman::cli::params::version,
   $manage_root_config = $::foreman::cli::params::manage_root_config,
   $username           = $::foreman::cli::params::username,
   $password           = $::foreman::cli::params::password,
@@ -46,7 +50,7 @@ class foreman::cli (
   validate_bool($manage_root_config, $refresh_cache)
 
   package { 'foreman-cli':
-    ensure => installed,
+    ensure => $version,
   } ->
   file { '/etc/hammer/cli.modules.d/foreman.yml':
     ensure  => file,
