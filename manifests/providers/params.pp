@@ -30,6 +30,11 @@ class foreman::providers::params {
       $json_package = 'rubygem-json'
       $apipie_bindings_package = 'rubygem-apipie-bindings'
     }
+    'Archlinux': {
+      $oauth_package = 'ruby-oauth'
+      $json_package = 'ruby-json'
+      $apipie_bindings_package = 'ruby-apipie-bindings'
+    }
     'Linux': {
       case $::operatingsystem {
         'Amazon': {
