@@ -38,6 +38,7 @@ describe 'foreman::service' do
       {
         :passenger => true,
         :app_root  => '/usr/share/foreman',
+        :ssl => true,
       }
     end
 
@@ -64,6 +65,18 @@ describe 'foreman::service' do
       'enable'    => false,
       'hasstatus' => true,
     })}
+
+    context 'without ssl' do
+      let :params do
+        {
+          :passenger => true,
+          :app_root  => '/usr/share/foreman',
+          :ssl => false,
+        }
+      end
+
+      it { is_expected.to compile.with_all_deps }
+    end
   end
 
   context 'without passenger' do
@@ -71,6 +84,7 @@ describe 'foreman::service' do
       {
         :passenger => false,
         :app_root  => '/usr/share/foreman',
+        :ssl => true,
       }
     end
 
