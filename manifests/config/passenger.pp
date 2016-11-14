@@ -112,7 +112,6 @@ class foreman::config::passenger(
   include ::apache
   include ::apache::mod::headers
   include ::apache::mod::passenger
-  Class['::apache'] -> anchor { 'foreman::config::passenger_end': }
 
   if $use_vhost {
     # Workaround so apache::vhost doesn't attempt to create a directory

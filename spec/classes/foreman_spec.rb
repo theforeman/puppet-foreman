@@ -5,6 +5,7 @@ describe 'foreman' do
     context "on #{os}" do
       let :facts do facts end
 
+      it { is_expected.to compile.with_all_deps }
       it { should contain_class('foreman::repo').that_notifies('Class[foreman::install]') }
       it { should contain_class('foreman::install') }
       it { should contain_class('foreman::config') }
