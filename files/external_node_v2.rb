@@ -118,7 +118,7 @@ def build_body(certname,filename)
   
   # if there is no environment in facts
   # get it from node file ({puppetdir}/yaml/node/
-  unless puppet_facts.key?('environment')
+  unless puppet_facts['values'].key?('environment')
     node_filename = filename.sub('/facts/', '/node/')
     if File.exist?(node_filename)
       node_yaml = File.read(node_filename)
