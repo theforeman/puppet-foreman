@@ -116,6 +116,19 @@ def build_body(certname,filename)
   puppet_facts = YAML::load(facts.gsub(/\!ruby\/object.*$/,''))
   hostname     = puppet_facts['values']['fqdn'] || certname
   
+  # if there is no environment in facts
+  # get it from node file ({puppetdir}/yaml/node/
+  unless puppet_facts['values'].key?('environment')
+    node_filename = filename.sub('/facts/', '/node/')
+    if File.exist?(node_filename)
+      node_yaml = File.read(node_filename)
+      node_data = YAML::load(node_yaml.gsub(/\!ruby\/object.*$/,''))
+      if node_data.key?('environment')
+        puppet_facts['values']['environment'] = node_data['environment']
+      end
+    end
+  end
+  
   begin
     require 'facter'
     puppet_facts['values']['puppetmaster_fqdn'] = Facter.value(:fqdn).to_s
