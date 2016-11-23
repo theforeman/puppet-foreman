@@ -8,7 +8,11 @@ describe 'foreman' do
       it { is_expected.to compile.with_all_deps }
       it { should contain_class('foreman::repo').that_notifies('Class[foreman::install]') }
       it { should contain_class('foreman::install') }
-      it { should contain_class('foreman::config') }
+      it do
+        is_expected.to contain_class('foreman::config').that_notifies(
+          ['Class[foreman::database]', 'Class[foreman::service]']
+        )
+      end
       it { should contain_class('foreman::database') }
       it { should contain_class('foreman::service') }
 

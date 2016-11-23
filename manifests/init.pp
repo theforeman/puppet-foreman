@@ -350,6 +350,9 @@ class foreman (
   Class['foreman'] ->
   Foreman_smartproxy <| base_url == $foreman_url |>
 
+  # When db_manage and db_manage_rake are false, this extra relationship is required.
+  Class['foreman::config'] ~> Class['foreman::service']
+
   # Anchor these separately so as not to break
   # the notify between main classes
   Class['foreman::install'] ~>
