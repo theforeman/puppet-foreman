@@ -341,6 +341,7 @@ class foreman (
   validate_bool($puppetrun)
 
   include ::foreman::repo
+  include ::foreman::plugin::tasks
 
   Class['foreman::repo'] ~>
   class { '::foreman::install': } ~>
