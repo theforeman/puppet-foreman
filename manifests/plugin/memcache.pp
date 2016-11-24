@@ -5,16 +5,16 @@
 # === Parameters:
 #
 # $hosts::      an array of hosts running memcache
-#               type:array
+#               type:Array[String]
 #
 # $expires_in:: global default for key TTL in seconds
-#               type:integer
+#               type:Integer[0]
 #
 # $namespace::  prepends each key with this value to provide simple namespacing
-#               type:string
+#               type:String
 #
 # $compress::   will gzip-compress values larger than 1K
-#               type:boolean
+#               type:Boolean
 #
 class foreman::plugin::memcache (
   $hosts      = $::foreman::plugin::memcache::params::hosts,

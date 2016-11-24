@@ -5,8 +5,10 @@
 # === Parameters:
 #
 # $package:: Package name to install, use ruby193-rubygem-foreman-tasks on Foreman 1.8/1.9 on EL
+#            type:String
 #
 # $service:: Service name
+#            type:String
 #
 class foreman::plugin::tasks(
   $package = $foreman::plugin::tasks::params::package,

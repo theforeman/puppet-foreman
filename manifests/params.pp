@@ -85,7 +85,7 @@ class foreman::params {
   $email_source              = 'email.yaml.erb'
   $email_delivery_method     = undef
   $email_smtp_address        = undef
-  $email_smtp_port           = '25'
+  $email_smtp_port           = 25
   $email_smtp_domain         = undef
   $email_smtp_authentication = 'none'
   $email_smtp_user_name      = undef

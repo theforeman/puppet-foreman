@@ -5,10 +5,13 @@
 # === Parameters:
 #
 # $package:: Package name to install, use ruby193-rubygem-puppetdb_foreman on Foreman 1.8/1.9 on EL
+#            type:String
 #
 # $address:: Address of puppetdb API. Defaults to 'https://localhost:8081/v2/commands'
+#            type:Stdlib::HTTPUrl
 #
 # $dashboard_address:: Address of puppetdb dashboard. Defaults to 'http://localhost:8080/dashboard'
+#                      type:Stdlib::HTTPUrl
 #
 class foreman::plugin::puppetdb (
   $package           = $foreman::plugin::puppetdb::params::package,

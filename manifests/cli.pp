@@ -5,26 +5,31 @@
 # === Parameters:
 #
 # $foreman_url::        URL on which Foreman runs
+#                       type:Optional[Stdlib::HTTPUrl]
 #
 # $username::           Username for authentication
+#                       type:Optional[String]
 #
 # $password::           Password for authentication
+#                       type:Optional[String]
 #
 # === Advanced parameters:
 #
 # $manage_root_config::   Whether to manage /root/.hammer configuration.
-#                         type:boolean
+#                         type:Boolean
 #
 # $refresh_cache::        Check API documentation cache status on each request
-#                         type:boolean
+#                         type:Boolean
 #
 # $request_timeout::      API request timeout, set -1 for infinity
-#                         type:integer
+#                         type:Integer[-1]
 #
 # $hammer_plugin_prefix:: Hammer plugin package prefix based normally on platform
+#                         type:String
 #
 # $version::              foreman-cli package version, it's passed to ensure parameter of package resource
 #                         can be set to specific version number, 'latest', 'present' etc.
+#                         type:String
 #
 class foreman::cli (
   $foreman_url          = $::foreman::cli::params::foreman_url,
