@@ -24,12 +24,12 @@ PuppetSyntax.exclude_paths << 'spec/static_fixtures/test_module/**/*.pp' if Pupp
 
 require 'puppet-lint-param-docs/tasks'
 PuppetLintParamDocs.define_selective do |config|
-  config.pattern = ["manifests/cli.pp", "manifests/init.pp", "manifests/compute/*.pp", "manifests/plugin/*.pp"]
+  config.pattern = ["manifests/cli.pp", "manifests/cli/*.pp", "manifests/init.pp", "manifests/compute/*.pp", "manifests/plugin/*.pp"]
 end
 
 require 'kafo_module_lint/tasks'
 KafoModuleLint::RakeTask.new do |config|
-  config.pattern = ["manifests/cli.pp", "manifests/init.pp", "manifests/compute/*.pp", "manifests/plugin/*.pp"]
+  config.pattern = ["manifests/cli.pp", "manifests/cli/*.pp", "manifests/init.pp", "manifests/compute/*.pp", "manifests/plugin/*.pp"]
 end
 
 task :default => [:validate, :lint, :spec]
