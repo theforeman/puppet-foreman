@@ -12,6 +12,7 @@ Gemfile:
 Rakefile:
   param_docs_pattern:
     - manifests/cli.pp
+    - manifests/cli/*.pp
     - manifests/init.pp
     - manifests/compute/*.pp
     - manifests/plugin/*.pp
