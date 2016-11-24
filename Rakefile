@@ -19,8 +19,16 @@ end
 PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp", "vendor/**/*.pp"]
 PuppetLint.configuration.log_format = '%{path}:%{linenumber}:%{KIND}: %{message}'
 
+# Used for type alias tests
+PuppetSyntax.exclude_paths << 'spec/static_fixtures/test_module/**/*.pp' if Puppet.version.to_f < 4.0
+
 require 'puppet-lint-param-docs/tasks'
 PuppetLintParamDocs.define_selective do |config|
+  config.pattern = ["manifests/cli.pp", "manifests/init.pp", "manifests/compute/*.pp", "manifests/plugin/*.pp"]
+end
+
+require 'kafo_module_lint/tasks'
+KafoModuleLint::RakeTask.new do |config|
   config.pattern = ["manifests/cli.pp", "manifests/init.pp", "manifests/compute/*.pp", "manifests/plugin/*.pp"]
 end
 
