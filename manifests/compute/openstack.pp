@@ -5,6 +5,7 @@
 # === Parameters:
 #
 # $version::  Package version to install, defaults to installed
+#             type:String
 #
 class foreman::compute::openstack($version = 'installed') {
   package { 'foreman-openstack':
