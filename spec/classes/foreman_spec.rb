@@ -15,6 +15,7 @@ describe 'foreman' do
       end
       it { should contain_class('foreman::database') }
       it { should contain_class('foreman::service') }
+      it { should contain_class('foreman::settings').that_requires('Class[foreman::database]') }
 
       describe 'with foreman::cli' do
         let :pre_condition do

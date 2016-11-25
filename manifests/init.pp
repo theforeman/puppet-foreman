@@ -279,6 +279,9 @@
 # $loggers::                    Enable or disable specific loggers, e.g. {"sql" => true}
 #                               type:Hash[String, Boolean]
 #
+# $email_config_method::        Configure email settings in database (1.14+) or configuration file (deprecated)
+#                               type:Enum['database', 'file']
+#
 # $email_conf::                 Email configuration file under /etc/foreman, defaults to email.yaml
 #                               type:String
 #
@@ -363,6 +366,7 @@ class foreman (
   $websockets_ssl_cert       = $::foreman::params::websockets_ssl_cert,
   $logging_level             = $::foreman::params::logging_level,
   $loggers                   = $::foreman::params::loggers,
+  $email_config_method       = $::foreman::params::email_config_method,
   $email_conf                = $::foreman::params::email_conf,
   $email_source              = $::foreman::params::email_source,
   $email_delivery_method     = $::foreman::params::email_delivery_method,
@@ -391,6 +395,7 @@ class foreman (
   validate_re($plugin_version, '^(installed|present|latest)$')
   validate_hash($loggers)
   validate_array($serveraliases)
+  validate_re($email_config_method, '^(database|file)$')
   if $email_delivery_method {
     validate_re($email_delivery_method, ['^sendmail$', '^smtp$'], "email_delivery_method can be either sendmail or smtp, not ${email_delivery_method}")
   }
@@ -428,4 +433,7 @@ class foreman (
   Foreman::Plugin <| |> ~>
   Class['foreman::service']
   # lint:endignore
+
+  contain 'foreman::settings' # lint:ignore:relative_classname_inclusion (PUP-1597)
+  Class['foreman::database'] -> Class['foreman::settings']
 }

@@ -47,6 +47,8 @@ describe 'foreman::config' do
           })
         end
 
+        it { should_not contain_file('/etc/foreman/email.yaml') }
+
         case facts[:osfamily]
         when 'RedHat'
           it 'should set the defaults file' do
@@ -264,6 +266,17 @@ describe 'foreman::config' do
             with_content(/delivery_method: :sendmail/).
             with_ensure('file')
         end
+      end
+
+      describe 'with email configured in the database' do
+        let :pre_condition do
+          "class {'foreman':
+            email_config_method   => 'database',
+            email_delivery_method => 'sendmail',
+          }"
+        end
+
+        it { should contain_file('/etc/foreman/email.yaml').with_ensure('absent') }
       end
 
       if Puppet.version >= '4.0'

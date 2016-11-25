@@ -80,7 +80,8 @@ class foreman::params {
   # if enabled, will run rake jobs, which depend on the database
   $db_manage_rake = true
 
-  # Configure foreman email settings (email.yaml)
+  # Configure foreman email settings (database or email.yaml)
+  $email_config_method       = 'file'
   $email_conf                = 'email.yaml'
   $email_source              = 'email.yaml.erb'
   $email_delivery_method     = undef

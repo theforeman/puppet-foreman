@@ -26,12 +26,18 @@ class foreman::config {
   }
 
   if $::foreman::email_delivery_method and !empty($::foreman::email_delivery_method) {
-    file { "/etc/foreman/${foreman::email_conf}":
-      ensure  => file,
-      owner   => 'root',
-      group   => $::foreman::group,
-      mode    => '0640',
-      content => template("foreman/${foreman::email_source}"),
+    if $::foreman::email_config_method == 'file' {
+      file { "/etc/foreman/${foreman::email_conf}":
+        ensure  => file,
+        owner   => 'root',
+        group   => $::foreman::group,
+        mode    => '0640',
+        content => template("foreman/${foreman::email_source}"),
+      }
+    } else {
+      file { "/etc/foreman/${foreman::email_conf}":
+        ensure => absent,
+      }
     }
   }
 
