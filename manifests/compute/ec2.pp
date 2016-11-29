@@ -5,7 +5,7 @@
 # === Parameters:
 #
 # $version::  Package version to install, defaults to installed
-#             type:String
+#             type:Optional[String]
 #
 class foreman::compute::ec2($version = 'installed') {
   package { 'foreman-ec2':
