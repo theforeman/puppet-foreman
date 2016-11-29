@@ -4,7 +4,7 @@
 # === Parameters:
 #
 # $version::  Package version to install, defaults to installed
-#             type:String
+#             type:Optional[String]
 #
 class foreman::compute::foreman_compute ( $version = 'installed' ) {
   package { 'foreman-compute':
