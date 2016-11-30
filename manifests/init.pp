@@ -220,7 +220,7 @@
 #                               type:Stdlib::Absolutepath
 #
 # $server_ssl_crl::             Defines the Apache mod_ssl SSLCARevocationFile setting in Foreman vhost conf file.
-#                               type:Stdlib::Absolutepath
+#                               type:Optional[Variant[String[0], Stdlib::Absolutepath]]
 #
 # $client_ssl_ca::              Defines the SSL CA used to communicate with Foreman Proxies
 #                               type:Stdlib::Absolutepath
