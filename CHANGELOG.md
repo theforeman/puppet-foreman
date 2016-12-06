@@ -1,5 +1,33 @@
 # Changelog
 
+## 7.0.0
+* New classes to install Foreman plugins:
+    * foreman::plugin::monitoring to install monitoring plugin
+    * foreman::plugin::omaha to install Omaha plugin
+    * foreman::cli::openscap to install Hammer CLI OpenSCAP plugin
+* New or changed parameters:
+    * Add db_managed_rake parameter to allow db_manage to be false while still
+      managing DB migration/setup by default
+    * Add email_config_method parameter to support database configuration of
+      email settings with Foreman 1.14+
+    * Add version parameter to foreman::cli class to enable updates
+* Other changes and fixes:
+    * Add environment from agent node YAML to ENC fact upload
+    * Use ENC node cache when fact upload fails (GH-492)
+    * Configure foreman-tasks plugin from Azure plugin class (GH-480)
+    * Fix ordering of Apache service to happen inside foreman::service
+    * Fix ordering of Puppet CA generation to Foreman startup (#17133)
+    * Fix restarting service on config changes with db_manage disabled (GH-502)
+    * Fix incorrect FreeIPA enrollment error on enrolled host
+    * Permit extlib 1.x, tftp 2.x
+    * Move advanced parameters into new documentation section (#16250)
+    * Change parameter documentation to use Puppet 4 style typing
+    * Add default parameters for Arch Linux, for ENC support
+* Compatibility warnings:
+    * Drop support for Ruby 1.8.7
+    * If using `db_manage => false`, also set `db_managed_rake` to false if
+      managing DB migrations/seed externally
+
 ## 6.0.0
 * New classes to install Foreman plugins:
     * foreman::plugin::azure to install Azure compute resource plugin
