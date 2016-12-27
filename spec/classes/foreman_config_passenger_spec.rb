@@ -81,8 +81,8 @@ describe 'foreman::config::passenger' do
           http_dir = '/etc/apache2'
         end
 
-        it 'should contain the docroot' do
-          should contain_file("#{params[:app_root]}/public")
+        it 'should not contain the docroot' do
+          should_not contain_file("#{params[:app_root]}/public")
         end
 
         it 'should contain virt host plugin dir' do

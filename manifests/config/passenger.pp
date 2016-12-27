@@ -187,6 +187,7 @@ class foreman::config::passenger(
       apache::vhost { 'foreman-ssl':
         add_default_charset     => 'UTF-8',
         docroot                 => $docroot,
+        manage_docroot          => false,
         ip                      => $listen_interface,
         options                 => ['SymLinksIfOwnerMatch'],
         passenger_app_root      => $app_root,
