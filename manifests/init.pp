@@ -29,7 +29,7 @@
 # $email_smtp_address::         SMTP server hostname, when delivery method is SMTP
 #                               type:Optional[String]
 #
-# $email_smtp_port::            SMTP port, defaults to 25
+# $email_smtp_port::            SMTP port
 #                               type:Integer[0, 65535]
 #
 # $email_smtp_domain::          SMTP HELO domain
@@ -147,7 +147,7 @@
 # $db_username::                Database 'production' user (e.g. foreman)
 #                               type:Optional[String]
 #
-# $db_password::                Database 'production' password (default is random)
+# $db_password::                Database 'production' password, default is randomly generated
 #                               type:Optional[String]
 #
 # $db_sslmode::                 Database 'production' ssl mode
@@ -162,7 +162,7 @@
 # $app_root::                   Name of foreman root directory
 #                               type:Stdlib::Absolutepath
 #
-# $manage_user::                Controls whether foreman module will manage the user on the system. (default true)
+# $manage_user::                Controls whether foreman module will manage the user on the system.
 #                               type:Boolean
 #
 # $user::                       User under which foreman will run
@@ -282,7 +282,7 @@
 # $email_config_method::        Configure email settings in database (1.14+) or configuration file (deprecated)
 #                               type:Enum['database', 'file']
 #
-# $email_conf::                 Email configuration file under /etc/foreman, defaults to email.yaml
+# $email_conf::                 Email configuration file under /etc/foreman
 #                               type:String
 #
 class foreman (
