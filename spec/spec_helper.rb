@@ -65,3 +65,5 @@ end
 def static_fixture_path
   File.join(File.dirname(__FILE__), 'static_fixtures')
 end
+
+Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
