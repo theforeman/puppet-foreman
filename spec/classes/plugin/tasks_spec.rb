@@ -26,6 +26,8 @@ describe 'foreman::plugin::tasks' do
         service_name = 'foreman-tasks'
       end
 
+      it { should compile.with_all_deps }
+
       it 'should call the plugin' do
         should contain_foreman__plugin('tasks').with_package(package_name)
         should contain_service('foreman-tasks').with('ensure' => 'running', 'enable' => 'true', 'name' => service_name)
