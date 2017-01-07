@@ -16,6 +16,7 @@ describe 'foreman::plugin::discovery' do
           tftproot = '/var/lib/tftpboot'
       end
 
+      it { should compile.with_all_deps }
       it { should contain_foreman__plugin('discovery') }
 
       describe 'without paramaters' do
