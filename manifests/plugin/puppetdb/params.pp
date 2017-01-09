@@ -1,5 +1,7 @@
 # Data for the puppetdb_foreman plugin
 class foreman::plugin::puppetdb::params {
+  include ::foreman::params
+
   case $::osfamily {
     'RedHat': {
       case $::operatingsystem {
@@ -31,6 +33,9 @@ class foreman::plugin::puppetdb::params {
       fail("${::hostname}: puppetdb_foreman does not support osfamily ${::osfamily}")
     }
   }
-  $address = 'https://localhost:8081/v2/commands'
-  $dashboard_address = 'http://localhost:8080/dashboard'
+  $address           = 'https://localhost:8081/pdb/cmd/v1'
+  $dashboard_address = 'http://localhost:8080/pdb/dashboard'
+  $ssl_ca_file       = $::foreman::params::client_ssl_ca
+  $ssl_certificate   = $::foreman::params::client_ssl_cert
+  $ssl_private_key   = $::foreman::params::client_ssl_key
 }
