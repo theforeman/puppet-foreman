@@ -1,5 +1,13 @@
 # Changelog
 
+## 7.1.0
+* New or changed parameters:
+    * Add SSL certificate/key parameters to foreman::plugin::puppetdb
+* Other changes and fixes:
+    * Disable docroot management in apache::vhost, remove workaround
+    * Remove default values from parameter documentation
+    * Extended tests for plugin classes
+
 ## 7.0.0
 * New classes to install Foreman plugins:
     * foreman::plugin::monitoring to install monitoring plugin
