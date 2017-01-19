@@ -17,7 +17,7 @@ if Gem::Version.new(RUBY_VERSION) > Gem::Version.new('1.8.7')
 end
 
 PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp", "vendor/**/*.pp"]
-PuppetLint.configuration.log_format = '%{path}:%{linenumber}:%{KIND}: %{message}'
+PuppetLint.configuration.log_format = '%{path}:%{line}:%{KIND}: %{message}'
 
 # Used for type alias tests
 PuppetSyntax.exclude_paths << 'spec/static_fixtures/test_module/**/*.pp' if Puppet.version.to_f < 4.0
