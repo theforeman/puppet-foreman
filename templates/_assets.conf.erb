@@ -11,7 +11,7 @@
 
 </Directory>
 
-<Directory <%= @docroot %>/assets>
+<Directory ~ <%= @docroot %>/(assets|webpack)>
 
   # Use standard http expire header for assets instead of ETag
   <IfModule mod_expires.c>
