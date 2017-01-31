@@ -38,7 +38,6 @@ class foreman::plugin::discovery (
     foreman::remote_file {"${tftp_root_clean}/boot/${image_name}":
       remote_location => "${source_url}${image_name}",
       mode            => '0644',
-      require         => File["${tftp_root_clean}/boot"],
     } ~> exec { "untar ${image_name}":
       command => "tar xf ${image_name}",
       path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',

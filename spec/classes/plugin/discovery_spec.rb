@@ -16,10 +16,9 @@ describe 'foreman::plugin::discovery' do
           tftproot = '/var/lib/tftpboot'
       end
 
-      it { should compile.with_all_deps }
-      it { should contain_foreman__plugin('discovery') }
-
       describe 'without paramaters' do
+        it { should compile.with_all_deps }
+        it { should contain_foreman__plugin('discovery') }
         it { should_not contain_foreman__remote_file("#{tftproot}/boot/fdi-image-latest.tar") }
       end
 
@@ -29,6 +28,9 @@ describe 'foreman::plugin::discovery' do
             :install_images => true
           }
         end
+
+        it { should compile.with_all_deps }
+        it { should contain_foreman__plugin('discovery') }
 
         it 'should download and install tarball' do
           should contain_foreman__remote_file("#{tftproot}/boot/fdi-image-latest.tar").
