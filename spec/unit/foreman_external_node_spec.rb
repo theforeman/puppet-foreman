@@ -1,23 +1,18 @@
 require 'rbconfig'
 require 'spec_helper'
 require 'yaml'
-
-if RbConfig::CONFIG['host_os'] =~ /freebsd|dragonfly/i
-  $settings_file = "/usr/local/etc/puppet/foreman.yaml"
-else
-  $settings_file = "/etc/puppet/foreman.yaml"
-end
+require 'tempfile'
 
 class Enc
-  yaml_text = <<-EOF
+  settings = Tempfile.new('foreman.yaml')
+  settings.write(<<-EOF)
 ---
 :url: "http://localhost:3000"
 :facts: true
 :puppet_home: "/var/lib/puppet"
   EOF
-  yaml = YAML.load(yaml_text)
-  YAML.stubs(:load_file).with($settings_file).returns(yaml)
-  YAML.stubs(:load_file).with("/dev/null").returns({})
+  settings.close
+  $settings_file = settings.path
   eval File.read(File.join(File.dirname(__FILE__), '../..', 'files', 'external_node_v2.rb'))
 end
 
