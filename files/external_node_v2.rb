@@ -222,6 +222,7 @@ def upload_facts(certname, req)
   uri = URI.parse("#{url}/api/hosts/facts")
   begin
     res = initialize_http(uri)
+    res.open_timeout = SETTINGS[:timeout]
     res.read_timeout = SETTINGS[:timeout]
     res.start do |http|
       response = http.request(req)
