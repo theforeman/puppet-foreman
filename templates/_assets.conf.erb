@@ -27,6 +27,7 @@
     # Make sure the browser supports gzip encoding and file with .gz added
     # does exist on disc before we rewrite with the extension
     RewriteCond %{HTTP:Accept-Encoding} \b(x-)?gzip\b
+    RewriteCond %{REQUEST_FILENAME} \.(css|js|svg)$
     RewriteCond %{REQUEST_FILENAME}.gz -s
     RewriteRule ^(.+) $1.gz [L]
     # Set headers for all possible assets which are compressed
