@@ -25,5 +25,5 @@ matrix:
     # Only Puppet >= 4.4 supports Ruby 2.3. Also limit the OS set we test Ruby 2.3 with.
     - rvm: 2.3.0
       env: PUPPET_VERSION=4.4 ONLY_OS="debian-8-x86_64,centos-7-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64,freebsd-10-amd64,windows-2012 R2-x64"
-bundler_args: --without development
+bundler_args: --without system_tests development
 sudo: false
