@@ -5,6 +5,7 @@ class foreman::service(
   $ssl       = $::foreman::ssl,
 ) {
   anchor { ['foreman::service_begin', 'foreman::service_end']: }
+  contain ::foreman::service::jobs
 
   if $passenger {
     exec {'restart_foreman':

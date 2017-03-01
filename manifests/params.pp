@@ -94,6 +94,8 @@ class foreman::params {
 
   # Configure how many workers should Dynflow use
   $dynflow_pool_size = 5
+  # Defines whether Foreman or the tasks plugin provides the Dynflow executor
+  $dynflow_in_core = true
 
   # OS specific paths
   case $::osfamily {
@@ -102,6 +104,8 @@ class foreman::params {
       $init_config_tmpl = 'foreman.sysconfig'
       $puppet_etcdir = '/etc/puppet'
       $puppet_home = '/var/lib/puppet'
+      $jobs_service = $dynflow_in_core ? { true => 'dynflow-executor',
+                                            false => 'foreman-tasks' }
 
       case $::operatingsystem {
         'fedora': {
@@ -134,6 +138,9 @@ class foreman::params {
       $plugin_prefix = 'ruby-foreman-'
       $init_config = '/etc/default/foreman'
       $init_config_tmpl = 'foreman.default'
+      $jobs_service = $dynflow_in_core ? { true => 'ruby-dynflow-executor',
+                                            false => 'ruby-foreman-tasks' }
+
     }
     'Linux': {
       case $::operatingsystem {
@@ -257,4 +264,7 @@ class foreman::params {
   $server_port     = 80
   $server_ssl_port = 443
 
+  # Define job processing service properties
+  $jobs_service_ensure = 'running'
+  $jobs_service_enable = true
 }

@@ -43,7 +43,14 @@ describe 'foreman::service' do
     end
 
     let :pre_condition do
-      'include ::apache'
+      'include ::apache
+      class {
+      "::foreman::service::jobs":
+        service => "dynflow-executor",
+        dynflow_in_core => true,
+        ensure => "running",
+        enable => true,
+      }'
     end
 
     it { is_expected.to compile.with_all_deps }
@@ -80,12 +87,26 @@ describe 'foreman::service' do
   end
 
   context 'without passenger' do
+    let :facts do
+      on_supported_os['redhat-7-x86_64']
+    end
+
     let :params do
       {
         :passenger => false,
         :app_root  => '/usr/share/foreman',
         :ssl => true,
       }
+    end
+
+    let :pre_condition do
+      "class {
+      'foreman::service::jobs':
+        service => 'dynflow-executor',
+        dynflow_in_core => true,
+        ensure => 'running',
+        enable => true,
+      }"
     end
 
     it { is_expected.to compile.with_all_deps }
