@@ -59,6 +59,9 @@
 #                             (Seconds the server will wait for subsequent requests on a persistent connection)
 #                             type:integer
 #
+# $access_log_format::        Apache log format to use
+#                             type:string
+#
 class foreman::config::passenger(
   $app_root               = $::foreman::app_root,
   $listen_on_interface    = $::foreman::passenger_interface,
@@ -84,6 +87,7 @@ class foreman::config::passenger(
   $keepalive              = $::foreman::keepalive,
   $max_keepalive_requests = $::foreman::max_keepalive_requests,
   $keepalive_timeout      = $::foreman::keepalive_timeout,
+  $access_log_format      = undef,
 ) {
   # validate parameter values
   if $listen_on_interface {
@@ -158,6 +162,7 @@ class foreman::config::passenger(
       keepalive               => $keepalive_onoff,
       max_keepalive_requests  => $max_keepalive_requests,
       keepalive_timeout       => $keepalive_timeout,
+      access_log_format       => $access_log_format,
       custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_virt_host_include.erb',
                                           'foreman/_suburi.conf.erb'),
     }
@@ -213,6 +218,7 @@ class foreman::config::passenger(
         keepalive               => $keepalive_onoff,
         max_keepalive_requests  => $max_keepalive_requests,
         keepalive_timeout       => $keepalive_timeout,
+        access_log_format       => $access_log_format,
         custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_ssl_virt_host_include.erb',
                                             'foreman/_suburi.conf.erb'),
       }
