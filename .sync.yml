@@ -1,4 +1,8 @@
 ---
+.travis.yml:
+  beaker_sets:
+    - docker/centos-7
+    - docker/debian-8
 Gemfile:
   extra:
     - gem: webmock
@@ -26,3 +30,7 @@ spec/spec_helper.rb:
     end
 
     Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
+spec/spec_helper_acceptance.rb:
+  modules:
+    - puppet-extlib
+    - puppetlabs-apt
