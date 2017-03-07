@@ -1,8 +1,10 @@
 # Configure the foreman repo
 class foreman::repo(
-  $custom_repo = $::foreman::custom_repo,
-  $repo        = $::foreman::repo,
-  $gpgcheck    = $::foreman::gpgcheck
+  $custom_repo         = $::foreman::custom_repo,
+  $repo                = $::foreman::repo,
+  $gpgcheck            = $::foreman::gpgcheck,
+  $configure_epel_repo = $::foreman::configure_epel_repo,
+  $configure_scl_repo  = $::foreman::configure_scl_repo,
 ) {
   anchor { 'foreman::repo::begin': }
 
@@ -15,6 +17,9 @@ class foreman::repo(
   }
 
   Anchor['foreman::repo::begin'] ->
-  class { '::foreman::repos::extra': } ->
+  class { '::foreman::repos::extra':
+    configure_epel_repo => $configure_epel_repo,
+    configure_scl_repo  => $configure_scl_repo,
+  } ->
   anchor { 'foreman::repo::end': }
 }
