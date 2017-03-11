@@ -152,8 +152,14 @@ class foreman::params {
       }
     }
     'Suse': {
-      # Only the agent classes (cron / service) are supported for now, which
-      # doesn't require any OS-specific params
+      # only AIO packages on SLES are supported
+      if $::operatingsystem == 'SLES' {
+        $puppet_basedir = '/opt/puppetlabs/puppet/lib/ruby/vendor_ruby/puppet'
+        $puppet_etcdir = '/etc/puppetlabs/puppet'
+        $puppet_home = '/opt/puppetlabs/server/data/puppetserver'
+      } else {
+        fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")
+      }
     }
     'Archlinux': {
       $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/vendor_ruby/\1/puppet')
