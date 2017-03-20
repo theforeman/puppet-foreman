@@ -36,6 +36,7 @@
 #
 # Happy Foreman API-ing!
 
+require "pry"
 require "net/http"
 require "net/https"
 require "uri"
@@ -71,7 +72,7 @@ module Puppet::Parser::Functions
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true if uri.scheme == 'https'
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
-      results = Timeout::timeout(5) { PSON.parse http.request(req).body }
+      results = Timeout::timeout(25) { PSON.parse http.request(req).body }
     rescue Exception => e
       raise Puppet::ParseError, "Failed to contact Foreman at #{foreman_url}: #{e}"
     end
