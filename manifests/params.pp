@@ -92,12 +92,23 @@ class foreman::params {
   $email_smtp_user_name      = undef
   $email_smtp_password       = undef
 
+  if versioncmp($::puppetversion, '4.0') < 0 {
+    $aio_package = false
+  } elsif $::osfamily == 'Windows' or $::rubysitedir =~ /\/opt\/puppetlabs\/puppet/ {
+    $aio_package = true
+  } else {
+    $aio_package = false
+  }
+
   # OS specific paths
   case $::osfamily {
     'RedHat': {
       $init_config = '/etc/sysconfig/foreman'
       $init_config_tmpl = 'foreman.sysconfig'
-      $puppet_etcdir = '/etc/puppet'
+      $puppet_etcdir = $aio_package ? {
+        true    => '/etc/puppetlabs/puppet',
+        default => '/etc/puppet'
+      }
       $puppet_home = '/var/lib/puppet'
 
       case $::operatingsystem {
@@ -124,7 +135,10 @@ class foreman::params {
     }
     'Debian': {
       $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
-      $puppet_etcdir = '/etc/puppet'
+      $puppet_etcdir = $aio_package ? {
+        true    => '/etc/puppetlabs/puppet',
+        default => '/etc/puppet'
+      }
       $puppet_home = '/var/lib/puppet'
       $passenger_ruby = '/usr/bin/foreman-ruby'
       $passenger_ruby_package = undef
@@ -136,7 +150,10 @@ class foreman::params {
       case $::operatingsystem {
         'Amazon': {
           $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
-          $puppet_etcdir = '/etc/puppet'
+          $puppet_etcdir = $aio_package ? {
+            true    => '/etc/puppetlabs/puppet',
+            default => '/etc/puppet'
+          }
           $puppet_home = '/var/lib/puppet'
           $yumcode = 'el6'
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
@@ -162,7 +179,10 @@ class foreman::params {
     }
     /^(FreeBSD|DragonFly)$/: {
       $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/local/lib/ruby/site_ruby/\1/puppet')
-      $puppet_etcdir = '/usr/local/etc/puppet'
+      $puppet_etcdir = $aio_package ? {
+        true    => '/etc/puppetlabs/puppet',
+        default => '/usr/local/etc/puppet'
+      }
       $puppet_home = '/var/puppet'
     }
     'windows': {
@@ -180,14 +200,6 @@ class foreman::params {
   }
   $puppet_user = 'puppet'
   $puppet_group = 'puppet'
-
-  if versioncmp($::puppetversion, '4.0') < 0 {
-    $aio_package = false
-  } elsif $::osfamily == 'Windows' or $::rubysitedir =~ /\/opt\/puppetlabs\/puppet/ {
-    $aio_package = true
-  } else {
-    $aio_package = false
-  }
 
   $puppet_ssldir = $aio_package ? {
     true    => '/etc/puppetlabs/puppet/ssl',

@@ -37,16 +37,19 @@ class foreman::puppetmaster (
 
   if $reports {   # foreman reporter
 
-    exec { 'Create Puppet Reports dir':
-      command => "/bin/mkdir -p ${puppet_basedir}/reports",
-      creates => "${puppet_basedir}/reports",
-    }
-    file {"${puppet_basedir}/reports/foreman.rb":
-      mode    => '0644',
-      owner   => 'root',
-      group   => '0',
-      source  => "puppet:///modules/${module_name}/foreman-report_${report_api}.rb",
-      require => Exec['Create Puppet Reports dir'],
+    if ( $::foreman::params::aio_package == false ) {
+      # this should already be in place from pluginsync
+      exec { 'Create Puppet Reports dir':
+        command => "/bin/mkdir -p ${puppet_basedir}/reports",
+        creates => "${puppet_basedir}/reports",
+      }
+      file {"${puppet_basedir}/reports/foreman.rb":
+        mode    => '0644',
+        owner   => 'root',
+        group   => '0',
+        source  => "puppet:///modules/${module_name}/foreman-report_${report_api}.rb",
+        require => Exec['Create Puppet Reports dir'],
+      }
     }
   }
 
