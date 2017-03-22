@@ -27,7 +27,7 @@
 #                 in case of an given hash foreman() returns an array of hashes selecting only
 #                 attribute keys given in hash renamed to values of given keys. This can be used
 #                 to rename keys in result
-# 'timeout' is the Foreman request timeout in seconds as an integer.  
+# 'timeout' is the Foreman request timeout in seconds as an integer.
 #           This defaults to five seconds.
 #
 # Then, use a variable to capture its output:
@@ -55,7 +55,7 @@ module Puppet::Parser::Functions
     foreman_user  = args_hash["foreman_user"] || "admin"             # has foreman/puppet
     foreman_pass  = args_hash["foreman_pass"] || "changeme"          # on the same box
     filter_result = args_hash['filter_result'] || false
-    timeout       = args_hash['timeout']       || 5
+    timeout       = (args_hash['timeout']      || 5).to_i
 
     # extend this as required
     searchable_items = %w{ environments fact_values hosts hostgroups puppetclasses smart_proxies subnets }
