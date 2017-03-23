@@ -10,11 +10,6 @@ Gemfile:
   extra:
     - gem: webmock
       version: '< 2.0'
-    - gem: addressable
-      version: '< 2.4'
-      options:
-        platforms:
-        - 'ruby_18'
     - gem: oauth
 Rakefile:
   param_docs_pattern:

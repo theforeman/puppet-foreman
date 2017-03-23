@@ -31,7 +31,6 @@ gem 'beaker-puppet_install_helper', {"groups"=>["system_tests"]}
 gem 'metadata-json-lint'
 gem 'kafo_module_lint'
 gem 'webmock', '< 2.0'
-gem 'addressable', '< 2.4', {"platforms"=>["ruby_18"]}
 gem 'oauth'
 
 # vim:ft=ruby
