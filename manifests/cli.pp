@@ -24,6 +24,9 @@
 # $request_timeout::      API request timeout, set -1 for infinity
 #                         type:Integer[-1]
 #
+# $ssl_ca_file::          Path to SSL certificate authority
+#                         type:Optional[Stdlib::Absolutepath]
+#
 # $hammer_plugin_prefix:: Hammer plugin package prefix based normally on platform
 #                         type:String
 #
@@ -39,6 +42,7 @@ class foreman::cli (
   $password             = $::foreman::cli::params::password,
   $refresh_cache        = $::foreman::cli::params::refresh_cache,
   $request_timeout      = $::foreman::cli::params::request_timeout,
+  $ssl_ca_file          = $::foreman::cli::params::ssl_ca_file,
   $hammer_plugin_prefix = $::foreman::cli::params::hammer_plugin_prefix,
 ) inherits foreman::cli::params {
   # Inherit URL & auth parameters from foreman class if possible
@@ -49,13 +53,18 @@ class foreman::cli (
     $foreman_url_real = pick($foreman_url, $::foreman::foreman_url)
     $username_real    = pick($username, $::foreman::admin_username)
     $password_real    = pick($password, $::foreman::admin_password)
+    $ssl_ca_file_real = pick($ssl_ca_file, $::foreman::server_ssl_ca)
   } else {
     $foreman_url_real = $foreman_url
     $username_real    = $username
     $password_real    = $password
+    $ssl_ca_file_real = $ssl_ca_file
   }
   validate_string($foreman_url_real, $username_real, $password_real)
   validate_bool($manage_root_config, $refresh_cache)
+  if $ssl_ca_file_real {
+    validate_absolute_path($ssl_ca_file_real)
+  }
 
   package { 'foreman-cli':
     ensure => $version,
