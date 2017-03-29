@@ -50,6 +50,27 @@ describe 'foreman::cli' do
           it { should_not contain_file('/root/.hammer') }
           it { should_not contain_file('/root/.hammer/cli.modules.d/foreman.yml') }
         end
+
+        context 'with ssl_ca_file' do
+          let(:params) do {
+            'foreman_url' => 'http://example.com',
+            'username'    => 'joe',
+            'password'    => 'secret',
+            'ssl_ca_file' => '/etc/ca.pub',
+          } end
+
+          describe '/etc/hammer/cli.modules.d/foreman.yml' do
+            it 'should contain settings' do
+              verify_exact_contents(catalogue, '/etc/hammer/cli.modules.d/foreman.yml', [
+                ":foreman:",
+                "  :enable_module: true",
+                "  :host: 'http://example.com'",
+                ":ssl:",
+                "  :ssl_ca_file: '/etc/ca.pub'",
+              ])
+            end
+          end
+        end
       end
 
       context 'with foreman' do
@@ -58,6 +79,7 @@ describe 'foreman::cli' do
           "class { 'foreman':
              admin_username => 'joe',
              admin_password => 'secret',
+             server_ssl_ca  => '/etc/puppetlabs/puppet/ssl/certs/ca.pub',
            }"
         end
 
@@ -69,6 +91,8 @@ describe 'foreman::cli' do
               ":foreman:",
               "  :enable_module: true",
               "  :host: 'https://#{facts[:fqdn]}'",
+              ":ssl:",
+              "  :ssl_ca_file: '/etc/puppetlabs/puppet/ssl/certs/ca.pub'",
             ])
           end
         end
