@@ -59,8 +59,8 @@ class foreman::cli (
 
   package { 'foreman-cli':
     ensure => $version,
-  } ->
-  file { '/etc/hammer/cli.modules.d/foreman.yml':
+  }
+  -> file { '/etc/hammer/cli.modules.d/foreman.yml':
     ensure  => file,
     owner   => 'root',
     group   => 'root',

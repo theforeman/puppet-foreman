@@ -40,28 +40,22 @@ class foreman::plugin::puppetdb (
   foreman::plugin { 'puppetdb':
     package => $package,
   }
-  ->
-  foreman_config_entry { 'puppetdb_enabled':
+  -> foreman_config_entry { 'puppetdb_enabled':
     value => true,
   }
-  ->
-  foreman_config_entry { 'puppetdb_address':
+  -> foreman_config_entry { 'puppetdb_address':
     value => $address,
   }
-  ->
-  foreman_config_entry { 'puppetdb_dashboard_address':
+  -> foreman_config_entry { 'puppetdb_dashboard_address':
     value => $dashboard_address,
   }
-  ->
-  foreman_config_entry { 'puppetdb_ssl_ca_file':
+  -> foreman_config_entry { 'puppetdb_ssl_ca_file':
     value => $ssl_ca_file,
   }
-  ->
-  foreman_config_entry { 'puppetdb_ssl_certificate':
+  -> foreman_config_entry { 'puppetdb_ssl_certificate':
     value => $ssl_certificate,
   }
-  ->
-  foreman_config_entry { 'puppetdb_ssl_private_key':
+  -> foreman_config_entry { 'puppetdb_ssl_private_key':
     value => $ssl_private_key,
   }
 }

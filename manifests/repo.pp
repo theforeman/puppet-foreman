@@ -9,17 +9,18 @@ class foreman::repo(
   anchor { 'foreman::repo::begin': }
 
   if ! $custom_repo {
-    Anchor['foreman::repo::begin'] ->
-    foreman::repos { 'foreman':
+    Anchor['foreman::repo::begin']
+    -> foreman::repos { 'foreman':
       repo     => $repo,
       gpgcheck => $gpgcheck,
-    } -> Class['::foreman::repos::extra']
+    }
+    -> Class['::foreman::repos::extra']
   }
 
-  Anchor['foreman::repo::begin'] ->
-  class { '::foreman::repos::extra':
+  Anchor['foreman::repo::begin']
+  -> class { '::foreman::repos::extra':
     configure_epel_repo => $configure_epel_repo,
     configure_scl_repo  => $configure_scl_repo,
-  } ->
-  anchor { 'foreman::repo::end': }
+  }
+  -> anchor { 'foreman::repo::end': }
 }

@@ -403,35 +403,35 @@ class foreman (
 
   include ::foreman::repo
 
-  Class['foreman::repo'] ~>
-  class { '::foreman::install': } ~>
-  class { '::foreman::config': } ~>
-  class { '::foreman::database': } ~>
-  class { '::foreman::service': } ->
-  Class['foreman'] ->
-  Foreman_smartproxy <| base_url == $foreman_url |>
+  Class['foreman::repo']
+  ~> class { '::foreman::install': }
+  ~> class { '::foreman::config': }
+  ~> class { '::foreman::database': }
+  ~> class { '::foreman::service': }
+  -> Class['foreman']
+  -> Foreman_smartproxy <| base_url == $foreman_url |>
 
   # When db_manage and db_manage_rake are false, this extra relationship is required.
   Class['foreman::config'] ~> Class['foreman::service']
 
   # Anchor these separately so as not to break
   # the notify between main classes
-  Class['foreman::install'] ~>
-  Package <| tag == 'foreman-compute' |> ~>
-  Class['foreman::service']
+  Class['foreman::install']
+  ~> Package <| tag == 'foreman-compute' |>
+  ~> Class['foreman::service']
 
-  Class['foreman::repo'] ~>
-  Package <| tag == 'foreman::cli' |> ~>
-  Class['foreman']
+  Class['foreman::repo']
+  ~> Package <| tag == 'foreman::cli' |>
+  ~> Class['foreman']
 
-  Class['foreman::repo'] ~>
-  Package <| tag == 'foreman::providers' |> ->
-  Class['foreman']
+  Class['foreman::repo']
+  ~> Package <| tag == 'foreman::providers' |>
+  -> Class['foreman']
 
   # lint:ignore:spaceship_operator_without_tag
-  Class['foreman::database']~>
-  Foreman::Plugin <| |> ~>
-  Class['foreman::service']
+  Class['foreman::database']
+  ~> Foreman::Plugin <| |>
+  ~> Class['foreman::service']
   # lint:endignore
 
   contain 'foreman::settings' # lint:ignore:relative_classname_inclusion (PUP-1597)
