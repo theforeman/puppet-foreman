@@ -1,5 +1,19 @@
 # Changelog
 
+## 7.2.0
+* New or changed parameters:
+    * Add `$ssl_ca_file` to foreman::cli to specify the path to the SSL CA
+      file for hammer_cli
+    * Add `$access_log_format` to foreman::config:passenger. This is passed to
+      apache::vhost to allow overriding the apache log format.
+* Other changes and fixes:
+    * Extend gzip file serving to /public/webpack
+    * Restrict gzip asset serving to known extensions
+    * Remove a possibly undefined requirement in foreman::plugin::discovery
+    * Add open_timeout to the report and external node script
+    * Add param for timeout to foreman() parser function
+    * Allow including foreman::repo standalone
+
 ## 7.1.0
 * New or changed parameters:
     * Add SSL certificate/key parameters to foreman::plugin::puppetdb
