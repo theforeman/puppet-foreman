@@ -139,7 +139,7 @@
 #                               type:Optional[String]
 #
 # $db_port::                    Database 'production' port
-#                               type:Optional[Integer[0, 65635]]
+#                               type:Optional[Integer[0, 65535]]
 #
 # $db_database::                Database 'production' database (e.g. foreman)
 #                               type:Optional[String]
