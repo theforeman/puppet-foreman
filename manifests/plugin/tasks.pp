@@ -16,8 +16,8 @@ class foreman::plugin::tasks(
 ) inherits foreman::plugin::tasks::params {
   foreman::plugin { 'tasks':
     package => $package,
-  } ~>
-  service { 'foreman-tasks':
+  }
+  ~> service { 'foreman-tasks':
     ensure => running,
     enable => true,
     name   => $service,

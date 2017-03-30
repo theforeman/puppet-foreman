@@ -111,8 +111,8 @@ class foreman::config {
           && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -s ${::default_ipa_server} -k ${foreman::http_keytab} -p HTTP/${::fqdn} \
           && kdestroy -c KEYRING:session:get-http-service-keytab",
         creates => $::foreman::http_keytab,
-      } ->
-      file { $::foreman::http_keytab:
+      }
+      -> file { $::foreman::http_keytab:
         ensure => file,
         owner  => apache,
         mode   => '0600',
