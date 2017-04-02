@@ -111,11 +111,12 @@ describe 'foreman::puppetmaster' do
   context 'Amazon' do
     let :facts do
       {
-        :operatingsystem => 'Amazon',
-        :rubyversion     => '1.8.7',
-        :osfamily        => 'Linux',
-        :puppetversion   => Puppet.version,
-        :rubysitedir     => '/usr/lib/ruby/site_ruby',
+        :operatingsystemrelease => '7.0',
+        :operatingsystem        => 'Amazon',
+        :rubyversion            => '1.8.7',
+        :osfamily               => 'Linux',
+        :puppetversion          => Puppet.version,
+        :rubysitedir            => '/usr/lib/ruby/site_ruby',
       }
     end
 

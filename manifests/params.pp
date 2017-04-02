@@ -79,6 +79,14 @@ class foreman::params {
   $db_pool = 5
   # if enabled, will run rake jobs, which depend on the database
   $db_manage_rake = true
+  # is this a master or slave? (pgsql only)
+  $db_node_type = 'standalone'
+  # array of Hostnames in the cluster (pgsql only)
+  $db_cluster_hostnames = undef
+  # array of Hostnames in the cluster with synchronous replication (pgsql only)
+  $db_synchronous_names = []
+  $db_replication_username = 'foreman-replicator'
+  $db_replication_password = cache_data('foreman_cache_data', 'db_replication_password', random_password(32))
 
   # Configure foreman email settings (database or email.yaml)
   $email_config_method       = 'file'
@@ -99,6 +107,7 @@ class foreman::params {
       $init_config_tmpl = 'foreman.sysconfig'
       $puppet_etcdir = '/etc/puppet'
       $puppet_home = '/var/lib/puppet'
+      $postgres_home = '/var/lib/pgsql'
 
       case $::operatingsystem {
         'fedora': {
@@ -131,10 +140,12 @@ class foreman::params {
       $plugin_prefix = 'ruby-foreman-'
       $init_config = '/etc/default/foreman'
       $init_config_tmpl = 'foreman.default'
+      $postgres_home = '/var/lib/postgresql'
     }
     'Linux': {
       case $::operatingsystem {
         'Amazon': {
+          require ::postgresql::params
           $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
           $puppet_etcdir = '/etc/puppet'
           $puppet_home = '/var/lib/puppet'
@@ -145,6 +156,7 @@ class foreman::params {
           $plugin_prefix = 'tfm-rubygem-foreman_'
           $init_config = '/etc/sysconfig/foreman'
           $init_config_tmpl = 'foreman.sysconfig'
+          $postgres_home = "/var/lib/pgsql${::postgresql::params::package_version}"
         }
         default: {
           fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")
@@ -159,11 +171,13 @@ class foreman::params {
       $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/vendor_ruby/\1/puppet')
       $puppet_etcdir = '/etc/puppetlabs/puppet'
       $puppet_home = '/var/lib/puppet'
+      $postgres_home = '/var/lib/postgres'
     }
     /^(FreeBSD|DragonFly)$/: {
       $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/local/lib/ruby/site_ruby/\1/puppet')
       $puppet_etcdir = '/usr/local/etc/puppet'
       $puppet_home = '/var/puppet'
+      $postgres_home = '/usr/local/pgsql'
     }
     'windows': {
       $puppet_basedir = undef
@@ -173,6 +187,7 @@ class foreman::params {
       $passenger_ruby = undef
       $passenger_ruby_package = undef
       $plugin_prefix = undef
+      $postgres_home = undef
     }
     default: {
       fail("${::hostname}: This module does not support osfamily ${::osfamily}")

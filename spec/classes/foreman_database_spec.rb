@@ -95,6 +95,38 @@ describe 'foreman::database' do
           })
         }
       end
+
+       describe 'with master db_node_type ' do
+        let :pre_condition do
+          "class { 'foreman':
+            db_node_type         => 'master',
+            db_cluster_hostnames => ['slave.example.com'],
+            db_host              => 'vip.example.com',
+          }"
+        end
+
+        it { should_not contain_class('foreman::database::mysql') }
+        it { should_not contain_class('foreman::database::postgresql::slave') }
+        it { should contain_class('foreman::database::postgresql') }
+        it { should contain_class('postgresql::server') }
+        it { should contain_class('foreman::database::postgresql::master') }
+      end
+
+      describe 'with slave db_node_type ' do
+        let :pre_condition do
+          "class { 'foreman':
+            db_node_type         => 'slave',
+            db_cluster_hostnames => ['slave.example.com'],
+            db_host              => 'vip.example.com',
+          }"
+        end
+
+        it { should_not contain_class('foreman::database::mysql') }
+        it { should_not contain_class('foreman::database::postgresql::master') }
+        it { should contain_class('foreman::database::postgresql') }
+        it { should contain_class('postgresql::server') }
+        it { should contain_class('foreman::database::postgresql::slave') }
+      end
     end
   end
 end

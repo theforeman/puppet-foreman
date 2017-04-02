@@ -110,6 +110,16 @@
 #
 # $db_manage_rake::             if enabled, will run rake jobs, which depend on the database
 #
+# $db_node_type::               Cluster node type, can be 'standalone', 'master' or 'slave'.
+#
+# $db_cluster_hostnames::       List of hostnames in the cluster. Excluding this one.
+#
+# $db_synchronous_names::       List of hostnames in the cluster using synchronous replication.
+#
+# $db_replication_username::    Database username for replication.
+#
+# $db_replication_password::    Database password for replication.
+#
 # $app_root::                   Name of foreman root directory
 #
 # $manage_user::                Controls whether foreman module will manage the user on the system.
@@ -227,6 +237,11 @@ class foreman (
   Optional[String] $db_sslmode = 'UNSET',
   Integer[0] $db_pool = $::foreman::params::db_pool,
   Boolean $db_manage_rake = $::foreman::params::db_manage_rake,
+  Optional[Enum['master', 'slave', 'standalone']] $db_node_type = $::foreman::params::db_node_type,
+  Optional[Array[String]] $db_cluster_hostnames = $::foreman::params::db_cluster_hostnames,
+  Optional[Array[String]] $db_synchronous_names = $::foreman::params::db_synchronous_names,
+  Optional[String] $db_replication_username = $::foreman::params::db_replication_username,
+  Optional[String] $db_replication_password = $::foreman::params::db_replication_password,
   Stdlib::Absolutepath $app_root = $::foreman::params::app_root,
   Boolean $manage_user = $::foreman::params::manage_user,
   String $user = $::foreman::params::user,
