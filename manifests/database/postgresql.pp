@@ -24,6 +24,4 @@ class foreman::database::postgresql {
     encoding => 'utf8',
     locale   => 'en_US.utf8',
   }
-
-  Postgresql::Server::Role[$::foreman::db_username] -> Postgresql::Server::Database[$dbname]
 }
