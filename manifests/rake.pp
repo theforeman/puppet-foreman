@@ -1,12 +1,10 @@
 # Run a Foreman rake task when notified
 define foreman::rake(
-  $environment = {},
-  $timeout     = undef,
-  $user        = $::foreman::user,
-  $app_root    = $::foreman::app_root,
+  Hash[String, String] $environment = {},
+  $timeout  = undef,
+  $user     = $::foreman::user,
+  $app_root = $::foreman::app_root,
 ) {
-  validate_hash($environment)
-
   # https://github.com/rodjek/puppet-lint/issues/327
   # lint:ignore:arrow_alignment
   exec { "foreman-rake-${title}":

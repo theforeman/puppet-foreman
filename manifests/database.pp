@@ -14,7 +14,6 @@ class foreman::database {
   }
 
   if $::foreman::db_manage_rake {
-    validate_string($::foreman::admin_username, $::foreman::admin_password)
     $seed_env = {
       'SEED_ADMIN_USER'       => $::foreman::admin_username,
       'SEED_ADMIN_PASSWORD'   => $::foreman::admin_password,
