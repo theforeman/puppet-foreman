@@ -27,9 +27,6 @@ class foreman::providers(
   Boolean $apipie_bindings = $::foreman::providers::params::apipie_bindings,
   String $apipie_bindings_package = $::foreman::providers::params::apipie_bindings_package,
 ) inherits foreman::providers::params {
-  validate_bool($oauth, $json, $apipie_bindings)
-  validate_string($oauth_package, $json_package, $apipie_bindings_package)
-
   if $oauth {
     ensure_packages([$oauth_package])
   }

@@ -51,11 +51,6 @@ class foreman::cli (
     $password_real    = $password
     $ssl_ca_file_real = $ssl_ca_file
   }
-  validate_string($foreman_url_real, $username_real, $password_real)
-  validate_bool($manage_root_config, $refresh_cache)
-  if $ssl_ca_file_real {
-    validate_absolute_path($ssl_ca_file_real)
-  }
 
   package { 'foreman-cli':
     ensure => $version,

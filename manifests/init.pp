@@ -215,7 +215,7 @@ class foreman (
   Optional[Boolean] $selinux = $::foreman::params::selinux,
   Boolean $gpgcheck = $::foreman::params::gpgcheck,
   String $version = $::foreman::params::version,
-  String $plugin_version = $::foreman::params::plugin_version,
+  Enum['installed', 'present', 'latest'] $plugin_version = $::foreman::params::plugin_version,
   Boolean $db_manage = $::foreman::params::db_manage,
   Enum['mysql', 'postgresql', 'sqlite'] $db_type = $::foreman::params::db_type,
   Optional[Enum['mysql2', 'postgresql', 'sqlite3', 'UNSET']] $db_adapter = 'UNSET',
@@ -296,20 +296,9 @@ class foreman (
   } else {
     $db_adapter_real = $db_adapter
   }
-  validate_bool($passenger)
   if $passenger == false and $ipa_authentication {
     fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
   }
-  validate_bool($websockets_encrypt)
-  validate_re($logging_level, '^(debug|info|warn|error|fatal)$')
-  validate_re($plugin_version, '^(installed|present|latest)$')
-  validate_hash($loggers)
-  validate_array($serveraliases)
-  validate_re($email_config_method, '^(database|file)$')
-  if $email_delivery_method {
-    validate_re($email_delivery_method, ['^sendmail$', '^smtp$'], "email_delivery_method can be either sendmail or smtp, not ${email_delivery_method}")
-  }
-  validate_bool($puppetrun)
 
   include ::foreman::repo
 

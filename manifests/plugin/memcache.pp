@@ -18,12 +18,6 @@ class foreman::plugin::memcache (
   String $namespace = $::foreman::plugin::memcache::params::namespace,
   Boolean $compress = $::foreman::plugin::memcache::params::compress,
 ) inherits foreman::plugin::memcache::params {
-
-  validate_array($hosts)
-  validate_bool($compress)
-  validate_integer($expires_in)
-  validate_string($namespace)
-
   foreman::plugin {'memcache':
     config => template('foreman/foreman_memcache.yaml.erb'),
   }

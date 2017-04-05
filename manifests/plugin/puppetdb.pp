@@ -28,9 +28,6 @@ class foreman::plugin::puppetdb (
   String $ssl_certificate = $::foreman::plugin::puppetdb::params::ssl_certificate,
   String $ssl_private_key = $::foreman::plugin::puppetdb::params::ssl_private_key,
 ) inherits foreman::plugin::puppetdb::params {
-
-  validate_string($package, $address, $dashboard_address)
-
   foreman::plugin { 'puppetdb':
     package => $package,
   }

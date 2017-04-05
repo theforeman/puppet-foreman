@@ -81,20 +81,6 @@ class foreman::config::passenger(
   Integer[0] $keepalive_timeout = $::foreman::keepalive_timeout,
   Optional[String] $access_log_format = undef,
 ) {
-  # validate parameter values
-  if $listen_on_interface {
-    validate_string($listen_on_interface)
-  }
-  validate_string($servername)
-  validate_bool($ssl)
-  validate_bool($prestart)
-  validate_bool($keepalive)
-  validate_integer($max_keepalive_requests)
-  validate_integer($keepalive_timeout)
-  validate_string($priority)
-  validate_integer($server_port)
-  validate_integer($server_ssl_port)
-
   $docroot = "${app_root}/public"
   $suburi_parts = split($foreman_url, '/')
   $suburi_parts_count = size($suburi_parts) - 1
