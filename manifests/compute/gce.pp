@@ -5,9 +5,8 @@
 # === Parameters:
 #
 # $version::  Package version to install, defaults to installed
-#             type:Optional[String]
 #
-class foreman::compute::gce ( $version = 'installed' ) {
+class foreman::compute::gce(String $version = 'installed') {
   package { 'foreman-gce':
     ensure => $version,
     tag    => [ 'foreman-compute', ],

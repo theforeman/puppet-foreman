@@ -1,6 +1,6 @@
 {
   "name": "theforeman-foreman",
-  "version": "7.2.1",
+  "version": "8.0.0",
   "author": "theforeman",
   "summary": "Foreman server configuration",
   "license": "GPL-3.0+",
@@ -34,7 +34,7 @@
     },
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.2.0 < 5.0.0"
+      "version_requirement": ">= 4.13.0 < 5.0.0"
     },
     {
       "name": "puppet/extlib",
@@ -44,7 +44,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 3.6.0 < 5.0.0"
+      "version_requirement": ">= 4.6.1 < 5.0.0"
     }
   ],
   "operatingsystem_support": [

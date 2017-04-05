@@ -5,22 +5,18 @@
 # === Parameters:
 #
 # $hosts::      an array of hosts running memcache
-#               type:Array[String]
 #
 # $expires_in:: global default for key TTL in seconds
-#               type:Integer[0]
 #
 # $namespace::  prepends each key with this value to provide simple namespacing
-#               type:String
 #
 # $compress::   will gzip-compress values larger than 1K
-#               type:Boolean
 #
 class foreman::plugin::memcache (
-  $hosts      = $::foreman::plugin::memcache::params::hosts,
-  $expires_in = $::foreman::plugin::memcache::params::expires_in,
-  $namespace  = $::foreman::plugin::memcache::params::namespace,
-  $compress   = $::foreman::plugin::memcache::params::compress,
+  Array[String] $hosts = $::foreman::plugin::memcache::params::hosts,
+  Integer[0] $expires_in = $::foreman::plugin::memcache::params::expires_in,
+  String $namespace = $::foreman::plugin::memcache::params::namespace,
+  Boolean $compress = $::foreman::plugin::memcache::params::compress,
 ) inherits foreman::plugin::memcache::params {
 
   validate_array($hosts)
