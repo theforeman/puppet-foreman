@@ -5,9 +5,8 @@
 # === Parameters:
 #
 # $version::  Package version to install, defaults to installed
-#             type:Optional[String]
 #
-class foreman::compute::rackspace ( $version = 'installed' ) {
+class foreman::compute::rackspace(String $version = 'installed') {
   package { 'foreman-rackspace':
     ensure => $version,
     tag    => [ 'foreman-compute', ],

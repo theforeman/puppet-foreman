@@ -5,9 +5,8 @@
 # === Parameters:
 #
 # $version::  Package version to install, defaults to installed
-#             type:Optional[String]
 #
-class foreman::compute::ovirt ( $version = 'installed' ) {
+class foreman::compute::ovirt(String $version = 'installed') {
   package { 'foreman-ovirt':
     ensure => $version,
     tag    => [ 'foreman-compute', ],

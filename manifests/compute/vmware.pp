@@ -5,9 +5,8 @@
 # === Parameters:
 #
 # $version::  Package version to install, defaults to installed
-#             type:Optional[String]
 #
-class foreman::compute::vmware ( $version = 'installed' ) {
+class foreman::compute::vmware(String $version = 'installed') {
   package { 'foreman-vmware':
     ensure => $version,
     tag    => [ 'foreman-compute', ],
