@@ -14,13 +14,10 @@
 # $servername::               Servername for the vhost.
 #
 # $serveraliases::            Serveraliases for the vhost.
-#                             type:array
 #
 # $server_port::              Port for Apache to listen on HTTP requests
-#                             type:integer
 #
 # $server_ssl_port::          Port for Apache to listen on HTTPS requests
-#                             type:integer
 #
 # $ssl::                      Whether to enable SSL.
 #
@@ -42,52 +39,47 @@
 # $user::                     The user under which the application runs.
 #
 # $prestart::                 Pre-start the first passenger worker instance process during httpd start.
-#                             type:boolean
 #
 # $min_instances::            Minimum passenger worker instances to keep when application is idle.
 #
 # $start_timeout::            Amount of seconds to wait for Ruby application boot.
 #
 # $keepalive::                Enable KeepAlive setting of Apache?
-#                             type:boolean
 #
 # $max_keepalive_requests::   MaxKeepAliveRequests setting of Apache
 #                             (Number of requests allowed on a persistent connection)
-#                             type:integer
 #
 # $keepalive_timeout::        KeepAliveTimeout setting of Apache
 #                             (Seconds the server will wait for subsequent requests on a persistent connection)
-#                             type:integer
 #
 # $access_log_format::        Apache log format to use
-#                             type:string
 #
 class foreman::config::passenger(
-  $app_root               = $::foreman::app_root,
-  $listen_on_interface    = $::foreman::passenger_interface,
-  $ruby                   = $::foreman::passenger_ruby,
-  $priority               = $::foreman::vhost_priority,
-  $servername             = $::foreman::servername,
-  $serveraliases          = $::foreman::serveraliases,
-  $server_port            = $::foreman::server_port,
-  $server_ssl_port        = $::foreman::server_ssl_port,
-  $ssl                    = $::foreman::ssl,
-  $ssl_ca                 = $::foreman::server_ssl_ca,
-  $ssl_chain              = $::foreman::server_ssl_chain,
-  $ssl_cert               = $::foreman::server_ssl_cert,
-  $ssl_certs_dir          = $::foreman::server_ssl_certs_dir,
-  $ssl_key                = $::foreman::server_ssl_key,
-  $ssl_crl                = $::foreman::server_ssl_crl,
-  $use_vhost              = $::foreman::use_vhost,
-  $user                   = $::foreman::user,
-  $prestart               = $::foreman::passenger_prestart,
-  $min_instances          = $::foreman::passenger_min_instances,
-  $start_timeout          = $::foreman::passenger_start_timeout,
-  $foreman_url            = $::foreman::foreman_url,
-  $keepalive              = $::foreman::keepalive,
-  $max_keepalive_requests = $::foreman::max_keepalive_requests,
-  $keepalive_timeout      = $::foreman::keepalive_timeout,
-  $access_log_format      = undef,
+  Stdlib::Absolutepath $app_root = $::foreman::app_root,
+  Optional[String] $listen_on_interface = $::foreman::passenger_interface,
+  Optional[String] $ruby = $::foreman::passenger_ruby,
+  String $priority = $::foreman::vhost_priority,
+  String $servername = $::foreman::servername,
+  Array[String] $serveraliases = $::foreman::serveraliases,
+  Integer[0, 65535] $server_port = $::foreman::server_port,
+  Integer[0, 65535] $server_ssl_port = $::foreman::server_ssl_port,
+  Boolean $ssl = $::foreman::ssl,
+  Stdlib::Absolutepath $ssl_ca = $::foreman::server_ssl_ca,
+  Stdlib::Absolutepath $ssl_chain = $::foreman::server_ssl_chain,
+  Stdlib::Absolutepath $ssl_cert = $::foreman::server_ssl_cert,
+  Variant[String[0], Stdlib::Absolutepath] $ssl_certs_dir = $::foreman::server_ssl_certs_dir,
+  Stdlib::Absolutepath $ssl_key = $::foreman::server_ssl_key,
+  Optional[Variant[String[0], Stdlib::Absolutepath]] $ssl_crl = $::foreman::server_ssl_crl,
+  Boolean $use_vhost = $::foreman::use_vhost,
+  String $user = $::foreman::user,
+  Boolean $prestart = $::foreman::passenger_prestart,
+  Integer[0] $min_instances = $::foreman::passenger_min_instances,
+  Integer[0] $start_timeout = $::foreman::passenger_start_timeout,
+  Stdlib::HTTPUrl $foreman_url = $::foreman::foreman_url,
+  Boolean $keepalive = $::foreman::keepalive,
+  Integer[0] $max_keepalive_requests = $::foreman::max_keepalive_requests,
+  Integer[0] $keepalive_timeout = $::foreman::keepalive_timeout,
+  Optional[String] $access_log_format = undef,
 ) {
   # validate parameter values
   if $listen_on_interface {
