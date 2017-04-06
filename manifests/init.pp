@@ -204,6 +204,12 @@
 # $server_ssl_port::            Defines Apache port for HTTPS reqquests
 #                               type:Integer[0, 65535]
 #
+# $server_port::                Defines Apache port for HTTP requests
+#                               type:integer
+#
+# $server_ssl_port::            Defines Apache port for HTTPS reqquests
+#                               type:integer
+#
 # $server_ssl_ca::              Defines Apache mod_ssl SSLCACertificateFile setting in Foreman vhost conf file.
 #                               type:Stdlib::Absolutepath
 #
