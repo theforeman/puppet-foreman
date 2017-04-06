@@ -3,6 +3,9 @@
   beaker_sets:
     - docker/centos-7
     - docker/debian-8
+  env:
+    global:
+      - PARALLEL_TEST_PROCESSORS=16
 Gemfile:
   extra:
     - gem: webmock
