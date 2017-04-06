@@ -5,26 +5,18 @@ rvm:
   - 2.1.5
 env:
   # First test the major distros
-  - PUPPET_VERSION=4.0 ONLY_OS=centos-6-x86_64,centos-7-x86_64,debian-7-x86_64,debian-8-x86_64,ubuntu-14-x86_64,ubuntu-14.04-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64
-  - PUPPET_VERSION=3.5 ONLY_OS=debian-8-x86_64 FUTURE_PARSER=yes TRUSTED_NODE_DATA=yes
-  - PUPPET_VERSION=3.5 ONLY_OS=debian-8-x86_64
+  - PUPPET_VERSION=4.6 ONLY_OS=centos-6-x86_64,centos-7-x86_64,debian-7-x86_64,debian-8-x86_64,ubuntu-14-x86_64,ubuntu-14.04-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64
   # Test the rest of the supported platforms
-  - PUPPET_VERSION=4.0 EXCLUDE_OS=centos-6-x86_64,centos-7-x86_64,debian-7-x86_64,debian-8-x86_64,ubuntu-14-x86_64,ubuntu-14.04-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64,scientific-6-x86_64,scientific-7-x86_64
+  - PUPPET_VERSION=4.6 EXCLUDE_OS=centos-6-x86_64,centos-7-x86_64,debian-7-x86_64,debian-8-x86_64,ubuntu-14-x86_64,ubuntu-14.04-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64,scientific-6-x86_64,scientific-7-x86_64
 matrix:
   fast_finish: true
   include:
-    # Only Ubuntu 14.04 uses Ruby 1.9.3 to run Puppet 3.x
-    - rvm: 1.9.3
-      env: PUPPET_VERSION=3.5 ONLY_OS="ubuntu-14-x86_64,ubuntu-14.04-x86_64"
-    # Only EL7 uses Ruby 2.0.0 to run Puppet 3.x
-    - rvm: 2.0.0
-      env: PUPPET_VERSION=3.5 ONLY_OS="centos-7-x86_64,redhat-7-x86_64"
-    # Only Puppet 4.x supports Ruby 2.2. Also limit the OS set we test Ruby 2.2 with.
+    # Limit the OS set we test Ruby 2.2 with.
     - rvm: 2.2.6
-      env: PUPPET_VERSION=4.0 ONLY_OS="debian-8-x86_64,centos-7-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64,freebsd-10-amd64,windows-2012 R2-x64"
-    # Only Puppet >= 4.4 supports Ruby 2.3. Also limit the OS set we test Ruby 2.3 with.
+      env: PUPPET_VERSION=4.6 ONLY_OS="debian-8-x86_64,centos-7-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64,freebsd-10-amd64,windows-2012 R2-x64"
+    # Limit the OS set we test Ruby 2.3 with.
     - rvm: 2.3.0
-      env: PUPPET_VERSION=4.4 ONLY_OS="debian-8-x86_64,centos-7-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64,freebsd-10-amd64,windows-2012 R2-x64"
+      env: PUPPET_VERSION=4.6 ONLY_OS="debian-8-x86_64,centos-7-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64,freebsd-10-amd64,windows-2012 R2-x64"
     # Acceptance tests
     - rvm: 2.3.1
       dist: trusty

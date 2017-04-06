@@ -1,6 +1,5 @@
 --format
 documentation
 --colour
---loadby
 mtime
 --backtrace
