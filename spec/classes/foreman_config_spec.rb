@@ -11,8 +11,10 @@ describe 'foreman::config' do
           "class {'foreman':}"
         end
 
+        it { should compile.with_all_deps }
+
         it 'should set up the config' do
-          should contain_concat__fragment('foreman_settings+01-header.yaml').
+          should contain_concat_fragment('foreman_settings+01-header.yaml').
             with_content(/^:unattended:\s*true$/).
             with_content(/^:login:\s*true$/).
             with_content(/^:require_ssl:\s*true$/).
@@ -31,7 +33,7 @@ describe 'foreman::config' do
             with_content(/^:logging:\n\s*:level:\s*info$/).
             with({})
 
-          should contain_concat('/etc/foreman/settings.yaml').with({
+          should contain_concat_file('/etc/foreman/settings.yaml').with({
             'owner'   => 'root',
             'group'   => 'foreman',
             'mode'    => '0640',
@@ -146,7 +148,7 @@ describe 'foreman::config' do
         end
 
         it 'should have changed parameters' do
-          should contain_concat__fragment('foreman_settings+01-header.yaml').
+          should contain_concat_fragment('foreman_settings+01-header.yaml').
             with_content(/^:unattended:\s*false$/).
             with_content(/^:login:\s*false$/).
             with_content(/^:require_ssl:\s*false$/).
@@ -220,7 +222,7 @@ describe 'foreman::config' do
         end
 
         it 'should set loggers config' do
-          should contain_concat__fragment('foreman_settings+01-header.yaml').
+          should contain_concat_fragment('foreman_settings+01-header.yaml').
             with_content(/^:loggers:\n\s+:ldap:\n\s+:enabled:\s*true$/)
         end
       end
@@ -290,7 +292,7 @@ describe 'foreman::config' do
             })
           end
           it 'should set up puppetssldir accordingly' do
-            should contain_concat__fragment('foreman_settings+01-header.yaml').
+            should contain_concat_fragment('foreman_settings+01-header.yaml').
                 with_content(/^:puppetssldir:\s*\/etc\/puppetlabs\/puppet\/ssl$/).
                 with({})
           end

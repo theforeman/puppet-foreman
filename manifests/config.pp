@@ -6,16 +6,18 @@ class foreman::config {
     Class['puppet::server::install'] -> Class['foreman::config']
   }
 
-  concat::fragment {'foreman_settings+01-header.yaml':
+  concat_fragment {'foreman_settings+01-header.yaml':
     target  => '/etc/foreman/settings.yaml',
     content => template('foreman/settings.yaml.erb'),
     order   => '01',
+    tag     => 'concat_file_settings.yaml',
   }
 
-  concat {'/etc/foreman/settings.yaml':
+  concat_file {'/etc/foreman/settings.yaml':
     owner => 'root',
     group => $::foreman::group,
     mode  => '0640',
+    tag   => 'concat_file_settings.yaml',
   }
 
   file { '/etc/foreman/database.yml':
@@ -153,10 +155,11 @@ class foreman::config {
         }
       }
 
-      concat::fragment {'foreman_settings+02-authorize_login_delegation.yaml':
+      concat_fragment {'foreman_settings+02-authorize_login_delegation.yaml':
         target  => '/etc/foreman/settings.yaml',
         content => template('foreman/settings-external-auth.yaml.erb'),
         order   => '02',
+        tag     => 'concat_file_settings.yaml',
       }
     }
   }
