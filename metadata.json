@@ -14,7 +14,7 @@
   "dependencies": [
     {
       "name": "theforeman/tftp",
-      "version_requirement": ">= 1.4.0 < 3.0.0"
+      "version_requirement": ">= 1.4.0 < 4.0.0"
     },
     {
       "name": "puppetlabs/apache",
