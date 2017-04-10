@@ -30,7 +30,7 @@ gem 'beaker-rspec', {"groups"=>["system_tests"]}
 gem 'beaker-puppet_install_helper', {"groups"=>["system_tests"]}
 gem 'metadata-json-lint'
 gem 'kafo_module_lint'
-gem 'webmock', '< 2.0'
+gem 'webmock', '~> 2.0'
 gem 'oauth'
 
 # vim:ft=ruby
