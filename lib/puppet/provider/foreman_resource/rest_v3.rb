@@ -57,6 +57,7 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
   def request(method, path, params = {}, data = nil, headers = {})
     base_url = resource[:base_url]
     base_url += '/' unless base_url.end_with?('/')
+    data = data.to_json if data.is_a?(Hash)
 
     uri = URI.join(base_url, path)
     uri.query = params.map { |p,v| "#{URI.escape(p.to_s)}=#{URI.escape(v.to_s)}" }.join('&') unless params.empty?
