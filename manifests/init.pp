@@ -301,6 +301,7 @@ class foreman (
   }
 
   include ::foreman::repo
+  include ::foreman::plugin::tasks
 
   Class['foreman::repo']
   ~> class { '::foreman::install': }
