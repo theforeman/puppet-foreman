@@ -9,7 +9,8 @@ describe provider_class do
       :base_url => 'https://foreman.example.com',
       :consumer_key => 'oauth_key',
       :consumer_secret => 'oauth_secret',
-      :effective_user => 'admin'
+      :effective_user => 'admin',
+      :features => ['TFTP', 'Logs'],
     )
   end
 
@@ -21,7 +22,23 @@ describe provider_class do
 
   describe '#create' do
     it 'sends POST request' do
-      provider.expects(:request).with(:post, 'api/v2/smart_proxies', {}, is_a(String)).returns(mock(:code => '201'))
+      provider.expects(:request).with(:post, 'api/v2/smart_proxies', {}, is_a(String)).returns(
+        mock(:code => '201', :body => {'features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}]}.to_json)
+      )
+      provider.create
+    end
+
+    it 'raises error if features do not match' do
+      provider.expects(:request).with(:post, 'api/v2/smart_proxies', {}, is_a(String)).returns(
+        mock(:code => '201', :body => {'features' => [{'name' => 'TFTP'}]}.to_json)
+      )
+      expect { provider.create }.to raise_error(Puppet::Error, /Proxy proxy.example.com has failed to load one or more features \(Logs\)/)
+    end
+
+    it 'does not raise an error if a superset of expected features are enabled' do
+      provider.expects(:request).with(:post, 'api/v2/smart_proxies', {}, is_a(String)).returns(
+        mock(:code => '201', :body => {'features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}, {'name' => 'Other'}]}.to_json)
+      )
       provider.create
     end
   end
@@ -43,6 +60,38 @@ describe provider_class do
     it 'returns nil when ID is absent' do
       provider.expects(:id).returns(nil)
       expect(provider.exists?).to be false
+    end
+  end
+
+  describe '#features' do
+    it 'returns feature names from proxy hash' do
+      provider.expects(:proxy).twice.returns('id' => 1, 'name' => 'proxy.example.com', 'features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}])
+      expect(provider.features).to eq(['Logs', 'TFTP'])
+    end
+
+    it 'returns empty array when proxy is absent' do
+      provider.expects(:proxy).returns(nil)
+      expect(provider.features).to eq([])
+    end
+  end
+
+  describe '#features=' do
+    it 'refreshes features and returns successfully if resource and API match' do
+      provider.expects(:refresh_features!)
+      provider.expects(:features).returns(['Logs', 'TFTP'])
+      provider.features = ['TFTP', 'Logs']
+    end
+
+    it 'refreshes features and raises error if features do not match' do
+      provider.expects(:refresh_features!)
+      provider.expects(:features).returns(['Logs'])
+      expect { provider.features = ['TFTP', 'Logs'] }.to raise_error(Puppet::Error, /Proxy proxy.example.com has failed to load one or more features \(TFTP\)/)
+    end
+
+    it 'does not raise an error if a superset of expected features are enabled' do
+      provider.expects(:refresh_features!)
+      provider.expects(:features).returns(['TFTP', 'Logs', 'Other'])
+      provider.features = ['TFTP', 'Logs']
     end
   end
 

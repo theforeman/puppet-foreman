@@ -21,6 +21,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v3, :parent => Puppet::Type
     post_data = {:smart_proxy => {:name => resource[:name], :url => resource[:url]}}.to_json
     r = request(:post, 'api/v2/smart_proxies', {}, post_data)
     raise Puppet::Error.new("Proxy #{resource[:name]} cannot be registered: #{error_message(r)}") unless success?(r)
+    validate_features!(resource[:features], features_list(JSON.load(r.body)))
   end
 
   def destroy
@@ -39,8 +40,28 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v3, :parent => Puppet::Type
     raise Puppet::Error.new("Proxy #{resource[:name]} cannot be updated: #{error_message(r)}") unless success?(r)
   end
 
+  def features
+    proxy ? features_list(proxy) : []
+  end
+
+  def features=(expected_features)
+    refresh_features!
+    validate_features!(expected_features, features)
+  end
+
   def refresh_features!
     r = request(:put, "api/v2/smart_proxies/#{id}/refresh")
     raise Puppet::Error.new("Proxy #{resource[:name]} cannot be refreshed: #{error_message(r)}") unless success?(r)
+  end
+
+  private
+
+  def features_list(proxy)
+    proxy['features'].map { |ft| ft['name'] }.sort
+  end
+
+  def validate_features!(expected, actual)
+    missing_features = expected - actual
+    raise Puppet::Error.new("Proxy #{resource[:name]} has failed to load one or more features (#{missing_features.join(", ")}), check /var/log/foreman-proxy/proxy.log for configuration errors") unless missing_features.empty?
   end
 end

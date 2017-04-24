@@ -1,6 +1,8 @@
 Puppet::Type.newtype(:foreman_smartproxy) do
   desc 'foreman_smartproxy registers a smartproxy in foreman.'
 
+  feature :feature_validation, "Enabled features can be validated", methods: [:features, :features=]
+
   ensurable
 
   newparam(:name, :namevar => true) do
@@ -21,6 +23,18 @@ Puppet::Type.newtype(:foreman_smartproxy) do
 
   newparam(:consumer_secret) do
     desc 'Foreman oauth consumer_secret'
+  end
+
+  newproperty(:features, required_features: :feature_validation, array_matching: :all) do
+    desc 'Features expected to be enabled on the smart proxy. Setting this
+      validates that all of the listed features are functional, according to
+      the list of enabled features returned when registering or refreshing the
+      smart proxy.'
+    defaultto []
+
+    def insync?(current)
+      (@should.sort - current.sort).empty?
+    end
   end
 
   newparam(:ssl_ca) do
