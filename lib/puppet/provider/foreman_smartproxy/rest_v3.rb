@@ -46,12 +46,17 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v3, :parent => Puppet::Type
 
   def features=(expected_features)
     refresh_features!
-    validate_features!(expected_features, features)
   end
 
   def refresh_features!
     r = request(:put, "api/v2/smart_proxies/#{id}/refresh")
     raise Puppet::Error.new("Proxy #{resource[:name]} cannot be refreshed: #{error_message(r)}") unless success?(r)
+
+    body = JSON.load(r.body)
+    # Replace proxy/feature list cache: pre-#19476 versions have limited responses, clear cache and re-fetch for them
+    @proxy = body.key?('features') ? body : nil
+
+    validate_features!(resource[:features], features_list(proxy))
   end
 
   private
