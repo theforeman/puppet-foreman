@@ -35,6 +35,11 @@ Puppet::Type.newtype(:foreman_smartproxy) do
     def insync?(current)
       (@should.sort - current.sort).empty?
     end
+
+    def is_to_s(value)
+      "[#{value.sort.map(&:inspect).join(', ')}]"
+    end
+    alias should_to_s is_to_s
   end
 
   newparam(:ssl_ca) do
