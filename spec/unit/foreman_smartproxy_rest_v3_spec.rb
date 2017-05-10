@@ -76,21 +76,8 @@ describe provider_class do
   end
 
   describe '#features=' do
-    it 'refreshes features and returns successfully if resource and API match' do
+    it 'refreshes features' do
       provider.expects(:refresh_features!)
-      provider.expects(:features).returns(['Logs', 'TFTP'])
-      provider.features = ['TFTP', 'Logs']
-    end
-
-    it 'refreshes features and raises error if features do not match' do
-      provider.expects(:refresh_features!)
-      provider.expects(:features).returns(['Logs'])
-      expect { provider.features = ['TFTP', 'Logs'] }.to raise_error(Puppet::Error, /Proxy proxy.example.com has failed to load one or more features \(TFTP\)/)
-    end
-
-    it 'does not raise an error if a superset of expected features are enabled' do
-      provider.expects(:refresh_features!)
-      provider.expects(:features).returns(['TFTP', 'Logs', 'Other'])
       provider.features = ['TFTP', 'Logs']
     end
   end
@@ -118,10 +105,54 @@ describe provider_class do
   end
 
   describe '#refresh_features!' do
-    it 'sends PUT request to /refresh' do
-      provider.expects(:id).returns(1)
-      provider.expects(:request).with(:put, 'api/v2/smart_proxies/1/refresh').returns(mock(:code => '200'))
-      provider.refresh_features!
+    context 'with features in response' do
+      it 'sends PUT request to /refresh, raises no error' do
+        provider.expects(:id).returns(1)
+        provider.expects(:request).with(:put, 'api/v2/smart_proxies/1/refresh').returns(
+          mock(:code => '200', :body => {'features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}]}.to_json)
+        )
+        provider.refresh_features!
+      end
+
+      it 'raises error if features do not match' do
+        provider.expects(:id).returns(1)
+        provider.expects(:request).with(:put, 'api/v2/smart_proxies/1/refresh').returns(
+          mock(:code => '200', :body => {'features' => [{'name' => 'TFTP'}]}.to_json)
+        )
+        expect { provider.refresh_features! }.to raise_error(Puppet::Error, /Proxy proxy.example.com has failed to load one or more features \(Logs\)/)
+      end
+
+      it 'does not raise an error if a superset of expected features are enabled' do
+        provider.expects(:id).returns(1)
+        provider.expects(:request).with(:put, 'api/v2/smart_proxies/1/refresh').returns(
+          mock(:code => '200', :body => {'features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}, {'name' => 'Other'}]}.to_json)
+        )
+        provider.refresh_features!
+      end
+    end
+
+    context 'without features in refresh response re-fetches proxy' do
+      it 'sends PUT request to /refresh, raises no error' do
+        provider.expects(:id).returns(1)
+        provider.expects(:request).with(:put, 'api/v2/smart_proxies/1/refresh').returns(
+          mock(:code => '200', :body => {}.to_json)
+        )
+        provider.expects(:request).with(:get, 'api/v2/smart_proxies', :search => 'name="proxy.example.com"').returns(
+          mock('response', :body => {:results => [{:id => 1, :name => 'proxy.example.com', 'features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}]}]}.to_json, :code => '200')
+        )
+        provider.refresh_features!
+      end
+
+      it 'raises error if features do not match' do
+        provider.expects(:id).returns(1)
+        provider.expects(:request).with(:put, 'api/v2/smart_proxies/1/refresh').returns(
+          mock(:code => '200', :body => {}.to_json)
+        )
+        provider.expects(:request).with(:get, 'api/v2/smart_proxies', :search => 'name="proxy.example.com"').returns(
+          mock('response', :body => {:results => [{:id => 1, :name => 'proxy.example.com', 'features' => [{'name' => 'TFTP'}]}]}.to_json, :code => '200')
+        )
+        expect { provider.refresh_features! }.to raise_error(Puppet::Error, /Proxy proxy.example.com has failed to load one or more features \(Logs\)/)
+      end
     end
   end
 
