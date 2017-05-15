@@ -141,8 +141,9 @@ class foreman::config::passenger(
       max_keepalive_requests  => $max_keepalive_requests,
       keepalive_timeout       => $keepalive_timeout,
       access_log_format       => $access_log_format,
-      custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_virt_host_include.erb',
-                                          'foreman/_suburi.conf.erb'),
+      additional_includes     => ["${::apache::confd_dir}/${priority}-foreman.d/*.conf"],
+      use_optional_includes   => true,
+      custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_suburi.conf.erb'),
     }
 
     if $ssl {
@@ -197,8 +198,9 @@ class foreman::config::passenger(
         max_keepalive_requests  => $max_keepalive_requests,
         keepalive_timeout       => $keepalive_timeout,
         access_log_format       => $access_log_format,
-        custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_ssl_virt_host_include.erb',
-                                            'foreman/_suburi.conf.erb'),
+        additional_includes     => ["${::apache::confd_dir}/${priority}-foreman-ssl.d/*.conf"],
+        use_optional_includes   => true,
+        custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_suburi.conf.erb'),
       }
     }
   } else {
