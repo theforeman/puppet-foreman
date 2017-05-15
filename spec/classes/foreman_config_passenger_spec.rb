@@ -266,25 +266,15 @@ describe 'foreman::config::passenger' do
 
         it 'should include a http vhost' do
           should contain_apache__vhost('foreman').
-            with({
-              :priority        => '20',
-              :custom_fragment => /20-foreman\.d/,
-            }).
-            without({
-              :custom_fragment => /05-foreman\.d/,
-            })
+            with_priority(20).
+            with_additional_includes(["#{http_dir}/conf.d/20-foreman.d/*.conf"])
         end
 
         it 'should include a http ssl vhost' do
           should contain_apache__vhost('foreman-ssl').
-            with({
-              :priority        => '20',
-              :ssl             => true,
-              :custom_fragment => /20-foreman-ssl\.d/,
-            }).
-            without({
-              :custom_fragment => /05-foreman-ssl\.d/,
-            })
+            with_priority(20).
+            with_ssl(true).
+            with_additional_includes(["#{http_dir}/conf.d/20-foreman-ssl.d/*.conf"])
         end
       end
 
