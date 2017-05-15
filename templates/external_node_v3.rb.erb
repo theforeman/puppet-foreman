@@ -1,0 +1,453 @@
+#!/usr/bin/env ruby
+
+# Script usually acts as an ENC for a single host, with the certname supplied as argument
+#   if 'facts' is true, the YAML facts for the host are uploaded
+#   ENC output is printed and cached
+#
+# If --push-facts is given as the only arg, it uploads facts for all hosts and then exits.
+# Useful in scenarios where the ENC isn't used.
+#
+# Usage: node.rb [ OPTIONS ] [ CERTNAME ]
+#        node.rb --help
+#
+# You must create a file /etc/puppet/foreman.yaml to configure this script with at least:
+# :url: http://foreman-fqdn
+# 
+# Or if you use SSL:
+# :url: https://foreman-fqdn
+# :ssl_ca: /path/to/ca-certificate
+# :ssl_cert: /path/to/ssl-certificate
+# :ssl_key: /path/to/private-key
+#
+# Configurable options are:
+# :request_timeout: (defaults to 10)
+# :puppetuser:      (defaults to puppet)
+# :puppetdir:       (defaults to /var/lib/puppet)
+# :threads_count:   (defaults to CPU counts, only used if --parallel is passed in parameter)
+#
+require 'etc'
+require 'net/http'
+require 'net/https'
+require 'fileutils'
+require 'timeout'
+require 'yaml'
+require 'facter'
+require 'optparse'
+
+begin
+  require 'json'
+rescue LoadError
+  # Debian packaging guidelines state to avoid needing rubygems, so
+  # we only try to load it if the first require fails (for RPMs)
+  begin
+    require 'rubygems' rescue nil
+    require 'json'
+  rescue LoadError => e
+    warn "You need the `json` gem to use the Foreman ENC script"
+    # code 1 is already used below
+    exit 2
+  end
+end
+
+### Do not edit below this line
+
+class Settings
+  CONFIG_FILE = "/etc/puppet/foreman.yaml"
+
+  def self.default_settings
+    {
+      :puppetdir       => "/var/lib/puppet",
+      :puppetuser      => "puppet",
+      :request_timeout => 10,
+      :threads_count   => Facter.value(:processorcount).to_i,
+      :no_environment  => false,
+      :no_parameters   => false,
+      :node_classifier => true,
+      :push_facts      => false,
+      :watch_facts     => false,
+      :use_threads     => false,
+      :cache_lifetime  => 365*24*60*60,
+      :debug           => false
+    }
+  end
+
+  def self.settings
+    @settings ||= default_settings.tap do |settings|
+      raise(Puppet::ParseError, "Foreman report config file #{configfile} is missing") unless File.exist?(CONFIG_FILE)
+      settings.merge!(YAML.load_file(CONFIG_FILE))
+    end
+  end
+
+  def self.[](key)
+    if respond_to?(key)
+      send(key)
+    else
+      settings[key]
+    end
+  end
+
+  def self.[]=(key, value)
+    settings[key] = value unless respond_to?(key)
+  end
+
+  def self.url
+    settings[:url] ||= raise("Must provide URL - please edit file")
+  end
+end
+
+class PersistentCache
+  def initialize(options = {})
+    @options = options
+    FileUtils.mkdir_p(options[:cache_path])
+  end
+
+  def [](key)
+    Marshal.load(File.read(cache_file(key))) if has?(key)
+  end
+
+  def []=(key, value)
+    file = cache_file(key)
+    File.open(file, 'w') { |f| f.write(Marshal.dump(value)) }
+  end
+
+  def has?(key)
+    file = cache_file(key)
+    exists = File.exists?(file)
+    valid = File.mtime(file) > Time.now - @options[:lifetime]
+    exists && valid
+  end
+
+  private
+
+  def cache_file(key)
+    "#{@options[:cache_path]}/#{key}.yaml"
+  end
+end
+
+class Foreman
+  FACTS_DIRECTORY = "#{Settings[:puppetdir]}/yaml/facts"
+
+  def initialize
+    @cache = PersistentCache.new(
+      :cache_path => "#{Settings[:puppetdir]}/yaml/foreman",
+      :lifetime => Settings[:cache_lifetime]
+    )
+  end
+
+  def upload_node_facts(node)
+    queue_facts_upload(node)
+    upload_queued_facts
+  end
+
+  def upload_all_facts
+    Dir["#{FACTS_DIRECTORY}/*.yaml"].each do |file|
+      node = File.basename(file, ".yaml")
+      queue_facts_upload(node)
+    end
+    upload_queued_facts
+  end
+
+  def retrieve_node_definition(node)
+    begin
+      response = get("#{Settings[:url]}/node/#{node}?format=yml")
+      begin
+        yaml = YAML.load(response.body)  
+      rescue => e
+        warn "Unable to parse YAML for #{node}"
+        warn e.backtrace.join("\n") if Settings[:debug]
+        exit 1
+      end
+      yaml = fix_arrays_in_node_parameters(yaml)
+      yaml = fix_hashes_in_node_parameters(yaml)
+      @cache[node] = yaml
+    rescue TimeoutError, SocketError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED
+      warn("Unable to get node definition from Foreman, using facts from the cache")
+      yaml = @cache[node]
+    end
+
+    yaml.delete('environment') if Settings[:no_environment]
+    yaml.delete('parameters') if Settings[:no_parameters]
+    yaml
+  end
+
+  def watch_yaml_file(notifier, file)
+    return unless File.extname(file) == ".yaml"
+    warn "Watching #{file}" if Settings[:debug]
+    notifier.watch(file, :close_write) do |event|
+      node = File.basename(event.absolute_name, ".yaml")
+      warn "Node changed #{node}, queueing it"
+      queue_facts_upload(node)
+    end
+  end
+
+  def watch_and_push_facts
+    begin
+      require 'rb-inotify'
+    rescue LoadError
+      warn "Install the gem `rb-inotify` to use this feature (not inotify!)"
+      exit 2
+    end
+
+    yaml_files = Dir["#{Settings[:puppetdir]}/yaml/facts/*.yaml"]
+
+    # Check if inotify limit of watches is going to be reached
+    inotify_limit = `sysctl fs.inotify.max_user_watches`.gsub(/[^\d]/, '').to_i
+    if yaml_files.length > inotify_limit
+      warn [
+        "Looks like your inotify watch limit is #{inotify_limit} but you are asking to watch at least #{yaml_files.length} fact files.",
+        "Increase the watch limit via the system tunable fs.inotify.max_user_watches, exiting."
+      ].join("\n")
+      exit 2
+    end
+
+    inotify = INotify::Notifier.new
+    inotify.watch("#{Settings[:puppetdir]}/yaml/facts", :create) do |event|
+      watch_yaml_file(inotify, event.name)
+    end
+
+    yaml_files.each do |file|
+      watch_yaml_file(inotify, file)
+    end
+
+    Thread.new do
+      while true
+        sleep 5 unless facts_upload_queue.length > Settings[:threads_count]
+        upload_queued_facts
+      end
+    end
+
+    inotify.run
+  end
+
+  private
+
+  def fix_arrays_in_node_parameters(yaml)
+    # Transform into arrays values matching the following patterns:
+    #
+    # [8.8.8.8, 8.8.4.4]
+    #
+    # - 8.8.8.8
+    # - 8.8.4.4
+    #
+    yaml["parameters"].each do |key, value|
+      if value =~ /^\[(.*)\]/ or value =~ /^- /
+        yaml["parameters"][key] = YAML.load(value)
+      end
+    end
+    yaml
+  end
+
+  def fix_hashes_in_node_parameters(yaml)
+    # Transform into hash values beginning with `---\n`
+    # Example:
+    # ---
+    # param1: foo
+    # param2: 1234
+    #   param2.1: [foo, bar, 1]
+    #
+    yaml["parameters"].each do |key, value|
+      if value =~ /^---\r?\n/
+        yaml["parameters"][key] = YAML.load(value)
+      end
+    end
+    yaml
+  end
+
+  def fact_file(node)
+    "#{FACTS_DIRECTORY}/#{node}.yaml"
+  end
+
+  def queue_facts_upload(node)
+    facts_upload_queue << node unless facts_upload_queue.include? node
+  end
+
+  def facts_upload_queue
+    @facts_upload_queue ||= []
+  end
+
+  def upload_queued_facts
+    return if facts_upload_queue.empty?
+
+    warn "Pushing #{facts_upload_queue.length} nodes to Foreman" if Settings[:debug]
+
+    # Do not spwawn more threads than there are facts to push
+    count = [Settings[:threads_count], facts_upload_queue.length].min
+    with_threads(count) do
+      while not facts_upload_queue.empty? do
+        upload_next_queued_fact
+      end
+    end
+  end
+
+  def with_threads(count, options = {}, &block)
+    if Settings[:use_threads]
+      threads = count.times.map do
+        Thread.new { block.call }
+      end
+      threads.each(&:join)
+    else
+      block.call
+    end
+  end
+
+  def upload_next_queued_fact
+    node = facts_upload_queue.pop
+    if node
+      warn "Pushing #{node} to Foreman" if Settings[:debug]
+      file = fact_file(node)
+
+      if !File.exists?(file)
+        warn("Warning: there are no facts for #{node}")
+      elsif File.size(file) == 0
+        warn("Warning: skipping empty file #{file} for #{node}")
+      else
+        begin
+        # Cleaning up the YAML content to force it to load as a hash instead of `Puppet::Node::Facts`
+        yaml = YAML::load(File.read(file).gsub(/\!ruby\/object.*$/,''))
+        facts = yaml["values"]
+        facts["fqdn"] ||= node
+
+          post("#{Settings[:url]}/api/hosts/facts") do |request|
+            request.add_field('Accept', 'application/json,version=2')
+            request.content_type = 'application/json'
+            request.body = {
+              'facts'    => facts,
+              'name'     => facts["fqdn"],
+              'certname' => node
+            }.to_json
+          end
+        rescue => e
+          warn "Unable to push facts for #{node} to Foreman: #{e.message}"
+          warn e.backtrace.join("\n") if Settings[:debug]
+        end
+      end
+    end
+  end
+
+  def send_request(method, url, block)
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = uri.scheme == 'https'
+    
+    if http.use_ssl?
+      if Settings[:ssl_ca] && !Settings[:ssl_ca].empty?
+        conn.ca_file = Settings[:ssl_ca]
+        conn.verify_mode = OpenSSL::SSL::VERIFY_PEER
+      else
+        conn.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+      if Settings[:ssl_cert] && !Settings[:ssl_cert].empty? && Settings[:ssl_key] && !Settings[:ssl_key].empty?
+        conn.cert = OpenSSL::X509::Certificate.new(File.read(Settings[:ssl_cert]))
+        conn.key  = OpenSSL::PKey::RSA.new(File.read(Settings[:ssl_key]), nil)
+      end
+    end
+
+    case method
+    when :get then request = Net::HTTP::Get.new(uri.request_uri)
+    when :post then request = Net::HTTP::Post.new(uri.request_uri)
+    end
+
+    block.call(request) unless block.nil?
+
+    response = timeout(Settings[:http_timeout]) do
+      http.request(request)
+    end
+
+    if response.code =~ /20[01]/
+      response
+    else
+      warn [
+        "Error querying #{url} (return code #{response.code})",
+        "Check Foreman's log (/var/log/foreman/production.log by default) for more information"
+      ].join("\n")
+      exit 1
+    end
+  end
+
+  def post(url, &block)
+    send_request(:post, url, block)
+  end
+
+  def get(url, &block)
+    send_request(:get, url, block)
+  end
+end
+
+# Command line options
+opts = OptionParser.new
+opts.banner = "Usage: #{$0} [ OPTIONS ] [ CERTNAME ]"
+
+opts.on('--no-environment', 'Do not pass the environment set in Foreman to Puppet') do
+  Settings[:no_environment] = true
+end
+
+opts.on('--no-parameters', 'Do not pass the parameters set in Foreman to Puppet') do
+  Settings[:no_parameters] = true
+end
+
+opts.on('--push-facts', 'Push the all facts to Foreman and leave') do
+  Settings[:push_facts] = true
+  Settings[:node_classifier] = false
+end
+
+opts.on('--watch-facts', 'Observe and push facts after each modification (implies --push-facts)') do
+  Settings[:push_facts] = true
+  Settings[:node_classifier] = false
+  Settings[:watch_facts] = true
+end
+
+opts.on('--parallel', 'Push facts in parallel to save time (requires --push-facts or --watch-facts)') do
+  Settings[:use_threads] = true
+end
+
+opts.on('--debug', 'Show backtrace information') do
+  Settings[:debug] = true
+end
+
+opts.on('--help', "Show this message") do
+  puts opts
+  exit
+end
+
+opts.parse!
+
+if __FILE__ == $0 then
+  # Setuid to puppet user if we can
+  begin
+    unless Etc.getpwuid.name == Settings[:puppetuser]
+      Process::GID.change_privilege(Etc.getgrnam(Settings[:puppetuser]).gid) 
+      Process::UID.change_privilege(Etc.getpwnam(Settings[:puppetuser]).uid)
+    end
+    # Facter (in thread_count) tries to read from $HOME, which is still /root after the UID change
+    ENV['HOME'] = Etc.getpwnam(Settings[:puppetuser]).dir
+  rescue
+    warn "cannot switch to user #{Settings[:puppetuser]}, continuing as '#{Etc.getpwuid.name}'"
+  end
+
+  begin
+    foreman = Foreman.new
+
+    if Settings[:node_classifier]
+      certname = ARGV[0]
+      unless certname
+        warn "#{$0}: CERTNAME is missing\n#{opts.banner}"
+        exit 1
+      end
+      foreman.upload_node_facts(certname)
+      hash = foreman.retrieve_node_definition(certname)
+      puts hash.to_yaml if hash
+    end
+
+    if Settings[:push_facts]
+      foreman.upload_all_facts
+    end
+
+    if Settings[:watch_facts]
+      foreman.watch_and_push_facts
+    end
+  rescue => e
+    warn e.message
+    warn e.backtrace.join("\n") if Settings[:debug]
+    exit 2
+  end
+end
