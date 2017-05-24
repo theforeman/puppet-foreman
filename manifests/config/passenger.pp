@@ -200,7 +200,7 @@ class foreman::config::passenger(
         access_log_format       => $access_log_format,
         additional_includes     => ["${::apache::confd_dir}/${priority}-foreman-ssl.d/*.conf"],
         use_optional_includes   => true,
-        custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_suburi.conf.erb'),
+        custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_ssl_username.conf.erb', 'foreman/_suburi.conf.erb'),
       }
     }
   } else {
