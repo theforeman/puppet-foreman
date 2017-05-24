@@ -110,7 +110,7 @@ describe 'foreman::config::passenger' do
             :keepalive               => 'on',
             :max_keepalive_requests  => 100,
             :keepalive_timeout       => 5,
-            :custom_fragment         => %r{^<Directory #{params[:app_root]}/public>$},
+            :custom_fragment         => %r{^<Directory ~ #{params[:app_root]}/public/\(assets\|webpack\)>$},
           })
         end
 
@@ -142,7 +142,7 @@ describe 'foreman::config::passenger' do
             :keepalive               => 'on',
             :max_keepalive_requests  => 100,
             :keepalive_timeout       => 5,
-            :custom_fragment         => %r{^<Directory #{params[:app_root]}/public>$},
+            :custom_fragment         => %r{^<Directory ~ #{params[:app_root]}/public/\(assets\|webpack\)>$},
           })
         end
       end
