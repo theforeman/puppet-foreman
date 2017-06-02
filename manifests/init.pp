@@ -138,7 +138,7 @@
 #
 # $server_port::                Defines Apache port for HTTP requests
 #
-# $server_ssl_port::            Defines Apache port for HTTPS reqquests
+# $server_ssl_port::            Defines Apache port for HTTPS requests
 #
 # $server_ssl_ca::              Defines Apache mod_ssl SSLCACertificateFile setting in Foreman vhost conf file.
 #
