@@ -21,31 +21,20 @@ Puppet::Type.type(:foreman_hostgroup).provide(:rest_v2) do
   end
 
   def api
-    if resource[:consumer_key]
-      key = resource[:consumer_key]
-    else
-      key = settings[:oauth_consumer_key]
-    end
-
-    if resource[:consumer_secret]
-      secret = resource[:consumer_secret]
-    else
-      secret = settings[:oauth_consumer_secret]
-    end
+    key = resource[:consumer_key] || settings[:oauth_consumer_key]
+    secret = resource[:consumer_secret] || settings[:oauth_consumer_secret]
+    rest_client_options = { verify_ssl: resource[:verify_ssl] }
 
     @api ||= ApipieBindings::API.new({
       :uri => resource[:base_url],
       :api_version => 2,
-      :oauth => {
-        :consumer_key    => key,
-        :consumer_secret => secret
-      },
+      :authenticator => ApipieBindings::Authenticators::Oauth.new(key, secret),
       :timeout => resource[:timeout],
       :headers => {
         :foreman_user => resource[:effective_user],
       },
       :apidoc_cache_base_dir => File.join(Puppet[:vardir], 'apipie_bindings')
-    })
+    }, rest_client_options)
   end
 
   def smartproxies
