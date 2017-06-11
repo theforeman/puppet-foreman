@@ -70,6 +70,11 @@ Puppet::Type.newtype(:foreman_hostgroup) do
     defaultto 500
   end
 
+  newparam(:verify_ssl, boolean: true) do
+    desc 'Controls whether to verify SSL for API connections.'
+    defaultto :true
+  end
+
   def refresh
     provider.refresh_features! if provider.respond_to?(:refresh_features!)
   end
