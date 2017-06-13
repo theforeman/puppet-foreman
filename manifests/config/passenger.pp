@@ -97,7 +97,7 @@ class foreman::config::passenger(
   include ::apache
   include ::apache::mod::headers
   class { '::apache::mod::passenger':
-    manage_repo => $configure_passenger_repo
+    manage_repo => $configure_passenger_repo,
   }
 
   if $use_vhost {
