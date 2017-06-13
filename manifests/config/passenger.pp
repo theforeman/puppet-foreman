@@ -52,7 +52,7 @@
 # $keepalive_timeout::        KeepAliveTimeout setting of Apache
 #                             (Seconds the server will wait for subsequent requests on a persistent connection)
 #
-# $configure_passenger_repo:: Disabled the passenger repo
+# $configure_passenger_repo:: Disabled the passenger repo on Red Hat family systems.
 #
 # $access_log_format::        Apache log format to use
 #

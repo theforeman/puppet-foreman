@@ -81,7 +81,7 @@
 # $configure_scl_repo::         If disabled the SCL repo will not be configured on Red Hat clone systems.
 #                               (Currently only installs repos for CentOS and Scientific)
 #
-# $configure_passenger_repo::   If disabled the passenger repo will not be configured
+# $configure_passenger_repo::   If disabled the passenger repo will not be configured on Red Hat family systems.
 #                               type:Boolean
 #
 # $selinux::                    When undef, foreman-selinux will be installed if SELinux is enabled
