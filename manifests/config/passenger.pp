@@ -81,7 +81,7 @@ class foreman::config::passenger(
   Boolean $keepalive = $::foreman::keepalive,
   Integer[0] $max_keepalive_requests = $::foreman::max_keepalive_requests,
   Integer[0] $keepalive_timeout = $::foreman::keepalive_timeout,
-  Boolean   $configure_passenger_repo = $::foreman::configure_passenger_repo,
+  Boolean $configure_passenger_repo = $::foreman::configure_passenger_repo,
   Optional[String] $access_log_format = undef,
 ) {
   $docroot = "${app_root}/public"
@@ -97,7 +97,7 @@ class foreman::config::passenger(
   include ::apache
   include ::apache::mod::headers
   class { '::apache::mod::passenger':
-    manage_repo => $conf
+    manage_repo => $configure_passenger_repo
   }
 
   if $use_vhost {
