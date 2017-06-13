@@ -81,6 +81,9 @@
 # $configure_scl_repo::         If disabled the SCL repo will not be configured on Red Hat clone systems.
 #                               (Currently only installs repos for CentOS and Scientific)
 #
+# $configure_passenger_repo::   If disabled the passenger repo will not be configured
+#                               type:Boolean
+#
 # $selinux::                    When undef, foreman-selinux will be installed if SELinux is enabled
 #                               setting to false/true will override this check (e.g. set to false on 1.1)
 #
@@ -212,6 +215,7 @@ class foreman (
   String $repo = $::foreman::params::repo,
   Boolean $configure_epel_repo = $::foreman::params::configure_epel_repo,
   Boolean $configure_scl_repo = $::foreman::params::configure_scl_repo,
+  Boolean $configure_passenger_repo  = $::foreman::params::configure_passenger_repo,
   Optional[Boolean] $selinux = $::foreman::params::selinux,
   Boolean $gpgcheck = $::foreman::params::gpgcheck,
   String $version = $::foreman::params::version,

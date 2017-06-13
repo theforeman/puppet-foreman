@@ -41,7 +41,7 @@ class foreman::params {
   $configure_epel_repo      = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
   # Only configure extra SCL repos on EL
   $configure_scl_repo       = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
-
+  $configure_passenger_repo = true
 # Advanced configuration - no need to change anything here by default
   # if set to true, no repo will be added by this module, letting you to
   # set it to some custom location.

@@ -52,6 +52,8 @@
 # $keepalive_timeout::        KeepAliveTimeout setting of Apache
 #                             (Seconds the server will wait for subsequent requests on a persistent connection)
 #
+# $configure_passenger_repo:: Disabled the passenger repo
+#
 # $access_log_format::        Apache log format to use
 #
 class foreman::config::passenger(
@@ -79,6 +81,7 @@ class foreman::config::passenger(
   Boolean $keepalive = $::foreman::keepalive,
   Integer[0] $max_keepalive_requests = $::foreman::max_keepalive_requests,
   Integer[0] $keepalive_timeout = $::foreman::keepalive_timeout,
+  Boolean   $configure_passenger_repo = $::foreman::configure_passenger_repo,
   Optional[String] $access_log_format = undef,
 ) {
   $docroot = "${app_root}/public"
@@ -93,7 +96,9 @@ class foreman::config::passenger(
 
   include ::apache
   include ::apache::mod::headers
-  include ::apache::mod::passenger
+  class { '::apache::mod::passenger':
+    manage_repo => $conf
+  }
 
   if $use_vhost {
     # Check the value in case the interface doesn't exist, otherwise listen on all interfaces
