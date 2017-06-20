@@ -115,7 +115,7 @@ def build_body(certname,filename)
   facts        = File.read(filename)
   puppet_facts = YAML::load(facts.gsub(/\!ruby\/object.*$/,''))
   hostname     = puppet_facts['values']['fqdn'] || certname
-  
+
   # if there is no environment in facts
   # get it from node file ({puppetdir}/yaml/node/
   unless puppet_facts['values'].key?('environment')
@@ -128,21 +128,21 @@ def build_body(certname,filename)
       end
     end
   end
-  
+
   begin
     require 'facter'
     puppet_facts['values']['puppetmaster_fqdn'] = Facter.value(:fqdn).to_s
   rescue LoadError
     puppet_facts['values']['puppetmaster_fqdn'] = `hostname -f`.strip
   end
-  
+
   # filter any non-printable char from the value, if it is a String
   puppet_facts['values'].each do |key, val|
     if val.is_a? String
       puppet_facts['values'][key] = val.scan(/[[:print:]]/).join
     end
   end
-  
+
   {'facts' => puppet_facts['values'], 'name' => hostname, 'certname' => certname}
 end
 
