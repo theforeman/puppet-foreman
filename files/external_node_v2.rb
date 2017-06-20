@@ -132,7 +132,7 @@ def build_body(certname,filename)
   begin
     require 'facter'
     puppet_facts['values']['puppetmaster_fqdn'] = Facter.value(:fqdn).to_s
-  rescue LoadError => e
+  rescue LoadError
     puppet_facts['values']['puppetmaster_fqdn'] = `hostname -f`.strip
   end
   
