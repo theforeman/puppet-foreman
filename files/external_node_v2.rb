@@ -211,7 +211,7 @@ def enc(certname)
       http.key  = OpenSSL::PKey::RSA.new(File.read(SETTINGS[:ssl_key]), nil)
     end
   end
-  res = http.start { |http| http.request(req) }
+  res = http.request(req)
 
   raise "Error retrieving node #{certname}: #{res.class}\nCheck Foreman's /var/log/foreman/production.log for more information." unless res.code == "200"
   res.body
