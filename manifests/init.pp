@@ -106,6 +106,8 @@
 #
 # $db_sslmode::                 Database 'production' ssl mode
 #
+# $db_root_cert::               Root cert used to verify SSL connection to postgres
+#
 # $db_pool::                    Database 'production' size of connection pool
 #
 # $db_manage_rake::             if enabled, will run rake jobs, which depend on the database
@@ -225,6 +227,7 @@ class foreman (
   Optional[String] $db_username = $::foreman::params::db_username,
   Optional[String] $db_password = $::foreman::params::db_password,
   Optional[String] $db_sslmode = 'UNSET',
+  Optional[String] $db_root_cert = 'UNSET',
   Integer[0] $db_pool = $::foreman::params::db_pool,
   Boolean $db_manage_rake = $::foreman::params::db_manage_rake,
   Stdlib::Absolutepath $app_root = $::foreman::params::app_root,
