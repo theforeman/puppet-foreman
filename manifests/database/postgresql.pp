@@ -15,6 +15,9 @@ class foreman::database::postgresql {
 
     file { $pg_cert_dir:
       ensure => 'directory',
+      owner  => 'root',
+      group  => $::foreman::group,
+      mode   => '0640',
     }
 
     file { "${pg_cert_dir}/root.crt":

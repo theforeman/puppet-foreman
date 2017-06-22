@@ -227,7 +227,7 @@ class foreman (
   Optional[String] $db_username = $::foreman::params::db_username,
   Optional[String] $db_password = $::foreman::params::db_password,
   Optional[String] $db_sslmode = 'UNSET',
-  Optional[String] $db_root_cert = 'UNSET',
+  Optional[String] $db_root_cert = undef,
   Integer[0] $db_pool = $::foreman::params::db_pool,
   Boolean $db_manage_rake = $::foreman::params::db_manage_rake,
   Stdlib::Absolutepath $app_root = $::foreman::params::app_root,
