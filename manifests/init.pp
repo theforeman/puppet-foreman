@@ -299,6 +299,13 @@ class foreman (
   } else {
     $db_adapter_real = $db_adapter
   }
+
+  if $db_sslmode == 'UNSET' and $db_root_cert and $db_type == 'postgresql' {
+    $db_sslmode_real = 'verify-full'
+  } else {
+    $db_sslmode_real = $db_sslmode
+  }
+
   if $passenger == false and $ipa_authentication {
     fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
   }
