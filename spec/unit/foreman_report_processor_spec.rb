@@ -17,26 +17,12 @@ describe 'foreman_report_processor' do
   let(:processor) { Puppet::Reports.report(:foreman) }
 
   describe "making a connection" do
-    subject { YAML.load_file("#{static_fixture_path}/report-format-0.yaml").extend(processor) }
+    subject { YAML.load_file("#{static_fixture_path}/report-format-3.yaml").extend(processor) }
     it "should connect to the URL in the processor" do
       stub = stub_request(:post, "http://localhost:3000/api/config_reports")
       subject.process
       expect(stub).to have_been_requested
     end
-  end
-
-  describe "Puppet Report Format 0" do
-    subject { YAML.load_file("#{static_fixture_path}/report-format-0.yaml").extend(processor) }
-    it {
-      expect(subject.generate_report).to eql(JSON.parse(File.read("#{static_fixture_path}/report-format-0.json")))
-    }
-  end
-
-  describe "Puppet Report Format 1" do
-    subject { YAML.load_file("#{static_fixture_path}/report-format-1.yaml").extend(processor) }
-    it {
-      expect(subject.generate_report).to eql(JSON.parse(File.read("#{static_fixture_path}/report-format-1.json")))
-    }
   end
 
   describe "Puppet Report Format 2" do
@@ -50,6 +36,13 @@ describe 'foreman_report_processor' do
     subject { YAML.load_file("#{static_fixture_path}/report-format-3.yaml").extend(processor) }
     it {
       expect(subject.generate_report).to eql(JSON.parse(File.read("#{static_fixture_path}/report-format-3.json")))
+    }
+  end
+
+  describe "Puppet Report Format 6" do
+    subject { YAML.load_file("#{static_fixture_path}/report-format-6.yaml").extend(processor) }
+    it {
+      expect(subject.generate_report).to eql(JSON.parse(File.read("#{static_fixture_path}/report-format-6.json")))
     }
   end
 
