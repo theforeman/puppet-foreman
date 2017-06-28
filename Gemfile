@@ -32,5 +32,6 @@ gem 'metadata-json-lint'
 gem 'kafo_module_lint'
 gem 'webmock', '~> 2.0'
 gem 'oauth'
+gem 'rgen' # until https://tickets.puppetlabs.com/browse/PDOC-168 is resolved
 
 # vim:ft=ruby
