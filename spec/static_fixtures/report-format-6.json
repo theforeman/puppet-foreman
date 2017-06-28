@@ -1,0 +1,226 @@
+{
+  "host": "slave01.rackspace.theforeman.org",
+  "reported_at": "2017-06-28 17:28:03 UTC",
+  "status": {
+    "applied": 1,
+    "restarted": 1,
+    "failed": 0,
+    "failed_restarts": 0,
+    "skipped": 0,
+    "pending": 0
+  },
+  "metrics": {
+    "resources": {
+      "changed": 1,
+      "corrective_change": 1,
+      "failed": 0,
+      "failed_to_restart": 0,
+      "out_of_sync": 1,
+      "restarted": 1,
+      "scheduled": 0,
+      "skipped": 0,
+      "total": 324
+    },
+    "time": {
+      "anchor": 0.0016726719999999998,
+      "concat_file": 0.000712553,
+      "concat_fragment": 0.004528546999999999,
+      "config_retrieval": 8.856763861,
+      "cron": 0.00072971,
+      "exec": 2.229950824,
+      "file": 1.549412804,
+      "filebucket": 0.000201438,
+      "gnupg_key": 0.011409529,
+      "group": 0.000637601,
+      "mailalias": 0.00044571499999999996,
+      "mounttab": 0.014695739,
+      "mysql_datadir": 0.000486042,
+      "mysql_grant": 0.001261819,
+      "mysql_user": 0.000701149,
+      "package": 3.712264448,
+      "postgresql_conf": 0.000556919,
+      "postgresql_conn_validator": 0.01796124,
+      "postgresql_psql": 0.18382692,
+      "service": 0.138903881,
+      "sshd_config": 0.052789609,
+      "total": 16.786421149,
+      "user": 0.005806723,
+      "yumrepo": 0.000701406
+    },
+    "changes": {
+      "total": 1
+    },
+    "events": {
+      "failure": 0,
+      "success": 1,
+      "total": 1
+    }
+  },
+  "logs": [
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org/Puppet"
+        },
+        "messages": {
+          "message": "Using configured environment 'production'"
+        },
+        "level": "info"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org/Puppet"
+        },
+        "messages": {
+          "message": "Retrieving pluginfacts"
+        },
+        "level": "info"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org/Puppet"
+        },
+        "messages": {
+          "message": "Retrieving plugin"
+        },
+        "level": "info"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org/Puppet"
+        },
+        "messages": {
+          "message": "Loading facts"
+        },
+        "level": "info"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org/Puppet"
+        },
+        "messages": {
+          "message": "Caching catalog for slave01.rackspace.theforeman.org"
+        },
+        "level": "info"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org/Puppet"
+        },
+        "messages": {
+          "message": "Applying configuration version '1498670892'"
+        },
+        "level": "info"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org//Stage[main]/Ntp::Config/File[/etc/ntp.conf]/content"
+        },
+        "messages": {
+          "message": "\n--- /etc/ntp.conf\t2017-06-28 17:27:55.527961090 +0000\n+++ /tmp/puppet-file20170628-19190-13ctv7t\t2017-06-28 17:28:27.137069514 +0000\n@@ -1,5 +1,4 @@\n # ntp.conf: Managed by puppet.\n-# yay!\n #\n # Enable next tinker options:\n # panic - keep ntpd from panicking in the event of a large clock skew\n"
+        },
+        "level": "notice"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org/Puppet"
+        },
+        "messages": {
+          "message": "Computing checksum on file /etc/ntp.conf"
+        },
+        "level": "info"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org//Stage[main]/Ntp::Config/File[/etc/ntp.conf]"
+        },
+        "messages": {
+          "message": "Filebucketed /etc/ntp.conf to puppet with sum d49c304a21940c7d60cf2c8173db6780"
+        },
+        "level": "info"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org//Stage[main]/Ntp::Config/File[/etc/ntp.conf]/content"
+        },
+        "messages": {
+          "message": "\n"
+        },
+        "level": "notice"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org//Stage[main]/Ntp::Config/File[/etc/ntp.conf]/content"
+        },
+        "messages": {
+          "message": "content changed '{md5}d49c304a21940c7d60cf2c8173db6780' to '{md5}b9a1b7b0853a0de6fc7302577f5b015d'"
+        },
+        "level": "notice"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org/Class[Ntp::Config]"
+        },
+        "messages": {
+          "message": "Scheduling refresh of Class[Ntp::Service]"
+        },
+        "level": "info"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org/Class[Ntp::Service]"
+        },
+        "messages": {
+          "message": "Scheduling refresh of Service[ntp]"
+        },
+        "level": "info"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org//Stage[main]/Ntp::Service/Service[ntp]"
+        },
+        "messages": {
+          "message": "Triggered 'refresh' from 1 events"
+        },
+        "level": "notice"
+      }
+    },
+    {
+      "log": {
+        "sources": {
+          "source": "//slave01.rackspace.theforeman.org/Puppet"
+        },
+        "messages": {
+          "message": "Applied catalog in 14.26 seconds"
+        },
+        "level": "notice"
+      }
+    }
+  ]
+}
