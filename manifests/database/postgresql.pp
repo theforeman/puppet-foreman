@@ -10,6 +10,25 @@ class foreman::database::postgresql {
     default => postgresql_password($::foreman::db_username, $::foreman::db_password),
   }
 
+  if $::foreman::db_root_cert {
+    $pg_cert_dir = "${::foreman::app_root}/.postgresql"
+
+    file { $pg_cert_dir:
+      ensure => 'directory',
+      owner  => 'root',
+      group  => $::foreman::group,
+      mode   => '0640',
+    }
+
+    file { "${pg_cert_dir}/root.crt":
+      ensure => file,
+      source => $::foreman::db_root_cert,
+      owner  => 'root',
+      group  => $::foreman::group,
+      mode   => '0640',
+    }
+  }
+
   # Prevents errors if run from /root etc.
   Postgresql_psql {
     cwd => '/',

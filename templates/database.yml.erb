@@ -35,7 +35,7 @@ production:
 <% unless (port = scope.lookupvar("::foreman::db_port")) == 'UNSET' -%>
   port: <%= port %>
 <% end -%>
-<% unless (sslmode = scope.lookupvar("::foreman::db_sslmode")) == 'UNSET' -%>
+<% unless (sslmode = scope.lookupvar("::foreman::db_sslmode_real")) == 'UNSET' -%>
   sslmode: <%= sslmode %>
 <% end -%>
   database: <%= database %>

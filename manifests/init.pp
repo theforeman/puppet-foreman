@@ -106,6 +106,8 @@
 #
 # $db_sslmode::                 Database 'production' ssl mode
 #
+# $db_root_cert::               Root cert used to verify SSL connection to postgres
+#
 # $db_pool::                    Database 'production' size of connection pool
 #
 # $db_manage_rake::             if enabled, will run rake jobs, which depend on the database
@@ -225,6 +227,7 @@ class foreman (
   Optional[String] $db_username = $::foreman::params::db_username,
   Optional[String] $db_password = $::foreman::params::db_password,
   Optional[String] $db_sslmode = 'UNSET',
+  Optional[String] $db_root_cert = undef,
   Integer[0] $db_pool = $::foreman::params::db_pool,
   Boolean $db_manage_rake = $::foreman::params::db_manage_rake,
   Stdlib::Absolutepath $app_root = $::foreman::params::app_root,
@@ -296,6 +299,13 @@ class foreman (
   } else {
     $db_adapter_real = $db_adapter
   }
+
+  if $db_sslmode == 'UNSET' and $db_root_cert and $db_type == 'postgresql' {
+    $db_sslmode_real = 'verify-full'
+  } else {
+    $db_sslmode_real = $db_sslmode
+  }
+
   if $passenger == false and $ipa_authentication {
     fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
   }
