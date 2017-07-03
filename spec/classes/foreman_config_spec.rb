@@ -5,6 +5,7 @@ describe 'foreman::config' do
   on_os_under_test.each do |os, facts|
     context "on #{os}" do
       let :facts do facts end
+      let(:node) { 'foo.example.com' }
 
       describe 'without parameters' do
         let :pre_condition do

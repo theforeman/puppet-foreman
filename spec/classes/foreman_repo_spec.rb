@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'foreman::repo' do
   on_os_under_test.each do |os, facts|
     context "on #{os}" do
-      describe "With default parametrs" do
+      describe "With default parameters" do
         let :facts do
           facts
         end

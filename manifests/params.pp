@@ -175,7 +175,7 @@ class foreman::params {
       $plugin_prefix = undef
     }
     default: {
-      fail("${::hostname}: This module does not support osfamily ${::osfamily}")
+      fail("This module does not support osfamily ${::osfamily}")
     }
   }
   $puppet_user = 'puppet'
