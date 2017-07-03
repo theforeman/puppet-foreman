@@ -5,6 +5,7 @@ describe 'foreman::cli' do
   on_os_under_test.each do |os, facts|
     context "on #{os}" do
       let :facts do facts end
+      let(:node) { 'foo.example.com' }
 
       context 'standalone with parameters' do
         let(:params) do {

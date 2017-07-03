@@ -60,7 +60,6 @@ describe 'foreman::repos' do
   context 'on unsupported Linux operatingsystem' do
     let :facts do
       {
-        :hostname        => 'localhost',
         :operatingsystem => 'unsupported',
         :osfamily        => 'Linux',
       }
@@ -69,14 +68,13 @@ describe 'foreman::repos' do
     let(:params) { {:repo => 'stable'} }
 
     it 'should fail' do
-      should raise_error(/#{facts[:hostname]}: This module does not support operatingsystem #{facts[:operatingsystem]}/)
+      should raise_error(/This module does not support operatingsystem #{facts[:operatingsystem]}/)
     end
   end
 
   context 'on unsupported osfamily' do
     let :facts do
       {
-        :hostname => 'localhost',
         :osfamily => 'unsupported',
       }
     end
@@ -84,7 +82,7 @@ describe 'foreman::repos' do
     let(:params) { {:repo => 'stable'} }
 
     it 'should fail' do
-      should raise_error(/#{facts[:hostname]}: This module does not support osfamily #{facts[:osfamily]}/)
+      should raise_error(/This module does not support osfamily #{facts[:osfamily]}/)
     end
   end
 end

@@ -10,6 +10,7 @@ describe 'foreman::puppetmaster' do
 
         facts
       end
+      let(:node) { 'foo.example.com' }
 
       describe 'without custom parameters' do
         case facts[:osfamily]
