@@ -1,0 +1,15 @@
+---
+# This file is managed via modulesync
+# https://github.com/voxpupuli/modulesync
+# https://github.com/theforeman/foreman-installer-modulesync
+HOSTS:
+  centos-7-x64:
+    platform: centos-7-x86_64
+    box: centos/7
+    hypervisor: vagrant_libvirt
+    vagrant_memsize: 3072
+CONFIG:
+  trace_limit: 200
+  masterless: true
+...
+# vim: syntax=yaml

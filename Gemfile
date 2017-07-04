@@ -30,8 +30,9 @@ gem 'beaker-rspec', {"groups"=>["system_tests"]}
 gem 'beaker-puppet_install_helper', {"groups"=>["system_tests"]}
 gem 'metadata-json-lint'
 gem 'kafo_module_lint'
+gem 'rgen'
+gem 'parallel_tests'
 gem 'webmock', '~> 2.0'
 gem 'oauth'
-gem 'rgen' # until https://tickets.puppetlabs.com/browse/PDOC-168 is resolved
 
 # vim:ft=ruby

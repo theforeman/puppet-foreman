@@ -1,0 +1,15 @@
+---
+# This file is managed via modulesync
+# https://github.com/voxpupuli/modulesync
+# https://github.com/theforeman/foreman-installer-modulesync
+HOSTS:
+  debian-9-x64:
+    platform: debian-9-x86_64
+    box: debian/stretch64
+    hypervisor: vagrant_libvirt
+    vagrant_memsize: 3072
+CONFIG:
+  trace_limit: 200
+  masterless: true
+...
+# vim: syntax=yaml
