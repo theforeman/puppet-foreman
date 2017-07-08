@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.0.0
+* Drop Puppet 3 support
+* New or changed parameters:
+    * Add `$db_root_cert` to set the root SSL certificate used to verify SSL connections to PostgreSQL
+    * Add `features` property to `foreman_smartproxy` provider to check enabled features
+* Other changes and fixes:
+    * Support login via smart card certificates
+
 ## 7.2.0
 * New or changed parameters:
     * Add `$ssl_ca_file` to foreman::cli to specify the path to the SSL CA
