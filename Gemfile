@@ -4,6 +4,7 @@
 source 'https://rubygems.org'
 
 gem 'puppet', ENV.key?('PUPPET_VERSION') ? "~> #{ENV['PUPPET_VERSION']}" : '>= 4.6'
+gem 'facter', ENV.key?('FACTER_VERSION') ? "~> #{ENV['FACTER_VERSION']}" : '~> 2.4.6'
 
 gem 'rake'
 gem 'rspec', '~> 3.0'
