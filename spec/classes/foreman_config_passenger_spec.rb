@@ -32,6 +32,7 @@ describe 'foreman::config::passenger' do
           :keepalive_timeout      => 5,
           :server_port            => 80,
           :server_ssl_port        => 443,
+          :ipa_authentication     => false,
         } end
 
         it 'should include apache with modules' do
@@ -72,6 +73,7 @@ describe 'foreman::config::passenger' do
           :keepalive_timeout      => 5,
           :server_port            => 80,
           :server_ssl_port        => 443,
+          :ipa_authentication     => false,
         } end
 
         case facts[:osfamily]
@@ -173,6 +175,7 @@ describe 'foreman::config::passenger' do
           :keepalive_timeout      => 5,
           :server_port            => 80,
           :server_ssl_port        => 443,
+          :ipa_authentication     => false,
         } end
 
         it do
@@ -207,6 +210,7 @@ describe 'foreman::config::passenger' do
             :keepalive_timeout      => 15,
             :server_port            => 80,
             :server_ssl_port        => 443,
+            :ipa_authentication     => false,
         } end
 
         it 'should set the respective parameters' do
@@ -245,6 +249,7 @@ describe 'foreman::config::passenger' do
           :keepalive_timeout      => 5,
           :server_port            => 80,
           :server_ssl_port        => 443,
+          :ipa_authentication     => false,
         } end
 
         case facts[:osfamily]
@@ -278,7 +283,6 @@ describe 'foreman::config::passenger' do
         end
       end
 
-
       describe 'with different ports set' do
         let :params do {
           :app_root               => '/usr/share/foreman',
@@ -305,6 +309,7 @@ describe 'foreman::config::passenger' do
           :keepalive_timeout      => 5,
           :server_port            => 8080,
           :server_ssl_port        => 8443,
+          :ipa_authentication     => false,
         } end
 
         it 'should set the respective parameters' do
@@ -313,6 +318,41 @@ describe 'foreman::config::passenger' do
           should contain_apache__vhost('foreman-ssl').with_port(8443)
           should contain_apache__vhost('foreman-ssl').with_passenger_pre_start("https://#{facts[:fqdn]}:8443")
         end
+      end
+
+      describe 'with ipa_authentication' do
+        let :params do {
+          :app_root               => '/usr/share/foreman',
+          :use_vhost              => true,
+          :listen_on_interface    => '192.168.0.1',
+          :ruby                   => '/usr/bin/tfm-ruby',
+          :priority               => '15',
+          :servername             => facts[:fqdn],
+          :serveraliases          => ['foreman'],
+          :ssl                    => false,
+          :ssl_cert               => '/cert.pem',
+          :ssl_certs_dir          => '',
+          :ssl_key                => '/key.pem',
+          :ssl_ca                 => '/ca.pem',
+          :ssl_chain              => '/ca.pem',
+          :ssl_crl                => '/crl.pem',
+          :user                   => 'foreman',
+          :prestart               => true,
+          :min_instances          => 1,
+          :start_timeout          => 600,
+          :foreman_url            => "https://#{facts[:fqdn]}",
+          :keepalive              => true,
+          :max_keepalive_requests => 100,
+          :keepalive_timeout      => 5,
+          :server_port            => 80,
+          :server_ssl_port        => 443,
+          :ipa_authentication     => true,
+        } end
+
+        it { should contain_class('apache::mod::authnz_pam') }
+        it { should contain_class('apache::mod::intercept_form_submit') }
+        it { should contain_class('apache::mod::lookup_identity') }
+        it { should contain_class('apache::mod::auth_kerb') }
       end
     end
   end

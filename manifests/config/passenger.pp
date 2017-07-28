@@ -44,6 +44,9 @@
 #
 # $start_timeout::            Amount of seconds to wait for Ruby application boot.
 #
+# $foreman_url::              The URL Foreman should be reachable under. Used for loading the application
+#                             on startup rather than on demand.
+#
 # $keepalive::                Enable KeepAlive setting of Apache?
 #
 # $max_keepalive_requests::   MaxKeepAliveRequests setting of Apache
@@ -53,6 +56,8 @@
 #                             (Seconds the server will wait for subsequent requests on a persistent connection)
 #
 # $access_log_format::        Apache log format to use
+#
+# $ipa_authentication::       Whether to install support for IPA authentication
 #
 class foreman::config::passenger(
   Stdlib::Absolutepath $app_root = $::foreman::app_root,
@@ -80,6 +85,7 @@ class foreman::config::passenger(
   Integer[0] $max_keepalive_requests = $::foreman::max_keepalive_requests,
   Integer[0] $keepalive_timeout = $::foreman::keepalive_timeout,
   Optional[String] $access_log_format = undef,
+  Boolean $ipa_authentication = $::foreman::ipa_authentication,
 ) {
   $docroot = "${app_root}/public"
   $suburi_parts = split($foreman_url, '/')
@@ -94,6 +100,13 @@ class foreman::config::passenger(
   include ::apache
   include ::apache::mod::headers
   include ::apache::mod::passenger
+
+  if $ipa_authentication {
+    include ::apache::mod::authnz_pam
+    include ::apache::mod::intercept_form_submit
+    include ::apache::mod::lookup_identity
+    include ::apache::mod::auth_kerb
+  }
 
   if $use_vhost {
     # Check the value in case the interface doesn't exist, otherwise listen on all interfaces

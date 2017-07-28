@@ -41,6 +41,7 @@ describe 'foreman::config::passenger::fragment' do
               keepalive_timeout       => 5,
               server_port             => 80,
               server_ssl_port         => 443,
+              ipa_authentication      => false,
           }"
         end
 
@@ -95,6 +96,7 @@ describe 'foreman::config::passenger::fragment' do
               keepalive_timeout       => 5,
               server_port             => 80,
               server_ssl_port         => 443,
+              ipa_authentication      => false,
           }"
         end
 
