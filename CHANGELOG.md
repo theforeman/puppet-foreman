@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.1.0
+* Other changes and fixes:
+    * update node.rb for Puppet5 env fact
+    * use apache module classes for mod_{authnz_pam,intercept_form_submit,lookup_identity}
+
 ## 8.0.0
 * Drop Puppet 3 support
 * New or changed parameters:
