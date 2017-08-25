@@ -25,9 +25,12 @@ class foreman::plugin::discovery (
   if $install_images {
     $tftp_root_clean = regsubst($tftp_root, '/$', '')
 
+    ensure_resource('file', "${tftp_root_clean}/boot", {ensure => directory})
+
     foreman::remote_file {"${tftp_root_clean}/boot/${image_name}":
       remote_location => "${source_url}${image_name}",
       mode            => '0644',
+      require         => File["${tftp_root_clean}/boot"],
     } ~> exec { "untar ${image_name}":
       command => "tar xf ${image_name}",
       path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
