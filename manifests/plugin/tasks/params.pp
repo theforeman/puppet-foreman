@@ -1,5 +1,6 @@
 # Data for the foreman-tasks plugin
 class foreman::plugin::tasks::params {
+  $automatic_cleanup = false
   case $::osfamily {
     'RedHat': {
       $service = 'foreman-tasks'
