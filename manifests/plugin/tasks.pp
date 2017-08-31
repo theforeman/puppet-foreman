@@ -23,15 +23,16 @@ class foreman::plugin::tasks(
     enable => true,
     name   => $service,
   }
-  $cron_state = if $automatic_cleanup {
-    present
-  } else {
-    absent
+  $cron_state = $automatic_cleanup ? {
+    true    => 'present',
+    default => 'absent',
   }
-  file { 'foreman-tasks-cleanup-cron':
+  file { '/etc/cron.d/foreman-tasks':
     ensure  => $cron_state,
     owner   => 'root',
-    path    => '/etc/cron.d/foreman-tasks-cleanup',
+    group   => 'root',
+    mode    => 'u=rw,go=r',
+    path    => '/etc/cron.d/foreman-tasks',
     content => file('foreman/tasks.cron'),
   }
 }

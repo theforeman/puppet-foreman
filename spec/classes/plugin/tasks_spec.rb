@@ -31,8 +31,8 @@ describe 'foreman::plugin::tasks' do
       it 'should call the plugin' do
         should contain_foreman__plugin('tasks').with_package(package_name)
         should contain_service('foreman-tasks').with('ensure' => 'running', 'enable' => 'true', 'name' => service_name)
-        should contain_file('foreman-tasks-cleanup-cron').
-          with_path('/etc/cron.d/foreman-tasks-cleanup').
+        should contain_file('/etc/cron.d/foreman-tasks').
+          with_path('/etc/cron.d/foreman-tasks').
           with_ensure('absent')
       end
 
@@ -42,8 +42,8 @@ describe 'foreman::plugin::tasks' do
         } end
 
         it 'should deploy the cron job' do
-          should contain_file('foreman-tasks-cleanup-cron').
-            with_path('/etc/cron.d/foreman-tasks-cleanup').
+          should contain_file('/etc/cron.d/foreman-tasks').
+            with_path('/etc/cron.d/foreman-tasks').
             with_content(%r{SHELL=/bin/sh}).
             with_content(%r{RAILS_ENV=production}).
             with_content(%r{FOREMAN_HOME=/usr/share/foreman}).
