@@ -32,13 +32,13 @@ class foreman::plugin::tasks(
              45 19 * * *     foreman    /usr/sbin/foreman-rake foreman_tasks:cleanup >>/var/log/foreman/cron.log 2>&1
              | END
   file { 'foreman-tasks-cleanup-cron':
-    ensure => if $automatic_cleanup {
-                present
-              } else {
-                absent
-              },
-    owner => 'root',
-    path => '/etc/cron.d/foreman-tasks-cleanup',
+    ensure  => if $automatic_cleanup {
+      present
+    } else {
+      absent
+    },
+    owner   => 'root',
+    path    => '/etc/cron.d/foreman-tasks-cleanup',
     content => $cron_content,
   }
 }
