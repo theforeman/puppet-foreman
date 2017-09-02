@@ -3,25 +3,20 @@
 #   https://github.com/theforeman/foreman-installer-modulesync
 rvm:
   - 2.1.5
+  - 2.2.6
+  - 2.3.0
+  - 2.4.1
+
 env:
   global:
     - PARALLEL_TEST_PROCESSORS=16
   matrix:
-    # First test the major distros
-    - PUPPET_VERSION=4.6 ONLY_OS=centos-6-x86_64,centos-7-x86_64,debian-7-x86_64,debian-8-x86_64,ubuntu-14-x86_64,ubuntu-14.04-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64
-    # Test the rest of the supported platforms
-    - PUPPET_VERSION=4.6 EXCLUDE_OS=centos-6-x86_64,centos-7-x86_64,debian-7-x86_64,debian-8-x86_64,ubuntu-14-x86_64,ubuntu-14.04-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64,scientific-6-x86_64,scientific-7-x86_64
+    - PUPPET_VERSION=4.9
 matrix:
   fast_finish: true
   include:
-    - rvm: 2.2.6
-      env: PUPPET_VERSION=4.6 ONLY_OS="debian-8-x86_64,centos-7-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64,freebsd-10-amd64,windows-2012 R2-x64"
-    - rvm: 2.3.0
-      env: PUPPET_VERSION=4.6 ONLY_OS="debian-8-x86_64,centos-7-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64,freebsd-10-amd64,windows-2012 R2-x64"
     - rvm: 2.4.1
-      env: PUPPET_VERSION=4.6 ONLY_OS="debian-8-x86_64,centos-7-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64,freebsd-10-amd64,windows-2012 R2-x64"
-    - rvm: 2.4.1
-      env: PUPPET_VERSION=5.0 ONLY_OS="debian-8-x86_64,centos-7-x86_64,ubuntu-16-x86_64,ubuntu-16.04-x86_64,freebsd-10-amd64,windows-2012 R2-x64"
+      env: PUPPET_VERSION=5.0
     # Acceptance tests
     - rvm: 2.3.1
       dist: trusty
