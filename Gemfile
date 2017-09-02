@@ -4,7 +4,6 @@
 source 'https://rubygems.org'
 
 gem 'puppet', ENV.key?('PUPPET_VERSION') ? "~> #{ENV['PUPPET_VERSION']}" : '>= 4.6'
-gem 'facter', ENV.key?('FACTER_VERSION') ? "~> #{ENV['FACTER_VERSION']}" : '~> 2.4.6'
 
 gem 'rake'
 gem 'rspec', '~> 3.0'
@@ -28,6 +27,7 @@ gem 'json', '~> 1.0', {"platforms"=>["ruby_19"], "groups"=>["test"]}
 gem 'json_pure', '~> 1.0', {"platforms"=>["ruby_19"], "groups"=>["test"]}
 gem 'logging', '~> 2.1.0', {"platforms"=>["ruby_19"], "groups"=>["test"]}
 gem 'beaker-rspec', {"groups"=>["system_tests"]}
+gem 'beaker-module_install_helper', {"groups"=>["system_tests"]}
 gem 'beaker-puppet_install_helper', {"groups"=>["system_tests"]}
 gem 'metadata-json-lint'
 gem 'kafo_module_lint'
