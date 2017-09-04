@@ -31,8 +31,7 @@ class foreman::plugin::tasks(
     ensure  => $cron_state,
     owner   => 'root',
     group   => 'root',
-    mode    => 'u=rw,go=r',
-    path    => '/etc/cron.d/foreman-tasks',
+    mode    => '0644',
     content => file('foreman/tasks.cron'),
   }
 }
