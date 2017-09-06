@@ -10,6 +10,7 @@ describe 'foreman_report_processor' do
 :url: "http://localhost:3000"
 :facts: true
 :puppet_home: "/var/lib/puppet"
+:report_retry_limit: 2
   EOF
   settings.close
   $settings_file = settings.path
@@ -22,6 +23,22 @@ describe 'foreman_report_processor' do
       stub = stub_request(:post, "http://localhost:3000/api/config_reports")
       subject.process
       expect(stub).to have_been_requested
+    end
+  end
+
+  describe "retry on failed connection" do
+    subject { YAML.load_file("#{static_fixture_path}/report-format-3.yaml").extend(processor) }
+
+    it "should retry the URL in the processor" do
+      stub = stub_request(:post, "http://localhost:3000/api/config_reports").to_timeout().then().to_return({status: [200, 'OK']})
+      expect { subject.process }.not_to raise_error
+      expect(stub).to have_been_requested.times(2)
+    end
+
+    it "should give up after the configured retries" do
+      stub = stub_request(:post, "http://localhost:3000/api/config_reports").to_timeout()
+      expect { subject.process }.to raise_error(Puppet::Error, /Could not send report to Foreman at/)
+      expect(stub).to have_been_requested.times(2)
     end
   end
 
