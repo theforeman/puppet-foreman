@@ -27,6 +27,10 @@
 :ssl_ca_file: <%= scope.lookupvar("foreman::client_ssl_ca") %>
 :ssl_priv_key: <%= scope.lookupvar("foreman::client_ssl_key") %>
 
+# Ruby on Rails version (available: 4.2, 5.0)
+# Defaults to 4.2 on Ruby 2.0-2.2, or 5.0 on Ruby 2.3+
+:rails: 4.2
+
 # Log settings for the current environment can be adjusted by adding them
 # here. For example, if you want to increase the log level.
 :logging:
