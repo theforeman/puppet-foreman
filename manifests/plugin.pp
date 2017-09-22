@@ -17,6 +17,7 @@ define foreman::plugin(
   package { $real_package:
     ensure => $version,
   }
+  ~> Foreman::Rake['apipie:cache:index']
 
   if $config {
     file { $config_file:
