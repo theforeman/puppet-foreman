@@ -320,6 +320,9 @@ class foreman (
   }
 
   include ::foreman::repo
+  foreman::rake { 'apipie:cache:index':
+    timeout => 0,
+  }
 
   Class['foreman::repo']
   ~> class { '::foreman::install': }
