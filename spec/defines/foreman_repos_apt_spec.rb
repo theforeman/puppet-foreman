@@ -35,7 +35,6 @@ describe 'foreman::repos::apt' do
 
     it { should contain_apt_key(apt_key_title) }
     it { should contain_apt_key(apt_key_title).with_id(apt_key) }
-    it { should contain_apt_key(apt_key_title).with_source(/#{apt_key[-16..-1]}/) }
   end
 
   context 'with repo => 1.11' do
