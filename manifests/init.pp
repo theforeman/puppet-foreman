@@ -197,6 +197,8 @@
 #
 # $email_conf::                 Email configuration file under /etc/foreman
 #
+# $dynflow_pool_size::          How many workers should Dynflow use
+#
 class foreman (
   Stdlib::HTTPUrl $foreman_url = $::foreman::params::foreman_url,
   Boolean $puppetrun = $::foreman::params::puppetrun,
@@ -289,6 +291,7 @@ class foreman (
   Enum['none', 'plain', 'login', 'cram-md5'] $email_smtp_authentication = $::foreman::params::email_smtp_authentication,
   Optional[String] $email_smtp_user_name = $::foreman::params::email_smtp_user_name,
   Optional[String] $email_smtp_password = $::foreman::params::email_smtp_password,
+  Integer[0, 65535] $dynflow_pool_size = $::foreman::params::dynflow_pool_size,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $::foreman::db_type ? {
