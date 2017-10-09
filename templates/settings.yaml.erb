@@ -38,3 +38,6 @@
   :<%= logger %>:
     :enabled: <%= enabled %>
 <% end -%>
+
+:dynflow:
+  :pool_size: <%= scope.lookupvar("foreman::dynflow_pool_size") %>
