@@ -29,6 +29,7 @@ describe 'foreman::config' do
             with_content(%r{^:ssl_ca_file:\s*/var/lib/puppet/ssl/certs/ca.pem$}).
             with_content(%r{^:ssl_priv_key:\s*/var/lib/puppet/ssl/private_keys/foo\.example\.com\.pem$}).
             with_content(/^:logging:\n\s*:level:\s*info$/).
+            with_content(/^:dynflow:\n\s*:pool_size:\s*5$/).
             with({})
 
           should contain_concat('/etc/foreman/settings.yaml').with({

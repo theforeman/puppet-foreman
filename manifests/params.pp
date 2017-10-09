@@ -92,6 +92,9 @@ class foreman::params {
   $email_smtp_user_name      = undef
   $email_smtp_password       = undef
 
+  # Configure how many workers should Dynflow use
+  $dynflow_pool_size = 5
+
   # OS specific paths
   case $::osfamily {
     'RedHat': {
