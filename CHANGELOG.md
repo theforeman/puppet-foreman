@@ -1,5 +1,15 @@
 # Changelog
 
+## 8.1.1
+* New classes to install Foreman plugins:
+    * Add foreman::plugin::foreman_userdata
+    * Add foreman::plugin::foreman_snapshot_management
+* Other changes and fixes:
+    * Add retry to foreman reporting script
+    * Add the ability to get data by using the proxy SSL authentication configuration
+    * Allow configuring Dynflow pool size
+    * Bump allowed version of puppet-extlib to 3.0.0
+
 ## 8.1.0
 * Other changes and fixes:
     * update node.rb for Puppet5 env fact
