@@ -93,6 +93,7 @@ describe 'foreman' do
           :server_ssl_certs_dir      => '/etc/ssl/certs/',
           :server_ssl_key            => '/etc/ssl/private/snakeoil.pem',
           :server_ssl_crl            => '/etc/ssl/certs/ca/crl.pem',
+          :server_ssl_protocol       => '-all +TLSv1.2',
           :client_ssl_ca             => '/etc/ssl/certs/ca.pem',
           :client_ssl_cert           => '/etc/ssl/certs/snakeoil.pem',
           :client_ssl_key            => '/etc/ssl/private/key.pem',
