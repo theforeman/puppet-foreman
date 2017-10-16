@@ -3,5 +3,4 @@ RAILS_ENV=production
 FOREMAN_HOME=/usr/share/foreman
 
 # Clean up expired tasks from the database
-<% cronline = scope.lookupvar("::foreman::plugin::tasks::cron_line") %>
-<%= cronline %>    foreman    /usr/sbin/foreman-rake foreman_tasks:cleanup >>/var/log/foreman/cron.log 2>&1
+<%= @cronline %>    foreman    /usr/sbin/foreman-rake foreman_tasks:cleanup >>/var/log/foreman/cron.log 2>&1
