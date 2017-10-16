@@ -33,6 +33,8 @@
 #
 # $ssl_crl::                  Location of the SSL certificate revocation list file
 #
+# $ssl_protocol::             SSLProtocol configuration to use
+#
 # $use_vhost::                Whether to install a vhost. Note that using ssl and
 #                             no vhost is unsupported.
 #
@@ -75,6 +77,7 @@ class foreman::config::passenger(
   Variant[String[0], Stdlib::Absolutepath] $ssl_certs_dir = $::foreman::server_ssl_certs_dir,
   Stdlib::Absolutepath $ssl_key = $::foreman::server_ssl_key,
   Optional[Variant[String[0], Stdlib::Absolutepath]] $ssl_crl = $::foreman::server_ssl_crl,
+  Optional[String] $ssl_protocol = $::foreman::server_ssl_protocol,
   Boolean $use_vhost = $::foreman::use_vhost,
   String $user = $::foreman::user,
   Boolean $prestart = $::foreman::passenger_prestart,
@@ -204,6 +207,7 @@ class foreman::config::passenger(
         ssl_ca                  => $ssl_ca,
         ssl_crl                 => $ssl_crl_real,
         ssl_crl_check           => $ssl_crl_check,
+        ssl_protocol            => $ssl_protocol,
         ssl_verify_client       => 'optional',
         ssl_options             => '+StdEnvVars +ExportCertData',
         ssl_verify_depth        => '3',

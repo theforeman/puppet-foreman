@@ -212,6 +212,7 @@ class foreman::params {
   $server_ssl_certs_dir = '' # lint:ignore:empty_string_assignment - this must be empty since we override a default
   $server_ssl_key   = "${puppet_ssldir}/private_keys/${lower_fqdn}.pem"
   $server_ssl_crl   = "${puppet_ssldir}/crl.pem"
+  $server_ssl_protocol = undef
 
   # We need the REST API interface with OAuth for some REST Puppet providers
   $oauth_active = true
