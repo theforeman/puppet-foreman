@@ -37,8 +37,10 @@ describe 'foreman::plugin::tasks' do
       end
 
       describe 'with automatic task cleanup' do
+        let(:cron_line) { "30 10 * * *" }
         let(:params) do {
-          :automatic_cleanup => true
+          :automatic_cleanup => true,
+          :cron_line => cron_line
         } end
 
         it 'should deploy the cron job' do
@@ -48,6 +50,7 @@ describe 'foreman::plugin::tasks' do
             with_content(%r{RAILS_ENV=production}).
             with_content(%r{FOREMAN_HOME=/usr/share/foreman}).
             with_content(%r{/usr/sbin/foreman-rake foreman_tasks:cleanup}).
+            with_content(%r{#{cron_line}}).
             with_ensure('present')
         end
       end
