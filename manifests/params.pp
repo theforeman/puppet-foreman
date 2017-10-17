@@ -33,6 +33,7 @@ class foreman::params {
   $passenger_prestart = true
   $passenger_min_instances = 1
   $passenger_start_timeout = 600
+
   # Choose whether you want to enable locations and organizations.
   $locations_enabled     = false
   $organizations_enabled = false
@@ -252,6 +253,9 @@ class foreman::params {
   $keepalive              = true
   $max_keepalive_requests = 100
   $keepalive_timeout      = 5
+
+  # Further Apache parameters
+  $apache_start_timeout = 600
 
   # Default ports for Apache to listen on
   $server_port     = 80

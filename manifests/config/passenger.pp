@@ -61,6 +61,8 @@
 #
 # $ipa_authentication::       Whether to install support for IPA authentication
 #
+# $apache_start_timeout::     Startup time for Apache
+#
 class foreman::config::passenger(
   Stdlib::Absolutepath $app_root = $::foreman::app_root,
   Optional[String] $listen_on_interface = $::foreman::passenger_interface,
@@ -89,6 +91,7 @@ class foreman::config::passenger(
   Integer[0] $keepalive_timeout = $::foreman::keepalive_timeout,
   Optional[String] $access_log_format = undef,
   Boolean $ipa_authentication = $::foreman::ipa_authentication,
+  Integer[0] $apache_start_timeout = $::foreman::apache_start_timeout
 ) {
   $docroot = "${app_root}/public"
   $suburi_parts = split($foreman_url, '/')
@@ -182,6 +185,13 @@ class foreman::config::passenger(
         mode    => '0644',
         purge   => true,
         recurse => true,
+      }
+
+      if $::service_provider == 'systemd' {
+        include ::systemd
+        systemd::dropin_file { '10-larger_timeout.conf':
+          unit    => '${::apache::service_name}.service.d',
+          content => template('foreman/startup.conf.erb'),
       }
 
       apache::vhost { 'foreman-ssl':
