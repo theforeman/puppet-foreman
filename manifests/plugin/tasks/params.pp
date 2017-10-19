@@ -1,5 +1,7 @@
 # Data for the foreman-tasks plugin
 class foreman::plugin::tasks::params {
+  $automatic_cleanup = false
+  $cron_line = '45 19 * * *'
   case $::osfamily {
     'RedHat': {
       $service = 'foreman-tasks'

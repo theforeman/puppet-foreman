@@ -1,0 +1,7 @@
+SHELL=/bin/sh
+RAILS_ENV=production
+FOREMAN_HOME=/usr/share/foreman
+
+# Clean up expired tasks from the database
+<% user = scope.lookupvar('foreman::user') %>
+<%= @cron_line %>    <%= user %>    /usr/sbin/foreman-rake foreman_tasks:cleanup >>/var/log/foreman/cron.log 2>&1
