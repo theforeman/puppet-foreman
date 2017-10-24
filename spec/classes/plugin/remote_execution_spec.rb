@@ -7,7 +7,7 @@ describe 'foreman::plugin::remote_execution' do
       let(:pre_condition) { 'include foreman' }
 
       it { should compile.with_all_deps }
-      it { should contain_foreman__plugin('remote_execution').that_notifies('Service[foreman-tasks]') }
+      it { should contain_foreman__plugin('remote_execution').that_notifies("Class[foreman::service::jobs]") }
       it { should contain_foreman__plugin('tasks') }
     end
   end
