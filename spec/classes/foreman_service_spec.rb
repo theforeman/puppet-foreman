@@ -12,6 +12,7 @@ describe 'foreman::service' do
     end
 
     it { is_expected.to compile.with_all_deps }
+    it { is_expected.to contain_class('foreman::service::jobs') }
 
     it 'should restart passenger' do
       should contain_exec('restart_foreman').with({
@@ -39,6 +40,7 @@ describe 'foreman::service' do
         :passenger => true,
         :app_root  => '/usr/share/foreman',
         :ssl => true,
+        :dynflow_in_core => false,
       }
     end
 
@@ -47,6 +49,7 @@ describe 'foreman::service' do
     end
 
     it { is_expected.to compile.with_all_deps }
+    it { is_expected.not_to contain_class('foreman::service::jobs') }
 
     it 'should restart passenger' do
       should contain_exec('restart_foreman').with({
@@ -72,10 +75,12 @@ describe 'foreman::service' do
           :passenger => true,
           :app_root  => '/usr/share/foreman',
           :ssl => false,
+          :dynflow_in_core => false,
         }
       end
 
       it { is_expected.to compile.with_all_deps }
+      it { is_expected.not_to contain_class('foreman::service::jobs') }
     end
   end
 
@@ -85,10 +90,12 @@ describe 'foreman::service' do
         :passenger => false,
         :app_root  => '/usr/share/foreman',
         :ssl => true,
+        :dynflow_in_core => false,
       }
     end
 
     it { is_expected.to compile.with_all_deps }
+    it { is_expected.not_to contain_class('foreman::service::jobs') }
 
     it 'should not restart passenger' do
       should_not contain_exec('restart_foreman')

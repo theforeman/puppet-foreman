@@ -95,6 +95,13 @@ class foreman::params {
 
   # Configure how many workers should Dynflow use
   $dynflow_pool_size = 5
+  # Defines whether Foreman or the tasks plugin provides the Dynflow executor
+  $dynflow_in_core = true
+
+  # Define job processing service properties
+  $jobs_service = undef
+  $jobs_service_ensure = 'running'
+  $jobs_service_enable = true
 
   # OS specific paths
   case $::osfamily {

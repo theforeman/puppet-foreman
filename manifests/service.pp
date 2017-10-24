@@ -1,10 +1,15 @@
 # Configure the foreman service
 class foreman::service(
-  $passenger = $::foreman::passenger,
-  $app_root  = $::foreman::app_root,
-  $ssl       = $::foreman::ssl,
+  $passenger       = $::foreman::passenger,
+  $app_root        = $::foreman::app_root,
+  $ssl             = $::foreman::ssl,
+  $dynflow_in_core = $::foreman::dynflow_in_core,
 ) {
   anchor { ['foreman::service_begin', 'foreman::service_end']: }
+
+  if $dynflow_in_core {
+    contain ::foreman::service::jobs
+  }
 
   if $passenger {
     exec {'restart_foreman':

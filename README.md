@@ -51,6 +51,7 @@ previous stable release.
 
 ### Foreman version compatibility notes
 
+For Foreman 1.16 or older, please set the `dynflow_in_core` parameter to false.
 For Foreman 1.11 or older, please use the 5.x release series of this module.
 
 ## Types and providers
