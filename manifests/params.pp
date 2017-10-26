@@ -32,7 +32,7 @@ class foreman::params {
   # further passenger parameters
   $passenger_prestart = true
   $passenger_min_instances = 1
-  $passenger_start_timeout = 600
+  $passenger_start_timeout = 90
   # Choose whether you want to enable locations and organizations.
   $locations_enabled     = false
   $organizations_enabled = false
