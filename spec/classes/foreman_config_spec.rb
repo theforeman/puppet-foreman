@@ -14,6 +14,7 @@ describe 'foreman::config' do
         it 'should set up the config' do
           should contain_concat__fragment('foreman_settings+01-header.yaml').
             with_content(/^:unattended:\s*true$/).
+            without_content(/^:unattended_url:/).
             with_content(/^:login:\s*true$/).
             with_content(/^:require_ssl:\s*true$/).
             with_content(/^:locations_enabled:\s*false$/).
@@ -159,6 +160,17 @@ describe 'foreman::config' do
             with_content(/^:oauth_consumer_secret:\s*def$/).
             with({})
         end
+      end
+
+      describe 'with unattended_url' do
+        let :pre_condition do
+          "class {'foreman':
+            unattended_url => 'http://example.com',
+          }"
+        end
+
+        it { should contain_concat__fragment('foreman_settings+01-header.yaml').
+            with_content(%r{^:unattended_url:\s*http://example.com$}) }
       end
 
       describe 'with url ending with trailing slash' do

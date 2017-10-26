@@ -50,6 +50,8 @@
 #
 # $unattended::                 Should Foreman manage host provisioning as well
 #
+# $unattended_url::             URL hosts will retrieve templates from during build (normally http as many installers don't support https)
+#
 # $authentication::             Enable user authentication. Initial credentials are set using admin_username
 #                               and admin_password.
 #
@@ -205,6 +207,7 @@ class foreman (
   Stdlib::HTTPUrl $foreman_url = $::foreman::params::foreman_url,
   Boolean $puppetrun = $::foreman::params::puppetrun,
   Boolean $unattended = $::foreman::params::unattended,
+  Optional[Stdlib::HTTPUrl] $unattended_url = $::foreman::params::unattended_url,
   Boolean $authentication = $::foreman::params::authentication,
   Boolean $passenger = $::foreman::params::passenger,
   Optional[String] $passenger_ruby = $::foreman::params::passenger_ruby,
