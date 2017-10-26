@@ -4,6 +4,9 @@
 <%= @header %>
 
 :unattended: <%= scope.lookupvar("foreman::unattended") %>
+<% unless [nil, :undefined, :undef].include?(scope.lookupvar("foreman::unattended_url")) -%>
+:unattended_url: <%= scope.lookupvar("foreman::unattended_url") %>
+<% end -%>
 :login: <%= scope.lookupvar("foreman::authentication") %>
 :require_ssl: <%= scope.lookupvar("foreman::ssl") %>
 :locations_enabled: <%= scope.lookupvar("foreman::locations_enabled") %>

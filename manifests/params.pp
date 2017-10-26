@@ -15,6 +15,7 @@ class foreman::params {
   $receive_facts  = true
   # should foreman manage host provisioning as well
   $unattended     = true
+  $unattended_url = undef
   # Enable users authentication (default user:admin pw:changeme)
   $authentication = true
   # configure foreman via apache and passenger
