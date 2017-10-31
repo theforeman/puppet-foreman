@@ -17,10 +17,10 @@ Checklist (and a short version for the impatient)
       description (50 characters is the soft limit, excluding ticket
       number(s)), and should skip the full stop.
 
-    - If you have a [http://projects.theforeman.org/projects/puppet-foreman/issues](Redmine issue)
+    - If you have a [https://projects.theforeman.org/projects/puppet-foreman/issues](Redmine issue)
       number, associate the issue in the message.  The first line should start
       with the issue number in the form "fixes #XXXX - rest of message".
-      [More information on the Redmine style](http://projects.theforeman.org/projects/foreman/wiki/Reviewing_patches-commit_message_format).
+      [More information on the Redmine style](https://projects.theforeman.org/projects/foreman/wiki/Reviewing_patches-commit_message_format).
       Tickets are not required for our installer Puppet modules.
 
     - If you have a GitHub issue number, associate the issue in the message.
@@ -108,9 +108,9 @@ The long version
       is merged in.
 
       GitHub has some pretty good
-      [general documentation](http://help.github.com/) on using
+      [general documentation](https://help.github.com/) on using
       their site.  They also have documentation on
-      [creating pull requests](http://help.github.com/send-pull-requests/).
+      [creating pull requests](https://help.github.com/send-pull-requests/).
 
       In general, after pushing your topic branch up to your
       repository on GitHub, you can switch to the branch in the
@@ -132,10 +132,10 @@ Getting Started
 ---------------
 
 Our puppet modules provide [`Gemfile`](./Gemfile)s which can tell a ruby
-package manager such as [bundler](http://bundler.io/) what Ruby packages,
+package manager such as [bundler](https://bundler.io/) what Ruby packages,
 or Gems, are required to build, develop, and test this software.
 
-Please make sure you have [bundler installed](http://bundler.io/#getting-started)
+Please make sure you have [bundler installed](https://bundler.io/#getting-started)
 on your system, then use it to install all dependencies needed for this project,
 by running
 
@@ -238,11 +238,11 @@ review.
 Additional Resources
 ====================
 
-* [Support and contact details](http://theforeman.org/support.html)
+* [Support and contact details](https://theforeman.org/support.html)
 
-* [General Foreman contribution details](http://theforeman.org/contribute.html)
+* [General Foreman contribution details](https://theforeman.org/contribute.html)
 
-* [General GitHub documentation](http://help.github.com/)
+* [General GitHub documentation](https://help.github.com/)
 
-* [GitHub pull request documentation](http://help.github.com/send-pull-requests/)
+* [GitHub pull request documentation](https://help.github.com/send-pull-requests/)
 

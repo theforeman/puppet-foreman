@@ -43,3 +43,9 @@ coverage/
 ## Beaker
 .vagrant/
 log/
+
+# Files we don't want to ship in a release
+CONTRIBUTING.md
+Gemfile
+Rakefile
+spec/

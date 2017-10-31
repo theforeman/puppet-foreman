@@ -3,7 +3,7 @@
 # https://github.com/voxpupuli/modulesync
 # https://github.com/theforeman/foreman-installer-modulesync
 HOSTS:
-  ubuntu-1604-x64:
+  ubuntu-1604-x64.example.com:
     platform: ubuntu-16.04-amd64
     hypervisor: docker
     image: ubuntu:16.04

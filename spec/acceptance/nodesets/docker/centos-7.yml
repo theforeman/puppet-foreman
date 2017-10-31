@@ -3,7 +3,7 @@
 # https://github.com/voxpupuli/modulesync
 # https://github.com/theforeman/foreman-installer-modulesync
 HOSTS:
-  centos-7-x64:
+  centos-7-x64.example.com:
     platform: el-7-x86_64
     hypervisor: docker
     image: centos:7
