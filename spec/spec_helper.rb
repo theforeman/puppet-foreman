@@ -8,9 +8,10 @@ require 'puppet/reports'
 require 'rspec-puppet-facts'
 include RspecPuppetFacts
 
-                                                    # Original fact sources:
-add_custom_fact :concat_basedir, '/tmp'             # puppetlabs-concat
-add_custom_fact :puppetversion, Puppet.version      # Facter, but excluded from rspec-puppet-facts
+                                                                             # Original fact sources:
+add_custom_fact :concat_basedir, '/tmp'                                      # puppetlabs-concat
+add_custom_fact :puppet_environmentpath, '/etc/puppetlabs/code/environments' # puppetlabs-stdlib
+add_custom_fact :root_home, '/root'                                          # puppetlabs-stdlib
 
 # Workaround for no method in rspec-puppet to pass undef through :params
 class Undef
