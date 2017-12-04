@@ -25,7 +25,7 @@ gem 'puppet-lint-unquoted_string-check'
 gem 'puppet-lint-variable_contains_upcase'
 gem 'puppet-lint-version_comparison-check'
 gem 'simplecov'
-gem 'puppet-blacksmith', '>= 3.1.0', {"groups"=>["development"]}
+gem 'puppet-blacksmith', '>= 4.1.0', {"groups"=>["development"]}
 gem 'beaker', '>= 3.9.0', {"groups"=>["system_tests"]}
 gem 'beaker-rspec', {"groups"=>["system_tests"]}
 gem 'beaker-module_install_helper', {"groups"=>["system_tests"]}

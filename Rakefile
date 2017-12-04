@@ -9,6 +9,8 @@ begin
   require 'puppet_blacksmith/rake_tasks'
   Blacksmith::RakeTask.new do |t|
     t.tag_pattern = "%s"
+    t.tag_message_pattern = "Version %s"
+    t.tag_sign = true
   end
 rescue LoadError
 end
