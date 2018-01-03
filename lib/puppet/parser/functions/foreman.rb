@@ -60,12 +60,19 @@ module Puppet::Parser::Functions
     timeout       = (args_hash['timeout']      || 5).to_i
 
     # extend this as required
-    searchable_items = %w{ environments fact_values hosts hostgroups puppetclasses smart_proxies subnets }
+    searchable_items = %w{ environments fact_values hosts hostenc hostgroups puppetclasses smart_proxies subnets }
+
     raise Puppet::ParseError, "Foreman: Invalid item to search on: #{item}, must be one of #{searchable_items.join(", ")}." unless searchable_items.include?(item)
     raise Puppet::ParseError, "Foreman: Invalid filter_result: #{filter_result}, must be a String or an Array" unless filter_result.is_a? String or filter_result.is_a? Array or filter_result.is_a? Hash or filter_result == false
 
     begin
-      path = URI.escape("/api/#{item}?search=#{search}&per_page=#{per_page}")
+      if item == 'hostenc'
+        path = URI.escape("/api/hosts/#{search}/enc")
+        return_elem = 'data'
+      else
+        path = URI.escape("/api/#{item}?search=#{search}&per_page=#{per_page}")
+        return_elem = 'results'
+      end
 
       req = Net::HTTP::Get.new(path)
       req['Content-Type'] = 'application/json'
@@ -96,19 +103,19 @@ module Puppet::Parser::Functions
     end
 
     # Filter results
-    if filter_result != false and results.has_key?('results')
+    if filter_result != false and results.has_key?(return_elem)
       filtered_results = Array.new
 
       if filter_result.is_a? String
         # filter into an array
-        results['results'].each do |result|
+        results[return_elem].each do |result|
           if result.has_key?(filter_result)
             filtered_results << result[filter_result]
           end
         end
       elsif filter_result.is_a? Array
         # filter into an array of hashes by given key
-        results['results'].each do |result|
+        results[return_elem].each do |result|
           resulthash = Hash.new
           result.each do |key,value|
             if filter_result.include? key
@@ -121,7 +128,7 @@ module Puppet::Parser::Functions
         end
       else
         # filter into an array of hashes while rename keys
-        results['results'].each do |result|
+        results[return_elem].each do |result|
           resulthash = Hash.new
           result.each do |key,value|
             if filter_result.include? key
