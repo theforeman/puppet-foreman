@@ -103,6 +103,8 @@ class foreman::params {
   $jobs_service_ensure = 'running'
   $jobs_service_enable = true
 
+  $hsts_enabled = true
+
   # OS specific paths
   case $::osfamily {
     'RedHat': {

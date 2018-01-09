@@ -30,6 +30,9 @@
 :ssl_ca_file: <%= scope.lookupvar("foreman::client_ssl_ca") %>
 :ssl_priv_key: <%= scope.lookupvar("foreman::client_ssl_key") %>
 
+# HSTS setting
+:hsts_enabled: <%= scope.lookupvar("foreman::hsts_enabled") %>
+
 # Log settings for the current environment can be adjusted by adding them
 # here. For example, if you want to increase the log level.
 :logging:
