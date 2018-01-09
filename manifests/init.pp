@@ -206,6 +206,9 @@
 # $jobs_service::               Name of the service for running the background Dynflow executor
 #
 # $dynflow_in_core::            Whether the Dynflow executor service is provided by Foreman or tasks
+#
+# $hsts_enabled::               Should HSTS enforcement in https requests be enabled
+#
 class foreman (
   Stdlib::HTTPUrl $foreman_url = $::foreman::params::foreman_url,
   Boolean $puppetrun = $::foreman::params::puppetrun,
@@ -303,6 +306,7 @@ class foreman (
   Integer[0, 65535] $dynflow_pool_size = $::foreman::params::dynflow_pool_size,
   Optional[String] $jobs_service = $::foreman::params::jobs_service,
   Boolean $dynflow_in_core = $::foreman::params::dynflow_in_core,
+  Boolean $hsts_enabled = $::foreman::params::hsts_enabled,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $::foreman::db_type ? {
