@@ -44,7 +44,7 @@ class foreman::cli (
     $foreman_url_real = pick($foreman_url, $::foreman::foreman_url)
     $username_real    = pick($username, $::foreman::admin_username)
     $password_real    = pick($password, $::foreman::admin_password)
-    $ssl_ca_file_real = pick($ssl_ca_file, $::foreman::server_ssl_ca)
+    $ssl_ca_file_real = pick($ssl_ca_file, $::foreman::server_ssl_chain)
   } else {
     $foreman_url_real = $foreman_url
     $username_real    = $username

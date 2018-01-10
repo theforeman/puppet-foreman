@@ -77,9 +77,9 @@ describe 'foreman::cli' do
 
         let :pre_condition do
           "class { 'foreman':
-             admin_username => 'joe',
-             admin_password => 'secret',
-             server_ssl_ca  => '/etc/puppetlabs/puppet/ssl/certs/ca.pub',
+             admin_username    => 'joe',
+             admin_password    => 'secret',
+             server_ssl_chain  => '/etc/puppetlabs/puppet/ssl/certs/ca.pub',
            }"
         end
 
