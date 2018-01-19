@@ -10,7 +10,7 @@ require "timeout"
 Puppet::Functions.create_function(:'foreman::smartvar') do
   dispatch :smartvar do
     required_param 'String[1]', :var
-    optional_param 'String', :foreman_url
+    optional_param 'Stdlib::Httpurl', :foreman_url
     optional_param 'String', :foreman_user
     optional_param 'String', :foreman_pass
   end
