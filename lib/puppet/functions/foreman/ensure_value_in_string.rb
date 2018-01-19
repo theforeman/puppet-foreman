@@ -15,7 +15,7 @@
 Puppet::Functions.create_function(:'foreman::ensure_value_in_string') do
   dispatch :ensure_value_in_string do
     required_param 'String', :string
-    required_param 'Array', :adding
+    required_param 'Array[String]', :adding
     optional_param 'String', :separator
   end
 

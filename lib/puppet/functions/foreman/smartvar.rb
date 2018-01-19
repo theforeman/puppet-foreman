@@ -8,14 +8,14 @@ require "uri"
 require "timeout"
 
 Puppet::Functions.create_function(:'foreman::smartvar') do
-  def smartvar(var)
-    #URL to query
-    foreman_url  = "http://foreman"
-    foreman_user = "admin"
-    foreman_pass = "changeme"
+  dispatch :smartvar do
+    required_param 'String[1]', :var
+    optional_param 'String', :foreman_url
+    optional_param 'String', :foreman_user
+    optional_param 'String', :foreman_pass
+  end
 
-    raise Puppet::ParseError, "Must provide a variable name to search for" if var.nil?
-
+   def smartvar(var, foreman_url = "http://foreman", foreman_user = "admin", foreman_pass = "changeme")
     scope = closure_scope
     fqdn = scope['facts']['fqdn']
 

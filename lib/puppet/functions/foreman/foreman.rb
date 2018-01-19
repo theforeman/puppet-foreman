@@ -1,16 +1,15 @@
 # Query Foreman
 #
-# The foreman() parser takes a hash value with parameters to execute the query.
+# The foreman() parser takes various parameters to execute a query against the foreman-api.
 #
-# To use foreman(), first create a hash. This sample hash will contain
-# parameters to let us get a list of 'hosts' that match our search parameters.
+# This sample contains parameters to let us get a list of 'hosts' that match our search parameters.
 #
-# $f = { item         => 'hosts',
-#        search       => 'hostgroup=Grid',
-#        per_page     => '20',
-#        foreman_url  => 'https://foreman',
-#        foreman_user => 'my_api_foreman_user',
-#        foreman_pass => 'my_api_foreman_pass' }
+#        item         => 'hosts'
+#        search       => 'hostgroup=Grid'
+#        per_page     => '20'
+#        foreman_url  => 'https://foreman'
+#        foreman_user => 'my_api_foreman_user'
+#        foreman_pass => 'my_api_foreman_pass'
 #
 # 'item' may be: environments, fact_values, hosts, hostgroups, puppetclasses, smart_proxies, subnets
 # 'search' is your actual search query.
@@ -31,7 +30,8 @@
 #           This defaults to five seconds.
 #
 # Then, use a variable to capture its output:
-# $hosts = foreman($f)
+# $f = ['hosts', 'hostgroup=Grid', '20', 'https://foreman', 'my_api_foreman_user', 'my_api_foreman_pass']
+# $hosts = foreman(*$f)
 #
 # Note: If you're using this in a template, you may be receiving an array of
 # hashes. So you might need to use two loops to get the values you need.
@@ -46,25 +46,22 @@ require "timeout"
 
 Puppet::Functions.create_function(:'foreman::foreman') do
   dispatch :foreman do
-    required_param 'Hash', :args_hash
+    required_param 'String', :item
+    required_param 'String', :search
+    optional_param 'Variant[Integer, String]', :per_page
+    optional_param 'String', :foreman_url
+    optional_param 'String', :foreman_user
+    optional_param 'String', :foreman_pass
+    optional_param 'Integer', :timeout
+    optional_param 'Variant[String, Array, Hash, Boolean]', :filter_result
+    optional_param 'Variant[Boolean, String]', :use_tfmproxy
   end
 
-  def foreman(args_hash)
-    # parse an args hash
-    item          = args_hash["item"]
-    search        = args_hash["search"]
-    per_page      = args_hash["per_page"]     || "20"
-    use_tfmproxy  = args_hash["use_tfmproxy"] || false
-    foreman_url   = args_hash["foreman_url"]  || "https://localhost" # defaults: all-in-one
-    foreman_user  = args_hash["foreman_user"] || "admin"             # has foreman/puppet
-    foreman_pass  = args_hash["foreman_pass"] || "changeme"          # on the same box
-    filter_result = args_hash['filter_result'] || false
-    timeout       = (args_hash['timeout']      || 5).to_i
-
+  def foreman(item, search, per_page = "20", foreman_url = "https://localhost", foreman_user = "admin", foreman_pass = "changeme", timeout = 5, filter_result = false, use_tfmproxy = false)
     # extend this as required
     searchable_items = %w{ environments fact_values hosts hostgroups puppetclasses smart_proxies subnets }
     raise Puppet::ParseError, "Foreman: Invalid item to search on: #{item}, must be one of #{searchable_items.join(", ")}." unless searchable_items.include?(item)
-    raise Puppet::ParseError, "Foreman: Invalid filter_result: #{filter_result}, must be a String or an Array" unless filter_result.is_a? String or filter_result.is_a? Array or filter_result.is_a? Hash or filter_result == false
+    raise Puppet::ParseError, "Foreman: Invalid filter_result: #{filter_result}, must be a String or an Array or false" unless filter_result.is_a? String or filter_result.is_a? Array or filter_result.is_a? Hash or filter_result == false
 
     begin
       path = URI.escape("/api/#{item}?search=#{search}&per_page=#{per_page}")
