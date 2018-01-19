@@ -1,46 +1,32 @@
-begin
-  require 'facter/util/sssd'
-rescue LoadError
-  # Puppet 2 compatibility, facter/ dir is the load path, not lib/
-  require 'util/sssd'
-end
+require 'facter/util/sssd'
 
 if defined? Facter::Util::Sssd
-  # == Fact: default_ipa_realm
-  # == Fact: default_ipa_server
-  # == Fact: sssd_services
-  # == Fact: sssd_ldap_user_extra_attrs
-  # == Fact: sssd_allowed_uids
-  # == Fact: sssd_user_attributes
-  #
-  Facter.add(:default_ipa_realm) do
-    setcode do
-      Facter::Util::Sssd.ipa_value('global/realm')
+  # == Fact: ipa
+  Facter.add(:ipa, :type => :aggregate) do
+    {
+      :default_realm => 'global/realm',
+      :default_server => 'global/server',
+    }.each do |key, path|
+      chunk(key) do
+        val = Facter::Util::Sssd.ipa_value(path)
+        {key => val} if val
+      end
     end
   end
-  Facter.add(:default_ipa_server) do
-    setcode do
-      Facter::Util::Sssd.ipa_value('global/server')
+
+  # == Fact: sssd
+  Facter.add(:sssd, :type => :aggregate) do
+    {
+      :services => 'target[.="sssd"]/services',
+      :ldap_user_extra_attrs => 'target[.=~regexp("domain/.*")][1]/ldap_user_extra_attrs',
+      :allowed_uids => 'target[.="ifp"]/allowed_uids',
+      :user_attributes => 'target[.="ifp"]/user_attributes',
+    }.each do |key, path|
+      chunk(key) do
+        val = Facter::Util::Sssd.sssd_value(path)
+        {key => val} if val
+      end
     end
-  end
-  Facter.add(:sssd_services) do
-    setcode do
-      Facter::Util::Sssd.sssd_value('target[.="sssd"]/services')
-    end
-  end
-  Facter.add(:sssd_ldap_user_extra_attrs) do
-    setcode do
-      Facter::Util::Sssd.sssd_value('target[.=~regexp("domain/.*")][1]/ldap_user_extra_attrs')
-    end
-  end
-  Facter.add(:sssd_allowed_uids) do
-    setcode do
-      Facter::Util::Sssd.sssd_value('target[.="ifp"]/allowed_uids')
-    end
-  end
-  Facter.add(:sssd_user_attributes) do
-    setcode do
-      Facter::Util::Sssd.sssd_value('target[.="ifp"]/user_attributes')
-    end
+
   end
 end

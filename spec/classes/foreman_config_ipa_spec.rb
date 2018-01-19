@@ -63,12 +63,13 @@ describe 'foreman::config' do
             let :enrolled_facts do
               facts.merge({
                 :interfaces => '',
-                :default_ipa_server => 'ipa.example.com',
-                :default_ipa_realm => 'REALM',
-                :sssd_services => 'ifp',
-                :sssd_ldap_user_extra_attrs => '',
-                :sssd_allowed_uids => '',
-                :sssd_user_attributes => '',
+                :ipa => {
+                  :default_server => 'ipa.example.com',
+                  :default_realm => 'REALM',
+                },
+                :sssd => {
+                  :services => ['ifp'],
+                },
               })
             end
             let(:facts) { enrolled_facts }

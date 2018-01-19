@@ -5,7 +5,7 @@
   AuthName "Kerberos Login"
   KrbMethodNegotiate On
   KrbMethodK5Passwd Off
-  KrbAuthRealms <%= @default_ipa_realm %>
+  KrbAuthRealms <%= @facts['ipa']['default_realm'] %>
   Krb5KeyTab <%= scope.lookupvar('::foreman::http_keytab') %>
   KrbLocalUserMapping On
   # require valid-user

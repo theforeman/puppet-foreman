@@ -16,7 +16,8 @@ begin
     end
 
     def self.sssd_value(path)
-      aug_value('Sssd.lns', '/etc/sssd/sssd.conf', path)
+      val = aug_value('Sssd.lns', '/etc/sssd/sssd.conf', path)
+      val.split(',').map(&:strip) if val
     end
   end
 rescue LoadError => e
