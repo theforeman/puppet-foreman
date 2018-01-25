@@ -132,13 +132,13 @@ class foreman::config {
 
 
       if $::foreman::ipa_manage_sssd {
-        $sssd_services = ensure_value_in_string($::sssd_services, ['ifp'], ', ')
+        $sssd_services = foreman::ensure_value_in_string($::sssd_services, ['ifp'], ', ')
 
-        $sssd_ldap_user_extra_attrs = ensure_value_in_string($::sssd_ldap_user_extra_attrs, ['email:mail', 'lastname:sn', 'firstname:givenname'], ', ')
+        $sssd_ldap_user_extra_attrs = foreman::ensure_value_in_string($::sssd_ldap_user_extra_attrs, ['email:mail', 'lastname:sn', 'firstname:givenname'], ', ')
 
-        $sssd_allowed_uids = ensure_value_in_string($::sssd_allowed_uids, ['apache', 'root'], ', ')
+        $sssd_allowed_uids = foreman::ensure_value_in_string($::sssd_allowed_uids, ['apache', 'root'], ', ')
 
-        $sssd_user_attributes = ensure_value_in_string($::sssd_user_attributes, ['+email', '+firstname', '+lastname'], ', ')
+        $sssd_user_attributes = foreman::ensure_value_in_string($::sssd_user_attributes, ['+email', '+firstname', '+lastname'], ', ')
 
         augeas { 'sssd-ifp-extra-attributes':
           context => '/files/etc/sssd/sssd.conf',
