@@ -1,5 +1,41 @@
 # Changelog
 
+## [9.0.0](https://github.com/theforeman/puppet-foreman/tree/9.0.0) (2018-01-25)
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/8.1.1...9.0.0)
+
+**Breaking changes:**
+
+- Convert ipa and sssd facts to structured facts [\#618](https://github.com/theforeman/puppet-foreman/pull/618) ([ekohl](https://github.com/ekohl))
+- Fixes [\#18757](https://projects.theforeman.org/issues/18757) - Handle dynflow service in foreman core [\#602](https://github.com/theforeman/puppet-foreman/pull/602) ([ekohl](https://github.com/ekohl))
+- Remove discovery image downloading [\#583](https://github.com/theforeman/puppet-foreman/pull/583) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Use puppet4 functions-api [\#623](https://github.com/theforeman/puppet-foreman/pull/623) ([juliantodt](https://github.com/juliantodt))
+- Refs [\#22165](https://projects.theforeman.org/issues/22165) - Add installer support for disabling hsts [\#614](https://github.com/theforeman/puppet-foreman/pull/614) ([tbrisker](https://github.com/tbrisker))
+- remove EOL OSes, add new ones [\#607](https://github.com/theforeman/puppet-foreman/pull/607) ([mmoll](https://github.com/mmoll))
+- Add unattended\_url parameter [\#606](https://github.com/theforeman/puppet-foreman/pull/606) ([matonb](https://github.com/matonb))
+- Manage puppetdb\_api\_version config entry [\#604](https://github.com/theforeman/puppet-foreman/pull/604) ([treydock](https://github.com/treydock))
+- Fixes [\#21023](https://projects.theforeman.org/issues/21023) - Update start-timeout to 90 [\#603](https://github.com/theforeman/puppet-foreman/pull/603) ([chris1984](https://github.com/chris1984))
+- Fixes [\#20819](https://projects.theforeman.org/issues/20819) - Allow turning task cleanup cron on and off [\#582](https://github.com/theforeman/puppet-foreman/pull/582) ([adamruzicka](https://github.com/adamruzicka))
+- Add ability to set SSLProtocol for Apache vhost [\#600](https://github.com/theforeman/puppet-foreman/pull/600) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- fixes [\#22196](https://projects.theforeman.org/issues/22196) - use ssl chain for hammer if available [\#615](https://github.com/theforeman/puppet-foreman/pull/615) ([stbenjam](https://github.com/stbenjam))
+- Change to safe working directory in external\_node\_v2.rb [\#612](https://github.com/theforeman/puppet-foreman/pull/612) ([antaflos](https://github.com/antaflos))
+- Fixes [\#21072](https://projects.theforeman.org/issues/21072) - build apipie cache after plugins [\#592](https://github.com/theforeman/puppet-foreman/pull/592) ([mbacovsky](https://github.com/mbacovsky))
+
+## 8.1.1
+* New classes to install Foreman plugins:
+    * Add foreman::plugin::foreman_userdata
+    * Add foreman::plugin::foreman_snapshot_management
+* Other changes and fixes:
+    * Add retry to foreman reporting script
+    * Add the ability to get data by using the proxy SSL authentication configuration
+    * Allow configuring Dynflow pool size
+    * Bump allowed version of puppet-extlib to 3.0.0
+
 ## 8.1.0
 * Other changes and fixes:
     * update node.rb for Puppet5 env fact
