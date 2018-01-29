@@ -95,7 +95,7 @@ describe 'foreman::config' do
                 })
               end
 
-              it { should_not contain_exec('setsebool httpd_dbus_sssd') }
+              it { should_not contain_selboolean('httpd_dbus_sssd') }
             end
 
             describe 'on selinux system but disabled by user' do
@@ -113,7 +113,7 @@ describe 'foreman::config' do
             }"
               end
 
-              it { should_not contain_exec('setsebool httpd_dbus_sssd') }
+              it { should_not contain_selboolean('httpd_dbus_sssd') }
             end
 
             describe 'on selinux system with enabled by user' do
@@ -131,7 +131,7 @@ describe 'foreman::config' do
             }"
               end
 
-              it { should contain_exec('setsebool httpd_dbus_sssd') }
+              it { should contain_selboolean('httpd_dbus_sssd') }
             end
 
             describe 'on selinux' do
@@ -141,7 +141,7 @@ describe 'foreman::config' do
                 })
               end
 
-              it { should contain_exec('setsebool httpd_dbus_sssd') }
+              it { should contain_selboolean('httpd_dbus_sssd') }
             end
           end
         end
