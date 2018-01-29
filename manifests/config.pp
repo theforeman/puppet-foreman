@@ -76,16 +76,9 @@ class foreman::config {
       }
 
       if $::foreman::selinux or (str2bool($::selinux) and $::foreman::selinux != false) {
-        selboolean { 'allow_httpd_mod_auth_pam':
+        selboolean { ['allow_httpd_mod_auth_pam', 'httpd_dbus_sssd']:
           persistent => true,
           value      => 'on',
-        }
-
-        # Prior to RHEL 6.6, httpd_dbus_sssd is unavailable
-        exec { 'setsebool httpd_dbus_sssd':
-          command => '/usr/sbin/setsebool -P httpd_dbus_sssd on',
-          onlyif  => '/usr/sbin/getsebool httpd_dbus_sssd',
-          unless  => '/usr/sbin/getsebool httpd_dbus_sssd | grep \'on$\'',
         }
       }
 
