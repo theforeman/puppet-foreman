@@ -267,4 +267,7 @@ class foreman::params {
   $server_port     = 80
   $server_ssl_port = 443
 
+  # Webpack development server
+  $webpack_server  = false
+  $webpack_https   = false
 }

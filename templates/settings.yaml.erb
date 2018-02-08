@@ -47,3 +47,9 @@
 
 :dynflow:
   :pool_size: <%= scope.lookupvar("foreman::dynflow_pool_size") %>
+
+<% unless [false, nil, :undefined, :undef].include?(scope.lookupvar("foreman::webpack_server")) -%>
+# Webpack settings for development environment
+:webpack_dev_server: true
+:webpack_dev_server_https: <%= scope.lookupvar("foreman::webpack_https") -%>
+<% end -%>
