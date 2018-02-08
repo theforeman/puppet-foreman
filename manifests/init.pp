@@ -209,6 +209,10 @@
 #
 # $hsts_enabled::               Should HSTS enforcement in https requests be enabled
 #
+# $webpack_server::             Enable webpack server (for development environments)
+#
+# $webpack_https::              Enable HTTPS for webpack (for development environments)
+#
 class foreman (
   Stdlib::HTTPUrl $foreman_url = $::foreman::params::foreman_url,
   Boolean $puppetrun = $::foreman::params::puppetrun,
@@ -307,6 +311,8 @@ class foreman (
   Optional[String] $jobs_service = $::foreman::params::jobs_service,
   Boolean $dynflow_in_core = $::foreman::params::dynflow_in_core,
   Boolean $hsts_enabled = $::foreman::params::hsts_enabled,
+  Optional[Boolean] $webpack_server = $::foreman::params::webpack_server,
+  Boolean $webpack_https = $::foreman::params::webpack_https,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $::foreman::db_type ? {

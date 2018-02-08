@@ -310,6 +310,22 @@ describe 'foreman::config' do
           end
         end
       end
+
+      describe 'with webpack' do
+        let :pre_condition do
+          "class {'foreman':
+            webpack_server => true,
+            webpack_https  => true,
+          }"
+        end
+
+        it 'should set up foreman settings correctly' do
+          should contain_concat__fragment('foreman_settings+01-header.yaml').
+              with_content(/^:webpack_dev_server:\s*true$/).
+              with_content(/^:webpack_dev_server_https:\s*true$/).
+              with({})
+        end
+      end
     end
   end
 end
