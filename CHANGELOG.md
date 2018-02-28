@@ -1,5 +1,13 @@
 # Changelog
 
+## [9.0.1](https://github.com/theforeman/puppet-foreman/tree/9.0.1) (2018-02-28)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/9.0.0...9.0.1)
+
+**Fixed bugs:**
+
+- Remove test and development database declarations [\#624](https://github.com/theforeman/puppet-foreman/pull/624) ([ehelms](https://github.com/ehelms))
+
 ## [9.0.0](https://github.com/theforeman/puppet-foreman/tree/9.0.0) (2018-01-25)
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/8.1.1...9.0.0)
 
