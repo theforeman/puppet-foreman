@@ -5,7 +5,7 @@
     - docker/debian-8
   env:
     global:
-      - PARALLEL_TEST_PROCESSORS=16
+      - PARALLEL_TEST_PROCESSORS=8
 Gemfile:
   extra:
     - gem: webmock
