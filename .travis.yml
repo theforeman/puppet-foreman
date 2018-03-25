@@ -10,7 +10,7 @@ env:
   matrix:
     - PUPPET_VERSION=4.9
   global:
-    - PARALLEL_TEST_PROCESSORS=16
+    - PARALLEL_TEST_PROCESSORS=8
 matrix:
   fast_finish: true
   include:
