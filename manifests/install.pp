@@ -48,4 +48,10 @@ class foreman::install {
       ensure => installed,
     }
   }
+
+  if $::foreman::logging_type == 'journald' {
+    package { 'foreman-journald':
+      ensure => installed,
+    }
+  }
 }

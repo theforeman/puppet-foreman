@@ -12,6 +12,8 @@ describe 'Scenario: install foreman' do
     end
   end
 
+  service_name = ['debian', 'ubuntu'].include?(os[:family]) ? 'apache2' : 'httpd'
+
   let(:pp) do
     configure = os[:family] == 'redhat' && os[:family] != 'fedora'
     <<-EOS
@@ -42,13 +44,14 @@ describe 'Scenario: install foreman' do
       user_groups         => [],
       admin_username      => 'admin',
       admin_password      => 'changeme',
+      logging_type        => 'journald',
     }
     EOS
   end
 
   it_behaves_like 'a idempotent resource'
 
-  describe service(os[:family] == 'debian' ? 'apache2' : 'httpd') do
+  describe service(service_name) do
     it { is_expected.to be_enabled }
     it { is_expected.to be_running }
   end
@@ -59,11 +62,7 @@ describe 'Scenario: install foreman' do
   end
 
   describe package('foreman-journald') do
-    it { is_expected.not_to be_installed }
-  end
-
-  describe package('foreman-telemetry') do
-    it { is_expected.not_to be_installed }
+    it { is_expected.to be_installed }
   end
 
   describe port(80) do
@@ -72,5 +71,17 @@ describe 'Scenario: install foreman' do
 
   describe port(443) do
     it { is_expected.to be_listening }
+  end
+
+  describe command("curl -s --cacert /etc/puppetlabs/puppet/ssl/certs/ca.pem https://#{host_inventory['fqdn']} -w '\%{redirect_url}' -o /dev/null") do
+    its(:stdout) { is_expected.to eq("https://#{host_inventory['fqdn']}/users/login") }
+  end
+
+  describe command("journalctl -u #{service_name}") do
+    its(:stdout) { is_expected.to match(%r{Redirected to https://#{host_inventory['fqdn']}/users/login}) }
+  end
+
+  describe command('journalctl -u dynflowd') do
+    its(:stdout) { is_expected.to match(%r{Dynflow Executor: start in progress}) }
   end
 end

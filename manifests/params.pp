@@ -262,6 +262,8 @@ class foreman::params {
 
   # Application logging
   $logging_level = 'info'
+  $logging_type = 'file'
+  $logging_layout = 'pattern'
   $loggers = {}
 
   # Starting puppet runs with foreman
