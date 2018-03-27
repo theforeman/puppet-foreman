@@ -25,7 +25,7 @@ matrix:
       bundler_args: --without development
     - rvm: 2.3.1
       dist: trusty
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/debian-8
+      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/debian-9
       script: bundle exec rake beaker
       services: docker
       bundler_args: --without development
