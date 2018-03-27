@@ -37,6 +37,9 @@
 # here. For example, if you want to increase the log level.
 :logging:
   :level: <%= scope.lookupvar("foreman::logging_level") %>
+  :production:
+    :type: <%= scope.lookupvar("foreman::logging_type") %>
+    :layout: <%= scope.lookupvar("foreman::logging_layout") %>
 
 # Individual logging types can be toggled on/off here
 :loggers:

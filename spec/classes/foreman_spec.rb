@@ -16,6 +16,7 @@ describe 'foreman' do
       it { should contain_class('foreman::database') }
       it { should contain_class('foreman::service') }
       it { should contain_class('foreman::settings').that_requires('Class[foreman::database]') }
+      it { should_not contain_package('foreman-journald') }
 
       describe 'with foreman::cli' do
         let :pre_condition do
@@ -136,6 +137,25 @@ describe 'foreman' do
         end
 
         it { is_expected.to compile.with_all_deps }
+      end
+
+      context 'with journald logging' do
+        let :params do {
+          :logging_type => 'journald'
+        }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_package('foreman-journald') }
+        it 'should configure logging in settings.yaml' do
+          verify_concat_fragment_contents(catalogue, 'foreman_settings+01-header.yaml', [
+            ':logging:',
+            '  :level: info',
+            '  :production:',
+            '    :type: journald',
+            '    :layout: pattern',
+          ])
+        end
       end
     end
   end

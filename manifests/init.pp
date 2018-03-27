@@ -195,6 +195,10 @@
 #
 # $logging_level::                Logging level of the Foreman application
 #
+# $logging_type::                 Logging type of the Foreman application
+#
+# $logging_layout::               Logging layout of the Foreman application
+#
 # $loggers::                      Enable or disable specific loggers, e.g. {"sql" => true}
 #
 # $email_config_method::          Configure email settings in database (1.14+) or configuration file (deprecated)
@@ -306,6 +310,8 @@ class foreman (
   Stdlib::Absolutepath $websockets_ssl_key = $::foreman::params::websockets_ssl_key,
   Stdlib::Absolutepath $websockets_ssl_cert = $::foreman::params::websockets_ssl_cert,
   Enum['debug', 'info', 'warn', 'error', 'fatal'] $logging_level = $::foreman::params::logging_level,
+  Enum['file', 'syslog', 'journald'] $logging_type = $::foreman::params::logging_type,
+  Enum['pattern', 'multiline_pattern', 'json'] $logging_layout = $::foreman::params::logging_layout,
   Hash[String, Boolean] $loggers = $::foreman::params::loggers,
   Enum['database', 'file'] $email_config_method = $::foreman::params::email_config_method,
   String $email_conf = $::foreman::params::email_conf,
