@@ -1,5 +1,9 @@
 # Install a yum repo
-define foreman::repos::yum ($repo, $yumcode, $gpgcheck) {
+define foreman::repos::yum (
+  Variant[Enum['stable', 'nightly'], Pattern['^(releases\/)?\d+\.\d+$']] $repo,
+  String $yumcode,
+  Boolean $gpgcheck,
+) {
   $repo_path = $repo ? {
     'stable'      => 'releases/latest',
     /^releases\// => $repo,
@@ -8,7 +12,7 @@ define foreman::repos::yum ($repo, $yumcode, $gpgcheck) {
   }
   $plugins_repo_path = $repo ? {
     'stable'      => 'plugins/latest',
-    /^releases\// => regsubst($repo, '^release/(.*?)', 'plugins/\1'),
+    /^releases\// => regsubst($repo, '^releases/(.*?)', 'plugins/\1'),
     default       => "plugins/${repo}",
   }
   $gpgcheck_enabled_default = $gpgcheck ? {
