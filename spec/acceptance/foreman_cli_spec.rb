@@ -17,7 +17,7 @@ describe 'Scenario: install foreman-cli without foreman' do
     <<-EOS
     class { '::foreman::repo':
       custom_repo         => false,
-      repo                => 'stable',
+      repo                => 'nightly',
       gpgcheck            => true,
       configure_epel_repo => #{configure},
       configure_scl_repo  => #{configure},
