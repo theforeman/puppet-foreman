@@ -76,4 +76,13 @@ Puppet::Type.newtype(:foreman_smartproxy) do
     end
   end
 
+  autorequire(:class) do
+    ['Foreman::Service']
+  end
+
+  # puppetlabs-apache always defines the service httpd, even if the name is
+  # different.
+  autorequire(:service) do
+    ['httpd']
+  end
 end

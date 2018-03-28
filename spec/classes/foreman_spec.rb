@@ -415,6 +415,18 @@ describe 'foreman' do
           it { should contain_foreman_config_entry('smtp_authentication').with_value('cram-md5') }
         end
       end
+
+      describe 'with registration' do
+        let :pre_condition do
+          'foreman_smartproxy { "sp.example.com": }'
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_foreman_smartproxy('sp.example.com')
+            .that_requires(['Class[Foreman::Service]', 'Service[httpd]'])
+        end
+      end
     end
   end
 end
