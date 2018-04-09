@@ -5,7 +5,6 @@
 # === Parameters:
 #
 class foreman::cli::openscap {
-  package { "${::foreman::cli::hammer_plugin_prefix}foreman_openscap":
-    ensure => installed,
+  foreman::cli::plugin { 'foreman_openscap':
   }
 }
