@@ -93,6 +93,15 @@ class foreman::params {
   $email_smtp_user_name      = undef
   $email_smtp_password       = undef
 
+  # Telemetry
+  $telemetry_prefix             = 'fm_rails'
+  $telemetry_prometheus_enabled = false
+  $telemetry_statsd_enabled     = false
+  $telemetry_statsd_host        = '127.0.0.1:8125'
+  $telemetry_statsd_protocol    = 'statsd'
+  $telemetry_logger_enabled     = false
+  $telemetry_logger_level       = 'DEBUG'
+
   # Configure how many workers should Dynflow use
   $dynflow_pool_size = 5
   # Defines whether Foreman or the tasks plugin provides the Dynflow executor
