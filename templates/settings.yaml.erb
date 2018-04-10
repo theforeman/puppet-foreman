@@ -45,5 +45,26 @@
     :enabled: <%= enabled %>
 <% end -%>
 
+# Foreman telemetry has three destinations: prometheus, statsd and rails log.
+:telemetry:
+  # prefix for all metrics
+  :prefix: '<%= scope.lookupvar("foreman::telemetry_prefix") %>'
+  # prometheus endpoint is at /metrics
+  # warning: ruby client library currently does not supprt multi-process web servers
+  :prometheus:
+    :enabled: <%= scope.lookupvar("foreman::telemetry_prometheus_enabled") %>
+  # works with statsd_exporter too, use the rake task to generate config
+  :statsd:
+    :enabled: <%= scope.lookupvar("foreman::telemetry_statsd_enabled") %>
+    # IP and port (do not use DNS)
+    :host: '<%= scope.lookupvar("foreman::telemetry_statsd_host") %>'
+    # one of 'statsd', 'statsite' or 'datadog'
+    :protocol: '<%= scope.lookupvar("foreman::telemetry_statsd_protocol") %>'
+  # Rails logs end up in logger named 'telemetry' when enabled
+  :logger:
+    :enabled: <%= scope.lookupvar("foreman::telemetry_logger_enabled") %>
+    # logging level as in Logger::LEVEL
+    :level: '<%= scope.lookupvar("foreman::telemetry_logger_level") %>'
+
 :dynflow:
   :pool_size: <%= scope.lookupvar("foreman::dynflow_pool_size") %>

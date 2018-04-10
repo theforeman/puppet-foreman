@@ -2,212 +2,226 @@
 #
 # === Parameters:
 #
-# $admin_username::             Username for the initial admin user
+# $admin_username::               Username for the initial admin user
 #
-# $admin_password::             Password of the initial admin user, default is randomly generated
+# $admin_password::               Password of the initial admin user, default is randomly generated
 #
-# $admin_first_name::           First name of the initial admin user
+# $admin_first_name::             First name of the initial admin user
 #
-# $admin_last_name::            Last name of the initial admin user
+# $admin_last_name::              Last name of the initial admin user
 #
-# $admin_email::                E-mail address of the initial admin user
+# $admin_email::                  E-mail address of the initial admin user
 #
-# $db_manage::                  if enabled, will install and configure the database server on this host
+# $db_manage::                    if enabled, will install and configure the database server on this host
 #
-# $db_type::                    Database 'production' type
+# $db_type::                      Database 'production' type
 #
-# $email_delivery_method::      Email delivery method
+# $email_delivery_method::        Email delivery method
 #
-# $email_smtp_address::         SMTP server hostname, when delivery method is SMTP
+# $email_smtp_address::           SMTP server hostname, when delivery method is SMTP
 #
-# $email_smtp_port::            SMTP port
+# $email_smtp_port::              SMTP port
 #
-# $email_smtp_domain::          SMTP HELO domain
+# $email_smtp_domain::            SMTP HELO domain
 #
-# $email_smtp_authentication::  SMTP authentication method
+# $email_smtp_authentication::    SMTP authentication method
 #
-# $email_smtp_user_name::       Username for SMTP server auth, if authentication is enabled
+# $email_smtp_user_name::         Username for SMTP server auth, if authentication is enabled
 #
-# $email_smtp_password::        Password for SMTP server auth, if authentication is enabled
+# $email_smtp_password::          Password for SMTP server auth, if authentication is enabled
 #
-# $locations_enabled::          Enable locations?
+# $locations_enabled::            Enable locations?
 #
-# $organizations_enabled::      Enable organizations?
+# $organizations_enabled::        Enable organizations?
 #
-# $initial_organization::       Name of an initial organization
+# $initial_organization::         Name of an initial organization
 #
-# $initial_location::           Name of an initial location
+# $initial_location::             Name of an initial location
 #
-# $ipa_authentication::         Enable configuration for external authentication via IPA
+# $ipa_authentication::           Enable configuration for external authentication via IPA
 #
-# $puppetrun::                  Should Foreman be able to start Puppet runs on nodes
+# $puppetrun::                    Should Foreman be able to start Puppet runs on nodes
 #
 # === Advanced parameters:
 #
-# $email_source::               Template to use for email configuration file
+# $email_source::                 Template to use for email configuration file
 #
-# $foreman_url::                URL on which foreman is going to run
+# $foreman_url::                  URL on which foreman is going to run
 #
-# $unattended::                 Should Foreman manage host provisioning as well
+# $unattended::                   Should Foreman manage host provisioning as well
 #
-# $unattended_url::             URL hosts will retrieve templates from during build (normally http as many installers don't support https)
+# $unattended_url::               URL hosts will retrieve templates from during build (normally http as many installers don't support https)
 #
-# $authentication::             Enable user authentication. Initial credentials are set using admin_username
-#                               and admin_password.
+# $authentication::               Enable user authentication. Initial credentials are set using admin_username
+#                                 and admin_password.
 #
-# $passenger::                  Configure foreman via apache and passenger
+# $passenger::                    Configure foreman via apache and passenger
 #
-# $passenger_ruby::             Ruby interpreter used to run Foreman under Passenger
+# $passenger_ruby::               Ruby interpreter used to run Foreman under Passenger
 #
-# $passenger_ruby_package::     Package to install to provide Passenger libraries for the active Ruby
-#                               interpreter
+# $passenger_ruby_package::       Package to install to provide Passenger libraries for the active Ruby
+#                                 interpreter
 #
-# $plugin_prefix::              String which is prepended to the plugin package names
+# $plugin_prefix::                String which is prepended to the plugin package names
 #
-# $use_vhost::                  Enclose apache configuration in VirtualHost tags
+# $use_vhost::                    Enclose apache configuration in VirtualHost tags
 #
-# $servername::                 Server name of the VirtualHost in the webserver
+# $servername::                   Server name of the VirtualHost in the webserver
 #
-# $serveraliases::              Server aliases of the VirtualHost in the webserver
+# $serveraliases::                Server aliases of the VirtualHost in the webserver
 #
-# $ssl::                        Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
+# $ssl::                          Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
 #
-# $custom_repo::                No need to change anything here by default
-#                               if set to true, no repo will be added by this module, letting you to
-#                               set it to some custom location.
+# $custom_repo::                  No need to change anything here by default
+#                                 if set to true, no repo will be added by this module, letting you to
+#                                 set it to some custom location.
 #
-# $repo::                       This can be stable, nightly or a specific version i.e. 1.7
+# $repo::                         This can be stable, nightly or a specific version i.e. 1.7
 #
-# $configure_epel_repo::        If disabled the EPEL repo will not be configured on Red Hat family systems.
+# $configure_epel_repo::          If disabled the EPEL repo will not be configured on Red Hat family systems.
 #
-# $configure_scl_repo::         If disabled the SCL repo will not be configured on Red Hat clone systems.
-#                               (Currently only installs repos for CentOS and Scientific)
+# $configure_scl_repo::           If disabled the SCL repo will not be configured on Red Hat clone systems.
+#                                 (Currently only installs repos for CentOS and Scientific)
 #
-# $selinux::                    When undef, foreman-selinux will be installed if SELinux is enabled
-#                               setting to false/true will override this check (e.g. set to false on 1.1)
+# $selinux::                      When undef, foreman-selinux will be installed if SELinux is enabled
+#                                 setting to false/true will override this check (e.g. set to false on 1.1)
 #
-# $gpgcheck::                   Turn on/off gpg check in repo files (effective only on RedHat family systems)
+# $gpgcheck::                     Turn on/off gpg check in repo files (effective only on RedHat family systems)
 #
-# $version::                    Foreman package version, it's passed to ensure parameter of package resource
-#                               can be set to specific version number, 'latest', 'present' etc.
+# $version::                      Foreman package version, it's passed to ensure parameter of package resource
+#                                 can be set to specific version number, 'latest', 'present' etc.
 #
-# $plugin_version::             Foreman plugins package version, it's passed to ensure parameter of package resource
-#                               can be set to 'installed', 'latest', 'present' only
+# $plugin_version::               Foreman plugins package version, it's passed to ensure parameter of package resource
+#                                 can be set to 'installed', 'latest', 'present' only
 #
-# $db_adapter::                 Database 'production' adapter
+# $db_adapter::                   Database 'production' adapter
 #
-# $db_host::                    Database 'production' host
+# $db_host::                      Database 'production' host
 #
-# $db_port::                    Database 'production' port
+# $db_port::                      Database 'production' port
 #
-# $db_database::                Database 'production' database (e.g. foreman)
+# $db_database::                  Database 'production' database (e.g. foreman)
 #
-# $db_username::                Database 'production' user (e.g. foreman)
+# $db_username::                  Database 'production' user (e.g. foreman)
 #
-# $db_password::                Database 'production' password, default is randomly generated
+# $db_password::                  Database 'production' password, default is randomly generated
 #
-# $db_sslmode::                 Database 'production' ssl mode
+# $db_sslmode::                   Database 'production' ssl mode
 #
-# $db_root_cert::               Root cert used to verify SSL connection to postgres
+# $db_root_cert::                 Root cert used to verify SSL connection to postgres
 #
-# $db_pool::                    Database 'production' size of connection pool
+# $db_pool::                      Database 'production' size of connection pool
 #
-# $db_manage_rake::             if enabled, will run rake jobs, which depend on the database
+# $db_manage_rake::               if enabled, will run rake jobs, which depend on the database
 #
-# $app_root::                   Name of foreman root directory
+# $app_root::                     Name of foreman root directory
 #
-# $manage_user::                Controls whether foreman module will manage the user on the system.
+# $manage_user::                  Controls whether foreman module will manage the user on the system.
 #
-# $user::                       User under which foreman will run
+# $user::                         User under which foreman will run
 #
-# $group::                      Primary group for the Foreman user
+# $group::                        Primary group for the Foreman user
 #
-# $rails_env::                  Rails environment of foreman
+# $rails_env::                    Rails environment of foreman
 #
-# $user_groups::                Additional groups for the Foreman user
+# $user_groups::                  Additional groups for the Foreman user
 #
-# $puppet_home::                Puppet home directory
+# $puppet_home::                  Puppet home directory
 #
-# $puppet_ssldir::              Puppet SSL directory
+# $puppet_ssldir::                Puppet SSL directory
 #
-# $passenger_interface::        Defines which network interface passenger should listen on, undef means all interfaces
+# $passenger_interface::          Defines which network interface passenger should listen on, undef means all interfaces
 #
-# $passenger_prestart::         Pre-start the first passenger worker instance process during httpd start.
+# $passenger_prestart::           Pre-start the first passenger worker instance process during httpd start.
 #
-# $passenger_min_instances::    Minimum passenger worker instances to keep when application is idle.
+# $passenger_min_instances::      Minimum passenger worker instances to keep when application is idle.
 #
-# $passenger_start_timeout::    Amount of seconds to wait for Ruby application boot.
+# $passenger_start_timeout::      Amount of seconds to wait for Ruby application boot.
 #
-# $vhost_priority::             Defines Apache vhost priority for the Foreman vhost conf file.
+# $vhost_priority::               Defines Apache vhost priority for the Foreman vhost conf file.
 #
-# $server_port::                Defines Apache port for HTTP requests
+# $server_port::                  Defines Apache port for HTTP requests
 #
-# $server_ssl_port::            Defines Apache port for HTTPS requests
+# $server_ssl_port::              Defines Apache port for HTTPS requests
 #
-# $server_ssl_ca::              Defines Apache mod_ssl SSLCACertificateFile setting in Foreman vhost conf file.
+# $server_ssl_ca::                Defines Apache mod_ssl SSLCACertificateFile setting in Foreman vhost conf file.
 #
-# $server_ssl_chain::           Defines Apache mod_ssl SSLCertificateChainFile setting in Foreman vhost conf file.
+# $server_ssl_chain::             Defines Apache mod_ssl SSLCertificateChainFile setting in Foreman vhost conf file.
 #
-# $server_ssl_cert::            Defines Apache mod_ssl SSLCertificateFile setting in Foreman vhost conf file.
+# $server_ssl_cert::              Defines Apache mod_ssl SSLCertificateFile setting in Foreman vhost conf file.
 #
-# $server_ssl_certs_dir::       Defines Apache mod_ssl SSLCACertificatePath setting in Foreman vhost conf file.
+# $server_ssl_certs_dir::         Defines Apache mod_ssl SSLCACertificatePath setting in Foreman vhost conf file.
 #
-# $server_ssl_key::             Defines Apache mod_ssl SSLCertificateKeyFile setting in Foreman vhost conf file.
+# $server_ssl_key::               Defines Apache mod_ssl SSLCertificateKeyFile setting in Foreman vhost conf file.
 #
-# $server_ssl_crl::             Defines the Apache mod_ssl SSLCARevocationFile setting in Foreman vhost conf file.
+# $server_ssl_crl::               Defines the Apache mod_ssl SSLCARevocationFile setting in Foreman vhost conf file.
 #
-# $server_ssl_protocol::        Defines the Apache mod_ssl SSLProtocol setting in Foreman vhost conf file.
+# $server_ssl_protocol::          Defines the Apache mod_ssl SSLProtocol setting in Foreman vhost conf file.
 #
-# $client_ssl_ca::              Defines the SSL CA used to communicate with Foreman Proxies
+# $client_ssl_ca::                Defines the SSL CA used to communicate with Foreman Proxies
 #
-# $client_ssl_cert::            Defines the SSL certificate used to communicate with Foreman Proxies
+# $client_ssl_cert::              Defines the SSL certificate used to communicate with Foreman Proxies
 #
-# $client_ssl_key::             Defines the SSL private key used to communicate with Foreman Proxies
+# $client_ssl_key::               Defines the SSL private key used to communicate with Foreman Proxies
 #
-# $keepalive::                  Enable KeepAlive setting of Apache?
+# $keepalive::                    Enable KeepAlive setting of Apache?
 #
-# $max_keepalive_requests::     MaxKeepAliveRequests setting of Apache
-#                               (Number of requests allowed on a persistent connection)
+# $max_keepalive_requests::       MaxKeepAliveRequests setting of Apache
+#                                 (Number of requests allowed on a persistent connection)
 #
-# $keepalive_timeout::          KeepAliveTimeout setting of Apache
-#                               (Seconds the server will wait for subsequent requests on a persistent connection)
+# $keepalive_timeout::            KeepAliveTimeout setting of Apache
+#                                 (Seconds the server will wait for subsequent requests on a persistent connection)
 #
-# $oauth_active::               Enable OAuth authentication for REST API
+# $oauth_active::                 Enable OAuth authentication for REST API
 #
-# $oauth_map_users::            Should Foreman use the foreman_user header to identify API user?
+# $oauth_map_users::              Should Foreman use the foreman_user header to identify API user?
 #
-# $oauth_consumer_key::         OAuth consumer key
+# $oauth_consumer_key::           OAuth consumer key
 #
-# $oauth_consumer_secret::      OAuth consumer secret
+# $oauth_consumer_secret::        OAuth consumer secret
 #
-# $http_keytab::                Path to keytab to be used for Kerberos authentication on the WebUI
+# $http_keytab::                  Path to keytab to be used for Kerberos authentication on the WebUI
 #
-# $pam_service::                PAM service used for host-based access control in IPA
+# $pam_service::                  PAM service used for host-based access control in IPA
 #
-# $ipa_manage_sssd::            If ipa_authentication is true, should the installer manage SSSD? You can disable it
-#                               if you use another module for SSSD configuration
+# $ipa_manage_sssd::              If ipa_authentication is true, should the installer manage SSSD? You can disable it
+#                                 if you use another module for SSSD configuration
 #
-# $websockets_encrypt::         Whether to encrypt websocket connections
+# $websockets_encrypt::           Whether to encrypt websocket connections
 #
-# $websockets_ssl_key::         SSL key file to use when encrypting websocket connections
+# $websockets_ssl_key::           SSL key file to use when encrypting websocket connections
 #
-# $websockets_ssl_cert::        SSL certificate file to use when encrypting websocket connections
+# $websockets_ssl_cert::          SSL certificate file to use when encrypting websocket connections
 #
-# $logging_level::              Logging level of the Foreman application
+# $logging_level::                Logging level of the Foreman application
 #
-# $loggers::                    Enable or disable specific loggers, e.g. {"sql" => true}
+# $loggers::                      Enable or disable specific loggers, e.g. {"sql" => true}
 #
-# $email_config_method::        Configure email settings in database (1.14+) or configuration file (deprecated)
+# $email_config_method::          Configure email settings in database (1.14+) or configuration file (deprecated)
 #
-# $email_conf::                 Email configuration file under /etc/foreman
+# $email_conf::                   Email configuration file under /etc/foreman
 #
-# $dynflow_pool_size::          How many workers should Dynflow use
+# $telemetry_prefix::             Prefix for all metrics
 #
-# $jobs_service::               Name of the service for running the background Dynflow executor
+# $telemetry_prometheus_enabled:: Enable prometheus telemetry
 #
-# $dynflow_in_core::            Whether the Dynflow executor service is provided by Foreman or tasks
+# $telemetry_statsd_enabled::     Enable statsd telemetry
 #
-# $hsts_enabled::               Should HSTS enforcement in https requests be enabled
+# $telemetry_statsd_host::        Statsd host in format ip:port, do not use DNS
+#
+# $telemetry_statsd_protocol::    Statsd protocol one of 'statsd', 'statsite' or 'datadog' - currently only statsd is supported
+#
+# $telemetry_logger_enabled::     Enable telemetry logs - useful for telemetry debugging
+#
+# $telemetry_logger_level::       Telemetry debugging logs level
+#
+# $dynflow_pool_size::            How many workers should Dynflow use
+#
+# $jobs_service::                 Name of the service for running the background Dynflow executor
+#
+# $dynflow_in_core::              Whether the Dynflow executor service is provided by Foreman or tasks
+#
+# $hsts_enabled::                 Should HSTS enforcement in https requests be enabled
 #
 class foreman (
   Stdlib::HTTPUrl $foreman_url = $::foreman::params::foreman_url,
@@ -303,6 +317,13 @@ class foreman (
   Enum['none', 'plain', 'login', 'cram-md5'] $email_smtp_authentication = $::foreman::params::email_smtp_authentication,
   Optional[String] $email_smtp_user_name = $::foreman::params::email_smtp_user_name,
   Optional[String] $email_smtp_password = $::foreman::params::email_smtp_password,
+  String $telemetry_prefix = $::foreman::params::telemetry_prefix,
+  Boolean $telemetry_prometheus_enabled = $::foreman::params::telemetry_prometheus_enabled,
+  Boolean $telemetry_statsd_enabled = $::foreman::params::telemetry_statsd_enabled,
+  String $telemetry_statsd_host = $::foreman::params::telemetry_statsd_host,
+  Enum['statsd', 'statsite', 'datadog'] $telemetry_statsd_protocol = $::foreman::params::telemetry_statsd_protocol,
+  Boolean $telemetry_logger_enabled = $::foreman::params::telemetry_logger_enabled,
+  Enum['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'] $telemetry_logger_level = $::foreman::params::telemetry_logger_level,
   Integer[0, 65535] $dynflow_pool_size = $::foreman::params::dynflow_pool_size,
   Optional[String] $jobs_service = $::foreman::params::jobs_service,
   Boolean $dynflow_in_core = $::foreman::params::dynflow_in_core,
