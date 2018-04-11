@@ -42,4 +42,10 @@ class foreman::install {
       ensure => installed,
     }
   }
+
+  if $::foreman::telemetry_statsd_enabled or $::foreman::telemetry_prometheus_enabled {
+    package { 'foreman-telemetry':
+      ensure => installed,
+    }
+  }
 }

@@ -34,14 +34,15 @@ describe 'Scenario: install foreman' do
 
     # Actual test
     class { '::foreman':
-      custom_repo         => false,
-      repo                => 'nightly',
-      gpgcheck            => true,
-      configure_epel_repo => #{configure},
-      configure_scl_repo  => #{configure},
-      user_groups         => [],
-      admin_username      => 'admin',
-      admin_password      => 'changeme',
+      custom_repo              => false,
+      repo                     => 'nightly',
+      gpgcheck                 => true,
+      configure_epel_repo      => #{configure},
+      configure_scl_repo       => #{configure},
+      user_groups              => [],
+      admin_username           => 'admin',
+      admin_password           => 'changeme',
+      telemetry_statsd_enabled => true,
     }
     EOS
   end
@@ -59,7 +60,7 @@ describe 'Scenario: install foreman' do
   end
 
   describe package('foreman-telemetry') do
-    it { is_expected.not_to be_installed }
+    it { is_expected.to be_installed }
   end
 
   describe port(80) do
@@ -69,4 +70,6 @@ describe 'Scenario: install foreman' do
   describe port(443) do
     it { is_expected.to be_listening }
   end
+
+  # TODO: actually verify statsd functionality
 end
