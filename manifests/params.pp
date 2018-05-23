@@ -44,7 +44,7 @@ class foreman::params {
   $configure_scl_repo       = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
 
 # Advanced configuration - no need to change anything here by default
-  # if set to true, no repo will be added by this module, letting you to
+  # if set to true, no repo will be added by this module, letting you 
   # set it to some custom location.
   $custom_repo       = false
   # this can be stable, or nightly
