@@ -73,7 +73,7 @@
 # $ssl::                          Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
 #
 # $custom_repo::                  No need to change anything here by default
-#                                 if set to true, no repo will be added by this module, letting you to
+#                                 if set to true, no repo will be added by this module, letting you 
 #                                 set it to some custom location.
 #
 # $repo::                         This can be stable, nightly or a specific version i.e. 1.7
@@ -136,7 +136,7 @@
 #
 # $passenger_min_instances::      Minimum passenger worker instances to keep when application is idle.
 #
-# $passenger_start_timeout::      Amount of seconds to wait for Ruby application boot.
+# $passenger_start_timeout::      Number of seconds to wait for Ruby application boot.
 #
 # $vhost_priority::               Defines Apache vhost priority for the Foreman vhost conf file.
 #
