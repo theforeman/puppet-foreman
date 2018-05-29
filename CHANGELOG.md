@@ -1,5 +1,34 @@
 # Changelog
 
+## [9.1.0](https://github.com/theforeman/puppet-foreman/tree/9.1.0) (2018-05-09)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/9.0.1...9.1.0)
+
+**Implemented enhancements:**
+
+- Ensure foreman-telemetry is installed if needed [\#638](https://github.com/theforeman/puppet-foreman/pull/638) ([ekohl](https://github.com/ekohl))
+- Fixes [\#23101](https://projects.theforeman.org/issues/23101) - add telemetry options [\#637](https://github.com/theforeman/puppet-foreman/pull/637) ([ares](https://github.com/ares))
+- Add classes for hammer cli commands [\#636](https://github.com/theforeman/puppet-foreman/pull/636) ([ekohl](https://github.com/ekohl))
+- Refs [\#22559](https://projects.theforeman.org/issues/22559) - Add parameters for structured logging [\#631](https://github.com/theforeman/puppet-foreman/pull/631) ([ekohl](https://github.com/ekohl))
+- permit puppetlabs-apache 3.x [\#628](https://github.com/theforeman/puppet-foreman/pull/628) ([mmoll](https://github.com/mmoll))
+
+**Fixed bugs:**
+
+- Handle releases/ properly for yum plugins repo [\#634](https://github.com/theforeman/puppet-foreman/pull/634) ([ekohl](https://github.com/ekohl))
+- Refs [\#15963](https://projects.theforeman.org/issues/15963) - Correct documentation typos [\#641](https://github.com/theforeman/puppet-foreman/pull/641) ([itsbill](https://github.com/itsbill))
+
+**Closed issues:**
+
+- This puppet module breaks foreman installation [\#640](https://github.com/theforeman/puppet-foreman/issues/640)
+
+**Merged pull requests:**
+
+- Add a basic acceptance test [\#635](https://github.com/theforeman/puppet-foreman/pull/635) ([ekohl](https://github.com/ekohl))
+- Run acceptance tests on Debian 9 instead of Debian 8 [\#632](https://github.com/theforeman/puppet-foreman/pull/632) ([ekohl](https://github.com/ekohl))
+- Reduce PARALLEL\_TEST\_PROCESSORS to 8 [\#630](https://github.com/theforeman/puppet-foreman/pull/630) ([ekohl](https://github.com/ekohl))
+- Add remote\_file acceptance test [\#627](https://github.com/theforeman/puppet-foreman/pull/627) ([sean797](https://github.com/sean797))
+- Use selboolean for httpd\_dbus\_sssd [\#622](https://github.com/theforeman/puppet-foreman/pull/622) ([ekohl](https://github.com/ekohl))
+
 ## [9.0.1](https://github.com/theforeman/puppet-foreman/tree/9.0.1) (2018-02-28)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/9.0.0...9.0.1)
