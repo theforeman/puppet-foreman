@@ -15,6 +15,7 @@
 **Fixed bugs:**
 
 - Handle releases/ properly for yum plugins repo [\#634](https://github.com/theforeman/puppet-foreman/pull/634) ([ekohl](https://github.com/ekohl))
+- Refs [\#15963](https://projects.theforeman.org/issues/15963) - Correct documentation typos [\#641](https://github.com/theforeman/puppet-foreman/pull/641) ([itsbill](https://github.com/itsbill))
 
 **Closed issues:**
 
