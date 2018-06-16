@@ -22,7 +22,7 @@ class foreman::repos::extra(
 
   if $configure_scl_repo {
     package {'foreman-release-scl':
-      ensure => installed,
+      ensure => latest,
     }
   }
 }
