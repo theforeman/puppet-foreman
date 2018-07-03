@@ -50,6 +50,25 @@ class foreman::config {
     ensure  => directory,
   }
 
+  if $::foreman::db_root_cert and $::foreman::db_type == 'postgresql' {
+    $pg_cert_dir = "${::foreman::app_root}/.postgresql"
+
+    file { $pg_cert_dir:
+      ensure => 'directory',
+      owner  => 'root',
+      group  => $::foreman::group,
+      mode   => '0640',
+    }
+
+    file { "${pg_cert_dir}/root.crt":
+      ensure => file,
+      source => $::foreman::db_root_cert,
+      owner  => 'root',
+      group  => $::foreman::group,
+      mode   => '0640',
+    }
+  }
+
   if $::foreman::manage_user {
     user { $::foreman::user:
       ensure  => 'present',
