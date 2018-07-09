@@ -3,7 +3,6 @@
 #   https://github.com/theforeman/foreman-installer-modulesync
 rvm:
   - 2.1.9
-  - 2.2.6
   - 2.3.0
   - 2.4.1
 env:
@@ -15,6 +14,8 @@ matrix:
   fast_finish: true
   include:
     - rvm: 2.4.1
+      env: PUPPET_VERSION=5.0
+    - rvm: 2.5.1
       env: PUPPET_VERSION=5.0
     # Acceptance tests
     - rvm: 2.3.1
