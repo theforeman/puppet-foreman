@@ -1,6 +1,26 @@
 # Changelog
 
-## [9.1.0](https://github.com/theforeman/puppet-foreman/tree/9.1.0) (2018-05-09)
+## [9.2.0](https://github.com/theforeman/puppet-foreman/tree/9.2.0) (2018-07-10)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/9.1.0...9.2.0)
+
+**Implemented enhancements:**
+
+- Adding rescue plugin [\#648](https://github.com/theforeman/puppet-foreman/pull/648) ([cocker-cc](https://github.com/cocker-cc))
+- Adding wreckingball Plugin [\#647](https://github.com/theforeman/puppet-foreman/pull/647) ([cocker-cc](https://github.com/cocker-cc))
+- Adding dlm plugin [\#646](https://github.com/theforeman/puppet-foreman/pull/646) ([cocker-cc](https://github.com/cocker-cc))
+- Adding spacewalk plugin [\#645](https://github.com/theforeman/puppet-foreman/pull/645) ([cocker-cc](https://github.com/cocker-cc))
+- Add support for foreman\_virt\_who\_configure [\#642](https://github.com/theforeman/puppet-foreman/pull/642) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Fixes [\#22940](https://projects.theforeman.org/issues/22940) - Ensure the PG root cert is installed [\#650](https://github.com/theforeman/puppet-foreman/pull/650) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- support Ubuntu/bionic [\#651](https://github.com/theforeman/puppet-foreman/pull/651) ([mmoll](https://github.com/mmoll))
+
+## [9.1.0](https://github.com/theforeman/puppet-foreman/tree/9.1.0) (2018-05-29)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/9.0.1...9.1.0)
 
