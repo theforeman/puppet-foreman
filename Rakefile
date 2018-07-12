@@ -15,6 +15,31 @@ begin
 rescue LoadError
 end
 
+begin
+  require 'github_changelog_generator/task'
+
+  # https://github.com/github-changelog-generator/github-changelog-generator/issues/313
+  module GitHubChangelogGeneratorExtensions
+    def compound_changelog
+      super.gsub(/(fixes|fixing|refs) \\#(\d+)/i, '\1 [\\#\2](https://projects.theforeman.org/issues/\2)')
+    end
+  end
+
+  class GitHubChangelogGenerator::Generator
+    prepend GitHubChangelogGeneratorExtensions
+  end
+
+  GitHubChangelogGenerator::RakeTask.new :changelog do |config|
+    raise "Set CHANGELOG_GITHUB_TOKEN environment variable eg 'export CHANGELOG_GITHUB_TOKEN=valid_token_here'" if Rake.application.top_level_tasks.include? "changelog" and ENV['CHANGELOG_GITHUB_TOKEN'].nil?
+    metadata = JSON.load(File.read('metadata.json'))
+    config.user = metadata['author']
+    config.project = "puppet-#{metadata['name'].split('-').last}"
+    config.future_release = metadata['version']
+    config.exclude_labels = ['duplicate', 'question', 'invalid', 'wontfix', 'Modulesync', 'skip-changelog']
+  end
+rescue LoadError
+end
+
 PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp", "vendor/**/*.pp"]
 PuppetLint.configuration.log_format = '%{path}:%{line}:%{KIND}: %{message}'
 
