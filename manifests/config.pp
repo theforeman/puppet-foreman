@@ -25,20 +25,9 @@ class foreman::config {
     content => template('foreman/database.yml.erb'),
   }
 
-  if $::foreman::email_delivery_method and !empty($::foreman::email_delivery_method) {
-    if $::foreman::email_config_method == 'file' {
-      file { "/etc/foreman/${foreman::email_conf}":
-        ensure  => file,
-        owner   => 'root',
-        group   => $::foreman::group,
-        mode    => '0640',
-        content => template("foreman/${foreman::email_source}"),
-      }
-    } else {
-      file { "/etc/foreman/${foreman::email_conf}":
-        ensure => absent,
-      }
-    }
+  # email.yaml support has been removed in 1.16.
+  file { '/etc/foreman/email.yaml':
+    ensure => absent,
   }
 
   file { $::foreman::init_config:

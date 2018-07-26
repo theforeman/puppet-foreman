@@ -1,6 +1,5 @@
 # Configure settings in Foreman's database
 class foreman::settings(
-  $email_config_method       = $::foreman::email_config_method,
   $email_delivery_method     = $::foreman::email_delivery_method,
   $email_smtp_address        = $::foreman::email_smtp_address,
   $email_smtp_port           = $::foreman::email_smtp_port,
@@ -9,7 +8,7 @@ class foreman::settings(
   $email_smtp_user_name      = $::foreman::email_smtp_user_name,
   $email_smtp_password       = $::foreman::email_smtp_password,
 ) {
-  if $email_config_method == 'database' and !empty($email_delivery_method) {
+  unless empty($email_delivery_method) {
     foreman_config_entry { 'delivery_method':
       value => $email_delivery_method,
     }
