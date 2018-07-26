@@ -44,8 +44,6 @@
 #
 # === Advanced parameters:
 #
-# $email_source::                 Template to use for email configuration file
-#
 # $foreman_url::                  URL on which foreman is going to run
 #
 # $unattended::                   Should Foreman manage host provisioning as well
@@ -201,10 +199,6 @@
 #
 # $loggers::                      Enable or disable specific loggers, e.g. {"sql" => true}
 #
-# $email_config_method::          Configure email settings in database (1.14+) or configuration file (deprecated)
-#
-# $email_conf::                   Email configuration file under /etc/foreman
-#
 # $telemetry_prefix::             Prefix for all metrics
 #
 # $telemetry_prometheus_enabled:: Enable prometheus telemetry
@@ -313,9 +307,6 @@ class foreman (
   Enum['file', 'syslog', 'journald'] $logging_type = $::foreman::params::logging_type,
   Enum['pattern', 'multiline_pattern', 'json'] $logging_layout = $::foreman::params::logging_layout,
   Hash[String, Boolean] $loggers = $::foreman::params::loggers,
-  Enum['database', 'file'] $email_config_method = $::foreman::params::email_config_method,
-  String $email_conf = $::foreman::params::email_conf,
-  String $email_source = $::foreman::params::email_source,
   Optional[Enum['sendmail', 'smtp']] $email_delivery_method = $::foreman::params::email_delivery_method,
   Optional[String] $email_smtp_address = $::foreman::params::email_smtp_address,
   Integer[0, 65535] $email_smtp_port = $::foreman::params::email_smtp_port,

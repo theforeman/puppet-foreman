@@ -82,9 +82,6 @@ class foreman::params {
   $db_manage_rake = true
 
   # Configure foreman email settings (database or email.yaml)
-  $email_config_method       = 'file'
-  $email_conf                = 'email.yaml'
-  $email_source              = 'email.yaml.erb'
   $email_delivery_method     = undef
   $email_smtp_address        = undef
   $email_smtp_port           = 25

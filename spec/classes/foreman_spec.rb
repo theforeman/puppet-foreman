@@ -124,8 +124,6 @@ describe 'foreman' do
           :websockets_ssl_cert       => '/etc/ssl/certs/snakeoil.pem',
           :logging_level             => 'info',
           :loggers                   => {},
-          :email_conf                => 'email.yaml',
-          :email_source              => 'email.yaml.erb',
           :email_delivery_method     => 'sendmail',
           :email_smtp_address        => 'alice@bob.com',
           :email_smtp_port           => 25,

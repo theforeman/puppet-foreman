@@ -50,8 +50,6 @@ describe 'foreman::config' do
           })
         end
 
-        it { should_not contain_file('/etc/foreman/email.yaml') }
-
         case facts[:osfamily]
         when 'RedHat'
           it 'should set the defaults file' do
@@ -246,11 +244,9 @@ describe 'foreman::config' do
            }"
         end
 
-        it 'should contain email.yaml with SMTP set' do
-          should contain_file('/etc/foreman/email.yaml').
-            with_content(/delivery_method: :smtp/).
-            with_ensure('file')
-        end
+        it { should contain_file('/etc/foreman/email.yaml').with_ensure('absent') }
+        it { should contain_foreman_config_entry('delivery_method').with_value('smtp') }
+        it { should contain_foreman_config_entry('smtp_authentication').with_value('') }
       end
 
       describe 'with email configured and authentication set to login' do
@@ -261,11 +257,7 @@ describe 'foreman::config' do
           }"
         end
 
-        it 'should contain email.yaml with login authentication' do
-          should contain_file('/etc/foreman/email.yaml').
-            with_content(/authentication: :login/).
-            with_ensure('file')
-        end
+        it { should contain_foreman_config_entry('smtp_authentication').with_value('login') }
       end
 
       describe 'with email configured for sendmail' do
@@ -275,22 +267,7 @@ describe 'foreman::config' do
           }"
         end
 
-        it 'should contain email.yaml with sendmail' do
-          should contain_file('/etc/foreman/email.yaml').
-            with_content(/delivery_method: :sendmail/).
-            with_ensure('file')
-        end
-      end
-
-      describe 'with email configured in the database' do
-        let :pre_condition do
-          "class {'foreman':
-            email_config_method   => 'database',
-            email_delivery_method => 'sendmail',
-          }"
-        end
-
-        it { should contain_file('/etc/foreman/email.yaml').with_ensure('absent') }
+        it { should contain_foreman_config_entry('delivery_method').with_value('sendmail') }
       end
 
       if Puppet.version >= '4.0'
