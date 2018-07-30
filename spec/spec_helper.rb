@@ -9,7 +9,6 @@ require 'rspec-puppet-facts'
 include RspecPuppetFacts
 
                                                                              # Original fact sources:
-add_custom_fact :concat_basedir, '/tmp'                                      # puppetlabs-concat
 add_custom_fact :puppet_environmentpath, '/etc/puppetlabs/code/environments' # puppetlabs-stdlib
 add_custom_fact :root_home, '/root'                                          # puppetlabs-stdlib
 
