@@ -32,7 +32,7 @@ begin
   GitHubChangelogGenerator::RakeTask.new :changelog do |config|
     raise "Set CHANGELOG_GITHUB_TOKEN environment variable eg 'export CHANGELOG_GITHUB_TOKEN=valid_token_here'" if Rake.application.top_level_tasks.include? "changelog" and ENV['CHANGELOG_GITHUB_TOKEN'].nil?
     metadata = JSON.load(File.read('metadata.json'))
-    config.user = metadata['author']
+    config.user = 'theforeman'
     config.project = "puppet-#{metadata['name'].split('-').last}"
     config.future_release = metadata['version']
     config.exclude_labels = ['duplicate', 'question', 'invalid', 'wontfix', 'Modulesync', 'skip-changelog']
