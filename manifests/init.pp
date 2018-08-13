@@ -124,10 +124,6 @@
 #
 # $user_groups::                  Additional groups for the Foreman user
 #
-# $puppet_home::                  Puppet home directory
-#
-# $puppet_ssldir::                Puppet SSL directory
-#
 # $passenger_interface::          Defines which network interface passenger should listen on, undef means all interfaces
 #
 # $passenger_prestart::           Pre-start the first passenger worker instance process during httpd start.
@@ -259,8 +255,6 @@ class foreman (
   String $group = $::foreman::params::group,
   Array[String] $user_groups = $::foreman::params::user_groups,
   String $rails_env = $::foreman::params::rails_env,
-  Stdlib::Absolutepath $puppet_home = $::foreman::params::puppet_home,
-  Stdlib::Absolutepath $puppet_ssldir = $::foreman::params::puppet_ssldir,
   Boolean $locations_enabled = $::foreman::params::locations_enabled,
   Boolean $organizations_enabled = $::foreman::params::organizations_enabled,
   Optional[String] $passenger_interface = $::foreman::params::passenger_interface,

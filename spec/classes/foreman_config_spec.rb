@@ -20,7 +20,6 @@ describe 'foreman::config' do
             with_content(/^:locations_enabled:\s*false$/).
             with_content(/^:organizations_enabled:\s*false$/).
             with_content(/^:puppetrun:\s*false$/).
-            with_content(/^:puppetssldir:\s*\/var\/lib\/puppet\/ssl$/).
             with_content(/^:oauth_active:\s*true$/).
             with_content(/^:oauth_map_users:\s*false$/).
             with_content(/^:oauth_consumer_key:\s*\w+$/).
@@ -268,24 +267,6 @@ describe 'foreman::config' do
         end
 
         it { should contain_foreman_config_entry('delivery_method').with_value('sendmail') }
-      end
-
-      if Puppet.version >= '4.0'
-        describe 'with AIO Puppet packages' do
-          let :pre_condition do
-            "class {'foreman':}"
-          end
-          let :facts do
-            facts.merge({
-              :rubysitedir => '/opt/puppetlabs/puppet/lib/ruby/site_ruby/2.1.0',
-            })
-          end
-          it 'should set up puppetssldir accordingly' do
-            should contain_concat__fragment('foreman_settings+01-header.yaml').
-                with_content(/^:puppetssldir:\s*\/etc\/puppetlabs\/puppet\/ssl$/).
-                with({})
-          end
-        end
       end
     end
   end

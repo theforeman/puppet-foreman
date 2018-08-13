@@ -1,25 +1,25 @@
 # This class includes the necessary scripts for Foreman on the puppetmaster and
 # is intented to be added to your puppetmaster
 class foreman::puppetmaster (
-  $foreman_url      = $::foreman::params::foreman_url,
-  $foreman_user     = $::foreman::params::foreman_user,
-  $foreman_password = $::foreman::params::foreman_password,
-  $reports          = $::foreman::params::reports,
-  $enc              = $::foreman::params::enc,
-  $receive_facts    = $::foreman::params::receive_facts,
-  $puppet_home      = $::foreman::params::puppet_home,
-  $puppet_user      = $::foreman::params::puppet_user,
-  $puppet_group     = $::foreman::params::puppet_group,
-  $puppet_basedir   = $::foreman::params::puppet_basedir,
-  $puppet_etcdir    = $::foreman::params::puppet_etcdir,
-  $timeout          = $::foreman::params::puppetmaster_timeout,
-  $report_timeout   = $::foreman::params::puppetmaster_report_timeout,
-  $ssl_ca           = $::foreman::params::client_ssl_ca,
-  $ssl_cert         = $::foreman::params::client_ssl_cert,
-  $ssl_key          = $::foreman::params::client_ssl_key,
-  $enc_api          = 'v2',
-  $report_api       = 'v2',
-) inherits foreman::params {
+  Stdlib::HTTPUrl $foreman_url = $::foreman::puppetmaster::params::foreman_url,
+  Optional[String] $foreman_user = $::foreman::puppetmaster::params::foreman_user,
+  Optional[String] $foreman_password = $::foreman::puppetmaster::params::foreman_password,
+  Boolean $reports = $::foreman::puppetmaster::params::reports,
+  Boolean $enc = $::foreman::puppetmaster::params::enc,
+  Boolean $receive_facts = $::foreman::puppetmaster::params::receive_facts,
+  Stdlib::Absolutepath $puppet_home = $::foreman::puppetmaster::params::puppet_home,
+  String $puppet_user = $::foreman::puppetmaster::params::puppet_user,
+  String $puppet_group = $::foreman::puppetmaster::params::puppet_group,
+  Stdlib::Absolutepath $puppet_basedir = $::foreman::puppetmaster::params::puppet_basedir,
+  Stdlib::Absolutepath $puppet_etcdir = $::foreman::puppetmaster::params::puppet_etcdir,
+  Integer $timeout = $::foreman::puppetmaster::params::puppetmaster_timeout,
+  Integer $report_timeout = $::foreman::puppetmaster::params::puppetmaster_report_timeout,
+  Stdlib::Absolutepath $ssl_ca = $::foreman::puppetmaster::params::client_ssl_ca,
+  Stdlib::Absolutepath $ssl_cert = $::foreman::puppetmaster::params::client_ssl_cert,
+  Stdlib::Absolutepath $ssl_key = $::foreman::puppetmaster::params::client_ssl_key,
+  Enum['v2'] $enc_api = 'v2',
+  Enum['v2'] $report_api = 'v2',
+) inherits foreman::puppetmaster::params {
 
   case $::osfamily {
     'Debian': { $json_package = 'ruby-json' }

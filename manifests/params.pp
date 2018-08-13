@@ -4,15 +4,8 @@ class foreman::params {
 
   # Basic configurations
   $foreman_url      = "https://${lower_fqdn}"
-  $foreman_user     = undef
-  $foreman_password = undef
   # Should foreman act as an external node classifier (manage puppet class
   # assignments)
-  $enc            = true
-  # Should foreman receive reports from puppet
-  $reports        = true
-  # Should foreman receive facts from puppet
-  $receive_facts  = true
   # should foreman manage host provisioning as well
   $unattended     = true
   $unattended_url = undef
@@ -59,9 +52,6 @@ class foreman::params {
   $gpgcheck          = true
   $version           = 'present'
   $plugin_version    = 'present'
-
-  $puppetmaster_timeout = 60
-  $puppetmaster_report_timeout = 60
 
   # when undef, foreman-selinux will be installed if SELinux is enabled
   # setting to false/true will override this check (e.g. set to false on 1.1)
@@ -113,22 +103,14 @@ class foreman::params {
     'RedHat': {
       $init_config = '/etc/sysconfig/foreman'
       $init_config_tmpl = 'foreman.sysconfig'
-      $puppet_etcdir = '/etc/puppet'
-      $puppet_home = '/var/lib/puppet'
 
       case $::operatingsystem {
         'fedora': {
-          $puppet_basedir  = '/usr/share/ruby/vendor_ruby/puppet'
           $passenger_ruby = undef
           $passenger_ruby_package = undef
           $plugin_prefix = 'rubygem-foreman_'
         }
         default: {
-          $osreleasemajor = regsubst($::operatingsystemrelease, '^(\d+)\..*$', '\1')
-          $puppet_basedir = $osreleasemajor ? {
-            '6'     => regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet'),
-            default => '/usr/share/ruby/vendor_ruby/puppet',
-          }
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
           $passenger_ruby = '/usr/bin/tfm-ruby'
           $passenger_ruby_package = 'tfm-rubygem-passenger-native'
@@ -137,9 +119,6 @@ class foreman::params {
       }
     }
     'Debian': {
-      $puppet_basedir  = '/usr/lib/ruby/vendor_ruby/puppet'
-      $puppet_etcdir = '/etc/puppet'
-      $puppet_home = '/var/lib/puppet'
       $passenger_ruby = '/usr/bin/foreman-ruby'
       $passenger_ruby_package = undef
       $plugin_prefix = 'ruby-foreman-'
@@ -149,9 +128,6 @@ class foreman::params {
     'Linux': {
       case $::operatingsystem {
         'Amazon': {
-          $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
-          $puppet_etcdir = '/etc/puppet'
-          $puppet_home = '/var/lib/puppet'
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
           $passenger_ruby = '/usr/bin/tfm-ruby'
           $passenger_ruby_package = 'tfm-rubygem-passenger-native'
@@ -164,46 +140,15 @@ class foreman::params {
         }
       }
     }
-    'Suse': {
-      # Only the agent classes (cron / service) are supported for now, which
-      # doesn't require any OS-specific params
-    }
-    'Archlinux': {
-      $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/vendor_ruby/\1/puppet')
-      $puppet_etcdir = '/etc/puppetlabs/puppet'
-      $puppet_home = '/var/lib/puppet'
-    }
-    /^(FreeBSD|DragonFly)$/: {
-      $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/local/lib/ruby/site_ruby/\1/puppet')
-      $puppet_etcdir = '/usr/local/etc/puppet'
-      $puppet_home = '/var/puppet'
-    }
-    'windows': {
-      $puppet_basedir = undef
-      $puppet_etcdir = undef
-      $puppet_home = undef
-      $passenger_ruby = undef
-      $passenger_ruby_package = undef
-      $plugin_prefix = undef
-    }
     default: {
       fail("${::hostname}: This module does not support osfamily ${::osfamily}")
     }
   }
-  $puppet_user = 'puppet'
-  $puppet_group = 'puppet'
 
-  if versioncmp($::puppetversion, '4.0') < 0 {
-    $aio_package = false
-  } elsif $::osfamily == 'Windows' or $::rubysitedir =~ /\/opt\/puppetlabs\/puppet/ {
-    $aio_package = true
+  if $::rubysitedir =~ /\/opt\/puppetlabs\/puppet/ {
+    $puppet_ssldir = '/etc/puppetlabs/puppet/ssl'
   } else {
-    $aio_package = false
-  }
-
-  $puppet_ssldir = $aio_package ? {
-    true    => '/etc/puppetlabs/puppet/ssl',
-    default => "${puppet_home}/ssl"
+    $puppet_ssldir = '/var/lib/puppet/ssl'
   }
 
   # If CA is specified, remote Foreman host will be verified in reports/ENC scripts
