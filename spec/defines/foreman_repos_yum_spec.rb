@@ -1,302 +1,184 @@
 require 'spec_helper'
 
-
 describe 'foreman::repos::yum' do
   let(:title) { 'foreman' }
 
-  context 'with repo => stable' do
-    context 'with gpgcheck => true' do
-      let(:params) { {:repo => 'stable', :yumcode => 'el6', :gpgcheck => true} }
-
-      it 'should contain repo, plugins and source repo' do
-        should contain_yumrepo('foreman').with({
-          :descr    => 'Foreman stable',
-          :baseurl  => 'http://yum.theforeman.org/releases/latest/el6/$basearch',
-          :gpgcheck => '1',
-          :gpgkey   => 'https://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman',
-          :enabled  => '1',
-        })
-
-        should contain_yumrepo('foreman-source').with({
-          :descr    => 'Foreman stable - source',
-          :baseurl  => 'http://yum.theforeman.org/releases/latest/el6/source',
-          :gpgcheck => '1',
-          :gpgkey   => 'https://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman',
-          :enabled  => '0',
-        })
-
-        should contain_yumrepo('foreman-plugins').with({
-          :descr    => 'Foreman plugins stable',
-          :baseurl  => 'http://yum.theforeman.org/plugins/latest/el6/$basearch',
-          :gpgcheck => '0',
-          :enabled  => '1',
-        })
-
-        should contain_yumrepo('foreman-plugins-source').with({
-          :descr    => 'Foreman plugins stable - source',
-          :baseurl  => 'http://yum.theforeman.org/plugins/latest/el6/source',
-          :gpgcheck => '0',
-          :enabled  => '0',
-        })
-
-      end
-    end
-
-    context 'with gpgcheck => false' do
-      let(:params) { {:repo => 'stable', :yumcode => 'el6', :gpgcheck => false} }
-
-      it 'should contain repo, plugins and source repo' do
-        should contain_yumrepo('foreman').with({
-          :descr    => 'Foreman stable',
-          :baseurl  => 'http://yum.theforeman.org/releases/latest/el6/$basearch',
-          :gpgcheck => '0',
-          :gpgkey   => 'https://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman',
-          :enabled  => '1',
-        })
-
-        should contain_yumrepo('foreman-source').with({
-          :descr    => 'Foreman stable - source',
-          :baseurl  => 'http://yum.theforeman.org/releases/latest/el6/source',
-          :gpgcheck => '0',
-          :gpgkey   => 'https://yum.theforeman.org/releases/latest/RPM-GPG-KEY-foreman',
-          :enabled  => '0',
-        })
-
-        should contain_yumrepo('foreman-plugins').with({
-          :descr    => 'Foreman plugins stable',
-          :baseurl  => 'http://yum.theforeman.org/plugins/latest/el6/$basearch',
-          :gpgcheck => '0',
-          :enabled  => '1',
-        })
-
-        should contain_yumrepo('foreman-plugins-source').with({
-          :descr    => 'Foreman plugins stable - source',
-          :baseurl  => 'http://yum.theforeman.org/plugins/latest/el6/source',
-          :gpgcheck => '0',
-          :enabled  => '0',
-        })
-      end
-    end
-  end
-
   context 'with repo => nightly' do
     context 'gpgcheck => true' do
-      let(:params) { {:repo => 'nightly', :yumcode => 'el6', :gpgcheck => true} }
+      let(:params) { {:repo => 'nightly', :yumcode => 'el7', :gpgcheck => true} }
 
       it 'should contain repo, plugins and source repo' do
-        should contain_yumrepo('foreman').with({
+        should contain_yumrepo('foreman').with(
           :descr    => 'Foreman nightly',
-          :baseurl  => 'http://yum.theforeman.org/nightly/el6/$basearch',
+          :baseurl  => 'https://yum.theforeman.org/releases/nightly/el7/$basearch',
           :gpgcheck => '0',
-          :gpgkey   => 'https://yum.theforeman.org/nightly/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'https://yum.theforeman.org/releases/nightly/RPM-GPG-KEY-foreman',
           :enabled  => '1',
-        })
+        )
 
-        should contain_yumrepo('foreman-source').with({
+        should contain_yumrepo('foreman-source').with(
           :descr    => 'Foreman nightly - source',
-          :baseurl  => 'http://yum.theforeman.org/nightly/el6/source',
+          :baseurl  => 'https://yum.theforeman.org/releases/nightly/el7/source',
           :gpgcheck => '0',
-          :gpgkey   => 'https://yum.theforeman.org/nightly/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'https://yum.theforeman.org/releases/nightly/RPM-GPG-KEY-foreman',
           :enabled  => '0',
-        })
+        )
 
-        should contain_yumrepo('foreman-plugins').with({
+        should contain_yumrepo('foreman-plugins').with(
           :descr    => 'Foreman plugins nightly',
-          :baseurl  => 'http://yum.theforeman.org/plugins/nightly/el6/$basearch',
+          :baseurl  => 'https://yum.theforeman.org/plugins/nightly/el7/$basearch',
           :gpgcheck => '0',
           :enabled  => '1',
-        })
+        )
 
-        should contain_yumrepo('foreman-plugins-source').with({
+        should contain_yumrepo('foreman-plugins-source').with(
           :descr    => 'Foreman plugins nightly - source',
-          :baseurl  => 'http://yum.theforeman.org/plugins/nightly/el6/source',
+          :baseurl  => 'https://yum.theforeman.org/plugins/nightly/el7/source',
           :gpgcheck => '0',
           :enabled  => '0',
-        })
+        )
+
+        should contain_yumrepo('foreman-rails').with(
+          :descr    => 'Rails SCL for Foreman nightly',
+          :baseurl  => 'https://yum.theforeman.org/rails/foreman-nightly/el7/$basearch',
+          :gpgcheck => '0',
+          :enabled  => '1',
+          :gpgkey   => 'https://yum.theforeman.org/rails/foreman-nightly/RPM-GPG-KEY-copr',
+        )
       end
     end
 
     context 'gpgcheck => false' do
-      let(:params) { {:repo => 'nightly', :yumcode => 'el6', :gpgcheck => false} }
+      let(:params) { {:repo => 'nightly', :yumcode => 'el7', :gpgcheck => false} }
 
       it 'should contain repo, plugins and source repo' do
-        should contain_yumrepo('foreman').with({
+        should contain_yumrepo('foreman').with(
           :descr    => 'Foreman nightly',
-          :baseurl  => 'http://yum.theforeman.org/nightly/el6/$basearch',
+          :baseurl  => 'https://yum.theforeman.org/releases/nightly/el7/$basearch',
           :gpgcheck => '0',
-          :gpgkey   => 'https://yum.theforeman.org/nightly/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'https://yum.theforeman.org/releases/nightly/RPM-GPG-KEY-foreman',
           :enabled  => '1',
-        })
+        )
 
-        should contain_yumrepo('foreman-source').with({
+        should contain_yumrepo('foreman-source').with(
           :descr    => 'Foreman nightly - source',
-          :baseurl  => 'http://yum.theforeman.org/nightly/el6/source',
+          :baseurl  => 'https://yum.theforeman.org/releases/nightly/el7/source',
           :gpgcheck => '0',
-          :gpgkey   => 'https://yum.theforeman.org/nightly/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'https://yum.theforeman.org/releases/nightly/RPM-GPG-KEY-foreman',
           :enabled  => '0',
-        })
+        )
 
-        should contain_yumrepo('foreman-plugins').with({
+        should contain_yumrepo('foreman-plugins').with(
           :descr    => 'Foreman plugins nightly',
-          :baseurl  => 'http://yum.theforeman.org/plugins/nightly/el6/$basearch',
+          :baseurl  => 'https://yum.theforeman.org/plugins/nightly/el7/$basearch',
           :gpgcheck => '0',
           :enabled  => '1',
-        })
+        )
 
-        should contain_yumrepo('foreman-plugins-source').with({
+        should contain_yumrepo('foreman-plugins-source').with(
           :descr    => 'Foreman plugins nightly - source',
-          :baseurl  => 'http://yum.theforeman.org/plugins/nightly/el6/source',
+          :baseurl  => 'https://yum.theforeman.org/plugins/nightly/el7/source',
           :gpgcheck => '0',
           :enabled  => '0',
-        })
+        )
+
+        should contain_yumrepo('foreman-rails').with(
+          :descr    => 'Rails SCL for Foreman nightly',
+          :baseurl  => 'https://yum.theforeman.org/rails/foreman-nightly/el7/$basearch',
+          :gpgcheck => '0',
+          :enabled  => '1',
+          :gpgkey   => 'https://yum.theforeman.org/rails/foreman-nightly/RPM-GPG-KEY-copr',
+        )
       end
     end
   end
 
-  context 'with repo => 1.7' do
+  context 'with repo => 1.19' do
     context 'gpgcheck => true' do
-      let(:params) { {:repo => '1.7', :yumcode => 'el6', :gpgcheck => true} }
+      let(:params) { {:repo => '1.19', :yumcode => 'el7', :gpgcheck => true} }
 
       it 'should contain repo, plugins and source repo' do
-        should contain_yumrepo('foreman').with({
-          :descr    => 'Foreman 1.7',
-          :baseurl  => 'http://yum.theforeman.org/releases/1.7/el6/$basearch',
+        should contain_yumrepo('foreman').with(
+          :descr    => 'Foreman 1.19',
+          :baseurl  => 'https://yum.theforeman.org/releases/1.19/el7/$basearch',
           :gpgcheck => '1',
-          :gpgkey   => 'https://yum.theforeman.org/releases/1.7/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'https://yum.theforeman.org/releases/1.19/RPM-GPG-KEY-foreman',
           :enabled  => '1',
-        })
+        )
 
-        should contain_yumrepo('foreman-source').with({
-          :descr    => 'Foreman 1.7 - source',
-          :baseurl  => 'http://yum.theforeman.org/releases/1.7/el6/source',
+        should contain_yumrepo('foreman-source').with(
+          :descr    => 'Foreman 1.19 - source',
+          :baseurl  => 'https://yum.theforeman.org/releases/1.19/el7/source',
           :gpgcheck => '1',
-          :gpgkey   => 'https://yum.theforeman.org/releases/1.7/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'https://yum.theforeman.org/releases/1.19/RPM-GPG-KEY-foreman',
           :enabled  => '0',
-        })
+        )
 
-        should contain_yumrepo('foreman-plugins').with({
-          :descr    => 'Foreman plugins 1.7',
-          :baseurl  => 'http://yum.theforeman.org/plugins/1.7/el6/$basearch',
+        should contain_yumrepo('foreman-plugins').with(
+          :descr    => 'Foreman plugins 1.19',
+          :baseurl  => 'https://yum.theforeman.org/plugins/1.19/el7/$basearch',
           :gpgcheck => '0',
           :enabled  => '1',
-        })
+        )
 
-        should contain_yumrepo('foreman-plugins-source').with({
-          :descr    => 'Foreman plugins 1.7 - source',
-          :baseurl  => 'http://yum.theforeman.org/plugins/1.7/el6/source',
+        should contain_yumrepo('foreman-plugins-source').with(
+          :descr    => 'Foreman plugins 1.19 - source',
+          :baseurl  => 'https://yum.theforeman.org/plugins/1.19/el7/source',
           :gpgcheck => '0',
           :enabled  => '0',
-        })
+        )
+
+        should contain_yumrepo('foreman-rails').with(
+          :descr    => 'Rails SCL for Foreman 1.19',
+          :baseurl  => 'https://yum.theforeman.org/rails/foreman-1.19/el7/$basearch',
+          :gpgcheck => '1',
+          :enabled  => '1',
+          :gpgkey   => 'https://yum.theforeman.org/rails/foreman-1.19/RPM-GPG-KEY-copr',
+        )
       end
     end
 
     context 'gpgcheck => false' do
-      let(:params) { {:repo => '1.7', :yumcode => 'el6', :gpgcheck => false} }
+      let(:params) { {:repo => '1.19', :yumcode => 'el7', :gpgcheck => false} }
 
       it 'should contain repo, plugins and source repo' do
-        should contain_yumrepo('foreman').with({
-          :descr    => 'Foreman 1.7',
-          :baseurl  => 'http://yum.theforeman.org/releases/1.7/el6/$basearch',
+        should contain_yumrepo('foreman').with(
+          :descr    => 'Foreman 1.19',
+          :baseurl  => 'https://yum.theforeman.org/releases/1.19/el7/$basearch',
           :gpgcheck => '0',
-          :gpgkey   => 'https://yum.theforeman.org/releases/1.7/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'https://yum.theforeman.org/releases/1.19/RPM-GPG-KEY-foreman',
           :enabled  => '1',
-        })
+        )
 
-        should contain_yumrepo('foreman-source').with({
-          :descr    => 'Foreman 1.7 - source',
-          :baseurl  => 'http://yum.theforeman.org/releases/1.7/el6/source',
+        should contain_yumrepo('foreman-source').with(
+          :descr    => 'Foreman 1.19 - source',
+          :baseurl  => 'https://yum.theforeman.org/releases/1.19/el7/source',
           :gpgcheck => '0',
-          :gpgkey   => 'https://yum.theforeman.org/releases/1.7/RPM-GPG-KEY-foreman',
+          :gpgkey   => 'https://yum.theforeman.org/releases/1.19/RPM-GPG-KEY-foreman',
           :enabled  => '0',
-        })
+        )
 
-        should contain_yumrepo('foreman-plugins').with({
-          :descr    => 'Foreman plugins 1.7',
-          :baseurl  => 'http://yum.theforeman.org/plugins/1.7/el6/$basearch',
-          :gpgcheck => '0',
-          :enabled  => '1',
-        })
-
-        should contain_yumrepo('foreman-plugins-source').with({
-          :descr    => 'Foreman plugins 1.7 - source',
-          :baseurl  => 'http://yum.theforeman.org/plugins/1.7/el6/source',
-          :gpgcheck => '0',
-          :enabled  => '0',
-        })
-      end
-    end
-  end
-
-  context 'with repo => releases/1.7' do
-    context 'gpgcheck => true' do
-      let(:params) { {:repo => 'releases/1.7', :yumcode => 'el6', :gpgcheck => true} }
-
-      it 'should contain repo, plugins and source repo' do
-        should contain_yumrepo('foreman').with({
-          :descr    => 'Foreman releases/1.7',
-          :baseurl  => 'http://yum.theforeman.org/releases/1.7/el6/$basearch',
-          :gpgcheck => '1',
-          :gpgkey   => 'https://yum.theforeman.org/releases/1.7/RPM-GPG-KEY-foreman',
-          :enabled  => '1',
-        })
-
-        should contain_yumrepo('foreman-source').with({
-          :descr    => 'Foreman releases/1.7 - source',
-          :baseurl  => 'http://yum.theforeman.org/releases/1.7/el6/source',
-          :gpgcheck => '1',
-          :gpgkey   => 'https://yum.theforeman.org/releases/1.7/RPM-GPG-KEY-foreman',
-          :enabled  => '0',
-        })
-
-        should contain_yumrepo('foreman-plugins').with({
-          :descr    => 'Foreman plugins releases/1.7',
-          :baseurl  => 'http://yum.theforeman.org/plugins/1.7/el6/$basearch',
+        should contain_yumrepo('foreman-plugins').with(
+          :descr    => 'Foreman plugins 1.19',
+          :baseurl  => 'https://yum.theforeman.org/plugins/1.19/el7/$basearch',
           :gpgcheck => '0',
           :enabled  => '1',
-        })
+        )
 
-        should contain_yumrepo('foreman-plugins-source').with({
-          :descr    => 'Foreman plugins releases/1.7 - source',
-          :baseurl  => 'http://yum.theforeman.org/plugins/1.7/el6/source',
+        should contain_yumrepo('foreman-plugins-source').with(
+          :descr    => 'Foreman plugins 1.19 - source',
+          :baseurl  => 'https://yum.theforeman.org/plugins/1.19/el7/source',
           :gpgcheck => '0',
           :enabled  => '0',
-        })
-      end
-    end
+        )
 
-    context 'gpgcheck => false' do
-      let(:params) { {:repo => 'releases/1.7', :yumcode => 'el6', :gpgcheck => false} }
-
-      it 'should contain repo, plugins and source repo' do
-        should contain_yumrepo('foreman').with({
-          :descr    => 'Foreman releases/1.7',
-          :baseurl  => 'http://yum.theforeman.org/releases/1.7/el6/$basearch',
-          :gpgcheck => '0',
-          :gpgkey   => 'https://yum.theforeman.org/releases/1.7/RPM-GPG-KEY-foreman',
-          :enabled  => '1',
-        })
-
-        should contain_yumrepo('foreman-source').with({
-          :descr    => 'Foreman releases/1.7 - source',
-          :baseurl  => 'http://yum.theforeman.org/releases/1.7/el6/source',
-          :gpgcheck => '0',
-          :gpgkey   => 'https://yum.theforeman.org/releases/1.7/RPM-GPG-KEY-foreman',
-          :enabled  => '0',
-        })
-
-        should contain_yumrepo('foreman-plugins').with({
-          :descr    => 'Foreman plugins releases/1.7',
-          :baseurl  => 'http://yum.theforeman.org/plugins/1.7/el6/$basearch',
+        should contain_yumrepo('foreman-rails').with(
+          :descr    => 'Rails SCL for Foreman 1.19',
+          :baseurl  => 'https://yum.theforeman.org/rails/foreman-1.19/el7/$basearch',
           :gpgcheck => '0',
           :enabled  => '1',
-        })
-
-        should contain_yumrepo('foreman-plugins-source').with({
-          :descr    => 'Foreman plugins releases/1.7 - source',
-          :baseurl  => 'http://yum.theforeman.org/plugins/1.7/el6/source',
-          :gpgcheck => '0',
-          :enabled  => '0',
-        })
+          :gpgkey   => 'https://yum.theforeman.org/rails/foreman-1.19/RPM-GPG-KEY-copr',
+        )
       end
     end
   end

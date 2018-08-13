@@ -1,35 +1,25 @@
 # Set up a repository for foreman
 define foreman::repos(
-  $repo = stable,
-  $gpgcheck = true
+  Variant[Enum['nightly'], Pattern['^\d+\.\d+$']] $repo,
+  Boolean $gpgcheck = true,
 ) {
-  include ::foreman::params
-
   case $::osfamily {
-    'RedHat': {
+    'RedHat', 'Linux': {
+      $yumcode = $::operatingsystem ? {
+        'Amazon' => 'el7',
+        'Fedora' => "f${::operatingsystemmajrelease}",
+        default  => "el${::operatingsystemmajrelease}",
+      }
+
       foreman::repos::yum {$name:
         repo     => $repo,
-        yumcode  => $::foreman::params::yumcode,
+        yumcode  => $yumcode,
         gpgcheck => $gpgcheck,
       }
     }
     'Debian': {
       foreman::repos::apt {$name:
         repo => $repo,
-      }
-    }
-    'Linux': {
-      case $::operatingsystem {
-        'Amazon': {
-          foreman::repos::yum {$name:
-            repo     => $repo,
-            yumcode  => $::foreman::params::yumcode,
-            gpgcheck => $gpgcheck,
-          }
-        }
-        default: {
-          fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")
-        }
       }
     }
     default: {

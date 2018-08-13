@@ -6,21 +6,17 @@ class foreman::repo(
   $configure_epel_repo = $::foreman::configure_epel_repo,
   $configure_scl_repo  = $::foreman::configure_scl_repo,
 ) {
-  anchor { 'foreman::repo::begin': }
-
-  if ! $custom_repo {
-    Anchor['foreman::repo::begin']
-    -> foreman::repos { 'foreman':
+  unless $custom_repo {
+    foreman::repos { 'foreman':
       repo     => $repo,
       gpgcheck => $gpgcheck,
+      before   => Class['foreman::repos::extra'],
     }
-    -> Class['::foreman::repos::extra']
   }
 
-  Anchor['foreman::repo::begin']
-  -> class { '::foreman::repos::extra':
+  class { '::foreman::repos::extra':
     configure_epel_repo => $configure_epel_repo,
     configure_scl_repo  => $configure_scl_repo,
   }
-  -> anchor { 'foreman::repo::end': }
+  contain ::foreman::repos::extra
 }

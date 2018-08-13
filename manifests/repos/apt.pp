@@ -1,10 +1,11 @@
 # Install an apt repo
-define foreman::repos::apt ($repo) {
-
+define foreman::repos::apt (
+  Variant[Enum['nightly'], Pattern['^\d+\.\d+$']] $repo,
+) {
   include ::apt
 
   Apt::Source {
-    location => 'http://deb.theforeman.org/',
+    location => 'https://deb.theforeman.org/',
     key      => 'AE0AF310E2EA96B6B6F4BD726F8600B9563278F6',
     include  => {
       src => false,
@@ -19,5 +20,4 @@ define foreman::repos::apt ($repo) {
     release => 'plugins',
     repos   => $repo,
   }
-
 }

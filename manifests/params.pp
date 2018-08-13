@@ -47,8 +47,8 @@ class foreman::params {
   # if set to true, no repo will be added by this module, letting you
   # set it to some custom location.
   $custom_repo       = false
-  # this can be stable, or nightly
-  $repo              = 'stable'
+  # this can be a version or nightly
+  $repo              = '1.18'
   $app_root          = '/usr/share/foreman'
   $plugin_config_dir = '/etc/foreman/plugins'
   $manage_user       = true
@@ -119,14 +119,12 @@ class foreman::params {
       case $::operatingsystem {
         'fedora': {
           $puppet_basedir  = '/usr/share/ruby/vendor_ruby/puppet'
-          $yumcode = "f${::operatingsystemrelease}"
           $passenger_ruby = undef
           $passenger_ruby_package = undef
           $plugin_prefix = 'rubygem-foreman_'
         }
         default: {
           $osreleasemajor = regsubst($::operatingsystemrelease, '^(\d+)\..*$', '\1')
-          $yumcode = "el${osreleasemajor}"
           $puppet_basedir = $osreleasemajor ? {
             '6'     => regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet'),
             default => '/usr/share/ruby/vendor_ruby/puppet',
@@ -154,7 +152,6 @@ class foreman::params {
           $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
           $puppet_etcdir = '/etc/puppet'
           $puppet_home = '/var/lib/puppet'
-          $yumcode = 'el6'
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
           $passenger_ruby = '/usr/bin/tfm-ruby'
           $passenger_ruby_package = 'tfm-rubygem-passenger-native'
@@ -185,7 +182,6 @@ class foreman::params {
       $puppet_basedir = undef
       $puppet_etcdir = undef
       $puppet_home = undef
-      $yumcode = undef
       $passenger_ruby = undef
       $passenger_ruby_package = undef
       $plugin_prefix = undef
