@@ -28,8 +28,10 @@ gem 'puppet-lint-version_comparison-check'
 gem 'simplecov'
 gem 'github_changelog_generator', {"git"=>"https://github.com/skywinder/github-changelog-generator", "ref"=>"20ee04ba1234e9e83eb2ffb5056e23d641c7a018", "groups"=>["development"]}
 gem 'puppet-blacksmith', '>= 4.1.0', {"groups"=>["development"]}
-gem 'beaker', '>= 3.9.0', {"groups"=>["system_tests"]}
+gem 'beaker', '>= 4.0.0', {"groups"=>["system_tests"]}
+gem 'beaker-docker', {"groups"=>["system_tests"]}
 gem 'beaker-hostgenerator', '>= 1.1.10', {"groups"=>["system_tests"]}
+gem 'beaker-puppet', {"groups"=>["system_tests"]}
 gem 'beaker-rspec', {"groups"=>["system_tests"]}
 gem 'beaker-module_install_helper', {"groups"=>["system_tests"]}
 gem 'beaker-puppet_install_helper', {"groups"=>["system_tests"]}
