@@ -80,8 +80,6 @@ describe 'foreman' do
           :group                     => 'foreman',
           :user_groups               => ['adm', 'wheel'],
           :rails_env                 => 'production',
-          :puppet_home               => '/var/lib/puppet',
-          :puppet_ssldir             => '/var/lib/puppet/ssl',
           :locations_enabled         => false,
           :organizations_enabled     => true,
           :passenger_interface       => 'lo0',
