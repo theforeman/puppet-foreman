@@ -15,11 +15,8 @@ class foreman::plugin::tasks(
   Boolean $automatic_cleanup = $::foreman::plugin::tasks::params::automatic_cleanup,
   String $cron_line = $::foreman::plugin::tasks::params::cron_line,
 ) inherits foreman::plugin::tasks::params {
-  include ::foreman::service::jobs
-
   foreman::plugin { 'tasks':
     package => $package,
-    notify  => Class['foreman::service::jobs'],
   }
   $cron_state = $automatic_cleanup ? {
     true    => 'present',

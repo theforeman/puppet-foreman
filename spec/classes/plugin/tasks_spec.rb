@@ -25,8 +25,6 @@ describe 'foreman::plugin::tasks' do
 
       it { should compile.with_all_deps }
 
-      it { should contain_class('foreman::service::jobs') }
-
       it 'should call the plugin' do
         should contain_foreman__plugin('tasks').with_package(package_name)
         should contain_file('/etc/cron.d/foreman-tasks').

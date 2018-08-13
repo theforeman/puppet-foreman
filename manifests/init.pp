@@ -217,8 +217,6 @@
 #
 # $jobs_service::                 Name of the service for running the background Dynflow executor
 #
-# $dynflow_in_core::              Whether the Dynflow executor service is provided by Foreman or tasks
-#
 # $hsts_enabled::                 Should HSTS enforcement in https requests be enabled
 #
 class foreman (
@@ -322,8 +320,7 @@ class foreman (
   Boolean $telemetry_logger_enabled = $::foreman::params::telemetry_logger_enabled,
   Enum['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'] $telemetry_logger_level = $::foreman::params::telemetry_logger_level,
   Integer[0, 65535] $dynflow_pool_size = $::foreman::params::dynflow_pool_size,
-  Optional[String] $jobs_service = $::foreman::params::jobs_service,
-  Boolean $dynflow_in_core = $::foreman::params::dynflow_in_core,
+  String $jobs_service = $::foreman::params::jobs_service,
   Boolean $hsts_enabled = $::foreman::params::hsts_enabled,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {

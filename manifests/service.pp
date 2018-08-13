@@ -1,14 +1,17 @@
 # Configure the foreman service
 class foreman::service(
-  $passenger       = $::foreman::passenger,
-  $app_root        = $::foreman::app_root,
-  $ssl             = $::foreman::ssl,
-  $dynflow_in_core = $::foreman::dynflow_in_core,
+  Boolean $passenger = $::foreman::passenger,
+  Stdlib::Absolutepath $app_root = $::foreman::app_root,
+  Boolean $ssl = $::foreman::ssl,
+  String $jobs_service = $::foreman::jobs_service,
+  Enum['running', 'stopped'] $jobs_service_ensure = $::foreman::jobs_service_ensure,
+  Boolean $jobs_service_enable = $::foreman::jobs_service_enable,
 ) {
   anchor { ['foreman::service_begin', 'foreman::service_end']: }
 
-  if $dynflow_in_core {
-    contain ::foreman::service::jobs
+  service { $jobs_service:
+    ensure => $jobs_service_ensure,
+    enable => $jobs_service_enable,
   }
 
   if $passenger {
