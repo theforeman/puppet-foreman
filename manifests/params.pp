@@ -49,8 +49,7 @@ class foreman::params {
   $custom_repo       = false
   # this can be stable, or nightly
   $repo              = 'stable'
-  $railspath         = '/usr/share'
-  $app_root          = "${railspath}/foreman"
+  $app_root          = '/usr/share/foreman'
   $plugin_config_dir = '/etc/foreman/plugins'
   $manage_user       = true
   $user              = 'foreman'
