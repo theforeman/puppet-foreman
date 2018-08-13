@@ -13,7 +13,7 @@ describe 'foreman::repo' do
         let :params do
           {
             'custom_repo'         => false,
-            'repo'                => 'stable',
+            'repo'                => '1.19',
             'gpgcheck'            => true,
             'configure_epel_repo' => configure,
             'configure_scl_repo'  => configure,
@@ -22,7 +22,7 @@ describe 'foreman::repo' do
 
         it 'should include OS repos' do
           is_expected.to contain_foreman__repos('foreman')
-            .with_repo('stable')
+            .with_repo('1.19')
             .with_gpgcheck(true)
         end
 
