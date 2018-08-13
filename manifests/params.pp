@@ -2,7 +2,7 @@
 class foreman::params {
   $lower_fqdn = downcase($::fqdn)
 
-# Basic configurations
+  # Basic configurations
   $foreman_url      = "https://${lower_fqdn}"
   $foreman_user     = undef
   $foreman_password = undef
@@ -43,8 +43,8 @@ class foreman::params {
   # Only configure extra SCL repos on EL
   $configure_scl_repo       = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
 
-# Advanced configuration - no need to change anything here by default
-  # if set to true, no repo will be added by this module, letting you 
+  # Advanced configuration - no need to change anything here by default
+  # if set to true, no repo will be added by this module, letting you
   # set it to some custom location.
   $custom_repo       = false
   # this can be stable, or nightly
