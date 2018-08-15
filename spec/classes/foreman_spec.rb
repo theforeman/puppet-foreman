@@ -32,13 +32,13 @@ describe 'foreman' do
         let :pre_condition do
           "class { 'foreman': }
            class { 'foreman::providers':
-             apipie_bindings => true,
-             apipie_bindings_package => 'apipie-bindings',
+             oauth         => true,
+             oauth_package => 'puppet-agent-oauth',
            }"
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { should contain_package('apipie-bindings').that_subscribes_to('Class[foreman::repo]') }
+        it { should contain_package('puppet-agent-oauth').that_subscribes_to('Class[foreman::repo]') }
       end
 
       describe 'with all parameters' do
