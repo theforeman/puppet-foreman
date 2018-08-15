@@ -2,7 +2,6 @@
 class foreman::providers::params {
   # Dependency packages for different providers supplied in this module
   $oauth = true
-  $apipie_bindings = false
 
   # OS specific package names
   case $::osfamily {
@@ -12,7 +11,6 @@ class foreman::providers::params {
       } else {
         $oauth_package = 'rubygem-oauth'
       }
-      $apipie_bindings_package = 'rubygem-apipie-bindings'
     }
     'Debian': {
       if $::rubysitedir =~ /\/opt\/puppetlabs\/puppet/ {
@@ -20,15 +18,12 @@ class foreman::providers::params {
       } else {
         $oauth_package = 'ruby-oauth'
       }
-      $apipie_bindings_package = 'ruby-apipie-bindings'
     }
     'FreeBSD': {
       $oauth_package = 'rubygem-oauth'
-      $apipie_bindings_package = 'rubygem-apipie-bindings'
     }
     'Archlinux': {
       $oauth_package = 'ruby-oauth'
-      $apipie_bindings_package = 'ruby-apipie-bindings'
     }
     'Linux': {
       case $::operatingsystem {
@@ -38,7 +33,6 @@ class foreman::providers::params {
           } else {
             $oauth_package = 'rubygem-oauth'
           }
-          $apipie_bindings_package = 'rubygem-apipie-bindings'
         }
         default: {
           fail("${::hostname}: This class does not support operatingsystem ${::operatingsystem}")
