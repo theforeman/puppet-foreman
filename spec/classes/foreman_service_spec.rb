@@ -12,7 +12,7 @@ describe 'foreman::service' do
     end
 
     it { is_expected.to compile.with_all_deps }
-    it { is_expected.to contain_class('foreman::service::jobs') }
+    it { is_expected.to contain_service('dynflowd').with_ensure('running').with_enable(true) }
 
     it 'should restart passenger' do
       should contain_exec('restart_foreman').with({
@@ -37,10 +37,12 @@ describe 'foreman::service' do
 
     let :params do
       {
-        :passenger => true,
-        :app_root  => '/usr/share/foreman',
-        :ssl => true,
-        :dynflow_in_core => false,
+        :passenger           => true,
+        :app_root            => '/usr/share/foreman',
+        :ssl                 => true,
+        :jobs_service        => 'dynflower',
+        :jobs_service_ensure => 'stopped',
+        :jobs_service_enable => false,
       }
     end
 
@@ -49,7 +51,7 @@ describe 'foreman::service' do
     end
 
     it { is_expected.to compile.with_all_deps }
-    it { is_expected.not_to contain_class('foreman::service::jobs') }
+    it { is_expected.to contain_service('dynflower').with_ensure('stopped').with_enable(false) }
 
     it 'should restart passenger' do
       should contain_exec('restart_foreman').with({
@@ -72,30 +74,32 @@ describe 'foreman::service' do
     context 'without ssl' do
       let :params do
         {
-          :passenger => true,
-          :app_root  => '/usr/share/foreman',
-          :ssl => false,
-          :dynflow_in_core => false,
+          :passenger           => true,
+          :app_root            => '/usr/share/foreman',
+          :ssl                 => false,
+          :jobs_service        => 'dynflowd',
+          :jobs_service_ensure => 'running',
+          :jobs_service_enable => true,
         }
       end
 
       it { is_expected.to compile.with_all_deps }
-      it { is_expected.not_to contain_class('foreman::service::jobs') }
     end
   end
 
   context 'without passenger' do
     let :params do
       {
-        :passenger => false,
-        :app_root  => '/usr/share/foreman',
-        :ssl => true,
-        :dynflow_in_core => false,
+        :passenger           => false,
+        :app_root            => '/usr/share/foreman',
+        :ssl                 => true,
+        :jobs_service        => 'dynflowd',
+        :jobs_service_ensure => 'running',
+        :jobs_service_enable => true,
       }
     end
 
     it { is_expected.to compile.with_all_deps }
-    it { is_expected.not_to contain_class('foreman::service::jobs') }
 
     it 'should not restart passenger' do
       should_not contain_exec('restart_foreman')
