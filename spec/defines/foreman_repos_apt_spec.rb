@@ -4,7 +4,7 @@ describe 'foreman::repos::apt' do
   let(:title) { 'foreman' }
 
   let :facts do
-    on_supported_os['debian-8-x86_64']
+    on_supported_os['debian-9-x86_64']
   end
 
   context 'with repo => stable' do
@@ -18,7 +18,7 @@ describe 'foreman::repos::apt' do
         with_repos('stable')
 
       should contain_file('/etc/apt/sources.list.d/foreman.list').
-        with_content(/deb http:\/\/deb.theforeman.org\/ jessie stable/)
+        with_content(%r{deb http://deb\.theforeman\.org/ stretch stable})
 
       should contain_apt__source('foreman-plugins').
         with_location('http://deb.theforeman.org/').
@@ -37,23 +37,23 @@ describe 'foreman::repos::apt' do
     it { should contain_apt_key(apt_key_title).with_id(apt_key) }
   end
 
-  context 'with repo => 1.11' do
-    let(:params) { {:repo => '1.11'} }
+  context 'with repo => 1.18' do
+    let(:params) { {:repo => '1.18'} }
 
     it { should contain_class('apt') }
 
-    it 'should add the 1.11 repo' do
+    it 'should add the 1.18 repo' do
       should contain_apt__source('foreman').
         with_location('http://deb.theforeman.org/').
-        with_repos('1.11')
+        with_repos('1.18')
 
       should contain_file('/etc/apt/sources.list.d/foreman.list').
-        with_content(/deb http:\/\/deb.theforeman.org\/ jessie 1.11/)
+        with_content(%r{deb http://deb\.theforeman\.org/ stretch 1\.18})
 
       should contain_apt__source('foreman-plugins').
         with_location('http://deb.theforeman.org/').
         with_release('plugins').
-        with_repos('1.11')
+        with_repos('1.18')
     end
   end
 
@@ -68,7 +68,7 @@ describe 'foreman::repos::apt' do
         with_repos('nightly')
 
       should contain_file('/etc/apt/sources.list.d/foreman.list').
-        with_content(/deb http:\/\/deb.theforeman.org\/ jessie nightly/)
+        with_content(%r{deb http://deb\.theforeman\.org/ stretch nightly})
 
       should contain_apt__source('foreman-plugins').
         with_location('http://deb.theforeman.org/').
