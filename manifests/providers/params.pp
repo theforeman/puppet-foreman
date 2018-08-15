@@ -2,7 +2,6 @@
 class foreman::providers::params {
   # Dependency packages for different providers supplied in this module
   $oauth = true
-  $json = (versioncmp($::rubyversion, '1.9') < 0)
   $apipie_bindings = false
 
   # OS specific package names
@@ -13,7 +12,6 @@ class foreman::providers::params {
       } else {
         $oauth_package = 'rubygem-oauth'
       }
-      $json_package = 'rubygem-json'
       $apipie_bindings_package = 'rubygem-apipie-bindings'
     }
     'Debian': {
@@ -22,17 +20,14 @@ class foreman::providers::params {
       } else {
         $oauth_package = 'ruby-oauth'
       }
-      $json_package = 'ruby-json'
       $apipie_bindings_package = 'ruby-apipie-bindings'
     }
     'FreeBSD': {
       $oauth_package = 'rubygem-oauth'
-      $json_package = 'rubygem-json'
       $apipie_bindings_package = 'rubygem-apipie-bindings'
     }
     'Archlinux': {
       $oauth_package = 'ruby-oauth'
-      $json_package = 'ruby-json'
       $apipie_bindings_package = 'ruby-apipie-bindings'
     }
     'Linux': {
@@ -43,7 +38,6 @@ class foreman::providers::params {
           } else {
             $oauth_package = 'rubygem-oauth'
           }
-          $json_package = 'rubygem-json'
           $apipie_bindings_package = 'rubygem-apipie-bindings'
         }
         default: {
