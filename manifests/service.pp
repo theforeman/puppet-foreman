@@ -4,7 +4,7 @@ class foreman::service(
   Stdlib::Absolutepath $app_root = $::foreman::app_root,
   Boolean $ssl = $::foreman::ssl,
   String $jobs_service = $::foreman::jobs_service,
-  Enum['running', 'stopped'] $jobs_service_ensure = $::foreman::jobs_service_ensure,
+  Stdlib::Ensure::Service $jobs_service_ensure = $::foreman::jobs_service_ensure,
   Boolean $jobs_service_enable = $::foreman::jobs_service_enable,
 ) {
   anchor { ['foreman::service_begin', 'foreman::service_end']: }
