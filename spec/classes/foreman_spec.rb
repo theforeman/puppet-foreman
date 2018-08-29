@@ -123,7 +123,7 @@ describe 'foreman' do
           :logging_level             => 'info',
           :loggers                   => {},
           :email_delivery_method     => 'sendmail',
-          :email_smtp_address        => 'alice@bob.com',
+          :email_smtp_address        => 'smtp.example.com',
           :email_smtp_port           => 25,
           :email_smtp_domain         => 'example.com',
           :email_smtp_authentication => 'none',
