@@ -7,6 +7,10 @@
 # If --push-facts is given as the only arg, it uploads facts for all hosts and then exits.
 # Useful in scenarios where the ENC isn't used.
 
+# If --push-only-current-client-facts is given as the only arg, it uploads only the facts
+# of the current Puppet client that requests its Puppet catalog. Returns a YAML
+# with an empty `classes` hash.
+
 require 'rbconfig'
 require 'yaml'
 
@@ -356,6 +360,7 @@ if __FILE__ == $0 then
     watch = ARGV.delete("--watch-facts")
     push_facts_parallel = ARGV.delete("--push-facts-parallel")
     push_facts = ARGV.delete("--push-facts")
+    push_only_current_client_facts = ARGV.delete("--push-only-current-client-facts")
     if watch && ! ( push_facts || push_facts_parallel )
         raise "Cannot watch for facts without specifying --push-facts or --push-facts-parallel"
     end
@@ -385,16 +390,28 @@ if __FILE__ == $0 then
             upload_facts(certname, req)
           end
 
-          result = enc(certname)
-          cache(certname, result)
+          if ! push_only_current_client_facts
+            result = enc(certname)
+            cache(certname, result)
+          end
         end
       rescue TimeoutError, SocketError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, FactUploadError => e
-        $stderr.puts "Serving cached ENC: #{e}"
-        # Read from cache, we got some sort of an error.
-        result = read_cache(certname)
+        if push_only_current_client_facts
+          require 'yaml'
+          empty_env_result = { "classes" => {}}
+          result = empty_env_result.to_yaml
+        else
+          $stderr.puts "Serving cached ENC: #{e}"
+          # Read from cache, we got some sort of an error.
+          result = read_cache(certname)
+        end
       end
 
-      if no_env
+      if push_only_current_client_facts
+        require 'yaml'
+        empty_env_result = { "classes" => {}}
+        puts empty_env_result.to_yaml
+      elsif no_env
         require 'yaml'
         yaml = YAML.load(result)
         yaml.delete('environment')
