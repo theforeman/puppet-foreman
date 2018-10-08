@@ -148,6 +148,8 @@ end
 
 def initialize_http(uri)
   res              = Net::HTTP.new(uri.host, uri.port)
+  res.open_timeout = SETTINGS[:timeout]
+  res.read_timeout = SETTINGS[:timeout]
   res.use_ssl      = uri.scheme == 'https'
   if res.use_ssl?
     if SETTINGS[:ssl_ca] && !SETTINGS[:ssl_ca].empty?
@@ -194,37 +196,23 @@ rescue => e
 end
 
 def enc(certname)
-  foreman_url      = "#{url}/node/#{certname}?format=yml"
-  uri              = URI.parse(foreman_url)
-  req              = Net::HTTP::Get.new(uri.request_uri)
-  http             = Net::HTTP.new(uri.host, uri.port)
-  http.use_ssl     = uri.scheme == 'https'
-  if http.use_ssl?
-    if SETTINGS[:ssl_ca] && !SETTINGS[:ssl_ca].empty?
-      http.ca_file = SETTINGS[:ssl_ca]
-      http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-    else
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    end
-    if SETTINGS[:ssl_cert] && !SETTINGS[:ssl_cert].empty? && SETTINGS[:ssl_key] && !SETTINGS[:ssl_key].empty?
-      http.cert = OpenSSL::X509::Certificate.new(File.read(SETTINGS[:ssl_cert]))
-      http.key  = OpenSSL::PKey::RSA.new(File.read(SETTINGS[:ssl_key]), nil)
-    end
-  end
-  res = http.request(req)
+  uri = URI.parse("#{url}/node/#{certname}?format=yml")
+  req = Net::HTTP::Get.new(uri.request_uri)
+  initialize_http(uri).start do |http|
+    response = http.request(req)
 
-  raise "Error retrieving node #{certname}: #{res.class}\nCheck Foreman's /var/log/foreman/production.log for more information." unless res.code == "200"
-  res.body
+    unless response.code == "200"
+      raise "Error retrieving node #{certname}: #{res.class}\nCheck Foreman's /var/log/foreman/production.log for more information."
+    end
+    response.body
+  end
 end
 
 def upload_facts(certname, req)
   return nil if req.nil?
   uri = URI.parse("#{url}/api/hosts/facts")
   begin
-    res = initialize_http(uri)
-    res.open_timeout = SETTINGS[:timeout]
-    res.read_timeout = SETTINGS[:timeout]
-    res.start do |http|
+    initialize_http(uri).start do |http|
       response = http.request(req)
       if response.code.start_with?('2')
         cache("#{certname}-push-facts", "Facts from this host were last pushed to #{uri} at #{Time.now}\n")
