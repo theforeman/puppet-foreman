@@ -64,7 +64,7 @@ class foreman::params {
   $db_username = 'foreman'
   # Generate and cache the password on the master once
   # In multi-puppetmaster setups, the user should specify their own
-  $db_password = cache_data('foreman_cache_data', 'db_password', random_password(32))
+  $db_password = extlib::cache_data('foreman_cache_data', 'db_password', extlib::random_password(32))
   # Default database connection pool
   $db_pool = 5
   # if enabled, will run rake jobs, which depend on the database
@@ -171,12 +171,12 @@ class foreman::params {
   # We need the REST API interface with OAuth for some REST Puppet providers
   $oauth_active = true
   $oauth_map_users = false
-  $oauth_consumer_key = cache_data('foreman_cache_data', 'oauth_consumer_key', random_password(32))
-  $oauth_consumer_secret = cache_data('foreman_cache_data', 'oauth_consumer_secret', random_password(32))
+  $oauth_consumer_key = extlib::cache_data('foreman_cache_data', 'oauth_consumer_key', extlib::random_password(32))
+  $oauth_consumer_secret = extlib::cache_data('foreman_cache_data', 'oauth_consumer_secret', extlib::random_password(32))
 
   # Initial admin account details
   $admin_username = 'admin'
-  $admin_password = cache_data('foreman_cache_data', 'admin_password', random_password(16))
+  $admin_password = extlib::cache_data('foreman_cache_data', 'admin_password', extlib::random_password(16))
   $admin_first_name = undef
   $admin_last_name = undef
   $admin_email = undef
