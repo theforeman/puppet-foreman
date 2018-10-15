@@ -96,10 +96,9 @@ describe 'foreman::config' do
             passenger_ruby = nil
           end
 
-          should contain_class('foreman::config::passenger').
-            with_listen_on_interface(nil).
-            with_ruby(passenger_ruby).
-            that_comes_before('Anchor[foreman::config_end]')
+          should contain_class('foreman::config::passenger')
+            .with_listen_on_interface(nil)
+            .with_ruby(passenger_ruby)
         end
 
         it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }

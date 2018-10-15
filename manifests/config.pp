@@ -76,7 +76,7 @@ class foreman::config {
   }
 
   if $::foreman::passenger  {
-    class { '::foreman::config::passenger': } -> anchor { 'foreman::config_end': }
+    contain foreman::config::passenger
 
     if $::foreman::ipa_authentication {
       unless 'ipa' in $facts and 'default_server' in $facts['ipa'] and 'default_realm' in $facts['ipa'] {
