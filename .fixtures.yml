@@ -1,10 +1,22 @@
 fixtures:
   repositories:
-    apache:           'http://github.com/puppetlabs/puppetlabs-apache'
-    apt:              'http://github.com/puppetlabs/puppetlabs-apt'
-    concat:           'http://github.com/puppetlabs/puppetlabs-concat'
-    extlib:           'http://github.com/voxpupuli/puppet-extlib'
-    mysql:            'http://github.com/puppetlabs/puppetlabs-mysql'
-    postgresql:       'http://github.com/puppetlabs/puppetlabs-postgresql'
-    puppet:           'http://github.com/theforeman/puppet-puppet'
-    stdlib:           'http://github.com/puppetlabs/puppetlabs-stdlib'
+    apache:           'https://github.com/puppetlabs/puppetlabs-apache'
+    apt:              'https://github.com/puppetlabs/puppetlabs-apt'
+    augeas_core:
+      repo: 'https://github.com/puppetlabs/puppetlabs-augeas_core'
+      puppet_version: '>= 6.0.0'
+    concat:           'https://github.com/puppetlabs/puppetlabs-concat'
+    cron_core:
+      repo: "https://github.com/puppetlabs/puppetlabs-cron_core"
+      puppet_version: ">= 6.0.0"
+    extlib:           'https://github.com/voxpupuli/puppet-extlib'
+    mysql:            'https://github.com/puppetlabs/puppetlabs-mysql'
+    postgresql:       'https://github.com/puppetlabs/puppetlabs-postgresql'
+    puppet:           'https://github.com/theforeman/puppet-puppet'
+    selinux_core:
+      repo: "https://github.com/puppetlabs/puppetlabs-selinux_core"
+      puppet_version: ">= 6.0.0"
+    stdlib:           'https://github.com/puppetlabs/puppetlabs-stdlib'
+    yumrepo_core:
+      repo: "https://github.com/puppetlabs/puppetlabs-yumrepo_core"
+      puppet_version: ">= 6.0.0"
