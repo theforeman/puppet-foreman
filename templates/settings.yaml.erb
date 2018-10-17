@@ -11,6 +11,12 @@
 :require_ssl: <%= scope.lookupvar("foreman::ssl") %>
 :locations_enabled: <%= scope.lookupvar("foreman::locations_enabled") %>
 :organizations_enabled: <%= scope.lookupvar("foreman::organizations_enabled") %>
+<% unless [nil, :undefined, :undef].include?(scope.lookupvar("foreman::location_fact")) -%>
+:location_fact: <%= scope.lookupvar("foreman::location_fact") %>
+<% end -%>
+<% unless [nil, :undefined, :undef].include?(scope.lookupvar("foreman::organization_fact")) -%>
+:organization_fact: <%= scope.lookupvar("foreman::organization_fact") %>
+<% end -%>
 :puppetrun: <%= scope.lookupvar("foreman::puppetrun") %>
 
 # The following values are used for providing default settings during db migrate

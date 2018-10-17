@@ -185,6 +185,10 @@ class foreman::params {
   $initial_organization = undef
   $initial_location = undef
 
+  # Hiera facts to look at to set organization and locations
+  $location_fact = undef
+  $organization_fact = undef
+
   $ipa_authentication = false
   $http_keytab = '/etc/httpd/conf/http.keytab'
   $pam_service = 'foreman'

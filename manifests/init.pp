@@ -32,9 +32,13 @@
 #
 # $locations_enabled::            Enable locations?
 #
+# $location_fact::                custom fact to use to set location
+#
 # $organizations_enabled::        Enable organizations?
 #
 # $initial_organization::         Name of an initial organization
+#
+# $organization_fact::            Hiera fact to use to set organization
 #
 # $initial_location::             Name of an initial location
 #
@@ -288,6 +292,8 @@ class foreman (
   Optional[String] $admin_email = $::foreman::params::admin_email,
   Optional[String] $initial_organization = $::foreman::params::initial_organization,
   Optional[String] $initial_location = $::foreman::params::initial_location,
+  Optional[String] $location_fact = $::foreman::params::location_fact,
+  Optional[String] $organization_fact = $::foreman::params::organization_fact,
   Boolean $ipa_authentication = $::foreman::params::ipa_authentication,
   Stdlib::Absolutepath $http_keytab = $::foreman::params::http_keytab,
   String $pam_service = $::foreman::params::pam_service,
