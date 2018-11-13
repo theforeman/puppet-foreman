@@ -9,7 +9,9 @@ class foreman::params {
   # should foreman manage host provisioning as well
   $unattended     = true
   $unattended_url = undef
-  # configure foreman via apache and passenger
+  # configure foreman via apache
+  $apache         = true
+  # configure apache with passenger
   $passenger      = true
   # Server name of the VirtualHost
   $servername     = $::fqdn
@@ -88,7 +90,6 @@ class foreman::params {
   $foreman_service_ensure = 'running'
   $foreman_service_enable = true
   $foreman_service_port = 3000
-  $foreman_service_bind = undef
 
   # Define job processing service properties
   $jobs_service = 'dynflowd'

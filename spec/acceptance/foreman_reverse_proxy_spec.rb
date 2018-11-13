@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'Scenario: install foreman with journald' do
+describe 'Scenario: install foreman' do
   apache_service_name = ['debian', 'ubuntu'].include?(os[:family]) ? 'apache2' : 'httpd'
 
   before(:context) do
@@ -18,16 +18,6 @@ describe 'Scenario: install foreman with journald' do
 
   let(:pp) do
     <<-EOS
-    # Workarounds
-
-    ## Ensure repos are present before installing
-    Yumrepo <| |> -> Package <| |>
-
-    ## We want passenger from EPEL
-    class { '::apache::mod::passenger':
-      manage_repo => false,
-    }
-
     $directory = '/etc/foreman'
     $certificate = "${directory}/certificate.pem"
     $key = "${directory}/key.pem"
@@ -57,7 +47,7 @@ describe 'Scenario: install foreman with journald' do
       server_ssl_cert        => $certificate,
       server_ssl_key         => $key,
       server_ssl_crl         => '',
-      logging_type           => 'journald',
+      passenger              => false,
     }
     EOS
   end
@@ -74,8 +64,9 @@ describe 'Scenario: install foreman with journald' do
     it { is_expected.to be_running }
   end
 
-  describe package('foreman-journald') do
-    it { is_expected.to be_installed }
+  describe service('foreman') do
+    it { is_expected.to be_enabled }
+    it { is_expected.to be_running }
   end
 
   describe port(80) do
@@ -86,18 +77,12 @@ describe 'Scenario: install foreman with journald' do
     it { is_expected.to be_listening }
   end
 
+  describe port(3000) do
+    it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
+  end
+
   describe command("curl -s --cacert /etc/foreman/certificate.pem https://#{host_inventory['fqdn']} -w '\%{redirect_url}' -o /dev/null") do
     its(:stdout) { is_expected.to eq("https://#{host_inventory['fqdn']}/users/login") }
     its(:exit_status) { is_expected.to eq 0 }
-  end
-
-  # Logging to the journal is broken on Travis and EL7 but works in Vagrant VMs
-  # and regular docker containers
-  describe command("journalctl -u #{apache_service_name}"), unless: ENV['TRAVIS'] == 'true' && os[:family] == 'redhat' && os[:release] =~ /^7\./ do
-    its(:stdout) { is_expected.to match(%r{Redirected to https://#{host_inventory['fqdn']}/users/login}) }
-  end
-
-  describe command('journalctl -u dynflowd'), unless: ENV['TRAVIS'] == 'true' && os[:family] == 'redhat' && os[:release] =~ /^7\./ do
-    its(:stdout) { is_expected.to match(%r{Dynflow Executor: start in progress}) }
   end
 end

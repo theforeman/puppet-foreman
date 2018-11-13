@@ -8,6 +8,7 @@ describe 'foreman::service' do
   let :params do
     {
       passenger: true,
+      apache: true,
       app_root: '/usr/share/foreman',
       ssl: true,
       use_foreman_service: false,
@@ -48,7 +49,15 @@ describe 'foreman::service' do
     end
   end
 
+  context 'without apache' do
+    let(:params) { super().merge(apache: false, use_foreman_service: true) }
+    it { is_expected.to compile.with_all_deps }
+    it { should_not contain_exec('restart_foreman') }
+    it { should contain_service('foreman').with_ensure('running').with_enable(true) }
+  end
+
   context 'without passenger' do
+    let(:pre_condition) { 'class apache::service {} include apache::service' }
     let(:params) { super().merge(passenger: false, use_foreman_service: true) }
     it { is_expected.to compile.with_all_deps }
     it { should_not contain_exec('restart_foreman') }

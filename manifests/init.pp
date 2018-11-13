@@ -44,7 +44,9 @@
 #
 # $unattended_url::               URL hosts will retrieve templates from during build (normally http as many installers don't support https)
 #
-# $passenger::                    Configure foreman via apache and passenger
+# $apache::                       Configure Foreman via Apache. By default via passenger but otherwise as a reverse proxy.
+#
+# $passenger::                    Whether to configure Apache with passenger or as a reverse proxy.
 #
 # $passenger_ruby::               Ruby interpreter used to run Foreman under Passenger
 #
@@ -210,6 +212,7 @@ class foreman (
   Stdlib::HTTPUrl $foreman_url = $::foreman::params::foreman_url,
   Boolean $unattended = $::foreman::params::unattended,
   Optional[Stdlib::HTTPUrl] $unattended_url = $::foreman::params::unattended_url,
+  Boolean $apache = $::foreman::params::apache,
   Boolean $passenger = $::foreman::params::passenger,
   Optional[String] $passenger_ruby = $::foreman::params::passenger_ruby,
   Optional[String] $passenger_ruby_package = $::foreman::params::passenger_ruby_package,
@@ -321,15 +324,17 @@ class foreman (
     $db_sslmode_real = $db_sslmode
   }
 
-  if $passenger == false and $ipa_authentication {
-    fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
-  }
-
   foreman::rake { 'apipie:cache:index':
     timeout => 0,
   }
 
-  $use_foreman_service = ! $passenger
+  if $apache {
+    $use_foreman_service = ! $passenger
+    $foreman_service_bind = '127.0.0.1'
+  } else {
+    $use_foreman_service = true
+    $foreman_service_bind = undef
+  }
 
   include ::foreman::repo
   include ::foreman::install
@@ -342,8 +347,10 @@ class foreman (
   Class['foreman::config'] ~> Class['foreman::database', 'foreman::service']
   Class['foreman::service'] -> Foreman_smartproxy <| base_url == $foreman_url |>
 
-  if $passenger {
+  if $apache {
     Class['foreman::database'] -> Class['apache::service']
+  } elsif $ipa_authentication {
+    fail("${::hostname}: External authentication via IPA can only be enabled when Apache is used.")
   }
 
   # Anchor these separately so as not to break

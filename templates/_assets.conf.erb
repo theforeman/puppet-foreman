@@ -1,5 +1,4 @@
 # Static public dir serving
-<% unless @suburi %>
 <Directory ~ <%= @docroot %>/(assets|webpack)>
 
   # Use standard http expire header for assets instead of ETag
@@ -38,4 +37,3 @@
   </IfModule>
 
 </Directory>
-<% end %>

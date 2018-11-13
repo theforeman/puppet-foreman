@@ -7,7 +7,7 @@
 # $listen_on_interface::      Specify which interface to bind passenger to.
 #                             Defaults to all interfaces.
 #
-# $ruby::                     Path to Ruby interpreter
+# $passenger_ruby::           Path to Ruby interpreter
 #
 # $priority::                 Apache vhost priority
 #
@@ -37,11 +37,11 @@
 #
 # $user::                     The user under which the application runs.
 #
-# $prestart::                 Pre-start the first passenger worker instance process during httpd start.
+# $passenger_prestart::       Pre-start the first passenger worker instance process during httpd start.
 #
-# $min_instances::            Minimum passenger worker instances to keep when application is idle.
+# $passenger_min_instances::  Minimum passenger worker instances to keep when application is idle.
 #
-# $start_timeout::            Amount of seconds to wait for Ruby application boot.
+# $passenger_start_timeout::  Amount of seconds to wait for Ruby application boot.
 #
 # $foreman_url::              The URL Foreman should be reachable under. Used for loading the application
 #                             on startup rather than on demand.
@@ -65,14 +65,18 @@
 # $https_vhost_options::      Direct options to apache::vhost for the https vhost
 #
 class foreman::config::apache(
+  Boolean $passenger = $::foreman::passenger,
   Stdlib::Absolutepath $app_root = $::foreman::app_root,
   Optional[String] $listen_on_interface = $::foreman::passenger_interface,
-  Optional[String] $ruby = $::foreman::passenger_ruby,
+  Optional[String] $passenger_ruby = $::foreman::passenger_ruby,
   String $priority = $::foreman::vhost_priority,
   Stdlib::Fqdn $servername = $::foreman::servername,
   Array[Stdlib::Fqdn] $serveraliases = $::foreman::serveraliases,
   Stdlib::Port $server_port = $::foreman::server_port,
   Stdlib::Port $server_ssl_port = $::foreman::server_ssl_port,
+  Stdlib::Httpurl $proxy_backend = "http://${::foreman::foreman_service_bind}:${::foreman::foreman_service_port}/",
+  Hash $proxy_params = {'retry' => '0'},
+  Array[String] $proxy_no_proxy_uris = ['/pulp', '/streamer', '/pub'],
   Boolean $ssl = $::foreman::ssl,
   Stdlib::Absolutepath $ssl_ca = $::foreman::server_ssl_ca,
   Stdlib::Absolutepath $ssl_chain = $::foreman::server_ssl_chain,
@@ -82,9 +86,9 @@ class foreman::config::apache(
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_crl = $::foreman::server_ssl_crl,
   Optional[String] $ssl_protocol = $::foreman::server_ssl_protocol,
   String $user = $::foreman::user,
-  Boolean $prestart = $::foreman::passenger_prestart,
-  Integer[0] $min_instances = $::foreman::passenger_min_instances,
-  Integer[0] $start_timeout = $::foreman::passenger_start_timeout,
+  Boolean $passenger_prestart = $::foreman::passenger_prestart,
+  Integer[0] $passenger_min_instances = $::foreman::passenger_min_instances,
+  Integer[0] $passenger_start_timeout = $::foreman::passenger_start_timeout,
   Stdlib::HTTPUrl $foreman_url = $::foreman::foreman_url,
   Boolean $keepalive = $::foreman::keepalive,
   Integer[0] $max_keepalive_requests = $::foreman::max_keepalive_requests,
@@ -93,6 +97,7 @@ class foreman::config::apache(
   Boolean $ipa_authentication = $::foreman::ipa_authentication,
   Hash[String, Any] $http_vhost_options = {},
   Hash[String, Any] $https_vhost_options = {},
+  Optional[Boolean] $selinux = $::foreman::selinux,
 ) {
   $docroot = "${app_root}/public"
   $suburi_parts = split($foreman_url, '/')
@@ -101,12 +106,94 @@ class foreman::config::apache(
     $suburi_without_slash = join(values_at($suburi_parts, ["3-${suburi_parts_count}"]), '/')
     if $suburi_without_slash {
       $suburi = "/${suburi_without_slash}"
+    } else {
+      $suburi = undef
+    }
+  } else {
+    $suburi = undef
+  }
+
+  if $passenger {
+    if $suburi {
+      $custom_fragment = template('foreman/_suburi.conf.erb')
+    } else {
+      $custom_fragment = template('foreman/_assets.conf.erb')
+    }
+
+    $passenger_options = {
+      'passenger_app_root' => $app_root,
+      'passenger_min_instances' => $passenger_min_instances,
+      'passenger_start_timeout' => $passenger_start_timeout,
+      'passenger_ruby' => $passenger_ruby,
+    }
+
+    if $passenger_prestart {
+      $vhost_http_internal_options = $passenger_options + {'passenger_pre_start' => "http://${servername}:${server_port}"}
+      $vhost_https_internal_options = $passenger_options + {'passenger_pre_start' => "https://${servername}:${server_ssl_port}"}
+    } else {
+      $vhost_http_internal_options = $passenger_options
+      $vhost_https_internal_options = $passenger_options
+    }
+
+    if $app_root {
+      file { ["${app_root}/config.ru", "${app_root}/config/environment.rb"]:
+        owner => $user,
+      }
+    }
+  } else {
+    if $suburi {
+      $custom_fragment = undef
+    } else {
+      $custom_fragment = template('foreman/_assets.conf.erb')
+    }
+
+    include ::apache::mod::proxy_wstunnel
+    $websockets_backend = regsubst($proxy_backend, 'http://', 'ws://')
+
+    $vhost_http_internal_options = {
+      'proxy_preserve_host' => true,
+      'proxy_add_headers'   => true,
+      'request_headers'     => [
+        'set X_FORWARDED_PROTO "http"',
+        'set SSL_CLIENT_S_DN ""',
+        'set SSL_CLIENT_CERT ""',
+        'set SSL_CLIENT_VERIFY ""',
+      ],
+      'proxy_pass'          => {
+        'no_proxy_uris' => $proxy_no_proxy_uris,
+        'path'          => pick($suburi, '/'),
+        'url'           => $proxy_backend,
+        'params'        => $proxy_params,
+      },
+      'rewrites'            => [
+        {
+          'comment'      => 'Upgrade Websocket connections',
+          'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
+          'rewrite_rule' => "/(.*) ${websockets_backend}\$1 [P,L]",
+        },
+      ],
+    }
+
+    $vhost_https_internal_options = $vhost_http_internal_options + {
+      'ssl_proxyengine' => true,
+      'request_headers' => [
+        'set X_FORWARDED_PROTO "https"',
+        'set SSL_CLIENT_S_DN "%{SSL_CLIENT_S_DN}s"',
+        'set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"',
+        'set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"',
+      ],
+    }
+
+    if $selinux or ($facts['selinux'] and $selinux != false) {
+      selboolean { 'httpd_can_network_connect':
+        persistent => true,
+        value      => 'on',
+      }
     }
   }
 
   include ::apache
   include ::apache::mod::headers
-  include ::apache::mod::passenger
 
   if $ipa_authentication {
     include ::apache::mod::authnz_pam
@@ -122,11 +209,6 @@ class foreman::config::apache(
     $listen_interface = undef
   }
 
-  $http_prestart = $prestart ? {
-    true  => "http://${servername}:${server_port}",
-    false => undef,
-  }
-
   file { "${apache::confd_dir}/${priority}-foreman.d":
     ensure  => 'directory',
     owner   => 'root',
@@ -137,35 +219,26 @@ class foreman::config::apache(
   }
 
   apache::vhost { 'foreman':
-    add_default_charset     => 'UTF-8',
-    docroot                 => $docroot,
-    manage_docroot          => false,
-    ip                      => $listen_interface,
-    options                 => ['SymLinksIfOwnerMatch'],
-    passenger_app_root      => $app_root,
-    passenger_min_instances => $min_instances,
-    passenger_pre_start     => $http_prestart,
-    passenger_start_timeout => $start_timeout,
-    passenger_ruby          => $ruby,
-    port                    => $server_port,
-    priority                => $priority,
-    servername              => $servername,
-    serveraliases           => $serveraliases,
-    keepalive               => bool2str($keepalive, 'on', 'off'),
-    max_keepalive_requests  => $max_keepalive_requests,
-    keepalive_timeout       => $keepalive_timeout,
-    access_log_format       => $access_log_format,
-    additional_includes     => ["${::apache::confd_dir}/${priority}-foreman.d/*.conf"],
-    use_optional_includes   => true,
-    custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_suburi.conf.erb'),
-    *                       => $http_vhost_options,
+    add_default_charset    => 'UTF-8',
+    docroot                => $docroot,
+    manage_docroot         => false,
+    ip                     => $listen_interface,
+    options                => ['SymLinksIfOwnerMatch'],
+    port                   => $server_port,
+    priority               => $priority,
+    servername             => $servername,
+    serveraliases          => $serveraliases,
+    keepalive              => bool2str($keepalive, 'on', 'off'),
+    max_keepalive_requests => $max_keepalive_requests,
+    keepalive_timeout      => $keepalive_timeout,
+    access_log_format      => $access_log_format,
+    additional_includes    => ["${::apache::confd_dir}/${priority}-foreman.d/*.conf"],
+    use_optional_includes  => true,
+    custom_fragment        => $custom_fragment,
+    *                      => $vhost_http_internal_options + $http_vhost_options,
   }
 
   if $ssl {
-    $https_prestart = $prestart ? {
-      true  => "https://${servername}:${server_ssl_port}",
-      false => undef,
-    }
     if $ssl_crl and $ssl_crl != '' {
       $ssl_crl_real = $ssl_crl
       $ssl_crl_check = 'chain'
@@ -184,44 +257,35 @@ class foreman::config::apache(
     }
 
     apache::vhost { 'foreman-ssl':
-      add_default_charset     => 'UTF-8',
-      docroot                 => $docroot,
-      manage_docroot          => false,
-      ip                      => $listen_interface,
-      options                 => ['SymLinksIfOwnerMatch'],
-      passenger_app_root      => $app_root,
-      passenger_min_instances => $min_instances,
-      passenger_pre_start     => $https_prestart,
-      passenger_start_timeout => $start_timeout,
-      passenger_ruby          => $ruby,
-      port                    => $server_ssl_port,
-      priority                => $priority,
-      servername              => $servername,
-      serveraliases           => $serveraliases,
-      ssl                     => true,
-      ssl_cert                => $ssl_cert,
-      ssl_certs_dir           => $ssl_certs_dir,
-      ssl_key                 => $ssl_key,
-      ssl_chain               => $ssl_chain,
-      ssl_ca                  => $ssl_ca,
-      ssl_crl                 => $ssl_crl_real,
-      ssl_crl_check           => $ssl_crl_check,
-      ssl_protocol            => $ssl_protocol,
-      ssl_verify_client       => 'optional',
-      ssl_options             => '+StdEnvVars +ExportCertData',
-      ssl_verify_depth        => '3',
-      keepalive               => bool2str($keepalive, 'on', 'off'),
-      max_keepalive_requests  => $max_keepalive_requests,
-      keepalive_timeout       => $keepalive_timeout,
-      access_log_format       => $access_log_format,
-      additional_includes     => ["${::apache::confd_dir}/${priority}-foreman-ssl.d/*.conf"],
-      use_optional_includes   => true,
-      custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_ssl_username.conf.erb', 'foreman/_suburi.conf.erb'),
-      *                       => $https_vhost_options,
+      add_default_charset    => 'UTF-8',
+      docroot                => $docroot,
+      manage_docroot         => false,
+      ip                     => $listen_interface,
+      options                => ['SymLinksIfOwnerMatch'],
+      port                   => $server_ssl_port,
+      priority               => $priority,
+      servername             => $servername,
+      serveraliases          => $serveraliases,
+      ssl                    => true,
+      ssl_cert               => $ssl_cert,
+      ssl_certs_dir          => $ssl_certs_dir,
+      ssl_key                => $ssl_key,
+      ssl_chain              => $ssl_chain,
+      ssl_ca                 => $ssl_ca,
+      ssl_crl                => $ssl_crl_real,
+      ssl_crl_check          => $ssl_crl_check,
+      ssl_protocol           => $ssl_protocol,
+      ssl_verify_client      => 'optional',
+      ssl_options            => '+StdEnvVars +ExportCertData',
+      ssl_verify_depth       => '3',
+      keepalive              => bool2str($keepalive, 'on', 'off'),
+      max_keepalive_requests => $max_keepalive_requests,
+      keepalive_timeout      => $keepalive_timeout,
+      access_log_format      => $access_log_format,
+      additional_includes    => ["${::apache::confd_dir}/${priority}-foreman-ssl.d/*.conf"],
+      use_optional_includes  => true,
+      custom_fragment        => $custom_fragment,
+      *                      => $vhost_https_internal_options + $https_vhost_options,
     }
-  }
-
-  file { ["${app_root}/config.ru", "${app_root}/config/environment.rb"]:
-    owner => $user,
   }
 }
