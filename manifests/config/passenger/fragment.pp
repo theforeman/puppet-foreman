@@ -1,49 +1,20 @@
-# provides the ability to specify fragments for the ssl and non-ssl
-#   virtual hosts defined by foreman
+# Define to create an Apache fragment.
 #
-#  === Parameters:
+# **Deprecated** Replaced by foreman::config::apache::fragment
 #
-#  $content::  content of the non-ssl virtual host fragment
-#  $ssl_content:: content of the ssl virtual host fragment
+# @param content
+#   The content for the HTTP vhost
 #
+# @param ssl_content
+#   The content for the HTTPS vhost
 define foreman::config::passenger::fragment(
   $content=undef,
   $ssl_content=undef,
 ) {
-  require ::foreman::config::passenger
+  deprecation('foreman::config::passenger::fragment', 'Deprecated: use foreman::config::apache::fragment instead')
 
-  $_priority = $foreman::config::passenger::priority
-
-  $http_path = "${::apache::confd_dir}/${_priority}-foreman.d/${name}.conf"
-  $https_path = "${::apache::confd_dir}/${_priority}-foreman-ssl.d/${name}.conf"
-
-  if $content and $content != '' {
-    file { $http_path:
-      ensure  => file,
-      content => $content,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-    }
-  } else {
-    file { $http_path:
-      ensure => absent,
-    }
+  foreman::config::apache::fragment { $title:
+    content     => $content,
+    ssl_content => $ssl_content,
   }
-
-  if $ssl_content and $ssl_content != '' and $::foreman::config::passenger::ssl {
-    file { $https_path:
-      ensure  => file,
-      content => $ssl_content,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-    }
-  } else {
-    file { $https_path:
-      ensure => absent,
-    }
-  }
-
-  File[$http_path, $https_path] ~> Class['apache::service']
 }

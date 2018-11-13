@@ -43,13 +43,13 @@ describe 'foreman' do
           it { should contain_class('apache::mod::lookup_identity') }
           it { should contain_class('apache::mod::auth_kerb') }
 
-          it 'should contain Passenger fragments' do
-            should contain_foreman__config__passenger__fragment('intercept_form_submit')
+          it 'should contain Apache fragments' do
+            should contain_foreman__config__apache__fragment('intercept_form_submit')
               .with_ssl_content(/^\s*InterceptFormPAMService foreman$/)
 
-            should contain_foreman__config__passenger__fragment('lookup_identity')
+            should contain_foreman__config__apache__fragment('lookup_identity')
 
-            should contain_foreman__config__passenger__fragment('auth_kerb')
+            should contain_foreman__config__apache__fragment('auth_kerb')
               .with_ssl_content(/^\s*KrbAuthRealms REALM$/)
               .with_ssl_content(%r{^\s*Krb5KeyTab /etc/httpd/conf/http.keytab$})
               .with_ssl_content(/^\s*require pam-account foreman$/)

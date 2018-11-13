@@ -115,14 +115,14 @@ describe 'foreman' do
           should contain_cron('daily summary').with_ensure('absent')
         end
 
-        it 'should contain foreman::config::passenger' do
+        it 'should contain foreman::config::apache' do
           passenger_ruby = if facts[:osfamily] == 'RedHat' && facts[:operatingsystem] != 'Fedora'
                              '/usr/bin/tfm-ruby'
                            elsif facts[:osfamily] == 'Debian'
                              '/usr/bin/foreman-ruby'
                            end
 
-          should contain_class('foreman::config::passenger')
+          should contain_class('foreman::config::apache')
             .with_listen_on_interface(nil)
             .with_ruby(passenger_ruby)
         end
@@ -174,7 +174,7 @@ describe 'foreman' do
         let(:params) { super().merge(passenger: false) }
 
         it { should compile.with_all_deps }
-        it { should_not contain_class('foreman::config::passenger') }
+        it { should_not contain_class('foreman::config::apache') }
       end
 
       describe 'with passenger interface' do
@@ -189,7 +189,7 @@ describe 'foreman' do
         let(:params) { super().merge(passenger_interface: 'lo') }
 
         it { should compile.with_all_deps }
-        it { should contain_class('foreman::config::passenger').with_listen_on_interface('lo') }
+        it { should contain_class('foreman::config::apache').with_listen_on_interface('lo') }
       end
 
       describe 'with all parameters' do
