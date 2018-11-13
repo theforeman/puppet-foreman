@@ -29,7 +29,7 @@ class foreman::install {
     }
   }
 
-  if $::foreman::passenger and $::foreman::passenger_ruby_package {
+  if $::foreman::apache and $::foreman::passenger and $::foreman::passenger_ruby_package {
     package { $::foreman::passenger_ruby_package:
       ensure  => installed,
       require => Class['apache'],

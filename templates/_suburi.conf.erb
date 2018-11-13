@@ -1,4 +1,3 @@
-<% if @suburi %>
 SetEnv RAILS_RELATIVE_URL_ROOT <%= @suburi %>
 Alias <%= @suburi -%> <%= @docroot %>
 <Location <%= @suburi -%>>
@@ -9,4 +8,3 @@ Alias <%= @suburi -%> <%= @docroot %>
 <Directory <%= @docroot -%>>
   Options -MultiViews
 </Directory>
-<% end %>

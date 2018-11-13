@@ -28,11 +28,12 @@ describe 'foreman::config::apache::fragment' do
               ssl_chain               => '/ca.pem',
               ssl_crl                 => '/crl.pem',
               ssl_protocol            => '-all +TLSv1.2',
-              ruby                    => '/usr/bin/tfm-ruby',
               user                    => 'foreman',
-              prestart                => true,
-              min_instances           => 1,
-              start_timeout           => 600,
+              passenger               => true,
+              passenger_ruby          => '/usr/bin/tfm-ruby',
+              passenger_prestart      => true,
+              passenger_min_instances => 1,
+              passenger_start_timeout => 600,
               servername              => '#{facts[:fqdn]}',
               serveraliases           => ['foreman'],
               foreman_url             => 'https://#{facts[:fqdn]}',
@@ -41,7 +42,9 @@ describe 'foreman::config::apache::fragment' do
               keepalive_timeout       => 5,
               server_port             => 80,
               server_ssl_port         => 443,
+              proxy_backend           => 'http://127.0.0.1:3000/',
               ipa_authentication      => false,
+              selinux                 => true,
           }"
         end
 
@@ -83,11 +86,12 @@ describe 'foreman::config::apache::fragment' do
               ssl_chain               => '/ca.pem',
               ssl_crl                 => '/crl.pem',
               ssl_protocol            => '-all +TLSv1.2',
-              ruby                    => '/usr/bin/tfm-ruby',
               user                    => 'foreman',
-              prestart                => true,
-              min_instances           => 1,
-              start_timeout           => 600,
+              passenger               => true,
+              passenger_ruby          => '/usr/bin/tfm-ruby',
+              passenger_prestart      => true,
+              passenger_min_instances => 1,
+              passenger_start_timeout => 600,
               servername              => '#{facts[:fqdn]}',
               serveraliases           => ['foreman'],
               foreman_url             => 'https://#{facts[:fqdn]}',
@@ -96,7 +100,9 @@ describe 'foreman::config::apache::fragment' do
               keepalive_timeout       => 5,
               server_port             => 80,
               server_ssl_port         => 443,
+              proxy_backend           => 'http://127.0.0.1:3000/',
               ipa_authentication      => false,
+              selinux                 => true,
           }"
         end
 

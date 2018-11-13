@@ -13,6 +13,7 @@ require 'beaker/module_install_helper'
 run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
 install_module_on(hosts)
 install_module_dependencies_on(hosts)
+install_module_from_forge('camptocamp-systemd', '>= 1.0.0')
 
 RSpec.configure do |c|
   # Readable test descriptions

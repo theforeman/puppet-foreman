@@ -1,5 +1,6 @@
 # Configure the foreman service
 class foreman::service(
+  Boolean $apache = $::foreman::apache,
   Boolean $passenger = $::foreman::passenger,
   Stdlib::Absolutepath $app_root = $::foreman::app_root,
   Boolean $ssl = $::foreman::ssl,
@@ -16,12 +17,14 @@ class foreman::service(
     enable => $jobs_service_enable,
   }
 
-  if $passenger {
-    exec {'restart_foreman':
-      command     => "/bin/touch ${app_root}/tmp/restart.txt",
-      refreshonly => true,
-      cwd         => $app_root,
-      path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+  if $apache {
+    if $passenger {
+      exec {'restart_foreman':
+        command     => "/bin/touch ${app_root}/tmp/restart.txt",
+        refreshonly => true,
+        cwd         => $app_root,
+        path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+      }
     }
 
     Class['apache::service'] -> Class['foreman::service']
