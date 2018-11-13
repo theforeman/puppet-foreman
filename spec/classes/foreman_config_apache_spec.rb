@@ -7,7 +7,6 @@ describe 'foreman::config::apache' do
       let(:params) do
         {
           app_root: '/usr/share/foreman',
-          use_vhost: true,
           listen_on_interface: '192.168.0.1',
           ruby: '/usr/bin/tfm-ruby',
           priority: '05',

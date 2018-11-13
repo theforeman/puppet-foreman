@@ -203,7 +203,6 @@ describe 'foreman' do
             passenger_ruby: '/usr/bin/ruby',
             passenger_ruby_package: 'ruby-gem-passenger',
             plugin_prefix: 'ruby-foreman',
-            use_vhost: true,
             servername: 'localhost',
             serveraliases: ['foreman'],
             ssl: true,

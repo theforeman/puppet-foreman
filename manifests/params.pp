@@ -13,8 +13,6 @@ class foreman::params {
   $authentication = undef
   # configure foreman via apache and passenger
   $passenger      = true
-  # Enclose apache configuration in <VirtualHost>...</VirtualHost>
-  $use_vhost      = true
   # Server name of the VirtualHost
   $servername     = $::fqdn
   # Server aliases of the VirtualHost

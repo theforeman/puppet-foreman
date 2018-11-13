@@ -62,8 +62,6 @@
 #
 # $plugin_prefix::                String which is prepended to the plugin package names
 #
-# $use_vhost::                    Enclose apache configuration in VirtualHost tags
-#
 # $servername::                   Server name of the VirtualHost in the webserver
 #
 # $serveraliases::                Server aliases of the VirtualHost in the webserver
@@ -227,7 +225,6 @@ class foreman (
   Optional[String] $passenger_ruby = $::foreman::params::passenger_ruby,
   Optional[String] $passenger_ruby_package = $::foreman::params::passenger_ruby_package,
   String $plugin_prefix = $::foreman::params::plugin_prefix,
-  Boolean $use_vhost = $::foreman::params::use_vhost,
   Stdlib::Fqdn $servername = $::foreman::params::servername,
   Array[Stdlib::Fqdn] $serveraliases = $::foreman::params::serveraliases,
   Boolean $ssl = $::foreman::params::ssl,
