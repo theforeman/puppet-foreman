@@ -61,6 +61,9 @@ describe 'foreman' do
             .with_content(/^:logging:\n\s*:level:\s*info$/)
             .with_content(/^:dynflow:\n\s*:pool_size:\s*5$/)
             .with_content(/^:hsts_enabled:\s*true$/)
+            .without_content(/^:ssl_client_dn_env:/)
+            .without_content(/^:ssl_client_verify_env:/)
+            .without_content(/^:ssl_client_cert_env:/)
 
           should contain_concat('/etc/foreman/settings.yaml')
             .with_owner('root')
@@ -106,7 +109,7 @@ describe 'foreman' do
 
           should contain_class('foreman::config::apache')
             .with_listen_on_interface(nil)
-            .with_ruby(passenger_ruby)
+            .with_passenger_ruby(passenger_ruby)
         end
 
         it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }
@@ -148,6 +151,19 @@ describe 'foreman' do
 
       context 'without passenger' do
         let(:params) { super().merge(passenger: false) }
+
+        it { should compile.with_all_deps }
+        it { should contain_class('foreman::config::apache').with_passenger(false) }
+        it do
+          should contain_concat__fragment('foreman_settings+01-header.yaml')
+            .with_content(/^:ssl_client_dn_env: HTTP_SSL_CLIENT_S_DN$/)
+            .with_content(/^:ssl_client_verify_env: HTTP_SSL_CLIENT_VERIFY$/)
+            .with_content(/^:ssl_client_cert_env: HTTP_SSL_CLIENT_CERT$/)
+        end
+      end
+
+      context 'without apache' do
+        let(:params) { super().merge(apache: false) }
 
         it { should compile.with_all_deps }
         it { should_not contain_class('foreman::config::apache') }

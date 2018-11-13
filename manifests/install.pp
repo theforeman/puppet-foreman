@@ -29,11 +29,22 @@ class foreman::install {
     }
   }
 
-  if $::foreman::passenger and $::foreman::passenger_ruby_package {
-    package { $::foreman::passenger_ruby_package:
-      ensure  => installed,
-      require => Class['apache'],
-      before  => Class['apache::service'],
+  if $::foreman::apache {
+    if $::foreman::passenger {
+      if $::foreman::passenger_ruby_package {
+        package { $::foreman::passenger_ruby_package:
+          ensure  => installed,
+          require => Class['apache'],
+          before  => Class['apache::service'],
+        }
+      }
+    } else {
+      # TODO: foreman-puma subpackage?
+      if $::osfamily == 'RedHat' {
+        package { 'tfm-rubygem-puma':
+          ensure => installed,
+        }
+      }
     }
   }
 
