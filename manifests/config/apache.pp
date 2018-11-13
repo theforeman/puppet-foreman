@@ -1,4 +1,4 @@
-# Configure the foreman service using passenger
+# Configure the foreman service using Apache
 #
 # === Parameters:
 #
@@ -67,7 +67,7 @@
 #
 # $https_vhost_options::      Direct options to apache::vhost for the https vhost
 #
-class foreman::config::passenger(
+class foreman::config::apache(
   Stdlib::Absolutepath $app_root = $::foreman::app_root,
   Optional[String] $listen_on_interface = $::foreman::passenger_interface,
   Optional[String] $ruby = $::foreman::passenger_ruby,

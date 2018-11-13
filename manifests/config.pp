@@ -79,7 +79,7 @@ class foreman::config {
   }
 
   if $::foreman::passenger  {
-    contain foreman::config::passenger
+    contain foreman::config::apache
 
     if $::foreman::ipa_authentication {
       unless 'ipa' in $facts and 'default_server' in $facts['ipa'] and 'default_realm' in $facts['ipa'] {
@@ -122,15 +122,15 @@ class foreman::config {
         mode   => '0600',
       }
 
-      ::foreman::config::passenger::fragment { 'intercept_form_submit':
+      foreman::config::apache::fragment { 'intercept_form_submit':
         ssl_content => template('foreman/intercept_form_submit.conf.erb'),
       }
 
-      ::foreman::config::passenger::fragment { 'lookup_identity':
+      foreman::config::apache::fragment { 'lookup_identity':
         ssl_content => template('foreman/lookup_identity.conf.erb'),
       }
 
-      ::foreman::config::passenger::fragment { 'auth_kerb':
+      foreman::config::apache::fragment { 'auth_kerb':
         ssl_content => template('foreman/auth_kerb.conf.erb'),
       }
 
