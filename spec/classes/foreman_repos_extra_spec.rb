@@ -3,13 +3,13 @@ require 'spec_helper'
 describe 'foreman::repos::extra' do
   on_os_under_test.each do |os, facts|
     context "on #{os}", if: facts[:osfamily] == 'RedHat' do
-      let :facts do facts end
+      let(:facts) { facts }
 
       describe 'when repos are fully enabled' do
         let(:params) do
           {
             configure_scl_repo: true,
-            configure_epel_repo: true,
+            configure_epel_repo: true
           }
         end
 
@@ -27,7 +27,7 @@ describe 'foreman::repos::extra' do
           {
             configure_scl_repo: true,
             configure_epel_repo: true,
-            scl_repo_ensure: 'latest',
+            scl_repo_ensure: 'latest'
           }
         end
 
@@ -38,7 +38,7 @@ describe 'foreman::repos::extra' do
         let(:params) do
           {
             configure_scl_repo: false,
-            configure_epel_repo: false,
+            configure_epel_repo: false
           }
         end
 

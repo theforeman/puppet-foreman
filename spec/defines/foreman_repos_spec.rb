@@ -7,18 +7,16 @@ describe 'foreman::repos' do
 
   on_os_under_test.each do |os, facts|
     context "on #{os}" do
-      let :facts do
-        facts
-      end
+      let(:facts) { facts }
 
       case facts[:osfamily]
       when 'RedHat'
-        case os
-        when /^fedora-/
-          yumcode = "f#{facts[:operatingsystemmajrelease]}"
-        else
-          yumcode = "el#{facts[:operatingsystemmajrelease]}"
-        end
+        yumcode = case os
+                  when /^fedora-/
+                    "f#{facts[:operatingsystemmajrelease]}"
+                  else
+                    "el#{facts[:operatingsystemmajrelease]}"
+                  end
 
         it do
           is_expected.to contain_foreman__repos__yum('foreman')
@@ -36,8 +34,8 @@ describe 'foreman::repos' do
   context 'on Amazon' do
     let :facts do
       {
-        :operatingsystem => 'Amazon',
-        :osfamily        => 'Linux',
+        operatingsystem: 'Amazon',
+        osfamily: 'Linux'
       }
     end
 
@@ -52,8 +50,8 @@ describe 'foreman::repos' do
   context 'on unsupported osfamily' do
     let :facts do
       {
-        :hostname => 'localhost',
-        :osfamily => 'unsupported',
+        hostname: 'localhost',
+        osfamily: 'unsupported'
       }
     end
 
