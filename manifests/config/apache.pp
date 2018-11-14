@@ -141,11 +141,6 @@ class foreman::config::apache(
       recurse => true,
     }
 
-    $keepalive_onoff = $keepalive ? {
-      true    => 'on',
-      default => 'off',
-    }
-
     apache::vhost { 'foreman':
       add_default_charset     => 'UTF-8',
       docroot                 => $docroot,
@@ -161,7 +156,7 @@ class foreman::config::apache(
       priority                => $priority,
       servername              => $servername,
       serveraliases           => $serveraliases,
-      keepalive               => $keepalive_onoff,
+      keepalive               => bool2str($keepalive, 'on', 'off'),
       max_keepalive_requests  => $max_keepalive_requests,
       keepalive_timeout       => $keepalive_timeout,
       access_log_format       => $access_log_format,
@@ -220,7 +215,7 @@ class foreman::config::apache(
         ssl_verify_client       => 'optional',
         ssl_options             => '+StdEnvVars +ExportCertData',
         ssl_verify_depth        => '3',
-        keepalive               => $keepalive_onoff,
+        keepalive               => bool2str($keepalive, 'on', 'off'),
         max_keepalive_requests  => $max_keepalive_requests,
         keepalive_timeout       => $keepalive_timeout,
         access_log_format       => $access_log_format,
