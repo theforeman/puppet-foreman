@@ -2,10 +2,10 @@ require 'spec_helper_acceptance'
 
 describe 'Scenario: install foreman' do
   before(:context) do
-    case os[:family]
-    when /redhat|fedora/
+    case fact('osfamily')
+    when 'RedHat'
       on default, 'yum -y remove foreman* tfm-* && rm -rf /etc/yum.repos.d/foreman*.repo'
-    when /debian|ubuntu/
+    when 'Debian'
       on default, 'apt-get purge -y foreman*', { :acceptable_exit_codes => [0, 100] }
       on default, 'apt-get purge -y ruby-hammer-cli-*', { :acceptable_exit_codes => [0, 100] }
       on default, 'rm -rf /etc/apt/sources.list.d/foreman*'
@@ -13,7 +13,6 @@ describe 'Scenario: install foreman' do
   end
 
   let(:pp) do
-    configure = os[:family] == 'redhat' && os[:family] != 'fedora'
     <<-EOS
     # Workarounds
 
@@ -34,11 +33,7 @@ describe 'Scenario: install foreman' do
 
     # Actual test
     class { '::foreman':
-      custom_repo         => false,
       repo                => 'nightly',
-      gpgcheck            => true,
-      configure_epel_repo => #{configure},
-      configure_scl_repo  => #{configure},
       user_groups         => [],
       admin_username      => 'admin',
       admin_password      => 'changeme',

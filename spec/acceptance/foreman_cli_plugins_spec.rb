@@ -28,6 +28,9 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
       password    => 'changeme',
     }
 
+    if $facts['osfamily'] == 'RedHat' {
+      include ::foreman::cli::ansible
+    }
     include ::foreman::cli::discovery
     include ::foreman::cli::remote_execution
     include ::foreman::cli::tasks
