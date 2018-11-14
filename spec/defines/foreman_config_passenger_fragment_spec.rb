@@ -53,7 +53,7 @@ describe 'foreman::config::passenger::fragment' do
 
         context 'with content parameter' do
           let :params do
-            { :content => '# config' }
+            { content: '# config' }
           end
 
           it { should contain_file("#{confd_dir}/05-foreman.d/test.conf").with_content('# config') }
@@ -62,7 +62,7 @@ describe 'foreman::config::passenger::fragment' do
 
         context 'with ssl_content parameter' do
           let :params do
-            { :ssl_content => '# config' }
+            { ssl_content: '# config' }
           end
 
           it { should contain_file("#{confd_dir}/05-foreman.d/test.conf").with_ensure(:absent) }
@@ -104,7 +104,7 @@ describe 'foreman::config::passenger::fragment' do
 
         context 'with ssl_content parameter' do
           let :params do
-            { :ssl_content => '# config' }
+            { ssl_content: '# config' }
           end
 
           it { should contain_file("#{confd_dir}/05-foreman.d/test.conf").with_ensure(:absent) }
