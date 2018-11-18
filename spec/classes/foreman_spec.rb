@@ -48,7 +48,6 @@ describe 'foreman' do
           should contain_concat__fragment('foreman_settings+01-header.yaml')
             .with_content(/^:unattended:\s*true$/)
             .without_content(/^:unattended_url:/)
-            .with_content(/^:login:\s*true$/)
             .with_content(/^:require_ssl:\s*true$/)
             .with_content(/^:locations_enabled:\s*false$/)
             .with_content(/^:organizations_enabled:\s*false$/)
@@ -202,7 +201,6 @@ describe 'foreman' do
             foreman_url: 'http://localhost',
             puppetrun: false,
             unattended: true,
-            authentication: true,
             passenger: true,
             passenger_ruby: '/usr/bin/ruby',
             passenger_ruby_package: 'ruby-gem-passenger',
@@ -310,7 +308,6 @@ describe 'foreman' do
         let :params do
           {
             unattended: false,
-            authentication: false,
             ssl: false,
             locations_enabled: true,
             organizations_enabled: true,
@@ -324,7 +321,6 @@ describe 'foreman' do
         it 'should have changed parameters' do
           should contain_concat__fragment('foreman_settings+01-header.yaml')
             .with_content(/^:unattended:\s*false$/)
-            .with_content(/^:login:\s*false$/)
             .with_content(/^:require_ssl:\s*false$/)
             .with_content(/^:locations_enabled:\s*true$/)
             .with_content(/^:organizations_enabled:\s*true$/)
