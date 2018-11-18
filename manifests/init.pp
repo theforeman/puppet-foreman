@@ -52,9 +52,6 @@
 #
 # $unattended_url::             URL hosts will retrieve templates from during build (normally http as many installers don't support https)
 #
-# $authentication::             Enable user authentication. Initial credentials are set using admin_username
-#                               and admin_password.
-#
 # $passenger::                  Configure foreman via apache and passenger
 #
 # $passenger_ruby::             Ruby interpreter used to run Foreman under Passenger
@@ -211,7 +208,6 @@ class foreman (
   Boolean $puppetrun = $::foreman::params::puppetrun,
   Boolean $unattended = $::foreman::params::unattended,
   Optional[Stdlib::HTTPUrl] $unattended_url = $::foreman::params::unattended_url,
-  Boolean $authentication = $::foreman::params::authentication,
   Boolean $passenger = $::foreman::params::passenger,
   Optional[String] $passenger_ruby = $::foreman::params::passenger_ruby,
   Optional[String] $passenger_ruby_package = $::foreman::params::passenger_ruby_package,

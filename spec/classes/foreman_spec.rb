@@ -45,7 +45,6 @@ describe 'foreman' do
           :foreman_url               => 'http://localhost',
           :puppetrun                 => false,
           :unattended                => true,
-          :authentication            => true,
           :passenger                 => true,
           :passenger_ruby            => '/usr/bin/ruby',
           :passenger_ruby_package    => 'ruby-gem-passenger',
