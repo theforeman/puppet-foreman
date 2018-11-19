@@ -202,7 +202,7 @@ def enc(certname)
     response = http.request(req)
 
     unless response.code == "200"
-      raise "Error retrieving node #{certname}: #{res.class}\nCheck Foreman's /var/log/foreman/production.log for more information."
+      raise "Error retrieving node #{certname}: #{response.class}\nCheck Foreman's /var/log/foreman/production.log for more information."
     end
     response.body
   end
