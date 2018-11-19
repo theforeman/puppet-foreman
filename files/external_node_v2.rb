@@ -93,6 +93,23 @@ rescue LoadError
   end
 end
 
+def process_host_facts(certname)
+    f = "#{puppetdir}/yaml/facts/#{certname}.yaml"
+    if File.size(f) != 0
+      req = generate_fact_request(certname, f)
+      begin
+        upload_facts(certname, req) if req
+        return 0
+      rescue => e
+        $stderr.puts "During fact upload occured an exception: #{e}"
+        return 1
+      end
+    else
+      $stderr.puts "Fact file #{f} does not contain any fact"
+      return 2
+    end
+end
+
 def process_all_facts(http_requests)
   Dir["#{puppetdir}/yaml/facts/*.yaml"].each do |f|
     certname = File.basename(f, ".yaml")
@@ -344,14 +361,17 @@ if __FILE__ == $0 then
     end
     if push_facts
       # push all facts files to Foreman and don't act as an ENC
-      process_all_facts(false)
+      if ARGV.empty?
+        process_all_facts(false)
+      else
+        process_host_facts(ARGV[0])
+      end
     elsif push_facts_parallel
       http_fact_requests = Http_Fact_Requests.new
       process_all_facts(http_fact_requests)
       upload_facts_parallel(http_fact_requests)
     else
       certname = ARGV[0] || raise("Must provide certname as an argument")
-
       #
       # query External node
       begin
