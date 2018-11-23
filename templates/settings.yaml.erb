@@ -20,7 +20,7 @@
 :oauth_consumer_secret: <%= scope.lookupvar("foreman::oauth_consumer_secret") %>
 
 # Websockets
-:websockets_encrypt: <%= scope.lookupvar("foreman::websockets_encrypt") ? 'on' : 'off' %>
+:websockets_encrypt: <%= scope.lookupvar("foreman::websockets_encrypt") %>
 :websockets_ssl_key: <%= scope.lookupvar("foreman::websockets_ssl_key") %>
 :websockets_ssl_cert: <%= scope.lookupvar("foreman::websockets_ssl_cert") %>
 
