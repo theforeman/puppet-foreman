@@ -57,7 +57,7 @@ describe 'foreman' do
             .with_content(/^:oauth_map_users:\s*false$/)
             .with_content(/^:oauth_consumer_key:\s*\w+$/)
             .with_content(/^:oauth_consumer_secret:\s*\w+$/)
-            .with_content(/^:websockets_encrypt:\s*on$/)
+            .with_content(/^:websockets_encrypt:\s*true$/)
             .with_content(%r{^:ssl_certificate:\s*/var/lib/puppet/ssl/certs/foo\.example\.com\.pem$})
             .with_content(%r{^:ssl_ca_file:\s*/var/lib/puppet/ssl/certs/ca.pem$})
             .with_content(%r{^:ssl_priv_key:\s*/var/lib/puppet/ssl/private_keys/foo\.example\.com\.pem$})
