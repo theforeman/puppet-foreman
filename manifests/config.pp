@@ -59,6 +59,9 @@ class foreman::config {
   }
 
   if $::foreman::manage_user {
+    group { $::foreman::group:
+      ensure => 'present',
+    }
     user { $::foreman::user:
       ensure  => 'present',
       shell   => '/bin/false',
