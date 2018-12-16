@@ -337,21 +337,24 @@ class foreman (
     fail("${::hostname}: External authentication via IPA can only be enabled when passenger is used.")
   }
 
-  include ::foreman::repo
   foreman::rake { 'apipie:cache:index':
     timeout => 0,
   }
 
-  Class['foreman::repo']
-  ~> class { '::foreman::install': }
-  ~> class { '::foreman::config': }
-  ~> class { '::foreman::database': }
-  ~> class { '::foreman::service': }
-  -> Class['foreman']
-  -> Foreman_smartproxy <| base_url == $foreman_url |>
+  include ::foreman::repo
+  include ::foreman::install
+  include ::foreman::config
+  include ::foreman::database
+  contain ::foreman::service
 
-  # When db_manage and db_manage_rake are false, this extra relationship is required.
-  Class['foreman::config'] ~> Class['foreman::service']
+  Class['foreman::repo'] ~> Class['foreman::install']
+  Class['foreman::install'] ~> Class['foreman::config', 'foreman::service']
+  Class['foreman::config'] ~> Class['foreman::database', 'foreman::service']
+  Class['foreman::service'] -> Foreman_smartproxy <| base_url == $foreman_url |>
+
+  if $passenger {
+    Class['foreman::database'] -> Class['apache::service']
+  }
 
   # Anchor these separately so as not to break
   # the notify between main classes

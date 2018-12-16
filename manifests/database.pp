@@ -3,13 +3,10 @@ class foreman::database {
   if $::foreman::db_manage {
     $db_class = "foreman::database::${::foreman::db_type}"
 
-    $after_db_notify = $::foreman::db_manage_rake ? {
-      true    => Foreman_config_entry['db_pending_migration'],
-      default => undef,
-    }
+    contain $db_class
 
-    class { $db_class:
-      notify => $after_db_notify,
+    if $::foreman::db_manage_rake {
+      Class[$db_class] ~> Foreman_config_entry['db_pending_migration']
     }
   }
 
@@ -24,22 +21,14 @@ class foreman::database {
       'SEED_LOCATION'         => $::foreman::initial_location,
     }
 
-    if $::foreman::passenger {
-      $foreman_service = Class['apache::service']
-    } else {
-      $foreman_service = Class['foreman::service']
-    }
-
     foreman_config_entry { 'db_pending_migration':
       value => false,
       dry   => true,
     }
     ~> foreman::rake { 'db:migrate': }
     ~> foreman_config_entry { 'db_pending_seed':
-      value  => false,
-      dry    => true,
-      # to address #7353: settings initialization race condition
-      before => $foreman_service,
+      value => false,
+      dry   => true,
     }
     ~> foreman::rake { 'db:seed':
       environment => delete_undef_values($seed_env),
