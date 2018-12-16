@@ -33,8 +33,8 @@ describe 'foreman::service' do
           .with_path('/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin')
       end
 
-      it { should contain_service('httpd').that_requires('Anchor[foreman::service_begin]') }
-      it { should contain_class('apache').that_comes_before('Anchor[foreman::service_end]') }
+      it { should contain_service('httpd').that_comes_before('Class[foreman::service]') }
+      it { should contain_class('apache::service').that_comes_before('Class[foreman::service]') }
 
       it do
         should contain_service('foreman')

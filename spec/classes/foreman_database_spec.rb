@@ -21,7 +21,8 @@ describe 'foreman' do
       describe 'with db_manage_rake set to false' do
         let(:params) { super().merge(db_manage_rake: false) }
 
-        it { should contain_class('foreman::database::postgresql').with_notify(nil) }
+        it { should compile.with_all_deps }
+        it { should contain_class('foreman::database::postgresql') }
 
         it { should_not contain_foreman_config_entry('db_pending_migration') }
         it { should_not contain_foreman__rake('db:migrate') }

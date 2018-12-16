@@ -142,7 +142,7 @@ describe 'foreman' do
         it { should_not contain_class('foreman::database::mysql') }
         it {
           should contain_class('foreman::database::postgresql')
-            .with_notify('Foreman_config_entry[db_pending_migration]')
+            .that_notifies('Foreman_config_entry[db_pending_migration]')
         }
 
         it { should contain_foreman_config_entry('db_pending_migration') }
@@ -413,6 +413,21 @@ describe 'foreman' do
         context 'with email_smtp_authentication=cram-md5' do
           let(:params) { super().merge(email_smtp_authentication: 'cram-md5') }
           it { should contain_foreman_config_entry('smtp_authentication').with_value('cram-md5') }
+        end
+      end
+
+      describe 'with registration' do
+        let :pre_condition do
+          <<-PUPPET
+          foreman_smartproxy { 'sp.example.com':
+            base_url => "https://${facts['fqdn']}",
+          }
+          PUPPET
+        end
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_foreman_smartproxy('sp.example.com')
+            .that_requires(['Class[Foreman::Service]', 'Service[httpd]'])
         end
       end
     end

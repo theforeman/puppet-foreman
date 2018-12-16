@@ -7,8 +7,6 @@ class foreman::service(
   Stdlib::Ensure::Service $jobs_service_ensure = $::foreman::jobs_service_ensure,
   Boolean $jobs_service_enable = $::foreman::jobs_service_enable,
 ) {
-  anchor { ['foreman::service_begin', 'foreman::service_end']: }
-
   service { $jobs_service:
     ensure => $jobs_service_ensure,
     enable => $jobs_service_enable,
@@ -22,10 +20,7 @@ class foreman::service(
       path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     }
 
-    # Anchor httpd service within this service class, but allow other
-    # configuration within the apache module to occur before
-    Anchor['foreman::service_begin'] -> Service['httpd']
-    Class['::apache'] -> Anchor['foreman::service_end']
+    Class['apache::service'] -> Class['foreman::service']
 
     # Ensure SSL certs from the puppetmaster are available
     # Relationship is duplicated there as defined() is parse-order dependent
