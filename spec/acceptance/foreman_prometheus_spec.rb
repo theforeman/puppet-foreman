@@ -24,19 +24,35 @@ describe 'Scenario: install foreman with prometheus' do
       manage_repo => false,
     }
 
-    # Get a certificate from puppet
-    exec { 'puppet_server_config-generate_ca_cert':
-      creates => '/etc/puppetlabs/puppet/ssl/certs/#{host_inventory['fqdn']}.pem',
-      command => '/opt/puppetlabs/bin/puppet ca generate #{host_inventory['fqdn']}',
+    $directory = '/etc/foreman'
+    $certificate = "${directory}/certificate.pem"
+    $key = "${directory}/key.pem"
+    exec { 'Create certificate directory':
+      command => "mkdir -p ${directory}",
+      path    => ['/bin', '/usr/bin'],
+      creates => $directory,
+    } ->
+    exec { 'Generate certificate':
+      command => "openssl req -nodes -x509 -newkey rsa:2048 -subj '/CN=${facts['fqdn']}' -keyout '${key}' -out '${certificate}' -days 365",
+      path    => ['/bin', '/usr/bin'],
+      creates => $certificate,
       umask   => '0022',
-    }
-
-    # Actual test
+    } ->
+    file { [$key, $certificate]:
+      owner => 'root',
+      group => 'root',
+      mode  => '0640',
+    } ->
     class { '::foreman':
       repo                         => 'nightly',
       user_groups                  => [],
       admin_username               => 'admin',
       admin_password               => 'changeme',
+      server_ssl_ca                => $certificate,
+      server_ssl_chain             => $certificate,
+      server_ssl_cert              => $certificate,
+      server_ssl_key               => $key,
+      server_ssl_crl               => '',
       telemetry_prometheus_enabled => true,
     }
     EOS
