@@ -21,28 +21,48 @@ matrix:
       env: PUPPET_VERSION=6.0
     # Acceptance tests
     - rvm: 2.5.1
-      dist: trusty
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_IS_PE=no BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_debug=true BEAKER_setfile=centos7-64{hypervisor=docker\,hostname=centos7-64.example.com}
+      env:
+        - BEAKER_PUPPET_COLLECTION=puppet5
+        - BEAKER_setfile=centos7-64{hostname=centos7-64.example.com}
       script: bundle exec rake beaker
       services: docker
       bundler_args: --without development
+      before_install:
+        - echo '{"ipv6":true,"fixed-cidr-v6":"2001:db8:1::/64"}' | sudo tee /etc/docker/daemon.json
+        - sudo service docker restart
+
     - rvm: 2.5.1
-      dist: trusty
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_IS_PE=no BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_debug=true BEAKER_setfile=centos7-64{hypervisor=docker\,hostname=centos7-64.example.com}
+      env:
+        - BEAKER_PUPPET_COLLECTION=puppet6
+        - BEAKER_setfile=centos7-64{hostname=centos7-64.example.com}
       script: bundle exec rake beaker
       services: docker
       bundler_args: --without development
+      before_install:
+        - echo '{"ipv6":true,"fixed-cidr-v6":"2001:db8:1::/64"}' | sudo tee /etc/docker/daemon.json
+        - sudo service docker restart
+
     - rvm: 2.5.1
-      dist: trusty
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_IS_PE=no BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_debug=true BEAKER_setfile=debian9-64{hypervisor=docker\,hostname=debian9-64.example.com}
+      env:
+        - BEAKER_PUPPET_COLLECTION=puppet5
+        - BEAKER_setfile=debian9-64{hostname=debian9-64.example.com}
       script: bundle exec rake beaker
       services: docker
       bundler_args: --without development
+      before_install:
+        - echo '{"ipv6":true,"fixed-cidr-v6":"2001:db8:1::/64"}' | sudo tee /etc/docker/daemon.json
+        - sudo service docker restart
+
     - rvm: 2.5.1
-      dist: trusty
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_IS_PE=no BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_debug=true BEAKER_setfile=debian9-64{hypervisor=docker\,hostname=debian9-64.example.com}
+      env:
+        - BEAKER_PUPPET_COLLECTION=puppet6
+        - BEAKER_setfile=debian9-64{hostname=debian9-64.example.com}
       script: bundle exec rake beaker
       services: docker
       bundler_args: --without development
+      before_install:
+        - echo '{"ipv6":true,"fixed-cidr-v6":"2001:db8:1::/64"}' | sudo tee /etc/docker/daemon.json
+        - sudo service docker restart
+
 bundler_args: --without system_tests development
 sudo: false
