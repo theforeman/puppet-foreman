@@ -1,3 +1,10 @@
+ENV['PUPPET_INSTALL_TYPE'] ||= 'agent'
+ENV['BEAKER_IS_PE'] ||= 'no'
+ENV['BEAKER_PUPPET_COLLECTION'] ||= 'puppet6'
+ENV['BEAKER_debug'] ||= 'true'
+ENV['BEAKER_setfile'] ||= 'centos7-64{hostname=centos7-64.example.com}'
+ENV['BEAKER_HYPERVISOR'] ||= 'docker'
+
 require 'beaker-puppet'
 require 'beaker-rspec'
 require 'beaker/puppet_install_helper'
@@ -44,3 +51,5 @@ shared_examples 'the example' do |name|
 
   include_examples 'a idempotent resource'
 end
+
+Dir["./spec/support/acceptance/**/*.rb"].sort.each { |f| require f }

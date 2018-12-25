@@ -1,6 +1,10 @@
 # This file is managed centrally by modulesync
 #   https://github.com/theforeman/foreman-installer-modulesync
 
+RSpec.configure do |c|
+  c.mock_with :rspec
+end
+
 require 'puppetlabs_spec_helper/module_spec_helper'
 require 'webmock/rspec'
 require 'puppet/reports'
@@ -63,10 +67,6 @@ def verify_concat_fragment_exact_contents(subject, title, expected_lines)
   is_expected.to contain_concat__fragment(title)
   content = subject.resource('concat::fragment', title).send(:parameters)[:content]
   expect(content.split(/\n/).reject { |line| line =~ /(^#|^$|^\s+#)/ }).to match_array(expected_lines)
-end
-
-def static_fixture_path
-  File.join(File.dirname(__FILE__), 'static_fixtures')
 end
 
 Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
