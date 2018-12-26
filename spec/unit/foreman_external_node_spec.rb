@@ -23,11 +23,11 @@ describe 'foreman_external_node' do
   it "should connect to the URL in the manifest" do
     webstub = stub_request(:post, "http://localhost:3000/api/hosts/facts").with(:body => {"fake"=>"data"})
 
-    enc.stubs(:stat_file).with('fake.host.fqdn.com-push-facts').returns("/tmp/fake.host.fqdn.com-push-facts.yaml")
+    expect(enc).to receive(:stat_file).with('fake.host.fqdn.com-push-facts').exactly(5).times.and_return("/tmp/fake.host.fqdn.com-push-facts.yaml")
     # first :exists? call is for 'push-facts'; second one for fixture facts
-    File.stubs(:exists?).returns(false,true)
-    File.stubs(:stat).returns(stub(:mtime => Time.now.utc))
-    enc.stubs(:build_body).returns({'fake' => 'data'})
+    allow(File).to receive(:exists?).and_return(false, true)
+    allow(File).to receive(:stat).and_return(double(:mtime => Time.now.utc))
+    expect(enc).to receive(:build_body).and_return({'fake' => 'data'})
 
     req = enc.generate_fact_request('fake.host.fqdn.com',"#{static_fixture_path}/fake.host.fqdn.com.yaml")
     enc.upload_facts('fake.host.fqdn.com',req)
@@ -48,11 +48,10 @@ describe 'foreman_external_node' do
   end
 
   it "should not generate fact request when facts file is missing" do
-    enc.stubs(:stat_file).with('fake.host.fqdn.com-push-facts').returns("/tmp/fake.host.fqdn.com-push-facts.yaml")
+    expect(enc).to receive(:stat_file).with('fake.host.fqdn.com-push-facts').and_return("/tmp/fake.host.fqdn.com-push-facts.yaml")
     # first :exists? call is for 'push-facts'; second one for non-existent facts
-    File.stubs(:exists?).returns(false,false)
-    File.stubs(:stat).returns(stub(:mtime => Time.now.utc))
-    enc.stubs(:build_body).returns({'fake' => 'data'})
+    allow(File).to receive(:exists?).and_return(false)
+    allow(File).to receive(:stat).and_return(double(:mtime => Time.now.utc))
 
     req = enc.generate_fact_request('fake.host.fqdn.com','non-existent-facts.yaml')
     expect(req).to be_nil
