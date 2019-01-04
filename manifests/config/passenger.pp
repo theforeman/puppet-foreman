@@ -222,7 +222,7 @@ class foreman::config::passenger(
     }
   } else {
     file { 'foreman_vhost':
-      path    => "${apache::params::conf_dir}/foreman.conf",
+      path    => "${::apache::confd_dir}/foreman.conf",
       content => template('foreman/foreman-apache.conf.erb'),
       mode    => '0644',
     }
