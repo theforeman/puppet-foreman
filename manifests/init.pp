@@ -30,10 +30,6 @@
 #
 # $email_smtp_password::          Password for SMTP server auth, if authentication is enabled
 #
-# $locations_enabled::            Enable locations?
-#
-# $organizations_enabled::        Enable organizations?
-#
 # $initial_organization::         Name of an initial organization
 #
 # $initial_location::             Name of an initial location
@@ -50,8 +46,12 @@
 #
 # $unattended_url::               URL hosts will retrieve templates from during build (normally http as many installers don't support https)
 #
-# $authentication::               Enable user authentication. Initial credentials are set using admin_username
-#                                 and admin_password.
+# $locations_enabled::            Enable locations? (Unused since 1.21)
+#
+# $organizations_enabled::        Enable organizations? (Unused since 1.21)
+#
+# $authentication::               Enable user authentication. (Unused since 1.21)
+#                                 Initial credentials are set using initial_admin_username and initial_admin_password.
 #
 # $passenger::                    Configure foreman via apache and passenger
 #
@@ -216,7 +216,7 @@ class foreman (
   Boolean $puppetrun = $::foreman::params::puppetrun,
   Boolean $unattended = $::foreman::params::unattended,
   Optional[Stdlib::HTTPUrl] $unattended_url = $::foreman::params::unattended_url,
-  Boolean $authentication = $::foreman::params::authentication,
+  Optional[Boolean] $authentication = $::foreman::params::authentication,
   Boolean $passenger = $::foreman::params::passenger,
   Optional[String] $passenger_ruby = $::foreman::params::passenger_ruby,
   Optional[String] $passenger_ruby_package = $::foreman::params::passenger_ruby_package,
@@ -250,8 +250,8 @@ class foreman (
   String $group = $::foreman::params::group,
   Array[String] $user_groups = $::foreman::params::user_groups,
   String $rails_env = $::foreman::params::rails_env,
-  Boolean $locations_enabled = $::foreman::params::locations_enabled,
-  Boolean $organizations_enabled = $::foreman::params::organizations_enabled,
+  Optional[Boolean] $locations_enabled = $::foreman::params::locations_enabled,
+  Optional[Boolean] $organizations_enabled = $::foreman::params::organizations_enabled,
   Optional[String] $passenger_interface = $::foreman::params::passenger_interface,
   String $vhost_priority = $::foreman::params::vhost_priority,
   Stdlib::Port $server_port = $::foreman::params::server_port,

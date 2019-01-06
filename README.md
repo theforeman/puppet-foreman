@@ -52,6 +52,9 @@ previous stable release.
 ### Foreman version compatibility notes
 
 For Foreman 1.16 or older, please use the 9.x release series of this module.
+The parameters `locations_enabled`, `organizations_enabled` and `authentication`
+will only have any affect on Foreman 1.20 or older, in newer versions these
+settings have been removed.
 
 ## Types and providers
 
