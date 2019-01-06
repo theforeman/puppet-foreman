@@ -28,8 +28,8 @@ class foreman::params {
   $passenger_min_instances = 1
   $passenger_start_timeout = 90
   # Choose whether you want to enable locations and organizations.
-  $locations_enabled     = false
-  $organizations_enabled = false
+  $locations_enabled     = true
+  $organizations_enabled = true
 
   # Additional software repos
   $configure_epel_repo      = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
