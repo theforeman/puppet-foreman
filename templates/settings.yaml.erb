@@ -7,10 +7,16 @@
 <% unless [nil, :undefined, :undef].include?(scope.lookupvar("foreman::unattended_url")) -%>
 :unattended_url: <%= scope.lookupvar("foreman::unattended_url") %>
 <% end -%>
+<% unless [nil, :undefined, :undef].include?(scope.lookupvar("foreman::authentication")) -%>
 :login: <%= scope.lookupvar("foreman::authentication") %>
+<% end -%>
 :require_ssl: <%= scope.lookupvar("foreman::ssl") %>
+<% unless [nil, :undefined, :undef].include?(scope.lookupvar("foreman::locations_enabled")) -%>
 :locations_enabled: <%= scope.lookupvar("foreman::locations_enabled") %>
+<% end -%>
+<% unless [nil, :undefined, :undef].include?(scope.lookupvar("foreman::organizations_enabled")) -%>
 :organizations_enabled: <%= scope.lookupvar("foreman::organizations_enabled") %>
+<% end -%>
 :puppetrun: <%= scope.lookupvar("foreman::puppetrun") %>
 
 # The following values are used for providing default settings during db migrate

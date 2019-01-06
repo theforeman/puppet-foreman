@@ -9,8 +9,8 @@ class foreman::params {
   # should foreman manage host provisioning as well
   $unattended     = true
   $unattended_url = undef
-  # Enable users authentication (default user:admin pw:changeme)
-  $authentication = true
+  # Enable users authentication (default user:admin pw:changeme) (Unused since 1.21)
+  $authentication = undef
   # configure foreman via apache and passenger
   $passenger      = true
   # Enclose apache configuration in <VirtualHost>...</VirtualHost>
@@ -27,9 +27,9 @@ class foreman::params {
   $passenger_prestart = true
   $passenger_min_instances = 1
   $passenger_start_timeout = 90
-  # Choose whether you want to enable locations and organizations.
-  $locations_enabled     = false
-  $organizations_enabled = false
+  # Choose whether you want to enable locations and organizations. (Unused since 1.21)
+  $locations_enabled     = undef
+  $organizations_enabled = undef
 
   # Additional software repos
   $configure_epel_repo      = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
