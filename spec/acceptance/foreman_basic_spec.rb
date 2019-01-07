@@ -46,15 +46,15 @@ describe 'Scenario: install foreman' do
       mode  => '0640',
     } ->
     class { '::foreman':
-      repo             => 'nightly',
-      user_groups      => [],
-      admin_username   => 'admin',
-      admin_password   => 'changeme',
-      server_ssl_ca    => $certificate,
-      server_ssl_chain => $certificate,
-      server_ssl_cert  => $certificate,
-      server_ssl_key   => $key,
-      server_ssl_crl   => '',
+      repo                   => 'nightly',
+      user_groups            => [],
+      initial_admin_username => 'admin',
+      initial_admin_password => 'changeme',
+      server_ssl_ca          => $certificate,
+      server_ssl_chain       => $certificate,
+      server_ssl_cert        => $certificate,
+      server_ssl_key         => $key,
+      server_ssl_crl         => '',
     }
     EOS
   end

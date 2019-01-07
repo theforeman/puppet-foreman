@@ -2,17 +2,17 @@
 #
 # === Parameters:
 #
-# $admin_username::               Username for the initial admin user
+# $initial_admin_username::       Initial username for the admin user account, default is admin
 #
-# $admin_password::               Password of the initial admin user, default is randomly generated
+# $initial_admin_password::       Initial password of the admin user, default is randomly generated
 #
-# $admin_first_name::             First name of the initial admin user
+# $initial_admin_first_name::     Initial first name of the admin user
 #
-# $admin_last_name::              Last name of the initial admin user
+# $initial_admin_last_name::      Initial last name of the admin user
 #
-# $admin_email::                  E-mail address of the initial admin user
+# $initial_admin_email::          Initial E-mail address of the admin user
 #
-# $db_manage::                    if enabled, will install and configure the database server on this host
+# $db_manage::                    If enabled, will install and configure the database server on this host
 #
 # $db_type::                      Database 'production' type
 #
@@ -281,11 +281,11 @@ class foreman (
   Boolean $passenger_prestart = $::foreman::params::passenger_prestart,
   Integer[0] $passenger_min_instances = $::foreman::params::passenger_min_instances,
   Integer[0] $passenger_start_timeout = $::foreman::params::passenger_start_timeout,
-  String $admin_username = $::foreman::params::admin_username,
-  String $admin_password = $::foreman::params::admin_password,
-  Optional[String] $admin_first_name = $::foreman::params::admin_first_name,
-  Optional[String] $admin_last_name = $::foreman::params::admin_last_name,
-  Optional[String] $admin_email = $::foreman::params::admin_email,
+  String $initial_admin_username = $::foreman::params::initial_admin_username,
+  String $initial_admin_password = $::foreman::params::initial_admin_password,
+  Optional[String] $initial_admin_first_name = $::foreman::params::initial_admin_first_name,
+  Optional[String] $initial_admin_last_name = $::foreman::params::initial_admin_last_name,
+  Optional[String] $initial_admin_email = $::foreman::params::initial_admin_email,
   Optional[String] $initial_organization = $::foreman::params::initial_organization,
   Optional[String] $initial_location = $::foreman::params::initial_location,
   Boolean $ipa_authentication = $::foreman::params::ipa_authentication,

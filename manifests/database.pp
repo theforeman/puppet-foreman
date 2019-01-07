@@ -12,11 +12,11 @@ class foreman::database {
 
   if $::foreman::db_manage_rake {
     $seed_env = {
-      'SEED_ADMIN_USER'       => $::foreman::admin_username,
-      'SEED_ADMIN_PASSWORD'   => $::foreman::admin_password,
-      'SEED_ADMIN_FIRST_NAME' => $::foreman::admin_first_name,
-      'SEED_ADMIN_LAST_NAME'  => $::foreman::admin_last_name,
-      'SEED_ADMIN_EMAIL'      => $::foreman::admin_email,
+      'SEED_ADMIN_USER'       => $::foreman::initial_admin_username,
+      'SEED_ADMIN_PASSWORD'   => $::foreman::initial_admin_password,
+      'SEED_ADMIN_FIRST_NAME' => $::foreman::initial_admin_first_name,
+      'SEED_ADMIN_LAST_NAME'  => $::foreman::initial_admin_last_name,
+      'SEED_ADMIN_EMAIL'      => $::foreman::initial_admin_email,
       'SEED_ORGANIZATION'     => $::foreman::initial_organization,
       'SEED_LOCATION'         => $::foreman::initial_location,
     }

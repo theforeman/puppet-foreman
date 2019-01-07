@@ -48,8 +48,8 @@ describe 'Scenario: install foreman with prometheus' do
     class { '::foreman':
       repo                         => 'nightly',
       user_groups                  => [],
-      admin_username               => 'admin',
-      admin_password               => 'changeme',
+      initial_admin_username       => 'admin',
+      initial_admin_password       => 'changeme',
       server_ssl_ca                => $certificate,
       server_ssl_chain             => $certificate,
       server_ssl_cert              => $certificate,
