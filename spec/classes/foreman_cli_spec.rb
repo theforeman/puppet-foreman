@@ -68,10 +68,10 @@ describe 'foreman::cli' do
         let :pre_condition do
           <<-PUPPET
           class { 'foreman':
-            admin_username   => 'jane',
-            admin_password   => 'supersecret',
-            foreman_url      => 'https://foreman.example.com',
-            server_ssl_chain => '/etc/puppetlabs/puppet/ssl/certs/ca.pub',
+            initial_admin_username => 'jane',
+            initial_admin_password => 'supersecret',
+            foreman_url            => 'https://foreman.example.com',
+            server_ssl_chain       => '/etc/puppetlabs/puppet/ssl/certs/ca.pub',
           }
           PUPPET
         end

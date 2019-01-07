@@ -33,8 +33,8 @@ describe 'foreman' do
       describe 'with seed parameters' do
         let(:params) do
           super().merge(
-            admin_username: 'joe',
-            admin_password: 'secret'
+            initial_admin_username: 'joe',
+            initial_admin_password: 'secret'
           )
         end
 

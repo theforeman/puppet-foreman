@@ -175,11 +175,11 @@ class foreman::params {
   $oauth_consumer_secret = extlib::cache_data('foreman_cache_data', 'oauth_consumer_secret', extlib::random_password(32))
 
   # Initial admin account details
-  $admin_username = 'admin'
-  $admin_password = extlib::cache_data('foreman_cache_data', 'admin_password', extlib::random_password(16))
-  $admin_first_name = undef
-  $admin_last_name = undef
-  $admin_email = undef
+  $initial_admin_username = 'admin'
+  $initial_admin_password = extlib::cache_data('foreman_cache_data', 'admin_password', extlib::random_password(16))
+  $initial_admin_first_name = undef
+  $initial_admin_last_name = undef
+  $initial_admin_email = undef
 
   # Initial taxonomies
   $initial_organization = undef
