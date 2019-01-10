@@ -8,7 +8,6 @@ describe 'foreman::repo' do
       describe 'with explicit parameters' do
         let :params do
           {
-            custom_repo: false,
             repo: '1.19',
             gpgcheck: true,
             configure_epel_repo: false,

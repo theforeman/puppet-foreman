@@ -70,11 +70,7 @@
 #
 # $ssl::                          Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
 #
-# $custom_repo::                  No need to change anything here by default
-#                                 if set to true, no repo will be added by this module, letting you 
-#                                 set it to some custom location.
-#
-# $repo::                         This can be stable, nightly or a specific version i.e. 1.7
+# $repo::                         This can be a specific version or nightly
 #
 # $configure_epel_repo::          If disabled the EPEL repo will not be configured on Red Hat family systems.
 #
@@ -229,8 +225,7 @@ class foreman (
   Stdlib::Fqdn $servername = $::foreman::params::servername,
   Array[Stdlib::Fqdn] $serveraliases = $::foreman::params::serveraliases,
   Boolean $ssl = $::foreman::params::ssl,
-  Boolean $custom_repo = $::foreman::params::custom_repo,
-  String $repo = $::foreman::params::repo,
+  Optional[String] $repo = $::foreman::params::repo,
   Boolean $configure_epel_repo = $::foreman::params::configure_epel_repo,
   Boolean $configure_scl_repo = $::foreman::params::configure_scl_repo,
   Optional[Boolean] $selinux = $::foreman::params::selinux,

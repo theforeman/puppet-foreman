@@ -16,7 +16,6 @@ describe 'Scenario: install foreman-cli without foreman' do
     configure = fact('osfamily') == 'RedHat' && fact('operatingsystem') != 'Fedora'
     <<-EOS
     class { '::foreman::repo':
-      custom_repo         => false,
       repo                => 'nightly',
       gpgcheck            => true,
       configure_epel_repo => #{configure},
