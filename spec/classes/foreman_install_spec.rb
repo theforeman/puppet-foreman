@@ -8,15 +8,15 @@ describe 'foreman' do
 
       describe 'with version' do
         let(:params) { super().merge(version: 'latest') }
-        it { should contain_foreman__repos('foreman') }
+        it { should_not contain_foreman__repos('foreman') }
         it { should contain_package('foreman-postgresql').with_ensure('latest') }
       end
 
-      describe 'with custom repo' do
-        let(:params) { super().merge(custom_repo: true) }
+      describe 'with repo' do
+        let(:params) { super().merge(repo: 'nightly') }
         it { should contain_class('foreman::repo') }
-        it { should_not contain_foreman__repos('foreman') }
-        it { should contain_package('foreman-postgresql') }
+        it { should contain_foreman__repos('foreman') }
+        it { should contain_package('foreman-postgresql').that_requires('Class[foreman::repo]') }
       end
 
       context 'with SELinux enabled' do

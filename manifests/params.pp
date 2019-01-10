@@ -36,12 +36,9 @@ class foreman::params {
   # Only configure extra SCL repos on EL
   $configure_scl_repo       = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
 
-  # Advanced configuration - no need to change anything here by default
-  # if set to true, no repo will be added by this module, letting you
-  # set it to some custom location.
-  $custom_repo       = false
+  # Advanced configuration
   # this can be a version or nightly
-  $repo              = '1.18'
+  $repo              = undef
   $app_root          = '/usr/share/foreman'
   $plugin_config_dir = '/etc/foreman/plugins'
   $manage_user       = true

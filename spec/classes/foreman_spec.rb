@@ -11,10 +11,10 @@ describe 'foreman' do
 
         # repo
         it { should contain_class('foreman::repo').that_notifies('Class[foreman::install]') }
+        it { should_not contain_foreman__repos('foreman') }
         case facts[:osfamily]
         when 'RedHat'
           configure_repo = facts[:operatingsystem] != 'Fedora'
-          it { should contain_foreman__repos('foreman') }
           it {
             should contain_class('foreman::repos::extra')
               .with_configure_scl_repo(configure_repo)
@@ -25,7 +25,6 @@ describe 'foreman' do
             it { should contain_package('tfm-rubygem-passenger-native') }
           end
         when 'Debian'
-          it { should contain_foreman__repos('foreman') }
           it {
             should contain_class('foreman::repos::extra')
               .with_configure_scl_repo(false)
@@ -211,7 +210,6 @@ describe 'foreman' do
             servername: 'localhost',
             serveraliases: ['foreman'],
             ssl: true,
-            custom_repo: false,
             repo: 'nightly',
             configure_epel_repo: true,
             configure_scl_repo: false,
