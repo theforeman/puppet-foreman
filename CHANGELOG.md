@@ -1,5 +1,37 @@
 # Changelog
 
+## [11.0.0](https://github.com/theforeman/puppet-foreman/tree/11.0.0) (2019-01-14)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/10.0.0...11.0.0)
+
+**Breaking changes:**
+
+- Remove default repo management [\#708](https://github.com/theforeman/puppet-foreman/pull/708) ([ekohl](https://github.com/ekohl))
+- Fixes [\#25787](https://projects.theforeman.org/issues/25787) - Make login and taxonomy settings optional [\#707](https://github.com/theforeman/puppet-foreman/pull/707) ([tbrisker](https://github.com/tbrisker))
+- Fixes [\#25170](https://projects.theforeman.org/issues/25170) - Update admin/pass param to initial\_param. [\#701](https://github.com/theforeman/puppet-foreman/pull/701) ([chris1984](https://github.com/chris1984))
+
+**Implemented enhancements:**
+
+- allow puppetlabs-apache 4.x [\#709](https://github.com/theforeman/puppet-foreman/pull/709) ([mmoll](https://github.com/mmoll))
+- Fixes [\#23054](https://projects.theforeman.org/issues/23054) - Refactor class inclusion [\#700](https://github.com/theforeman/puppet-foreman/pull/700) ([ekohl](https://github.com/ekohl))
+- Declare Foreman group explicitly [\#697](https://github.com/theforeman/puppet-foreman/pull/697) ([ehelms](https://github.com/ehelms))
+- Allow single node fact upload [\#692](https://github.com/theforeman/puppet-foreman/pull/692) ([ahmet2mir](https://github.com/ahmet2mir))
+- Add hammer plugin for foreman\_ansible [\#686](https://github.com/theforeman/puppet-foreman/pull/686) ([xprazak2](https://github.com/xprazak2))
+- Reuse initialize\_http in external\_node\_v2 [\#683](https://github.com/theforeman/puppet-foreman/pull/683) ([ekohl](https://github.com/ekohl))
+- Add Puppet 6 support [\#678](https://github.com/theforeman/puppet-foreman/pull/678) ([ekohl](https://github.com/ekohl))
+- namespace extlib functions [\#675](https://github.com/theforeman/puppet-foreman/pull/675) ([mmoll](https://github.com/mmoll))
+
+**Fixed bugs:**
+
+- Handle websockets\_encrypt as a boolean [\#702](https://github.com/theforeman/puppet-foreman/pull/702) ([ekohl](https://github.com/ekohl))
+- Fix wrong variable name in enc function [\#694](https://github.com/theforeman/puppet-foreman/pull/694) ([ahmet2mir](https://github.com/ahmet2mir))
+- Trying to fix rescue syntax in ENC script [\#685](https://github.com/theforeman/puppet-foreman/pull/685) ([qingbo](https://github.com/qingbo))
+
+**Merged pull requests:**
+
+- fix foreman config location for ssl = false and use\_vhost = false [\#705](https://github.com/theforeman/puppet-foreman/pull/705) ([Dimonyga](https://github.com/Dimonyga))
+- Clean up acceptance tests + make the apt repo parameters [\#687](https://github.com/theforeman/puppet-foreman/pull/687) ([ekohl](https://github.com/ekohl))
+
 ## [10.0.0](https://github.com/theforeman/puppet-foreman/tree/10.0.0) (2018-10-18)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/9.2.0...10.0.0)
