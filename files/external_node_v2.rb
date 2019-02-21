@@ -127,9 +127,16 @@ def process_all_facts(http_requests)
   end
 end
 
+def quote_macs! facts
+  # Adds single quotes to all unquoted mac addresses in the raw yaml fact string
+  # if they might otherwise be interpreted as base60 ints
+  facts.gsub!(/: ([0-5][0-9](:[0-5][0-9]){5})$/,": '\\1'")
+end
+
 def build_body(certname,filename)
   # Strip the Puppet:: ruby objects and keep the plain hash
   facts        = File.read(filename)
+  quote_macs! facts if YAML.load('22:22:22:22:22:22').is_a? Integer
   puppet_facts = YAML::load(facts.gsub(/\!ruby\/object.*$/,''))
   hostname     = puppet_facts['values']['fqdn'] || certname
 
