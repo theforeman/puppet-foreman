@@ -366,6 +366,14 @@ describe 'foreman' do
         end
       end
 
+      describe 'with cors domains' do
+        let(:params) { super().merge(cors_domains: ['https://example.com']) }
+        it 'should set cors config' do
+          should contain_concat__fragment('foreman_settings+01-header.yaml').
+            with_content(/^:cors_domains:\n\s+- 'https:\/\/example\.com'\n$/)
+        end
+      end
+
       context 'with email configured for SMTP' do
         let(:params) { super().merge(email_delivery_method: 'smtp') }
 

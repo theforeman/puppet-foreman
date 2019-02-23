@@ -211,6 +211,8 @@
 #
 # $hsts_enabled::                 Should HSTS enforcement in https requests be enabled
 #
+# $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing. This requires Foreman 1.22+
+#
 class foreman (
   Stdlib::HTTPUrl $foreman_url = $::foreman::params::foreman_url,
   Boolean $puppetrun = $::foreman::params::puppetrun,
@@ -311,6 +313,7 @@ class foreman (
   Stdlib::Port $dynflow_pool_size = $::foreman::params::dynflow_pool_size,
   String $jobs_service = $::foreman::params::jobs_service,
   Boolean $hsts_enabled = $::foreman::params::hsts_enabled,
+  Array[Stdlib::HTTPUrl] $cors_domains = $::foreman::params::cors_domains,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $::foreman::db_type ? {

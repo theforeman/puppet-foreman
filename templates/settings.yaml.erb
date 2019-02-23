@@ -46,6 +46,14 @@
     :type: <%= scope.lookupvar("foreman::logging_type") %>
     :layout: <%= scope.lookupvar("foreman::logging_layout") %>
 
+<% unless scope.lookupvar('foreman::cors_domains').empty? -%>
+# List of domains allowed for Cross-Origin Resource Sharing
+:cors_domains:
+<% scope.lookupvar('foreman::cors_domains').each do |domain| -%>
+ - '<%= domain %>'
+<% end -%>
+
+<% end -%>
 # Individual logging types can be toggled on/off here
 :loggers:
 <% scope.lookupvar("foreman::loggers").each do |logger,enabled| -%>
