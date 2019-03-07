@@ -61,6 +61,12 @@
 #
 # $ipa_authentication::       Whether to install support for IPA authentication
 #
+# === Advanced options:
+#
+# $http_vhost_options::       Direct options to apache::vhost for the http vhost
+#
+# $https_vhost_options::      Direct options to apache::vhost for the https vhost
+#
 class foreman::config::passenger(
   Stdlib::Absolutepath $app_root = $::foreman::app_root,
   Optional[String] $listen_on_interface = $::foreman::passenger_interface,
@@ -89,6 +95,8 @@ class foreman::config::passenger(
   Integer[0] $keepalive_timeout = $::foreman::keepalive_timeout,
   Optional[String] $access_log_format = undef,
   Boolean $ipa_authentication = $::foreman::ipa_authentication,
+  Hash[String, Any] $http_vhost_options = {},
+  Hash[String, Any] $https_vhost_options = {},
 ) {
   $docroot = "${app_root}/public"
   $suburi_parts = split($foreman_url, '/')
@@ -160,6 +168,7 @@ class foreman::config::passenger(
       additional_includes     => ["${::apache::confd_dir}/${priority}-foreman.d/*.conf"],
       use_optional_includes   => true,
       custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_suburi.conf.erb'),
+      *                       => $http_vhost_options,
     }
 
     if $ssl {
@@ -218,6 +227,7 @@ class foreman::config::passenger(
         additional_includes     => ["${::apache::confd_dir}/${priority}-foreman-ssl.d/*.conf"],
         use_optional_includes   => true,
         custom_fragment         => template('foreman/_assets.conf.erb', 'foreman/_ssl_username.conf.erb', 'foreman/_suburi.conf.erb'),
+        *                       => $https_vhost_options,
       }
     }
   } else {
