@@ -241,7 +241,7 @@ def upload_facts(certname, req)
       if response.code.start_with?('2')
         cache("#{certname}-push-facts", "Facts from this host were last pushed to #{uri} at #{Time.now}\n")
       else
-        $stderr.puts "During the fact upload the server responded with: #{response.code} #{response.message}. Error is ignored and the execution continues."
+        $stderr.puts "#{certname}: During the fact upload the server responded with: #{response.code} #{response.message}. Error is ignored and the execution continues."
         $stderr.puts response.body
       end
     end
