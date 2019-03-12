@@ -93,9 +93,21 @@ rescue LoadError
   end
 end
 
+def empty_values_hash?(facts_file)
+  facts = File.read(facts_file)
+  puppet_facts = YAML::load(facts.gsub(/\!ruby\/object.*$/,''))
+
+  puppet_facts['values'].empty?
+end
+
 def process_host_facts(certname)
     f = "#{puppetdir}/yaml/facts/#{certname}.yaml"
     if File.size(f) != 0
+      if empty_values_hash?(f)
+        puts "Empty values hash in fact file #{f}, not uploading"
+        return 0
+      end
+
       req = generate_fact_request(certname, f)
       begin
         upload_facts(certname, req) if req
@@ -115,6 +127,10 @@ def process_all_facts(http_requests)
     certname = File.basename(f, ".yaml")
     # Skip empty host fact yaml files
     if File.size(f) != 0
+      if empty_values_hash?(f)
+        puts "Empty values hash in fact file #{f}, not uploading"
+        next
+      end
       req = generate_fact_request(certname, f)
       if http_requests
         http_requests << [certname, req]
