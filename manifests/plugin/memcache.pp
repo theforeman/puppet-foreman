@@ -13,11 +13,11 @@
 # $compress::   will gzip-compress values larger than 1K
 #
 class foreman::plugin::memcache (
-  Array[String] $hosts = $::foreman::plugin::memcache::params::hosts,
-  Integer[0] $expires_in = $::foreman::plugin::memcache::params::expires_in,
-  String $namespace = $::foreman::plugin::memcache::params::namespace,
-  Boolean $compress = $::foreman::plugin::memcache::params::compress,
-) inherits foreman::plugin::memcache::params {
+  Array[String] $hosts = [],
+  Integer[0] $expires_in = 86400,
+  String $namespace = 'foreman',
+  Boolean $compress = true,
+) {
   foreman::plugin {'memcache':
     config => template('foreman/foreman_memcache.yaml.erb'),
   }
