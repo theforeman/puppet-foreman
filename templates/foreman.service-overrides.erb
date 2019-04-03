@@ -1,0 +1,8 @@
+[Service]
+User=<%= scope['foreman::user'] %>
+Environment=FOREMAN_ENV=<%= scope['foreman::rails_env'] %>
+Environment=FOREMAN_HOME=<%= scope['foreman::app_root'] %>
+<% if scope['foreman::foreman_service_bind'] -%>
+Environment=FOREMAN_BIND=<%= scope['foreman::foreman_service_bind'] %>
+<% end -%>
+Environment=FOREMAN_PORT=<%= scope['foreman::foreman_service_port'] %>

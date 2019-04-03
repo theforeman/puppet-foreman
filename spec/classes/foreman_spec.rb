@@ -36,6 +36,7 @@ describe 'foreman' do
         it { should contain_class('foreman::install') }
         it { should contain_package('foreman-postgresql').with_ensure('present') }
         it { should_not contain_package('foreman-journald') }
+        it { should_not contain_package('foreman-service') }
 
         # config
         it do
@@ -75,26 +76,7 @@ describe 'foreman' do
             .with_content(/adapter: postgresql/)
         end
 
-        case facts[:osfamily]
-        when 'RedHat'
-          it 'should set the defaults file' do
-            should contain_file('/etc/sysconfig/foreman')
-              .with_content(%r{^FOREMAN_HOME=/usr/share/foreman$})
-              .with_content(/^FOREMAN_USER=foreman$/)
-              .with_content(/^FOREMAN_ENV=production/)
-              .with_content(/^FOREMAN_USE_PASSENGER=1$/)
-              .with_ensure('file')
-          end
-        when 'Debian'
-          it 'should set the defaults file' do
-            should contain_file('/etc/default/foreman')
-              .with_content(/^START=no$/)
-              .with_content(%r{^FOREMAN_HOME=/usr/share/foreman$})
-              .with_content(/^FOREMAN_USER=foreman$/)
-              .with_content(/^FOREMAN_ENV=production/)
-              .with_ensure('file')
-          end
-        end
+        it { should_not contain_systemd__dropin_file('installer.conf') }
 
         it { should contain_file('/usr/share/foreman').with_ensure('directory') }
 
@@ -149,6 +131,7 @@ describe 'foreman' do
 
         # service
         it { should contain_class('foreman::service') }
+        it { should_not contain_service('foreman') }
         it { is_expected.to contain_service('dynflowd').with_ensure('running').with_enable(true) }
 
         it 'should restart passenger' do
@@ -157,13 +140,6 @@ describe 'foreman' do
             .with_refreshonly(true)
             .with_cwd('/usr/share/foreman')
             .with_path('/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin')
-        end
-
-        it do
-          should contain_service('foreman')
-            .with_ensure('stopped')
-            .with_enable(false)
-            .with_hasstatus(true)
         end
 
         # settings
@@ -175,6 +151,10 @@ describe 'foreman' do
 
         it { should compile.with_all_deps }
         it { should_not contain_class('foreman::config::apache') }
+        it { should contain_package('foreman-service').with_ensure('installed') }
+        it { should contain_systemd__dropin_file('installer.conf').with_unit('foreman.service') }
+        it { should contain_service('foreman').with_ensure('running') }
+        it { should_not contain_exec('restart_foreman') }
       end
 
       describe 'with passenger interface' do
