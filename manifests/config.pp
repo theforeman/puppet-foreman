@@ -30,9 +30,11 @@ class foreman::config {
     ensure => absent,
   }
 
-  file { $::foreman::init_config:
-    ensure  => file,
-    content => template("foreman/${foreman::init_config_tmpl}.erb"),
+  if $::foreman::use_foreman_service {
+    systemd::dropin_file { 'installer.conf':
+      unit    => "${::foreman::foreman_service}.service",
+      content => template('foreman/foreman.service-overrides.erb'),
+    }
   }
 
   file { $::foreman::app_root:

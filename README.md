@@ -51,6 +51,8 @@ previous stable release.
 
 ### Foreman version compatibility notes
 
+Running without passenger is only supported on Foreman 1.22+.
+
 The parameters `locations_enabled`, `organizations_enabled` and `authentication`
 will only have any affect on Foreman 1.20 or older, in newer versions these
 settings have been removed.
@@ -66,6 +68,15 @@ authentication.
 | `organizations_enabled `   | true                  | false                 |
 
 For Foreman 1.16 or older, please use the 9.x release series of this module.
+
+## Running without passenger
+
+To use this module without passenger, the `passenger` parameter must be set to
+`false`. This will install the `foreman-service` package and ensure the service
+is running.
+
+This introduces a soft dependency on `camptocamp-systemd`. This feature is only
+available on Foreman 1.22+.
 
 ## Types and providers
 

@@ -10,6 +10,10 @@ describe 'foreman::service' do
       passenger: true,
       app_root: '/usr/share/foreman',
       ssl: true,
+      use_foreman_service: false,
+      foreman_service: 'foreman',
+      foreman_service_ensure: 'running',
+      foreman_service_enable: true,
       jobs_service: 'dynflower',
       jobs_service_ensure: 'stopped',
       jobs_service_enable: false
@@ -35,13 +39,7 @@ describe 'foreman::service' do
 
       it { should contain_service('httpd').that_comes_before('Class[foreman::service]') }
       it { should contain_class('apache::service').that_comes_before('Class[foreman::service]') }
-
-      it do
-        should contain_service('foreman')
-          .with_ensure('stopped')
-          .with_enable(false)
-          .with_hasstatus(true)
-      end
+      it { should_not contain_service('foreman') }
     end
 
     context 'without ssl' do
@@ -51,14 +49,13 @@ describe 'foreman::service' do
   end
 
   context 'without passenger' do
-    let(:params) { super().merge(passenger: false) }
+    let(:params) { super().merge(passenger: false, use_foreman_service: true) }
     it { is_expected.to compile.with_all_deps }
     it { should_not contain_exec('restart_foreman') }
     it do
       should contain_service('foreman')
         .with_ensure('running')
         .with_enable(true)
-        .with_hasstatus(true)
     end
   end
 end

@@ -88,6 +88,13 @@ class foreman::params {
   # Configure how many workers should Dynflow use
   $dynflow_pool_size = 5
 
+  # Define foreman service
+  $foreman_service = 'foreman'
+  $foreman_service_ensure = 'running'
+  $foreman_service_enable = true
+  $foreman_service_port = 3000
+  $foreman_service_bind = undef
+
   # Define job processing service properties
   $jobs_service = 'dynflowd'
   $jobs_service_ensure = 'running'
@@ -98,9 +105,6 @@ class foreman::params {
   # OS specific paths
   case $::osfamily {
     'RedHat': {
-      $init_config = '/etc/sysconfig/foreman'
-      $init_config_tmpl = 'foreman.sysconfig'
-
       case $::operatingsystem {
         'fedora': {
           $passenger_ruby = undef
@@ -119,8 +123,6 @@ class foreman::params {
       $passenger_ruby = '/usr/bin/foreman-ruby'
       $passenger_ruby_package = undef
       $plugin_prefix = 'ruby-foreman-'
-      $init_config = '/etc/default/foreman'
-      $init_config_tmpl = 'foreman.default'
     }
     'Linux': {
       case $::operatingsystem {
@@ -129,8 +131,6 @@ class foreman::params {
           $passenger_ruby = '/usr/bin/tfm-ruby'
           $passenger_ruby_package = 'tfm-rubygem-passenger-native'
           $plugin_prefix = 'tfm-rubygem-foreman_'
-          $init_config = '/etc/sysconfig/foreman'
-          $init_config_tmpl = 'foreman.sysconfig'
         }
         default: {
           fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")

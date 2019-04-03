@@ -342,6 +342,8 @@ class foreman (
     timeout => 0,
   }
 
+  $use_foreman_service = ! $passenger
+
   include ::foreman::repo
   include ::foreman::install
   include ::foreman::config
