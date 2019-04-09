@@ -209,6 +209,10 @@
 #
 # $jobs_service::                 Name of the service for running the background Dynflow executor
 #
+# $jobs_service_enable::          Whether the Dynflow executor should be enabled
+#
+# $jobs_service_ensure::          Whether the Dynflow executor should be running or stopped
+#
 # $hsts_enabled::                 Should HSTS enforcement in https requests be enabled
 #
 # $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing. This requires Foreman 1.22+
@@ -312,6 +316,8 @@ class foreman (
   Enum['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'] $telemetry_logger_level = $::foreman::params::telemetry_logger_level,
   Stdlib::Port $dynflow_pool_size = $::foreman::params::dynflow_pool_size,
   String $jobs_service = $::foreman::params::jobs_service,
+  Stdlib::Ensure::Service $jobs_service_ensure = $::foreman::params::jobs_service_ensure,
+  Boolean $jobs_service_enable = $::foreman::params::jobs_service_enable,
   Boolean $hsts_enabled = $::foreman::params::hsts_enabled,
   Array[Stdlib::HTTPUrl] $cors_domains = $::foreman::params::cors_domains,
 ) inherits foreman::params {
