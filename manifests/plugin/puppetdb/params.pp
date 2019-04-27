@@ -34,7 +34,6 @@ class foreman::plugin::puppetdb::params {
     }
   }
   $address           = 'https://localhost:8081/pdb/cmd/v1'
-  $dashboard_address = 'http://localhost:8080/pdb/dashboard'
   $ssl_ca_file       = $::foreman::params::client_ssl_ca
   $ssl_certificate   = $::foreman::params::client_ssl_cert
   $ssl_private_key   = $::foreman::params::client_ssl_key
