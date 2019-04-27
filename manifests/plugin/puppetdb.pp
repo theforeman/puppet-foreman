@@ -9,9 +9,6 @@
 # $address::           Address of puppetdb API.
 #                      Defaults to 'https://localhost:8081/pdb/cmd/v1'
 #
-# $dashboard_address:: Address of puppetdb dashboard.
-#                      Defaults to 'http://localhost:8080/pdb/dashboard'
-#
 # $ssl_ca_file::       CA certificate file which will be used to connect to the PuppetDB API.
 #                      Defaults to client_ssl_ca
 #
@@ -23,10 +20,10 @@
 #
 # $api_version::       PuppetDB API version.
 #                      Defaults to '4'
+#
 class foreman::plugin::puppetdb (
   String $package = $::foreman::plugin::puppetdb::params::package,
   Stdlib::HTTPUrl $address = $::foreman::plugin::puppetdb::params::address,
-  Stdlib::HTTPUrl $dashboard_address = $::foreman::plugin::puppetdb::params::dashboard_address,
   String $ssl_ca_file = $::foreman::plugin::puppetdb::params::ssl_ca_file,
   String $ssl_certificate = $::foreman::plugin::puppetdb::params::ssl_certificate,
   String $ssl_private_key = $::foreman::plugin::puppetdb::params::ssl_private_key,
@@ -40,9 +37,6 @@ class foreman::plugin::puppetdb (
   }
   -> foreman_config_entry { 'puppetdb_address':
     value => $address,
-  }
-  -> foreman_config_entry { 'puppetdb_dashboard_address':
-    value => $dashboard_address,
   }
   -> foreman_config_entry { 'puppetdb_ssl_ca_file':
     value => $ssl_ca_file,
