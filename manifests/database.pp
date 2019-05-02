@@ -15,6 +15,8 @@ class foreman::database {
       'SEED_ADMIN_FIRST_NAME' => $::foreman::initial_admin_first_name,
       'SEED_ADMIN_LAST_NAME'  => $::foreman::initial_admin_last_name,
       'SEED_ADMIN_EMAIL'      => $::foreman::initial_admin_email,
+      'SEED_ADMIN_LOCALE'     => $::foreman::initial_admin_locale,
+      'SEED_ADMIN_TIMEZONE'   => $::foreman::initial_admin_timezone,
       'SEED_ORGANIZATION'     => $::foreman::initial_organization,
       'SEED_LOCATION'         => $::foreman::initial_location,
     }

@@ -12,6 +12,10 @@
 #
 # $initial_admin_email::          Initial E-mail address of the admin user
 #
+# $initial_admin_locale::         Initial locale (= language) of the admin user
+#
+# $initial_admin_timezone::       Initial timezone of the admin user
+#
 # $db_manage::                    If enabled, will install and configure the database server on this host
 #
 # $email_delivery_method::        Email delivery method
@@ -252,6 +256,8 @@ class foreman (
   Optional[String] $initial_admin_first_name = $::foreman::params::initial_admin_first_name,
   Optional[String] $initial_admin_last_name = $::foreman::params::initial_admin_last_name,
   Optional[String] $initial_admin_email = $::foreman::params::initial_admin_email,
+  Optional[String] $initial_admin_locale = $::foreman::params::initial_admin_locale,
+  Optional[String] $initial_admin_timezone = $::foreman::params::initial_admin_timezone,
   Optional[String] $initial_organization = $::foreman::params::initial_organization,
   Optional[String] $initial_location = $::foreman::params::initial_location,
   Boolean $ipa_authentication = $::foreman::params::ipa_authentication,

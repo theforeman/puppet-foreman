@@ -239,6 +239,8 @@ describe 'foreman' do
             initial_admin_first_name: 'Alice',
             initial_admin_last_name: 'Bob',
             initial_admin_email: 'alice@bob.com',
+            initial_admin_locale: 'en_GB',
+            initial_admin_timezone: 'Hawaii',
             initial_organization: 'acme',
             initial_location: 'acme',
             ipa_authentication: false,
