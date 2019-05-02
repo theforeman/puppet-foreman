@@ -177,6 +177,8 @@ class foreman::params {
   $initial_admin_first_name = undef
   $initial_admin_last_name = undef
   $initial_admin_email = undef
+  $initial_admin_locale = undef
+  $initial_admin_timezone = undef
 
   # Initial taxonomies
   $initial_organization = undef
