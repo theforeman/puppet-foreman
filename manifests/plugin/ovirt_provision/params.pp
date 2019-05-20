@@ -2,13 +2,11 @@
 class foreman::plugin::ovirt_provision::params {
   case $::osfamily {
     'RedHat': {
-      case $::operatingsystem {
-        'fedora': {
-          $package = 'rubygem-ovirt_provision_plugin'
-        }
-        default: {
-          $package = 'tfm-rubygem-ovirt_provision_plugin'
-        }
+      # We use system packages except on EL7
+      if versioncmp($facts['operatingsystemmajrelease'], '8') >= 0 {
+        $package = 'rubygem-ovirt_provision_plugin'
+      } else {
+        $package = 'tfm-rubygem-ovirt_provision_plugin'
       }
     }
     'Debian': {

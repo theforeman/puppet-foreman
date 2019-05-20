@@ -4,13 +4,11 @@ class foreman::plugin::puppetdb::params {
 
   case $::osfamily {
     'RedHat': {
-      case $::operatingsystem {
-        'fedora': {
-          $package = 'rubygem-puppetdb_foreman'
-        }
-        default: {
-          $package = 'tfm-rubygem-puppetdb_foreman'
-        }
+      # We use system packages except on EL7
+      if versioncmp($facts['operatingsystemmajrelease'], '8') >= 0 {
+        $package = 'rubygem-puppetdb_foreman'
+      } else {
+        $package = 'tfm-rubygem-puppetdb_foreman'
       }
     }
     'Debian': {
