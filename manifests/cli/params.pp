@@ -12,13 +12,11 @@ class foreman::cli::params {
   # OS specific paths
   case $::osfamily {
     'RedHat': {
-      case $::operatingsystem {
-        'fedora': {
-          $hammer_plugin_prefix = 'rubygem-hammer_cli_'
-        }
-        default: {
-          $hammer_plugin_prefix = 'tfm-rubygem-hammer_cli_'
-        }
+      # We use system packages except on EL7
+      if versioncmp($facts['operatingsystemmajrelease'], '8') >= 0 {
+        $hammer_plugin_prefix = 'rubygem-hammer_cli_'
+      } else {
+        $hammer_plugin_prefix = 'tfm-rubygem-hammer_cli_'
       }
     }
     'Debian': {

@@ -105,18 +105,15 @@ class foreman::params {
   # OS specific paths
   case $::osfamily {
     'RedHat': {
-      case $::operatingsystem {
-        'fedora': {
-          $passenger_ruby = undef
-          $passenger_ruby_package = undef
-          $plugin_prefix = 'rubygem-foreman_'
-        }
-        default: {
-          # add passenger::install::scl as EL uses SCL on Foreman 1.2+
-          $passenger_ruby = '/usr/bin/tfm-ruby'
-          $passenger_ruby_package = 'tfm-rubygem-passenger-native'
-          $plugin_prefix = 'tfm-rubygem-foreman_'
-        }
+      # We use system packages except on EL7
+      if versioncmp($facts['operatingsystemmajrelease'], '8') >= 0 {
+        $passenger_ruby = undef
+        $passenger_ruby_package = undef
+        $plugin_prefix = 'rubygem-foreman_'
+      } else {
+        $passenger_ruby = '/usr/bin/tfm-ruby'
+        $passenger_ruby_package = 'tfm-rubygem-passenger-native'
+        $plugin_prefix = 'tfm-rubygem-foreman_'
       }
     }
     'Debian': {

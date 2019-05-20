@@ -4,13 +4,11 @@ class foreman::plugin::tasks::params {
   $cron_line = '45 19 * * *'
   case $::osfamily {
     'RedHat': {
-      case $::operatingsystem {
-        'fedora': {
-          $package = 'rubygem-foreman-tasks'
-        }
-        default: {
-          $package = 'tfm-rubygem-foreman-tasks'
-        }
+      # We use system packages except on EL7
+      if versioncmp($facts['operatingsystemmajrelease'], '8') >= 0 {
+        $package = 'rubygem-foreman-tasks'
+      } else {
+        $package = 'tfm-rubygem-foreman-tasks'
       }
     }
     'Debian': {
