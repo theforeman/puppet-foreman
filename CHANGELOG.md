@@ -1,5 +1,19 @@
 # Changelog
 
+## [12.1.0](https://github.com/theforeman/puppet-foreman/tree/12.1.0) (2019-05-21)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/12.0.0...12.1.0)
+
+**Implemented enhancements:**
+
+- Add hammer plugin for foreman\_kubevirt [\#733](https://github.com/theforeman/puppet-foreman/pull/733) ([shiramax](https://github.com/shiramax))
+- Adding foreman\_kubevirt Plugin [\#730](https://github.com/theforeman/puppet-foreman/pull/730) ([masayag](https://github.com/masayag))
+- allow puppetlabs-apt 7.x and puppetlabs-postgresql 7.x [\#728](https://github.com/theforeman/puppet-foreman/pull/728) ([mmoll](https://github.com/mmoll))
+
+**Fixed bugs:**
+
+- Fixes [\#26695](https://projects.theforeman.org/issues/26695) - remove puppetdb\_dashboard\_address [\#729](https://github.com/theforeman/puppet-foreman/pull/729) ([mmoll](https://github.com/mmoll))
+
 ## [12.0.0](https://github.com/theforeman/puppet-foreman/tree/12.0.0) (2019-04-18)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/11.0.1...12.0.0)
