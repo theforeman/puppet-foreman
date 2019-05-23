@@ -7,12 +7,12 @@ describe 'foreman' do
       let(:params) { { ipa_authentication: true } }
 
       describe 'without passenger' do
-        let(:params) { super().merge(passenger: false) }
-        it { should raise_error(Puppet::Error, /External authentication via IPA can only be enabled when passenger is used/) }
+        let(:params) { super().merge(apache: false) }
+        it { should raise_error(Puppet::Error, /External authentication via IPA can only be enabled when Apache is used/) }
       end
 
-      context 'with passenger' do
-        let(:params) { super().merge(passenger: true) }
+      context 'with apache' do
+        let(:params) { super().merge(apache: true) }
 
         describe 'not IPA-enrolled system' do
           describe 'ipa_server fact missing' do

@@ -78,7 +78,7 @@ describe 'Scenario: install foreman' do
   end
 
   describe command("curl -sk https://#{host_inventory['fqdn']}/users/login") do
-    its(:stdout) { is_expected.to match(/login-form/) }
+    its(:stdout) { is_expected.to match(/LoginPage/) }
     its(:exit_status) { is_expected.to eq 0 }
   end
 end

@@ -18,6 +18,8 @@ class foreman::service(
   }
 
   if $apache {
+    include ::apache
+
     if $passenger {
       exec {'restart_foreman':
         command     => "/bin/touch ${app_root}/tmp/restart.txt",

@@ -84,7 +84,7 @@ describe 'Scenario: install foreman with statsd' do
     it { is_expected.to be_listening }
   end
 
-  describe command("curl -s --cacert /etc/foreman/certificate.pem https://#{host_inventory['fqdn']} -w '\%{redirect_url}' -o /dev/null") do
+  describe command("curl -s --cacert /etc/foreman/certificate.pem https://#{host_inventory['fqdn']} -o /dev/null") do
     its(:stdout) { is_expected.to eq("https://#{host_inventory['fqdn']}/users/login") }
   end
 

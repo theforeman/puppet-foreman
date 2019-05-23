@@ -8,6 +8,7 @@ describe 'foreman::service' do
   let :params do
     {
       passenger: true,
+      apache: true,
       app_root: '/usr/share/foreman',
       ssl: true,
       use_foreman_service: false,
