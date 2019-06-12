@@ -1,5 +1,18 @@
 # Changelog
 
+## [12.2.0](https://github.com/theforeman/puppet-foreman/tree/12.2.0) (2019-06-12)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/12.1.0...12.2.0)
+
+**Implemented enhancements:**
+
+- Use system packages on EL8 [\#734](https://github.com/theforeman/puppet-foreman/pull/734) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- allow newer versions of dependencies [\#737](https://github.com/theforeman/puppet-foreman/pull/737) ([mmoll](https://github.com/mmoll))
+- Allow `puppetlabs/stdlib` 6.x [\#732](https://github.com/theforeman/puppet-foreman/pull/732) ([alexjfisher](https://github.com/alexjfisher))
+
 ## [12.1.0](https://github.com/theforeman/puppet-foreman/tree/12.1.0) (2019-05-21)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/12.0.0...12.1.0)
