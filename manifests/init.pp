@@ -319,7 +319,7 @@ class foreman (
   Boolean $jobs_service_enable = $::foreman::params::jobs_service_enable,
   Boolean $hsts_enabled = $::foreman::params::hsts_enabled,
   Array[Stdlib::HTTPUrl] $cors_domains = $::foreman::params::cors_domains,
-  Stdlib::Port $failed_login_attempts_limit = $::foreman::params::failed_login_attempts_limit,
+  Integer[0] $failed_login_attempts_limit = $::foreman::params::failed_login_attempts_limit,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $::foreman::db_type ? {
