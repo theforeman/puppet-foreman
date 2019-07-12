@@ -18,6 +18,7 @@
 :organizations_enabled: <%= scope.lookupvar("foreman::organizations_enabled") %>
 <% end -%>
 :puppetrun: <%= scope.lookupvar("foreman::puppetrun") %>
+:failed_login_attempts_limit: <%= scope.lookupvar("foreman::failed_login_attempts_limit") %>
 
 # The following values are used for providing default settings during db migrate
 :oauth_active: <%= scope.lookupvar("foreman::oauth_active") %>

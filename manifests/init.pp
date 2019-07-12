@@ -215,6 +215,8 @@
 #
 # $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing. This requires Foreman 1.22+
 #
+# $failed_login_attempts_limit::  Number of failed login attempts for 5 minutes before blocking user login
+#
 class foreman (
   Stdlib::HTTPUrl $foreman_url = $::foreman::params::foreman_url,
   Boolean $puppetrun = $::foreman::params::puppetrun,
@@ -317,6 +319,7 @@ class foreman (
   Boolean $jobs_service_enable = $::foreman::params::jobs_service_enable,
   Boolean $hsts_enabled = $::foreman::params::hsts_enabled,
   Array[Stdlib::HTTPUrl] $cors_domains = $::foreman::params::cors_domains,
+  Stdlib::Port $failed_login_attempts_limit = $::foreman::params::failed_login_attempts_limit,
 ) inherits foreman::params {
   if $db_adapter == 'UNSET' {
     $db_adapter_real = $::foreman::db_type ? {

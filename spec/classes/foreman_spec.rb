@@ -50,6 +50,7 @@ describe 'foreman' do
             .without_content(/^:unattended_url:/)
             .with_content(/^:require_ssl:\s*true$/)
             .with_content(/^:puppetrun:\s*false$/)
+            .with_content(/^:failed_login_attempts_limit:\s*30$/)
             .with_content(/^:oauth_active:\s*true$/)
             .with_content(/^:oauth_map_users:\s*false$/)
             .with_content(/^:oauth_consumer_key:\s*\w+$/)

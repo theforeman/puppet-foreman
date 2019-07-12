@@ -198,6 +198,9 @@ class foreman::params {
   # Starting puppet runs with foreman
   $puppetrun = false
 
+  # Number of failed login attempts for 5 minutes before blocking user login
+  $failed_login_attempts_limit = 30
+
   # KeepAlive settings of Apache
   $keepalive              = true
   $max_keepalive_requests = 100
