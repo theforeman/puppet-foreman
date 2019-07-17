@@ -4,7 +4,7 @@
 #
 # === Parameters:
 #
-# $package:: Package name to install, use ruby193-rubygem-foreman-tasks on Foreman 1.8/1.9 on EL
+# $package:: Package name to install
 #
 # $automatic_cleanup:: Enable automatic task cleanup using a cron job
 #

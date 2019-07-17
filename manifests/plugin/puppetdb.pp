@@ -4,7 +4,7 @@
 #
 # === Parameters:
 #
-# $package::           Package name to install, use ruby193-rubygem-puppetdb_foreman on Foreman 1.8/1.9 on EL
+# $package::           Package name to install
 #
 # $address::           Address of puppetdb API.
 #                      Defaults to 'https://localhost:8081/pdb/cmd/v1'
