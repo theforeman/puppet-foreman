@@ -84,6 +84,34 @@ Foreman's database. Providers:
 * `rest_v3` provider uses API v2 with Ruby HTTP library, OAuth and JSON (default)
 * `rest_v2` provider uses API v2 with apipie-bindings and OAuth
 
+## Foreman ENC via hiera
+
+There is a function `foreman::enc` to retrieve the ENC data. This returns the
+data as a hash and can be used in Hiera. This requires the URL to use the
+Puppet CA infrastructure:
+
+```yaml
+---
+version: 5
+hierarchy:
+  - name: "Foreman ENC"
+    data_hash: foreman::enc
+    options:
+      url: https://foreman.example.com
+```
+
+It is also possible to use HTTP basic auth by adding a username/password to the
+URL in the form of `https://username:password@foreman.example.com`.
+
+Then within your manifests you can use `lookup`. For example, in
+`manifests/site.pp`:
+
+```puppet
+node default {
+  lookup('classes', {merge => unique}).include
+}
+```
+
 # Contributing
 
 * Fork the project
