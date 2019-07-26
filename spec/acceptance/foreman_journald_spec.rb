@@ -90,11 +90,11 @@ describe 'Scenario: install foreman with journald' do
     its(:stdout) { is_expected.to eq("https://#{host_inventory['fqdn']}/users/login") }
   end
 
-  describe command("journalctl -u #{service_name}") do
+  describe command("journalctl --no-pager -u #{service_name}") do
     its(:stdout) { is_expected.to match(%r{Redirected to https://#{host_inventory['fqdn']}/users/login}) }
   end
 
-  describe command('journalctl -u dynflowd') do
+  describe command('journalctl --no-pager -u dynflowd') do
     its(:stdout) { is_expected.to match(%r{Dynflow Executor: start in progress}) }
   end
 end
