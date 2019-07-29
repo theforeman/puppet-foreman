@@ -51,23 +51,11 @@ previous stable release.
 
 ### Foreman version compatibility notes
 
-Running without passenger is only supported on Foreman 1.22+.
+This module targets Foreman 1.21+. Running without passenger is only supported
+on Foreman 1.22+.
 
-The parameters `locations_enabled`, `organizations_enabled` and `authentication`
-will only have any affect on Foreman 1.20 or older, in newer versions these
-settings have been removed.
-
-**Warning** Users configuring Foreman 1.20 and earlier will need to pay
-particular attention. Some defaults have been flipped, including all user
-authentication.
-
-| Setting                    | module 11.x with 1.20 | module 10.x with 1.20 |
-|----------------------------|-----------------------|-----------------------|
-| `authentication` (`login`) | false                 | true                  |
-| `locations_enabled`        | true                  | false                 |
-| `organizations_enabled `   | true                  | false                 |
-
-For Foreman 1.16 or older, please use the 9.x release series of this module.
+The Foreman userdata plugin has been merged into Foreman 1.23 and removed from
+this module.
 
 ## Running without passenger
 

@@ -178,7 +178,6 @@ describe 'foreman' do
             foreman_url: 'http://localhost',
             puppetrun: false,
             unattended: true,
-            authentication: true,
             passenger: true,
             passenger_ruby: '/usr/bin/ruby',
             passenger_ruby_package: 'ruby-gem-passenger',
@@ -210,8 +209,6 @@ describe 'foreman' do
             group: 'foreman',
             user_groups: %w[adm wheel],
             rails_env: 'production',
-            locations_enabled: false,
-            organizations_enabled: true,
             passenger_interface: 'lo0',
             vhost_priority: '5',
             server_port: 80,
@@ -284,10 +281,7 @@ describe 'foreman' do
         let :params do
           {
             unattended: false,
-            authentication: false,
             ssl: false,
-            locations_enabled: true,
-            organizations_enabled: true,
             oauth_active: false,
             oauth_map_users: true,
             oauth_consumer_key: 'abc',
@@ -298,10 +292,7 @@ describe 'foreman' do
         it 'should have changed parameters' do
           should contain_concat__fragment('foreman_settings+01-header.yaml')
             .with_content(/^:unattended:\s*false$/)
-            .with_content(/^:login:\s*false$/)
             .with_content(/^:require_ssl:\s*false$/)
-            .with_content(/^:locations_enabled:\s*true$/)
-            .with_content(/^:organizations_enabled:\s*true$/)
             .with_content(/^:oauth_active:\s*false$/)
             .with_content(/^:oauth_map_users:\s*true$/)
             .with_content(/^:oauth_consumer_key:\s*abc$/)
