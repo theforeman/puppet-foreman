@@ -36,8 +36,6 @@
 #
 # $ipa_authentication::           Enable configuration for external authentication via IPA
 #
-# $puppetrun::                    Should Foreman be able to start Puppet runs on nodes
-#
 # === Advanced parameters:
 #
 # $foreman_url::                  URL on which foreman is going to run
@@ -210,7 +208,6 @@
 #
 class foreman (
   Stdlib::HTTPUrl $foreman_url = $::foreman::params::foreman_url,
-  Boolean $puppetrun = $::foreman::params::puppetrun,
   Boolean $unattended = $::foreman::params::unattended,
   Optional[Stdlib::HTTPUrl] $unattended_url = $::foreman::params::unattended_url,
   Boolean $passenger = $::foreman::params::passenger,

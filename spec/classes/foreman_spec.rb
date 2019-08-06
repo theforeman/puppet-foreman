@@ -49,7 +49,6 @@ describe 'foreman' do
             .with_content(/^:unattended:\s*true$/)
             .without_content(/^:unattended_url:/)
             .with_content(/^:require_ssl:\s*true$/)
-            .with_content(/^:puppetrun:\s*false$/)
             .with_content(/^:oauth_active:\s*true$/)
             .with_content(/^:oauth_map_users:\s*false$/)
             .with_content(/^:oauth_consumer_key:\s*\w+$/)
@@ -176,7 +175,6 @@ describe 'foreman' do
         let :params do
           {
             foreman_url: 'http://localhost',
-            puppetrun: false,
             unattended: true,
             passenger: true,
             passenger_ruby: '/usr/bin/ruby',

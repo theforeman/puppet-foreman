@@ -190,9 +190,6 @@ class foreman::params {
   $logging_layout = 'pattern'
   $loggers = {}
 
-  # Starting puppet runs with foreman
-  $puppetrun = false
-
   # KeepAlive settings of Apache
   $keepalive              = true
   $max_keepalive_requests = 100
