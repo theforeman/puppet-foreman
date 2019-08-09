@@ -90,11 +90,13 @@ describe 'Scenario: install foreman with journald' do
     its(:stdout) { is_expected.to eq("https://#{host_inventory['fqdn']}/users/login") }
   end
 
-  describe command("journalctl -u #{service_name}") do
+  # Logging to the journal is broken on Travis and EL7 but works in Vagrant VMs
+  # and regular docker containers
+  describe command("journalctl -u #{service_name}"), unless: ENV['TRAVIS'] == 'true' && os[:family] == 'redhat' && os[:release] =~ /^7\./ do
     its(:stdout) { is_expected.to match(%r{Redirected to https://#{host_inventory['fqdn']}/users/login}) }
   end
 
-  describe command('journalctl -u dynflowd') do
+  describe command('journalctl -u dynflowd'), unless: ENV['TRAVIS'] == 'true' && os[:family] == 'redhat' && os[:release] =~ /^7\./ do
     its(:stdout) { is_expected.to match(%r{Dynflow Executor: start in progress}) }
   end
 end
