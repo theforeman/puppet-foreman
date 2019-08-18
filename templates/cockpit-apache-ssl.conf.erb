@@ -1,0 +1,14 @@
+### File managed with puppet ###
+
+<Location /webcon>
+  LoadModule proxy_wstunnel_module modules/mod_proxy_wstunnel.so
+  LoadModule proxy_http_module modules/mod_proxy_http.so
+
+  ProxyPreserveHost On
+
+  RewriteEngine On
+  RewriteCond %{HTTP:Upgrade} =websocket [NC]
+  RewriteRule /webcon/(.*)           ws://127.0.0.1:9999/webcon/$1 [P]
+  RewriteCond %{HTTP:Upgrade} !=websocket [NC]
+  RewriteRule /webcon/(.*)           http://127.0.0.1:9999/webcon/$1 [P]
+</Location>

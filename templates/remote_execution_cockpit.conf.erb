@@ -1,0 +1,14 @@
+[WebService]
+LoginTitle = Foreman Cockpit
+UrlRoot = /webcon/
+Origins = https://<%= scope.lookupvar("::fqdn") %>
+
+[Bearer]
+Action = remote-login-ssh
+
+[SSH-Login]
+command = /usr/sbin/foreman-cockpit-session
+
+[OAuth]
+Url = /cockpit/redirect
+
