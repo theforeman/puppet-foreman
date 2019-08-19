@@ -1,7 +1,7 @@
 [WebService]
 LoginTitle = Foreman Cockpit
 UrlRoot = /webcon/
-Origins = https://<%= scope.lookupvar("::fqdn") %>
+Origins = <%= scope.lookupvar("foreman::foreman_url") %>
 
 [Bearer]
 Action = remote-login-ssh
