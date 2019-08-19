@@ -1,4 +1,4 @@
-:foreman_url: https://<%= scope.lookupvar("::fqdn") %>
+:foreman_url: <%= scope.lookupvar("foreman::foreman_url") %>
 :ssl_ca_file: <%= scope.lookupvar("foreman::client_ssl_ca") %>
 :ssl_certificate: <%= scope.lookupvar("foreman::client_ssl_cert") %>
 :ssl_private_key: <%= scope.lookupvar("foreman::client_ssl_key") %>
