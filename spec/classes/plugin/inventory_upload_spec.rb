@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 describe 'foreman::plugin::inventory_upload' do
