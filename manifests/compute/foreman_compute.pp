@@ -1,7 +1,7 @@
 # Provides a common class to install foreman-compute
 # used by multiple compute resources
 #
-# === Parameters:
+# === Advanced Parameters:
 #
 # $version::  Package version to install, defaults to installed
 #

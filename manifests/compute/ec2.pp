@@ -1,8 +1,6 @@
-# = Foreman EC2 compute resource support
-#
 # Provides support for EC2 compute resources
 #
-# === Parameters:
+# === Advanced Parameters:
 #
 # $version::  Package version to install, defaults to installed
 #

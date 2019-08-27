@@ -1,8 +1,6 @@
-# = Foreman VMware compute resource support
-#
 # Provides support for VMware compute resources
 #
-# === Parameters:
+# === Advanced Parameters:
 #
 # $version::  Package version to install, defaults to installed
 #

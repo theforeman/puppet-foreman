@@ -1,8 +1,6 @@
-# = Foreman oVirt compute resource support
-#
 # Provides support for oVirt compute resources
 #
-# === Parameters:
+# === Advanced Parameters:
 #
 # $version::  Package version to install, defaults to installed
 #

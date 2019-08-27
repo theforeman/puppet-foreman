@@ -1,8 +1,6 @@
-# = Foreman LibVirt compute resource support
-#
 # Provides support for Libvirt compute resources
 #
-# === Parameters:
+# === Advanced Parameters:
 #
 # $version::  Package version to install, defaults to installed
 #

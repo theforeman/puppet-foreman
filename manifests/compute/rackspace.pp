@@ -1,8 +1,6 @@
-# = Foreman Rackspace compute resource support
-#
 # Provides support for Rackspace compute resources
 #
-# === Parameters:
+# === Advanced Parameters:
 #
 # $version::  Package version to install, defaults to installed
 #
