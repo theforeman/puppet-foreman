@@ -14,9 +14,9 @@ class foreman::puppetmaster (
   Stdlib::Absolutepath $puppet_etcdir = $::foreman::puppetmaster::params::puppet_etcdir,
   Integer $timeout = $::foreman::puppetmaster::params::puppetmaster_timeout,
   Integer $report_timeout = $::foreman::puppetmaster::params::puppetmaster_report_timeout,
-  Stdlib::Absolutepath $ssl_ca = $::foreman::puppetmaster::params::client_ssl_ca,
-  Stdlib::Absolutepath $ssl_cert = $::foreman::puppetmaster::params::client_ssl_cert,
-  Stdlib::Absolutepath $ssl_key = $::foreman::puppetmaster::params::client_ssl_key,
+  Variant[Enum[''], Stdlib::Absolutepath] $ssl_ca = $::foreman::puppetmaster::params::client_ssl_ca,
+  Variant[Enum[''], Stdlib::Absolutepath] $ssl_cert = $::foreman::puppetmaster::params::client_ssl_cert,
+  Variant[Enum[''], Stdlib::Absolutepath] $ssl_key = $::foreman::puppetmaster::params::client_ssl_key,
   Enum['v2'] $enc_api = 'v2',
   Enum['v2'] $report_api = 'v2',
 ) inherits foreman::puppetmaster::params {
