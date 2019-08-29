@@ -1,6 +1,6 @@
-# = Foreman supervisory_authority Plugin
+# == Class: Foreman supervisory_authority Plugin
 #
-# This class installs the supervisory_authority plugin and configuration file
+# This class installs the supervisory_authority plugin and configuration file.
 #
 # === Parameters:
 #
@@ -9,6 +9,8 @@
 # $secret_token::          This string is used to ensure that only your agents can send data to your APM server.
 # 
 # $service_name::          The name of your service. This is used to keep all the errors and transactions of your service together.
+#
+# === Advanced Parameters:
 #
 # $log_level::             Log severity level: 0 (debug), 1 (info), 2 (warn), 3 (error), 4 (fatal), 5 (unknown)
 #
