@@ -1,17 +1,19 @@
 require 'spec_helper_acceptance'
 
 describe 'Scenario: install foreman with statsd' do
+  apache_service_name = ['debian', 'ubuntu'].include?(os[:family]) ? 'apache2' : 'httpd'
+
   before(:context) do
     case fact('osfamily')
     when 'RedHat'
-      on default, 'yum -y remove foreman* tfm-* && rm -rf /etc/yum.repos.d/foreman*.repo'
-      on default, 'service httpd stop', { :acceptable_exit_codes => [0, 5] }
+      on default, 'yum -y remove foreman* tfm-* mod_passenger && rm -rf /etc/yum.repos.d/foreman*.repo'
     when 'Debian'
       on default, 'apt-get purge -y foreman*', { :acceptable_exit_codes => [0, 100] }
       on default, 'apt-get purge -y ruby-hammer-cli-*', { :acceptable_exit_codes => [0, 100] }
       on default, 'rm -rf /etc/apt/sources.list.d/foreman*'
-      on default, 'service apache2 stop', { :acceptable_exit_codes => [0, 5] }
     end
+
+    on default, "systemctl stop #{apache_service_name}", { :acceptable_exit_codes => [0, 5] }
   end
 
   let(:pp) do
@@ -62,7 +64,7 @@ describe 'Scenario: install foreman with statsd' do
 
   it_behaves_like 'a idempotent resource'
 
-  describe service(os[:family] == 'debian' ? 'apache2' : 'httpd') do
+  describe service(apache_service_name) do
     it { is_expected.to be_enabled }
     it { is_expected.to be_running }
   end
