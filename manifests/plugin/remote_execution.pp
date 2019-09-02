@@ -6,39 +6,26 @@
 # $cockpit:: Install cockpit support
 #
 class foreman::plugin::remote_execution (
-  Boolean $cockpit = $::foreman::plugin::remote_execution::params::cockpit,
-) inherits foreman::plugin::remote_execution::params {
+  Boolean $cockpit = false,
+) {
   include ::foreman::plugin::tasks
+  include apache::mod::proxy_wstunnel
+  include apache::mod::proxy_http
 
   foreman::plugin {'remote_execution':
   }
 
+  $cockpit_subpath = 'webcon'
+
   if $cockpit {
-    case $::osfamily {
-      'RedHat': {
-        case $::operatingsystem {
-          'fedora': {
-            $cockpit_package = 'rubygem-foreman_remote_execution-cockpit'
-          }
-          default: {
-            $cockpit_package = 'tfm-rubygem-foreman_remote_execution-cockpit'
-          }
-        }
-      }
-      default: {
-        fail("${::hostname}: foreman_remote_execution cockpit integration does not support osfamily ${::osfamily}")
-      }
+    if $::osfamily != 'RedHat' {
+      fail("${::hostname}: foreman_remote_execution cockpit integration does not support osfamily ${::osfamily}")
     }
 
-    package { $cockpit_package:
-      ensure => present,
-    }
-    ->
-    service { 'foreman-cockpit':
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
+    foreman::plugin { 'remote_execution-cockpit': }
+    -> service { 'foreman-cockpit':
+      ensure => running,
+      enable => true,
     }
 
     file { '/etc/foreman/cockpit/cockpit.conf':
@@ -64,7 +51,7 @@ class foreman::plugin::remote_execution (
     }
 
     foreman_config_entry { 'remote_execution_cockpit_url':
-      value => "/webcon/=%{host}",
+      value => "/${cockpit_subpath}/=%{host}",
     }
   }
 }

@@ -1,6 +1,6 @@
 [WebService]
 LoginTitle = Foreman Cockpit
-UrlRoot = /webcon/
+UrlRoot = /<%= scope.lookupvar("cockpit_subpath") %>/
 Origins = <%= scope.lookupvar("foreman::foreman_url") %>
 
 [Bearer]

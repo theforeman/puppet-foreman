@@ -1,14 +1,11 @@
 ### File managed with puppet ###
 
-<Location /webcon>
-  LoadModule proxy_wstunnel_module modules/mod_proxy_wstunnel.so
-  LoadModule proxy_http_module modules/mod_proxy_http.so
-
+<Location /<%= scope.lookupvar("cockpit_subpath") %>>
   ProxyPreserveHost On
 
   RewriteEngine On
   RewriteCond %{HTTP:Upgrade} =websocket [NC]
-  RewriteRule /webcon/(.*)           ws://127.0.0.1:9999/webcon/$1 [P]
+  RewriteRule /<%= scope.lookupvar("cockpit_subpath") %>/(.*)           ws://127.0.0.1:9999/<%= scope.lookupvar("cockpit_subpath") %>/$1 [P]
   RewriteCond %{HTTP:Upgrade} !=websocket [NC]
-  RewriteRule /webcon/(.*)           http://127.0.0.1:9999/webcon/$1 [P]
+  RewriteRule /<%= scope.lookupvar("cockpit_subpath") %>/(.*)           http://127.0.0.1:9999/<%= scope.lookupvar("cockpit_subpath") %>/$1 [P]
 </Location>
