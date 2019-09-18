@@ -40,9 +40,6 @@ class foreman::plugin::puppetdb (
   -> foreman_config_entry { 'puppetdb_address':
     value => $address,
   }
-  -> foreman_config_entry { 'puppetdb_dashboard_address':
-    value => $dashboard_address,
-  }
   -> foreman_config_entry { 'puppetdb_ssl_ca_file':
     value => $ssl_ca_file,
   }
