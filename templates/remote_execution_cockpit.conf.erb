@@ -1,0 +1,13 @@
+[WebService]
+LoginTitle = Foreman Cockpit
+UrlRoot = <%= @cockpit_path %>/
+Origins = <%= @foreman_url %>
+
+[Bearer]
+Action = remote-login-ssh
+
+[SSH-Login]
+command = /usr/sbin/foreman-cockpit-session
+
+[OAuth]
+Url = /cockpit/redirect
