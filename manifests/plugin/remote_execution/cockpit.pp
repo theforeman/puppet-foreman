@@ -9,7 +9,7 @@ class foreman::plugin::remote_execution::cockpit {
   $cockpit_port = 9999
   $cockpit_config = {
     'foreman_url' => $foreman_url,
-    'ssl_ca_file' => $foreman::client_ssl_ca,
+    'ssl_ca_file' => $foreman::server_ssl_chain,
     'ssl_certificate' => $foreman::client_ssl_cert,
     'ssl_private_key' => $foreman::client_ssl_key,
   }
@@ -40,6 +40,7 @@ class foreman::plugin::remote_execution::cockpit {
     notify  => Service['foreman-cockpit'],
   }
 
+  include apache::mod::rewrite
   include apache::mod::proxy_wstunnel
   include apache::mod::proxy_http
   foreman::config::apache::fragment { 'cockpit':
