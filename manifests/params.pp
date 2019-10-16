@@ -192,6 +192,9 @@ class foreman::params {
   $logging_layout = 'pattern'
   $loggers = {}
 
+  # Rails Cache Store
+  $rails_cache_store = { 'type' => 'file' }
+
   # Default ports for Apache to listen on
   $server_port     = 80
   $server_ssl_port = 443

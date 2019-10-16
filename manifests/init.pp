@@ -196,6 +196,8 @@
 #
 # $foreman_service_puma_workers::         Number of workers for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
 #
+# $rails_cache_store::            Set rails cache store
+#
 # === Keycloak parameters:
 #
 # $keycloak::                     Enable Keycloak support. Note this is limited
@@ -301,6 +303,7 @@ class foreman (
   Integer[0] $foreman_service_puma_threads_min = $foreman::params::foreman_service_puma_threads_min,
   Integer[0] $foreman_service_puma_threads_max = $foreman::params::foreman_service_puma_threads_max,
   Integer[0] $foreman_service_puma_workers = $foreman::params::foreman_service_puma_workers,
+  Hash[String, Any] $rails_cache_store = $foreman::params::rails_cache_store,
   Boolean $keycloak = $foreman::params::keycloak,
   String[1] $keycloak_app_name = $foreman::params::keycloak_app_name,
   String[1] $keycloak_realm = $foreman::params::keycloak_realm,

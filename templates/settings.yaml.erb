@@ -77,6 +77,28 @@
   :pool_size: <%= scope.lookupvar("foreman::dynflow_pool_size") %>
   :redis_url: <%= scope.lookupvar("foreman::config::jobs_redis_url") %>
 <% end -%>
+
+:rails_cache_store:
+  :type: <%= scope["foreman::rails_cache_store"]["type"] %>
+<% if scope["foreman::rails_cache_store"]["type"] == "redis" -%>
+   :urls:
+<%   if scope["foreman::rails_cache_store"].key?("urls") -%>
+<%     scope["foreman::rails_cache_store"]["urls"].each do |url| -%>
+     - redis://<%= url %>
+<%     end -%>
+<%   else -%>
+     - redis://localhost:8479/0
+<%   end -%>
+   :options:
+<%   if scope["foreman::rails_cache_store"].key?("options") -%>
+<%     scope["foreman::rails_cache_store"]["options"].each do |option,value| -%>
+     :<%= option %>: <%= value %>
+<%     end -%>
+<%   else -%>
+     :compress: true
+     :namespace: foreman
+<%   end -%>
+<% end -%>
 <% if scope.lookupvar("foreman::apache") && !scope.lookupvar("foreman::passenger") -%>
 
 # Configure reverse proxy headers

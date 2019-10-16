@@ -33,6 +33,35 @@ on the host this module is applied to. Databases will be created with using the
 `en_US.utf8` locale, which means a respective OS locale must be available on
 the database host. The database management can be disabled with `db_manage`.
 
+## Rails Cache support
+
+Foreman supports different backends as Rails cache. This is handled by this
+module using the parameter `rails_cache_store`. The parameter takes a hash
+containing the type and options specfic to the backend.
+
+The default is the file backend, configured via `{'type' => 'file'}`. To
+setup for redis use a hash similar to `{'type' => 'redis', 'urls' => ['localhost:8479/0'], 'options' => {'compress' => 'true', 'namespace' => 'foreman'}}`
+where `urls` takes an array of redis urls which get prepended with `redis://`
+and `options` using a hash with options from [rails](https://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-store)
+falling back to `{'compress' => 'true', 'namespace' => 'foreman'}` if no
+option is provided.
+
+An example configuration for activating the redis backend with a local instance
+could look like this:
+
+```puppet
+class { 'foreman':
+  rails_cache_store => {
+    'type' => 'redis',
+    'urls' => ['localhost:8479/0'],
+    'options' => {
+      'compress' => 'true',
+      'namespace' => 'foreman'
+    }
+  }
+}
+```
+
 ## Support policy
 
 At any time, the module supports two releases, however the previous version
