@@ -47,4 +47,10 @@ class foreman::install {
       ensure => installed,
     }
   }
+
+  if $foreman::rails_cache_store['type'] == 'redis' {
+    package { 'foreman-redis':
+      ensure => installed,
+    }
+  }
 }

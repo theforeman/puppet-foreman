@@ -340,6 +340,32 @@ describe 'foreman' do
         end
       end
 
+      describe 'with rails_cache_store file' do
+        let(:params) { super().merge(rails_cache_store: { type: "file" }) }
+        it 'should set rails_cache_store config' do
+          should contain_concat__fragment('foreman_settings+01-header.yaml')
+            .with_content(/^:rails_cache_store:\n\s+:type:\s*file$/)
+        end
+      end
+
+      describe 'with rails_cache_store redis' do
+        let(:params) { super().merge(rails_cache_store: { type: "redis", urls: [ "redis.example.com/0" ]}) }
+        it 'should set rails_cache_store config' do
+          should contain_concat__fragment('foreman_settings+01-header.yaml')
+            .with_content(/^:rails_cache_store:\n\s+:type:\s*redis\n\s+:urls:\n\s*- redis:\/\/redis.example.com\/0\n\s+:options:\n\s+:compress:\s*true\n\s+:namespace:\s*foreman$/)
+        end
+        it { is_expected.to contain_package('foreman-redis') }
+      end
+
+      describe 'with rails_cache_store redis with options' do
+        let(:params) { super().merge(rails_cache_store: { type: "redis", urls: [ "redis.example.com/0", "redis2.example.com/0" ], options: {compress: "false", namespace: "katello"}}) }
+        it 'should set rails_cache_store config' do
+          should contain_concat__fragment('foreman_settings+01-header.yaml')
+            .with_content(/^:rails_cache_store:\n\s+:type:\s*redis\n\s+:urls:\n\s*- redis:\/\/redis.example.com\/0\n\s*- redis:\/\/redis2.example.com\/0\n\s+:options:\n\s+:compress:\s*false\n\s+:namespace:\s*katello$/)
+        end
+        it { is_expected.to contain_package('foreman-redis') }
+      end
+
       describe 'with cors domains' do
         let(:params) { super().merge(cors_domains: ['https://example.com']) }
         it 'should set cors config' do
