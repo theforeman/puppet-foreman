@@ -18,6 +18,12 @@ describe 'Scenario: install foreman' do
 
   let(:pp) do
     <<-EOS
+    if $facts['os']['family'] == 'RedHat' and $facts['os']['name'] != 'Fedora' {
+      class { 'redis::globals':
+        scl => 'rh-redis5',
+      }
+    }
+
     $directory = '/etc/foreman'
     $certificate = "${directory}/certificate.pem"
     $key = "${directory}/key.pem"
@@ -59,7 +65,12 @@ describe 'Scenario: install foreman' do
     it { is_expected.to be_running }
   end
 
-  describe service('dynflowd') do
+  describe service('dynflow-sidekiq@orchestrator') do
+    it { is_expected.to be_enabled }
+    it { is_expected.to be_running }
+  end
+
+  describe service('dynflow-sidekiq@worker') do
     it { is_expected.to be_enabled }
     it { is_expected.to be_running }
   end

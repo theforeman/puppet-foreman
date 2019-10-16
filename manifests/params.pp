@@ -85,9 +85,11 @@ class foreman::params {
   $foreman_service_port = 3000
 
   # Define job processing service properties
-  $jobs_service = 'dynflowd'
+  $jobs_manage_service = true
   $jobs_service_ensure = 'running'
   $jobs_service_enable = true
+  $jobs_sidekiq_redis_url = undef
+
 
   $hsts_enabled = true
 

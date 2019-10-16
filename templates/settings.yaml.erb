@@ -72,8 +72,11 @@
     # logging level as in Logger::LEVEL
     :level: '<%= scope.lookupvar("foreman::telemetry_logger_level") %>'
 
+<% if scope.lookupvar("foreman::jobs_manage_service") -%>
 :dynflow:
   :pool_size: <%= scope.lookupvar("foreman::dynflow_pool_size") %>
+  :redis_url: <%= scope.lookupvar("foreman::config::jobs_redis_url") %>
+<% end -%>
 <% if scope.lookupvar("foreman::apache") && !scope.lookupvar("foreman::passenger") -%>
 
 # Configure reverse proxy headers

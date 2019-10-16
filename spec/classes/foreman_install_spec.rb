@@ -19,6 +19,17 @@ describe 'foreman' do
         it { should contain_package('foreman-postgresql').that_requires('Class[foreman::repo]') }
       end
 
+      describe 'sidekiq jobs' do
+        context 'with jobs_manage_service disabled' do
+          let(:params) { super().merge(jobs_manage_service: false) }
+          it { is_expected.not_to contain_package('foreman-dynflow-sidekiq') }
+        end
+        context 'with jobs_manage_service enabled' do
+          let(:params) { super().merge(jobs_manage_service: true) }
+          it { is_expected.to contain_package('foreman-dynflow-sidekiq') }
+        end
+      end
+
       context 'with SELinux enabled' do
         let(:facts) { super().merge(selinux: true) }
         it { should contain_package('foreman-selinux') }

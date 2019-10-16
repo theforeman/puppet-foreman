@@ -29,6 +29,9 @@ RSpec.configure do |c|
         on host, 'sed -i "s/keepcache=.*/keepcache=1/" /etc/yum.conf'
         # refresh check if cache needs refresh on next yum command
         on host, 'yum clean expire-cache'
+
+        host.install_package('centos-release-scl-rh')
+        host.install_package('rh-redis5-redis')
       end
     end
   end

@@ -28,6 +28,12 @@ describe 'Scenario: install foreman with journald' do
       manage_repo => false,
     }
 
+    if $facts['os']['family'] == 'RedHat' and $facts['os']['name'] != 'Fedora' {
+      class { 'redis::globals':
+        scl => 'rh-redis5',
+      }
+    }
+
     $directory = '/etc/foreman'
     $certificate = "${directory}/certificate.pem"
     $key = "${directory}/key.pem"
@@ -69,7 +75,12 @@ describe 'Scenario: install foreman with journald' do
     it { is_expected.to be_running }
   end
 
-  describe service('dynflowd') do
+  describe service('dynflow-sidekiq@orchestrator') do
+    it { is_expected.to be_enabled }
+    it { is_expected.to be_running }
+  end
+
+  describe service('dynflow-sidekiq@worker') do
     it { is_expected.to be_enabled }
     it { is_expected.to be_running }
   end
@@ -97,7 +108,7 @@ describe 'Scenario: install foreman with journald' do
     its(:stdout) { is_expected.to match(%r{Redirected to https://#{host_inventory['fqdn']}/users/login}) }
   end
 
-  describe command('journalctl -u dynflowd'), unless: ENV['TRAVIS'] == 'true' && os[:family] == 'redhat' && os[:release] =~ /^7\./ do
-    its(:stdout) { is_expected.to match(%r{Dynflow Executor: start in progress}) }
+  describe command('journalctl -u dynflow-sidekiq@orchestrator'), unless: ENV['TRAVIS'] == 'true' && os[:family] == 'redhat' && os[:release] =~ /^7\./ do
+    its(:stdout) { is_expected.to match(%r{Everything ready for world: }) }
   end
 end
