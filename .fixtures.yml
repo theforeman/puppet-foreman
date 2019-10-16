@@ -12,6 +12,7 @@ fixtures:
     extlib:           'https://github.com/voxpupuli/puppet-extlib'
     postgresql:       'https://github.com/puppetlabs/puppetlabs-postgresql'
     puppet:           'https://github.com/theforeman/puppet-puppet'
+    redis:            'https://github.com/voxpupuli/puppet-redis'
     systemd:          'https://github.com/camptocamp/puppet-systemd'
     selinux_core:
       repo: "https://github.com/puppetlabs/puppetlabs-selinux_core"

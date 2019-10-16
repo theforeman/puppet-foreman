@@ -30,6 +30,7 @@ gem 'beaker', '>= 4.2.0', {"groups"=>["system_tests"]}
 gem 'beaker-docker', {"groups"=>["system_tests"]}
 gem 'beaker-hostgenerator', '>= 1.1.10', {"groups"=>["system_tests"]}
 gem 'beaker-puppet', {"groups"=>["system_tests"]}
+gem 'beaker-vagrant', {"groups"=>["system_tests"]}
 gem 'beaker-rspec', {"groups"=>["system_tests"]}
 gem 'beaker-module_install_helper', {"groups"=>["system_tests"]}
 gem 'beaker-puppet_install_helper', {"groups"=>["system_tests"]}

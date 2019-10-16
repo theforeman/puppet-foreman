@@ -128,10 +128,22 @@ describe 'foreman' do
         it { should contain_foreman__rake('db:seed') }
         it { should contain_foreman__rake('apipie:cache:index') }
 
+        # jobs
+        it { should contain_class('redis') }
+        it { should contain_redis__instance('default') }
+        it { should contain_file('/etc/foreman/dynflow').with_ensure('directory') }
+        it {
+          should contain_foreman__dynflow__worker('orchestrator')
+            .with_concurrency(1)
+            .with_queues(['dynflow_orchestrator'])
+        }
+        it { should contain_foreman__dynflow__worker('worker') }
+
         # service
         it { should contain_class('foreman::service') }
         it { should_not contain_service('foreman') }
-        it { is_expected.to contain_service('dynflowd').with_ensure('running').with_enable(true) }
+        it { is_expected.to contain_service('dynflow-sidekiq@orchestrator').with_ensure('running').with_enable(true) }
+        it { is_expected.to contain_service('dynflow-sidekiq@worker').with_ensure('running').with_enable(true) }
 
         it 'should restart passenger' do
           should contain_exec('restart_foreman')
@@ -390,6 +402,14 @@ describe 'foreman' do
         it do
           is_expected.to contain_foreman_smartproxy('sp.example.com')
             .that_requires(['Class[Foreman::Service]', 'Service[httpd]'])
+        end
+      end
+
+      describe 'with custom redis' do
+        context 'with redis_url' do
+          let(:params) { super().merge(jobs_sidekiq_redis_url: 'redis://127.0.0.1:4333/') }
+          it { should_not contain_class('redis') }
+          it { should_not contain_class('redis::instance') }
         end
       end
     end

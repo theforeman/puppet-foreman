@@ -25,6 +25,12 @@ class foreman::install {
     }
   }
 
+  if $::foreman::jobs_manage_service {
+    package { 'foreman-dynflow-sidekiq':
+      ensure => installed,
+    }
+  }
+
   if $::foreman::ipa_authentication and $::foreman::ipa_manage_sssd {
     package { 'sssd-dbus':
       ensure => installed,

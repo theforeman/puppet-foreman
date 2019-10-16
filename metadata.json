@@ -35,6 +35,10 @@
     {
       "name": "puppet/extlib",
       "version_requirement": ">= 3.0.0 < 5.0.0"
+    },
+    {
+      "name": "puppet/redis",
+      "version_requirement": ">= 5.0.0 < 6.0.0"
     }
   ],
   "requirements": [

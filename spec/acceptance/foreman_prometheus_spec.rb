@@ -28,6 +28,12 @@ describe 'Scenario: install foreman with prometheus' do
       manage_repo => false,
     }
 
+    if $facts['os']['family'] == 'RedHat' and $facts['os']['name'] != 'Fedora' {
+      class { 'redis::globals':
+        scl => 'rh-redis5',
+      }
+    }
+
     $directory = '/etc/foreman'
     $certificate = "${directory}/certificate.pem"
     $key = "${directory}/key.pem"
@@ -69,7 +75,12 @@ describe 'Scenario: install foreman with prometheus' do
     it { is_expected.to be_running }
   end
 
-  describe service('dynflowd') do
+  describe service('dynflow-sidekiq@orchestrator') do
+    it { is_expected.to be_enabled }
+    it { is_expected.to be_running }
+  end
+
+  describe service('dynflow-sidekiq@worker') do
     it { is_expected.to be_enabled }
     it { is_expected.to be_running }
   end

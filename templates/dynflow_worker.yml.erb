@@ -1,0 +1,5 @@
+:concurrency: <%= scope['concurrency'] %>
+:queues:
+<% scope['queues'].each do |queue| -%>
+  - <%= queue %>
+<% end %>

@@ -15,9 +15,7 @@ describe 'foreman::service' do
       foreman_service: 'foreman',
       foreman_service_ensure: 'running',
       foreman_service_enable: true,
-      jobs_service: 'dynflower',
-      jobs_service_ensure: 'stopped',
-      jobs_service_enable: false
+      jobs_manage_service: false
     }
   end
 
@@ -28,7 +26,6 @@ describe 'foreman::service' do
     context 'with ssl' do
       let(:params) { super().merge(ssl: true) }
       it { is_expected.to compile.with_all_deps }
-      it { is_expected.to contain_service('dynflower').with_ensure('stopped').with_enable(false) }
 
       it 'should restart passenger' do
         should contain_exec('restart_foreman')
