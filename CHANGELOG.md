@@ -1,5 +1,32 @@
 # Changelog
 
+## [13.0.0](https://github.com/theforeman/puppet-foreman/tree/13.0.0) (2019-10-25)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/12.2.0...13.0.0)
+
+**Breaking changes:**
+
+- Sunsetting foreman\_cockpit because functionality being integrated in remote execution [\#756](https://github.com/theforeman/puppet-foreman/pull/756) ([dgoetz](https://github.com/dgoetz))
+- Drop compatibility with Foreman 1.20 and older + puppetrun parameter [\#745](https://github.com/theforeman/puppet-foreman/pull/745) ([ekohl](https://github.com/ekohl))
+- Rewrite to support reverse proxy [\#677](https://github.com/theforeman/puppet-foreman/pull/677) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Fixes [\#27932](https://projects.theforeman.org/issues/27932) - Add REX Cockpit support [\#760](https://github.com/theforeman/puppet-foreman/pull/760) ([ekohl](https://github.com/ekohl))
+- Drop Puppet \< 3.4 compatibility code [\#755](https://github.com/theforeman/puppet-foreman/pull/755) ([ekohl](https://github.com/ekohl))
+- Add supervisory\_authority plugin [\#754](https://github.com/theforeman/puppet-foreman/pull/754) ([laugmanuel](https://github.com/laugmanuel))
+- Rely on Puppet data types to ensure variables content is valid in apache::fragment [\#753](https://github.com/theforeman/puppet-foreman/pull/753) ([neomilium](https://github.com/neomilium))
+- Add support for foreman\_inventory\_upload plugin [\#749](https://github.com/theforeman/puppet-foreman/pull/749) ([ShimShtein](https://github.com/ShimShtein))
+- Implement a foreman::enc function [\#742](https://github.com/theforeman/puppet-foreman/pull/742) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Make SSL parameters optional within foreman::puppetmaster [\#752](https://github.com/theforeman/puppet-foreman/pull/752) ([gcoxmoz](https://github.com/gcoxmoz))
+
+**Merged pull requests:**
+
+- remove references to ruby193-\* packages [\#741](https://github.com/theforeman/puppet-foreman/pull/741) ([evgeni](https://github.com/evgeni))
+
 ## [12.2.0](https://github.com/theforeman/puppet-foreman/tree/12.2.0) (2019-06-12)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/12.1.0...12.2.0)
