@@ -48,6 +48,6 @@ class foreman::plugin::remote_execution::cockpit {
   }
 
   foreman_config_entry { 'remote_execution_cockpit_url':
-    value => "/${cockpit_path}/=%{host}",
+    value => "${cockpit_path}/=%{host}",
   }
 }
