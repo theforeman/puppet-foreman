@@ -1,5 +1,13 @@
 # Changelog
 
+## [13.0.1](https://github.com/theforeman/puppet-foreman/tree/13.0.1) (2019-10-31)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/13.0.0...13.0.1)
+
+**Fixed bugs:**
+
+- Fixes [\#28146](https://projects.theforeman.org/issues/28146) - Drop double leading slash from cockpit url [\#764](https://github.com/theforeman/puppet-foreman/pull/764) ([adamruzicka](https://github.com/adamruzicka))
+
 ## [13.0.0](https://github.com/theforeman/puppet-foreman/tree/13.0.0) (2019-10-25)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/12.2.0...13.0.0)
