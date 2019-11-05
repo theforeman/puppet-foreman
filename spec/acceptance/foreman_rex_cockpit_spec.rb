@@ -77,7 +77,7 @@ describe 'Scenario: install foreman', if: os[:family] == 'centos' do
     it { is_expected.to be_listening }
   end
 
-  describe port(9999) do
+  describe port(19090) do
     it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
   end
 

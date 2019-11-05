@@ -6,7 +6,7 @@ class foreman::plugin::remote_execution::cockpit {
   $foreman_url = $foreman::foreman_url
   $cockpit_path = '/webcon'
   $cockpit_host = '127.0.0.1'
-  $cockpit_port = 9999
+  $cockpit_port = 19090
   $cockpit_config = {
     'foreman_url' => $foreman_url,
     'ssl_ca_file' => $foreman::server_ssl_chain,
