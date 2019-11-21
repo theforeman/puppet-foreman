@@ -29,6 +29,7 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
 
     if $facts['osfamily'] == 'RedHat' {
       include ::foreman::cli::ansible
+      include ::foreman::cli::azure
     }
     include ::foreman::cli::discovery
     include ::foreman::cli::remote_execution
