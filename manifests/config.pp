@@ -41,7 +41,7 @@ class foreman::config {
     ensure  => directory,
   }
 
-  if $::foreman::db_root_cert and $::foreman::db_type == 'postgresql' {
+  if $::foreman::db_root_cert {
     $pg_cert_dir = "${::foreman::app_root}/.postgresql"
 
     file { $pg_cert_dir:

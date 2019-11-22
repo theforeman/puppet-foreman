@@ -1,26 +1,8 @@
 # Install the needed packages for foreman
 class foreman::install {
 
-  case $::foreman::db_type {
-    'sqlite': {
-      case $::osfamily {
-        'Debian': { $package = 'foreman-sqlite3' }
-        default:  { $package = 'foreman-sqlite' }
-      }
-    }
-    'postgresql': {
-      $package = 'foreman-postgresql'
-    }
-    'mysql': {
-      $package = 'foreman-mysql2'
-    }
-    default: {
-      fail("${::hostname}: unknown database type ${::foreman::db_type}")
-    }
-  }
-
-  package { $package:
-    ensure  => $::foreman::version,
+  package { 'foreman-postgresql':
+    ensure => $::foreman::version,
   }
 
   if $::foreman::selinux or (str2bool($::selinux) and $::foreman::selinux != false) {

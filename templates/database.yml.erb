@@ -1,19 +1,16 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
 
 <%
-  type     = scope.lookupvar("::foreman::db_type")
-  adapter  = scope.lookupvar("::foreman::db_adapter_real")
   host     = scope.lookupvar("::foreman::db_host")
-  host     = scope.lookupvar("::fqdn") if type == 'mysql' && adapter == 'UNSET'
   database = scope.lookupvar("::foreman::db_database")
-  database = (type == 'sqlite') ? 'db/production.sqlite3' : 'foreman' if database == 'UNSET'
+  database = 'foreman' if database == 'UNSET'
   rails_env = scope.lookupvar("::foreman::rails_env")
 -%>
 <% unless scope.lookupvar("::foreman::db_manage") == 'UNSET' -%>
-# Database is managed by foreman::database::<%= type %>
+# Database is managed by foreman::database::postgresql
 <% end -%>
 <%= rails_env %>:
-  adapter: <%= adapter %>
+  adapter: postgresql
 <% unless host == 'UNSET' -%>
   host: <%= host %>
 <% end -%>
@@ -32,7 +29,4 @@
 <% end -%>
 <% unless (pool = scope.lookupvar("::foreman::db_pool")) == 'UNSET' -%>
   pool: <%= pool %>
-<% end -%>
-<% if type == 'sqlite' -%>
-  timeout: 5000
 <% end -%>

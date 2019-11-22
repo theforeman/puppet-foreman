@@ -14,8 +14,6 @@
 #
 # $db_manage::                    If enabled, will install and configure the database server on this host
 #
-# $db_type::                      Database 'production' type
-#
 # $email_delivery_method::        Email delivery method
 #
 # $email_smtp_address::           SMTP server hostname, when delivery method is SMTP
@@ -78,8 +76,6 @@
 #
 # $plugin_version::               Foreman plugins package version, it's passed to ensure parameter of package resource
 #                                 can be set to 'installed', 'latest', 'present' only
-#
-# $db_adapter::                   Database 'production' adapter
 #
 # $db_host::                      Database 'production' host
 #
@@ -228,8 +224,6 @@ class foreman (
   String $version = $::foreman::params::version,
   Enum['installed', 'present', 'latest'] $plugin_version = $::foreman::params::plugin_version,
   Boolean $db_manage = $::foreman::params::db_manage,
-  Enum['mysql', 'postgresql', 'sqlite'] $db_type = $::foreman::params::db_type,
-  Optional[Enum['mysql2', 'postgresql', 'sqlite3', 'UNSET']] $db_adapter = 'UNSET',
   Optional[Stdlib::Host] $db_host = 'UNSET',
   Variant[Undef, Enum['UNSET'], Stdlib::Port] $db_port = 'UNSET',
   Optional[String] $db_database = 'UNSET',
@@ -308,17 +302,7 @@ class foreman (
   Boolean $hsts_enabled = $::foreman::params::hsts_enabled,
   Array[Stdlib::HTTPUrl] $cors_domains = $::foreman::params::cors_domains,
 ) inherits foreman::params {
-  if $db_adapter == 'UNSET' {
-    $db_adapter_real = $::foreman::db_type ? {
-      'sqlite' => 'sqlite3',
-      'mysql'  => 'mysql2',
-      default  => $::foreman::db_type,
-    }
-  } else {
-    $db_adapter_real = $db_adapter
-  }
-
-  if $db_sslmode == 'UNSET' and $db_root_cert and $db_type == 'postgresql' {
+  if $db_sslmode == 'UNSET' and $db_root_cert {
     $db_sslmode_real = 'verify-full'
   } else {
     $db_sslmode_real = $db_sslmode

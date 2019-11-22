@@ -54,7 +54,6 @@ class foreman::params {
   # if enabled, will install and configure the database server on this host
   $db_manage   = true
   # Database 'production' settings
-  $db_type     = 'postgresql'
   $db_username = 'foreman'
   # Generate and cache the password on the master once
   # In multi-puppetmaster setups, the user should specify their own
