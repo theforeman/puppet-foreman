@@ -33,7 +33,6 @@ describe 'foreman::config::apache' do
           server_ssl_port: 443,
           proxy_backend: 'http://127.0.0.1:3000/',
           ipa_authentication: false,
-          selinux: true
         }
       end
 

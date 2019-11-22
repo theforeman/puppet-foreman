@@ -97,7 +97,6 @@ class foreman::config::apache(
   Boolean $ipa_authentication = $::foreman::ipa_authentication,
   Hash[String, Any] $http_vhost_options = {},
   Hash[String, Any] $https_vhost_options = {},
-  Optional[Boolean] $selinux = $::foreman::selinux,
 ) {
   $docroot = "${app_root}/public"
   $suburi_parts = split($foreman_url, '/')
@@ -184,7 +183,7 @@ class foreman::config::apache(
       ],
     }
 
-    if $selinux or ($facts['selinux'] and $selinux != false) {
+    if $facts['selinux'] {
       selboolean { 'httpd_can_network_connect':
         persistent => true,
         value      => 'on',

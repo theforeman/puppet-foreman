@@ -200,7 +200,6 @@ describe 'foreman' do
             repo: 'nightly',
             configure_epel_repo: true,
             configure_scl_repo: false,
-            selinux: true,
             gpgcheck: true,
             version: '1.12',
             plugin_version: 'installed',

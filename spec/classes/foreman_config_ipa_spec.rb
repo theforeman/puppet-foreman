@@ -62,20 +62,7 @@ describe 'foreman' do
 
           context 'on selinux system' do
             let(:facts) { super().merge(selinux: true) }
-
-            describe 'with disabled by user' do
-              let(:params) { super().merge(selinux: false) }
-              it { should_not contain_selboolean('httpd_dbus_sssd') }
-            end
-
-            describe 'with enabled by user' do
-              let(:params) { super().merge(selinux: true) }
-              it { should contain_selboolean('httpd_dbus_sssd') }
-            end
-
-            describe 'with automatic' do
-              it { should contain_selboolean('httpd_dbus_sssd') }
-            end
+            it { should contain_selboolean('httpd_dbus_sssd') }
           end
         end
       end
