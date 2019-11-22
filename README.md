@@ -51,11 +51,7 @@ previous stable release.
 
 ### Foreman version compatibility notes
 
-This module targets Foreman 1.21+. Running without passenger is only supported
-on Foreman 1.23+. The Azure plugin support only works with Foreman 1.24+.
-
-The Foreman userdata plugin has been merged into Foreman 1.23 and removed from
-this module.
+This module targets Foreman 2.0+.
 
 ## Running without passenger
 
@@ -63,8 +59,7 @@ To use this module without passenger, the `passenger` parameter must be set to
 `false`. This will install the `foreman-service` package and ensure the service
 is running.
 
-This introduces a soft dependency on `camptocamp-systemd`. This feature is only
-available on Foreman 1.23+.
+This introduces a soft dependency on `camptocamp-systemd`.
 
 ## Types and providers
 
