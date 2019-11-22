@@ -21,38 +21,12 @@ describe 'foreman' do
 
       context 'with SELinux enabled' do
         let(:facts) { super().merge(selinux: true) }
-
-        describe 'with selinux => false' do
-          let(:params) { super().merge(selinux: false) }
-          it { should_not contain_package('foreman-selinux') }
-        end
-
-        describe 'with selinux => true' do
-          let(:params) { super().merge(selinux: true) }
-          it { should contain_package('foreman-selinux') }
-        end
-
-        describe 'with selinux => undef' do
-          it { should contain_package('foreman-selinux') }
-        end
+        it { should contain_package('foreman-selinux') }
       end
 
       context 'with SELinux disabled' do
         let(:facts) { super().merge(selinux: false) }
-
-        describe 'with selinux => false' do
-          let(:params) { super().merge(selinux: false) }
-          it { should_not contain_package('foreman-selinux') }
-        end
-
-        describe 'with selinux => true' do
-          let(:params) { super().merge(selinux: true) }
-          it { should contain_package('foreman-selinux') }
-        end
-
-        describe 'with selinux => undef' do
-          it { should_not contain_package('foreman-selinux') }
-        end
+        it { should_not contain_package('foreman-selinux') }
       end
     end
   end

@@ -66,9 +66,6 @@
 # $configure_scl_repo::           If disabled the SCL repo will not be configured on Red Hat clone systems.
 #                                 (Currently only installs repos for CentOS and Scientific)
 #
-# $selinux::                      When undef, foreman-selinux will be installed if SELinux is enabled
-#                                 setting to false/true will override this check (e.g. set to false on 1.1)
-#
 # $gpgcheck::                     Turn on/off gpg check in repo files (effective only on RedHat family systems)
 #
 # $version::                      Foreman package version, it's passed to ensure parameter of package resource
@@ -219,7 +216,6 @@ class foreman (
   Optional[String] $repo = $::foreman::params::repo,
   Boolean $configure_epel_repo = $::foreman::params::configure_epel_repo,
   Boolean $configure_scl_repo = $::foreman::params::configure_scl_repo,
-  Optional[Boolean] $selinux = $::foreman::params::selinux,
   Boolean $gpgcheck = $::foreman::params::gpgcheck,
   String $version = $::foreman::params::version,
   Enum['installed', 'present', 'latest'] $plugin_version = $::foreman::params::plugin_version,
