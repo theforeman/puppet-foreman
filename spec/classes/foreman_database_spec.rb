@@ -44,41 +44,6 @@ describe 'foreman' do
             )
         end
       end
-
-      describe 'with db_type => mysql' do
-        let(:params) { super().merge(db_type: 'mysql') }
-        # install
-        it { should contain_package('foreman-mysql2') }
-
-        # config
-        it { should contain_file('/etc/foreman/database.yml').with_content(/adapter: mysql2/) }
-
-        # database
-        it { should_not contain_class('foreman::database::postgresql') }
-        it { should_not contain_class('foreman::database::sqlite') }
-        it { should contain_class('foreman::database::mysql') }
-        it { should contain_class('mysql::server') }
-        it { should contain_class('mysql::server::account_security') }
-        it { should contain_mysql__db('foreman').with_user('foreman') }
-      end
-
-      describe 'with db_type => sqlite' do
-        let(:params) { super().merge(db_type: 'sqlite') }
-        # install
-        case facts[:osfamily]
-        when 'RedHat'
-          it { should contain_package('foreman-sqlite') }
-        when 'Debian'
-          it { should contain_package('foreman-sqlite3') }
-        end
-
-        # config
-        it { should contain_file('/etc/foreman/database.yml').with_content(/adapter: sqlite/) }
-
-        # database
-        it { should_not contain_class('foreman::database::postgresql') }
-        it { should_not contain_class('foreman::database::mysql') }
-      end
     end
   end
 end

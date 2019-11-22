@@ -1,12 +1,10 @@
 # Set up the foreman database
 class foreman::database {
   if $::foreman::db_manage {
-    $db_class = "foreman::database::${::foreman::db_type}"
-
-    contain $db_class
+    contain foreman::database::postgresql
 
     if $::foreman::db_manage_rake {
-      Class[$db_class] ~> Foreman::Rake['db:migrate']
+      Class['foreman::database::postgresql'] ~> Foreman::Rake['db:migrate']
     }
   }
 

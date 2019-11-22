@@ -119,7 +119,6 @@ describe 'foreman' do
 
         # database
         it { should contain_class('foreman::database') }
-        it { should_not contain_class('foreman::database::mysql') }
         it {
           should contain_class('foreman::database::postgresql')
             .that_notifies('Foreman::Rake[db:migrate]')
@@ -206,8 +205,6 @@ describe 'foreman' do
             version: '1.12',
             plugin_version: 'installed',
             db_manage: true,
-            db_type: 'postgresql',
-            db_adapter: 'UNSET',
             db_host: 'UNSET',
             db_port: 'UNSET',
             db_database: 'UNSET',
