@@ -1,21 +1,6 @@
 require 'spec_helper_acceptance'
 
 describe 'Scenario: install foreman with journald' do
-  apache_service_name = ['debian', 'ubuntu'].include?(os[:family]) ? 'apache2' : 'httpd'
-
-  before(:context) do
-    case fact('osfamily')
-    when 'RedHat'
-      on default, 'yum -y remove foreman* tfm-* mod_passenger && rm -rf /etc/yum.repos.d/foreman*.repo'
-    when 'Debian'
-      on default, 'apt-get purge -y foreman*', { :acceptable_exit_codes => [0, 100] }
-      on default, 'apt-get purge -y ruby-hammer-cli-*', { :acceptable_exit_codes => [0, 100] }
-      on default, 'rm -rf /etc/apt/sources.list.d/foreman*'
-    end
-
-    on default, "systemctl stop #{apache_service_name}", { :acceptable_exit_codes => [0, 5] }
-  end
-
   let(:pp) do
     <<-EOS
     # Workarounds
@@ -62,37 +47,15 @@ describe 'Scenario: install foreman with journald' do
     EOS
   end
 
-  it_behaves_like 'a idempotent resource'
-
-  describe service(apache_service_name) do
-    it { is_expected.to be_enabled }
-    it { is_expected.to be_running }
-  end
-
-  describe service('dynflowd') do
-    it { is_expected.to be_enabled }
-    it { is_expected.to be_running }
-  end
+  include_examples 'foreman via passenger'
 
   describe package('foreman-journald') do
     it { is_expected.to be_installed }
   end
 
-  describe port(80) do
-    it { is_expected.to be_listening }
-  end
-
-  describe port(443) do
-    it { is_expected.to be_listening }
-  end
-
-  describe command("curl -s --cacert /etc/foreman/certificate.pem https://#{host_inventory['fqdn']} -w '\%{redirect_url}' -o /dev/null") do
-    its(:stdout) { is_expected.to eq("https://#{host_inventory['fqdn']}/users/login") }
-    its(:exit_status) { is_expected.to eq 0 }
-  end
-
   # Logging to the journal is broken on Travis and EL7 but works in Vagrant VMs
   # and regular docker containers
+  apache_service_name = ['debian', 'ubuntu'].include?(os[:family]) ? 'apache2' : 'httpd'
   describe command("journalctl -u #{apache_service_name}"), unless: ENV['TRAVIS'] == 'true' && os[:family] == 'redhat' && os[:release] =~ /^7\./ do
     its(:stdout) { is_expected.to match(%r{Redirected to https://#{host_inventory['fqdn']}/users/login}) }
   end
