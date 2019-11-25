@@ -25,13 +25,28 @@ class foreman::database {
       value => false,
       dry   => true,
     }
-    ~> foreman::rake { 'db:migrate': }
+    ~> foreman::rake { 'db:migrate':
+      unless => '/usr/bin/test -f /etc/foreman/database_migrated',
+    } ~>
+    file { '/etc/foreman/database_migrated':
+      ensure  => 'present',
+      replace => 'no',
+      content => Timestamp.new().strftime('%Y-%m-%dT%H:%M:%S%:z'),
+      mode    => '0644',
+    }
     ~> foreman_config_entry { 'db_pending_seed':
       value => false,
       dry   => true,
+    } ~>
+    file { '/etc/foreman/database_seeded':
+      ensure  => 'present',
+      replace => 'no',
+      content => Timestamp.new().strftime('%Y-%m-%dT%H:%M:%S%:z'),
+      mode    => '0644',
     }
     ~> foreman::rake { 'db:seed':
       environment => delete_undef_values($seed_env),
+      unless => '/usr/bin/test -f /etc/foreman/database_seeded',
     }
     ~> Foreman::Rake['apipie:cache:index']
   }
