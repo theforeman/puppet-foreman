@@ -7,7 +7,6 @@ describe 'foreman::config::apache' do
       let(:params) do
         {
           app_root: '/usr/share/foreman',
-          listen_on_interface: '192.168.0.1',
           priority: '05',
           servername: facts[:fqdn],
           serveraliases: ['foreman', 'also.foreman'],

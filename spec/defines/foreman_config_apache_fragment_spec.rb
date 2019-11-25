@@ -18,7 +18,6 @@ describe 'foreman::config::apache::fragment' do
         let :pre_condition do
           "class { '::foreman::config::apache':
               app_root                => '/usr/share/foreman',
-              listen_on_interface     => '192.168.0.1',
               priority                => '05',
               ssl                     => false,
               ssl_cert                => '/cert.pem',
@@ -72,7 +71,6 @@ describe 'foreman::config::apache::fragment' do
         let :pre_condition do
           "class { '::foreman::config::apache':
               app_root                => '/usr/share/foreman',
-              listen_on_interface     => '192.168.0.1',
               priority                => '05',
               ssl                     => true,
               ssl_cert                => '/cert.pem',

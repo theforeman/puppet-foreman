@@ -107,7 +107,6 @@ describe 'foreman' do
                            end
 
           should contain_class('foreman::config::apache')
-            .with_listen_on_interface(nil)
             .with_passenger_ruby(passenger_ruby)
         end
 
@@ -170,21 +169,6 @@ describe 'foreman' do
         it { should_not contain_exec('restart_foreman') }
       end
 
-      describe 'with passenger interface' do
-        let :pre_condition do
-          <<-PUPPET
-          class {'apache':
-            default_vhost => false,
-          }
-          PUPPET
-        end
-
-        let(:params) { super().merge(passenger_interface: 'lo') }
-
-        it { should compile.with_all_deps }
-        it { should contain_class('foreman::config::apache').with_listen_on_interface('lo') }
-      end
-
       describe 'with all parameters' do
         let :params do
           {
@@ -218,7 +202,6 @@ describe 'foreman' do
             group: 'foreman',
             user_groups: %w[adm wheel],
             rails_env: 'production',
-            passenger_interface: 'lo0',
             vhost_priority: '5',
             server_port: 80,
             server_ssl_port: 443,

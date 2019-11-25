@@ -17,10 +17,8 @@ class foreman::params {
   $servername     = $::fqdn
   # Server aliases of the VirtualHost
   $serveraliases  = [ 'foreman' ]
-  # force SSL (note: requires passenger)
+  # force SSL (note: requires apache)
   $ssl            = true
-  #define which interface passenger should listen on, undef means all interfaces
-  $passenger_interface = undef
   # further passenger parameters
   $passenger_prestart = true
   $passenger_min_instances = 1
