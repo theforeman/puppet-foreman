@@ -52,7 +52,7 @@ previous stable release.
 ### Foreman version compatibility notes
 
 This module targets Foreman 1.21+. Running without passenger is only supported
-on Foreman 1.23+.
+on Foreman 1.23+. The Azure plugin support only works with Foreman 1.24+.
 
 The Foreman userdata plugin has been merged into Foreman 1.23 and removed from
 this module.
