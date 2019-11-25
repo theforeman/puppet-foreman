@@ -104,8 +104,6 @@
 #
 # $user_groups::                  Additional groups for the Foreman user
 #
-# $passenger_interface::          Defines which network interface passenger should listen on, undef means all interfaces
-#
 # $passenger_prestart::           Pre-start the first passenger worker instance process during httpd start.
 #
 # $passenger_min_instances::      Minimum passenger worker instances to keep when application is idle.
@@ -227,7 +225,6 @@ class foreman (
   String $group = $::foreman::params::group,
   Array[String] $user_groups = $::foreman::params::user_groups,
   String $rails_env = $::foreman::params::rails_env,
-  Optional[String] $passenger_interface = $::foreman::params::passenger_interface,
   String $vhost_priority = $::foreman::params::vhost_priority,
   Stdlib::Port $server_port = $::foreman::params::server_port,
   Stdlib::Port $server_ssl_port = $::foreman::params::server_ssl_port,

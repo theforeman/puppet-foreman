@@ -4,9 +4,6 @@
 #
 # $app_root::                 Root of the application.
 #
-# $listen_on_interface::      Specify which interface to bind passenger to.
-#                             Defaults to all interfaces.
-#
 # $passenger_ruby::           Path to Ruby interpreter
 #
 # $priority::                 Apache vhost priority
@@ -59,7 +56,6 @@
 class foreman::config::apache(
   Boolean $passenger = $::foreman::passenger,
   Stdlib::Absolutepath $app_root = $::foreman::app_root,
-  Optional[String] $listen_on_interface = $::foreman::passenger_interface,
   Optional[String] $passenger_ruby = $::foreman::passenger_ruby,
   String $priority = $::foreman::vhost_priority,
   Stdlib::Fqdn $servername = $::foreman::servername,
@@ -190,13 +186,6 @@ class foreman::config::apache(
     include ::apache::mod::auth_kerb
   }
 
-  # Check the value in case the interface doesn't exist, otherwise listen on all interfaces
-  if $listen_on_interface and $listen_on_interface in split($::interfaces, ',') {
-    $listen_interface = fact("ipaddress_${listen_on_interface}")
-  } else {
-    $listen_interface = undef
-  }
-
   file { "${apache::confd_dir}/${priority}-foreman.d":
     ensure  => 'directory',
     owner   => 'root',
@@ -210,7 +199,6 @@ class foreman::config::apache(
     add_default_charset   => 'UTF-8',
     docroot               => $docroot,
     manage_docroot        => false,
-    ip                    => $listen_interface,
     options               => ['SymLinksIfOwnerMatch'],
     port                  => $server_port,
     priority              => $priority,
@@ -245,7 +233,6 @@ class foreman::config::apache(
       add_default_charset   => 'UTF-8',
       docroot               => $docroot,
       manage_docroot        => false,
-      ip                    => $listen_interface,
       options               => ['SymLinksIfOwnerMatch'],
       port                  => $server_ssl_port,
       priority              => $priority,
