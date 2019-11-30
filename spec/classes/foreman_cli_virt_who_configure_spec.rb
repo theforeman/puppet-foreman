@@ -8,8 +8,8 @@ describe 'foreman::cli::virt_who_configure' do
     it { should contain_package('tfm-rubygem-hammer_cli_foreman_virt_who_configure') }
   end
 
-  context 'on debian-9-x86_64' do
-    let(:facts) { on_supported_os['debian-9-x86_64'] }
+  context 'on debian-10-x86_64' do
+    let(:facts) { on_supported_os['debian-10-x86_64'] }
     it { should contain_package('ruby-hammer-cli-foreman-virt-who-configure') }
   end
 end
