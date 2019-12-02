@@ -11,7 +11,6 @@ describe 'foreman' do
 
         it { should_not contain_class('foreman::database::postgresql') }
 
-        it { should contain_foreman_config_entry('db_pending_migration') }
         it { should contain_foreman__rake('db:migrate') }
         it { should contain_foreman_config_entry('db_pending_seed') }
         it { should contain_foreman__rake('db:seed') }
@@ -24,7 +23,6 @@ describe 'foreman' do
         it { should compile.with_all_deps }
         it { should contain_class('foreman::database::postgresql') }
 
-        it { should_not contain_foreman_config_entry('db_pending_migration') }
         it { should_not contain_foreman__rake('db:migrate') }
         it { should_not contain_foreman_config_entry('db_pending_seed') }
         it { should_not contain_foreman__rake('db:seed') }

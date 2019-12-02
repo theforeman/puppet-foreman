@@ -122,10 +122,9 @@ describe 'foreman' do
         it { should_not contain_class('foreman::database::mysql') }
         it {
           should contain_class('foreman::database::postgresql')
-            .that_notifies('Foreman_config_entry[db_pending_migration]')
+            .that_notifies('Foreman::Rake[db:migrate]')
         }
 
-        it { should contain_foreman_config_entry('db_pending_migration') }
         it { should contain_foreman__rake('db:migrate') }
         it { should contain_foreman_config_entry('db_pending_seed') }
         it { should contain_foreman__rake('db:seed') }
