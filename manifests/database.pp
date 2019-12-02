@@ -6,7 +6,7 @@ class foreman::database {
     contain $db_class
 
     if $::foreman::db_manage_rake {
-      Class[$db_class] ~> Foreman_config_entry['db_pending_migration']
+      Class[$db_class] ~> Foreman::Rake['db:migrate']
     }
   }
 
@@ -21,11 +21,9 @@ class foreman::database {
       'SEED_LOCATION'         => $::foreman::initial_location,
     }
 
-    foreman_config_entry { 'db_pending_migration':
-      value => false,
-      dry   => true,
+    foreman::rake { 'db:migrate':
+      unless => '/usr/sbin/foreman-rake db:abort_if_pending_migrations',
     }
-    ~> foreman::rake { 'db:migrate': }
     ~> foreman_config_entry { 'db_pending_seed':
       value => false,
       dry   => true,
