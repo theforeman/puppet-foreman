@@ -59,6 +59,15 @@ describe 'foreman::config::apache' do
             should contain_file('/usr/share/foreman/config/environment.rb').with_owner('foreman')
           end
         end
+
+        describe 'with keycloak' do
+          let(:params) { super().merge(keycloak: true) }
+
+          it { should compile.with_all_deps }
+          it { should contain_apache__mod('auth_openidc') }
+          it { should contain_class('apache::mod::authz_user') }
+          it { should contain_file("#{http_dir}/conf.d/foreman-openidc_oidc_keycloak_ssl-realm.conf") }
+        end
       end
 
       describe 'with ssl' do
