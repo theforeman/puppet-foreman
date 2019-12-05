@@ -93,6 +93,10 @@ class foreman::params {
   $jobs_service_enable = true
   $jobs_sidekiq_redis_url = undef
 
+  # Keycloak
+  $keycloak = false
+  $keycloak_app_name = 'foreman-openidc'
+  $keycloak_realm = 'ssl-realm'
 
   $hsts_enabled = true
 

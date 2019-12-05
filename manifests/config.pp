@@ -119,6 +119,9 @@ class foreman::config {
       passenger_start_timeout => $::foreman::passenger_start_timeout,
       foreman_url             => $::foreman::foreman_url,
       ipa_authentication      => $::foreman::ipa_authentication,
+      keycloak                => $::foreman::keycloak,
+      keycloak_app_name       => $::foreman::keycloak_app_name,
+      keycloak_realm          => $::foreman::keycloak_realm,
     }
 
     contain foreman::config::apache

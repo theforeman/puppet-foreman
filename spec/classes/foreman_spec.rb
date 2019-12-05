@@ -108,6 +108,7 @@ describe 'foreman' do
 
           should contain_class('foreman::config::apache')
             .with_passenger_ruby(passenger_ruby)
+            .with_keycloak(false)
         end
 
         it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }
@@ -262,11 +263,20 @@ describe 'foreman' do
             email_smtp_domain: 'example.com',
             email_smtp_authentication: 'none',
             email_smtp_user_name: 'root',
-            email_smtp_password: 'secret'
+            email_smtp_password: 'secret',
+            keycloak: true,
+            keycloak_app_name: 'cloak-app',
+            keycloak_realm: 'myrealm',
           }
         end
 
         it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_class('foreman::config::apache')
+            .with_keycloak(true)
+            .with_keycloak_app_name('cloak-app')
+            .with_keycloak_realm('myrealm')
+        end
       end
 
       context 'with journald logging' do

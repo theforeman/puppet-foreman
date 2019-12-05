@@ -205,6 +205,16 @@
 #
 # $foreman_service_puma_workers::         Number of workers for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
 #
+# === Keycloak parameters:
+#
+# $keycloak::                     Enable Keycloak support. Note this is limited
+#                                 to configuring Apache and still relies on manually
+#                                 running keycloak-httpd-client-install
+#
+# $keycloak_app_name::            The app name as passed to keycloak-httpd-client-install
+#
+# $keycloak_realm::               The realm as passed to keycloak-httpd-client-install
+#
 class foreman (
   Stdlib::HTTPUrl $foreman_url = $::foreman::params::foreman_url,
   Boolean $unattended = $::foreman::params::unattended,
@@ -304,6 +314,9 @@ class foreman (
   Integer[0] $foreman_service_puma_threads_min = $::foreman::params::foreman_service_puma_threads_min,
   Integer[0] $foreman_service_puma_threads_max = $::foreman::params::foreman_service_puma_threads_max,
   Integer[0] $foreman_service_puma_workers = $::foreman::params::foreman_service_puma_workers,
+  Boolean $keycloak = $::foreman::params::keycloak,
+  String[1] $keycloak_app_name = $::foreman::params::keycloak_app_name,
+  String[1] $keycloak_realm = $::foreman::params::keycloak_realm,
 ) inherits foreman::params {
   if $db_sslmode == 'UNSET' and $db_root_cert {
     $db_sslmode_real = 'verify-full'
@@ -337,8 +350,13 @@ class foreman (
 
   if $apache {
     Class['foreman::database'] -> Class['apache::service']
+    if $ipa_authentication and $keycloak {
+      fail("${::hostname}: External authentication via IPA and Keycloak are mutually exclusive.")
+    }
   } elsif $ipa_authentication {
     fail("${::hostname}: External authentication via IPA can only be enabled when Apache is used.")
+  } elsif $keycloak {
+    fail("${::hostname}: External authentication via Keycloak can only be enabled when Apache is used.")
   }
 
   # Anchor these separately so as not to break
