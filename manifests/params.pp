@@ -186,11 +186,6 @@ class foreman::params {
   $logging_layout = 'pattern'
   $loggers = {}
 
-  # KeepAlive settings of Apache
-  $keepalive              = true
-  $max_keepalive_requests = 100
-  $keepalive_timeout      = 5
-
   # Default ports for Apache to listen on
   $server_port     = 80
   $server_ssl_port = 443

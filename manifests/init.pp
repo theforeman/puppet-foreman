@@ -138,14 +138,6 @@
 #
 # $client_ssl_key::               Defines the SSL private key used to communicate with Foreman Proxies
 #
-# $keepalive::                    Enable KeepAlive setting of Apache?
-#
-# $max_keepalive_requests::       MaxKeepAliveRequests setting of Apache
-#                                 (Number of requests allowed on a persistent connection)
-#
-# $keepalive_timeout::            KeepAliveTimeout setting of Apache
-#                                 (Seconds the server will wait for subsequent requests on a persistent connection)
-#
 # $oauth_active::                 Enable OAuth authentication for REST API
 #
 # $oauth_map_users::              Should Foreman use the foreman_user header to identify API user?
@@ -249,9 +241,6 @@ class foreman (
   Stdlib::Absolutepath $client_ssl_ca = $::foreman::params::client_ssl_ca,
   Stdlib::Absolutepath $client_ssl_cert = $::foreman::params::client_ssl_cert,
   Stdlib::Absolutepath $client_ssl_key = $::foreman::params::client_ssl_key,
-  Boolean $keepalive = $::foreman::params::keepalive,
-  Integer[0] $max_keepalive_requests = $::foreman::params::max_keepalive_requests,
-  Integer[0] $keepalive_timeout = $::foreman::params::keepalive_timeout,
   Boolean $oauth_active = $::foreman::params::oauth_active,
   Boolean $oauth_map_users = $::foreman::params::oauth_map_users,
   String $oauth_consumer_key = $::foreman::params::oauth_consumer_key,

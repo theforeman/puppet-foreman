@@ -26,9 +26,6 @@ describe 'foreman::config::apache' do
           passenger_min_instances: 1,
           passenger_start_timeout: 90,
           foreman_url: "https://#{facts[:fqdn]}",
-          keepalive: true,
-          max_keepalive_requests: 100,
-          keepalive_timeout: 5,
           server_port: 80,
           server_ssl_port: 443,
           proxy_backend: 'http://127.0.0.1:3000/',
@@ -95,9 +92,6 @@ describe 'foreman::config::apache' do
             .with_priority('05')
             .with_options(['SymLinksIfOwnerMatch'])
             .with_port(80)
-            .with_keepalive('on')
-            .with_max_keepalive_requests(100)
-            .with_keepalive_timeout(5)
             .with_custom_fragment(%r{^<Directory ~ /usr/share/foreman/public/\(assets\|webpack\)>$})
         end
 
@@ -123,9 +117,6 @@ describe 'foreman::config::apache' do
             .with_ssl_options('+StdEnvVars +ExportCertData')
             .with_ssl_verify_depth('3')
             .with_ssl_crl_check('chain')
-            .with_keepalive('on')
-            .with_max_keepalive_requests(100)
-            .with_keepalive_timeout(5)
             .with_custom_fragment(%r{^<Directory ~ /usr/share/foreman/public/\(assets\|webpack\)>$})
         end
 
@@ -140,25 +131,6 @@ describe 'foreman::config::apache' do
           it do
             should contain_apache__vhost('foreman-ssl').without_ssl_crl
             should contain_apache__vhost('foreman-ssl').without_ssl_crl_chain
-          end
-        end
-
-        describe 'with keepalive parameters set' do
-          let :params do
-            super().merge(
-              keepalive: false,
-              max_keepalive_requests: 10,
-              keepalive_timeout: 15,
-            )
-          end
-
-          it 'should set the respective parameters' do
-            should contain_apache__vhost('foreman').with_keepalive('off')
-            should contain_apache__vhost('foreman').with_max_keepalive_requests(10)
-            should contain_apache__vhost('foreman').with_keepalive_timeout(15)
-            should contain_apache__vhost('foreman-ssl').with_keepalive('off')
-            should contain_apache__vhost('foreman-ssl').with_max_keepalive_requests(10)
-            should contain_apache__vhost('foreman-ssl').with_keepalive_timeout(15)
           end
         end
 
