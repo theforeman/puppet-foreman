@@ -22,13 +22,10 @@ class foreman::database {
     foreman::rake { 'db:migrate':
       unless => '/usr/sbin/foreman-rake db:abort_if_pending_migrations',
     }
-    ~> foreman_config_entry { 'db_pending_seed':
-      value => false,
-      dry   => true,
-    }
-    ~> foreman::rake { 'db:seed':
+    ~> Foreman::Rake['apipie:cache:index']
+
+    foreman::rake { 'db:seed':
       environment => delete_undef_values($seed_env),
     }
-    ~> Foreman::Rake['apipie:cache:index']
   }
 }
