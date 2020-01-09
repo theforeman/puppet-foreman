@@ -143,7 +143,7 @@ class foreman::config::apache(
     if $suburi {
       $custom_fragment = template('foreman/_suburi.conf.erb')
     } else {
-      $custom_fragment = template('foreman/_assets.conf.erb')
+      $custom_fragment = file('foreman/_assets.conf.erb')
     }
 
     $passenger_options = {
@@ -170,7 +170,7 @@ class foreman::config::apache(
     if $suburi {
       $custom_fragment = undef
     } else {
-      $custom_fragment = template('foreman/_assets.conf.erb')
+      $custom_fragment = file('foreman/_assets.conf.erb')
     }
 
     include ::apache::mod::proxy_wstunnel

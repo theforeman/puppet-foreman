@@ -98,7 +98,7 @@ describe 'foreman::config::apache' do
             .with_priority('05')
             .with_options(['SymLinksIfOwnerMatch'])
             .with_port(80)
-            .with_custom_fragment(%r{^<Directory ~ /usr/share/foreman/public/\(assets\|webpack\)>$})
+            .with_custom_fragment(%r{^<LocationMatch "\^/\(assets\|webpack\)">$})
         end
 
         it 'should include a https vhost' do
@@ -123,7 +123,7 @@ describe 'foreman::config::apache' do
             .with_ssl_options('+StdEnvVars +ExportCertData')
             .with_ssl_verify_depth('3')
             .with_ssl_crl_check('chain')
-            .with_custom_fragment(%r{^<Directory ~ /usr/share/foreman/public/\(assets\|webpack\)>$})
+            .with_custom_fragment(%r{^<LocationMatch "\^/\(assets\|webpack\)">$})
         end
 
         describe 'with vhost and ssl, no CRL explicitly' do
