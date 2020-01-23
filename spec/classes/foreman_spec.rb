@@ -157,6 +157,16 @@ describe 'foreman' do
         it { should contain_class('foreman::settings').that_requires('Class[foreman::database]') }
       end
 
+      context 'with jobs_worker_hosts_queue' do
+        let(:params) { super().merge(jobs_worker_hosts_queue: true) }
+
+        it { is_expected.to contain_service('dynflow-sidekiq@worker').with_ensure('running').with_enable(true) }
+        it {
+          should contain_foreman__dynflow__worker('worker-hosts-queue')
+            .with_queues(['hosts_queue'])
+        }
+      end
+
       context 'without passenger' do
         let(:params) { super().merge(passenger: false) }
 

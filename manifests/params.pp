@@ -89,7 +89,7 @@ class foreman::params {
   $jobs_service_ensure = 'running'
   $jobs_service_enable = true
   $jobs_sidekiq_redis_url = undef
-
+  $jobs_worker_hosts_queue = false
 
   $hsts_enabled = true
 

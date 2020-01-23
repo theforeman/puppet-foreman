@@ -189,6 +189,8 @@
 #
 # $jobs_sidekiq_redis_url::       If set, the redis server is not managed and we use the defined url to connect
 #
+# $jobs_worker_hosts_queue::      Deploys a worker specifically for handling hosts_queue
+#
 # $hsts_enabled::                 Should HSTS enforcement in https requests be enabled
 #
 # $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing. This requires Foreman 1.22+
@@ -284,6 +286,7 @@ class foreman (
   Stdlib::Ensure::Service $jobs_service_ensure = $::foreman::params::jobs_service_ensure,
   Boolean $jobs_service_enable = $::foreman::params::jobs_service_enable,
   Optional[Redis::RedisUrl] $jobs_sidekiq_redis_url = $::foreman::params::jobs_sidekiq_redis_url,
+  Boolean $jobs_worker_hosts_queue = $::foreman::params::jobs_worker_hosts_queue,
   Boolean $hsts_enabled = $::foreman::params::hsts_enabled,
   Array[Stdlib::HTTPUrl] $cors_domains = $::foreman::params::cors_domains,
 ) inherits foreman::params {

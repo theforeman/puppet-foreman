@@ -9,6 +9,7 @@ class foreman::service(
   Stdlib::Ensure::Service $foreman_service_ensure = $::foreman::foreman_service_ensure,
   Boolean $foreman_service_enable = $::foreman::foreman_service_enable,
   Boolean $jobs_manage_service = $::foreman::jobs_manage_service,
+  Boolean $jobs_worker_hosts_queue = $::foreman::jobs_worker_hosts_queue,
 ) {
   if $jobs_manage_service {
     foreman::dynflow::worker { 'orchestrator':
@@ -17,6 +18,12 @@ class foreman::service(
     }
 
     foreman::dynflow::worker { 'worker': }
+
+    if $jobs_worker_hosts_queue {
+      foreman::dynflow::worker { 'worker-hosts-queue':
+        queues => ['hosts_queue']
+      }
+    }
   }
 
   if $apache {
