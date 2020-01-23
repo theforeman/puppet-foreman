@@ -6,3 +6,6 @@ Environment=FOREMAN_HOME=<%= scope['foreman::app_root'] %>
 Environment=FOREMAN_BIND=<%= scope['foreman::foreman_service_bind'] %>
 <% end -%>
 Environment=FOREMAN_PORT=<%= scope['foreman::foreman_service_port'] %>
+Environment=FOREMAN_PUMA_THREADS_MIN=<%= scope['foreman::foreman_service_puma_threads_min'] %>
+Environment=FOREMAN_PUMA_THREADS_MAX=<%= scope['foreman::foreman_service_puma_threads_max'] %>
+Environment=FOREMAN_PUMA_WORKERS=<%= scope['foreman::foreman_service_puma_workers'] %>

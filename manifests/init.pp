@@ -193,6 +193,12 @@
 #
 # $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing. This requires Foreman 1.22+
 #
+# $foreman_service_puma_threads_min::     Minimum number of threads for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
+#
+# $foreman_service_puma_threads_max::     Maximum number of threads for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
+#
+# $foreman_service_puma_workers::         Number of workers for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
+#
 class foreman (
   Stdlib::HTTPUrl $foreman_url = $::foreman::params::foreman_url,
   Boolean $unattended = $::foreman::params::unattended,
@@ -286,6 +292,9 @@ class foreman (
   Optional[Redis::RedisUrl] $jobs_sidekiq_redis_url = $::foreman::params::jobs_sidekiq_redis_url,
   Boolean $hsts_enabled = $::foreman::params::hsts_enabled,
   Array[Stdlib::HTTPUrl] $cors_domains = $::foreman::params::cors_domains,
+  Integer[0] $foreman_service_puma_threads_min = $::foreman::params::foreman_service_puma_threads_min,
+  Integer[0] $foreman_service_puma_threads_max = $::foreman::params::foreman_service_puma_threads_max,
+  Integer[0] $foreman_service_puma_workers = $::foreman::params::foreman_service_puma_workers,
 ) inherits foreman::params {
   if $db_sslmode == 'UNSET' and $db_root_cert {
     $db_sslmode_real = 'verify-full'
