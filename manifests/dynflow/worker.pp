@@ -18,9 +18,9 @@ define foreman::dynflow::worker (
     mode    => '0644',
     content => template('foreman/dynflow_worker.yml.erb'),
   }
-
-  service { "dynflow-sidekiq@${service_name}":
-    ensure => $service_ensure,
-    enable => $service_enable,
+  ~> service { "dynflow-sidekiq@${service_name}":
+    ensure    => $service_ensure,
+    enable    => $service_enable,
+    subscribe => Class['foreman::database'],
   }
 }
