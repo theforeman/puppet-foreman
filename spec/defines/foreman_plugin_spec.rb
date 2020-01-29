@@ -18,8 +18,14 @@ describe 'foreman::plugin' do
                        when 'Debian'
                          'ruby-foreman-myplugin'
                        end
+        it { should compile.with_all_deps }
         it { should contain_package(package_name).with_ensure('present') }
         it { should_not contain_file('/etc/foreman/plugins/foreman_myplugin.yaml') }
+        it do
+          should contain_foreman__plugin('myplugin')
+            .that_comes_before('Class[foreman::database]')
+            .that_notifies('Class[foreman::service]')
+        end
       end
 
       context 'with package parameter' do
@@ -68,7 +74,7 @@ describe 'foreman::plugin' do
             .with_group('root')
             .with_mode('0644')
             .with_content('the config content')
-            .with_require("Package[#{params[:package]}]")
+            .that_requires('Package[myplugin]')
         end
       end
     end
