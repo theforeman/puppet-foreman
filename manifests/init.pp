@@ -320,6 +320,7 @@ class foreman (
   Class['foreman::repo'] ~> Class['foreman::install']
   Class['foreman::install'] ~> Class['foreman::config', 'foreman::service']
   Class['foreman::config'] ~> Class['foreman::database', 'foreman::service']
+  Class['foreman::database'] ~> Class['foreman::service']
   Class['foreman::service'] -> Foreman_smartproxy <| base_url == $foreman_url |>
 
   if $apache {
@@ -341,12 +342,6 @@ class foreman (
   Class['foreman::repo']
   ~> Package <| tag == 'foreman::providers' |>
   -> Class['foreman']
-
-  # lint:ignore:spaceship_operator_without_tag
-  Class['foreman::database']
-  ~> Foreman::Plugin <| |>
-  ~> Class['foreman::service']
-  # lint:endignore
 
   contain 'foreman::settings' # lint:ignore:relative_classname_inclusion (PUP-1597)
   Class['foreman::database'] -> Class['foreman::settings']

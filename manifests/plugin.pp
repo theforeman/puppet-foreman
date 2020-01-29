@@ -29,4 +29,7 @@ define foreman::plugin(
       require => Package[$real_package],
     }
   }
+
+  Foreman::Plugin[$name] -> Class['foreman::database']
+  Foreman::Plugin[$name] ~> Class['foreman::service']
 }

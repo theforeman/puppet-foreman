@@ -117,7 +117,11 @@ describe 'foreman' do
         end
 
         # database
-        it { should contain_class('foreman::database') }
+        it {
+          should contain_class('foreman::database')
+            .that_comes_before('Class[apache::service]')
+            .that_notifies('Class[foreman::service]')
+        }
         it {
           should contain_class('foreman::database::postgresql')
             .that_notifies('Foreman::Rake[db:migrate]')
