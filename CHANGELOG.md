@@ -1,5 +1,29 @@
 # Changelog
 
+## [14.0.0](https://github.com/theforeman/puppet-foreman/tree/14.0.0) (2020-02-12)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/13.1.0...14.0.0)
+
+**Breaking changes:**
+
+- Drop foreman::config::passenger::fragment [\#799](https://github.com/theforeman/puppet-foreman/pull/799) ([ekohl](https://github.com/ekohl))
+- Ensure plugins are installed before the database [\#792](https://github.com/theforeman/puppet-foreman/pull/792) ([ekohl](https://github.com/ekohl))
+- Drop keepalive parameters [\#785](https://github.com/theforeman/puppet-foreman/pull/785) ([ekohl](https://github.com/ekohl))
+- Drop listen\_on\_interface [\#784](https://github.com/theforeman/puppet-foreman/pull/784) ([ekohl](https://github.com/ekohl))
+- Drop the selinux parameter [\#783](https://github.com/theforeman/puppet-foreman/pull/783) ([ekohl](https://github.com/ekohl))
+- Drop multiple database support [\#781](https://github.com/theforeman/puppet-foreman/pull/781) ([ekohl](https://github.com/ekohl))
+- Drop Debian 9 and Ubuntu 16.04, add Debian 10 [\#777](https://github.com/theforeman/puppet-foreman/pull/777) ([mmoll](https://github.com/mmoll))
+- Fixes [\#28067](https://projects.theforeman.org/issues/28067) - dynflow sidekiq services config [\#761](https://github.com/theforeman/puppet-foreman/pull/761) ([ezr-ondrej](https://github.com/ezr-ondrej))
+
+**Implemented enhancements:**
+
+- Run migrations if there are pending migrations [\#778](https://github.com/theforeman/puppet-foreman/pull/778) ([ehelms](https://github.com/ehelms))
+- Fixes [\#26739](https://projects.theforeman.org/issues/26739) - Add admin users locale and timezone setting [\#731](https://github.com/theforeman/puppet-foreman/pull/731) ([sbernhard](https://github.com/sbernhard))
+
+**Fixed bugs:**
+
+- Refs [\#28067](https://projects.theforeman.org/issues/28067): Ensure dynflow worker config exists before service [\#791](https://github.com/theforeman/puppet-foreman/pull/791) ([ehelms](https://github.com/ehelms))
+
 ## [13.1.0](https://github.com/theforeman/puppet-foreman/tree/13.1.0) (2019-11-25)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/13.0.1...13.1.0)
