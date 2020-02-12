@@ -18,6 +18,7 @@ describe 'foreman::config::apache' do
           ssl_chain: '/chain.pem',
           ssl_crl: '/crl.pem',
           ssl_protocol: '-all +TLSv1.2',
+          ssl_verify_client: 'optional',
           user: 'foreman',
           passenger: true,
           passenger_ruby: '/usr/bin/tfm-ruby',
