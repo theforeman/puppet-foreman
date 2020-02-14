@@ -5,7 +5,7 @@ describe 'foreman::config::apache::fragment' do
 
   on_os_under_test.each do |os, facts|
     context "on #{os}" do
-      let :facts do facts end
+      let(:facts) { facts }
 
       confd_dir = case facts[:osfamily]
                   when 'RedHat'
@@ -16,32 +16,11 @@ describe 'foreman::config::apache::fragment' do
 
       context 'with ssl turned off' do
         let :pre_condition do
-          "class { '::foreman::config::apache':
-              app_root                => '/usr/share/foreman',
-              priority                => '05',
-              ssl                     => false,
-              ssl_cert                => '/cert.pem',
-              ssl_certs_dir           => '',
-              ssl_key                 => '/key.pem',
-              ssl_ca                  => '/ca.pem',
-              ssl_chain               => '/ca.pem',
-              ssl_crl                 => '/crl.pem',
-              ssl_protocol            => '-all +TLSv1.2',
-              ssl_verify_client       => 'optional',
-              user                    => 'foreman',
-              passenger               => true,
-              passenger_ruby          => '/usr/bin/tfm-ruby',
-              passenger_prestart      => true,
-              passenger_min_instances => 1,
-              passenger_start_timeout => 600,
-              servername              => '#{facts[:fqdn]}',
-              serveraliases           => ['foreman'],
-              foreman_url             => 'https://#{facts[:fqdn]}',
-              server_port             => 80,
-              server_ssl_port         => 443,
-              proxy_backend           => 'http://127.0.0.1:3000/',
-              ipa_authentication      => false,
-          }"
+          <<~PUPPET
+          class { 'foreman::config::apache':
+            ssl => false,
+          }
+          PUPPET
         end
 
         context 'with default parameters' do
@@ -70,32 +49,11 @@ describe 'foreman::config::apache::fragment' do
 
       context 'with ssl turned on' do
         let :pre_condition do
-          "class { '::foreman::config::apache':
-              app_root                => '/usr/share/foreman',
-              priority                => '05',
-              ssl                     => true,
-              ssl_cert                => '/cert.pem',
-              ssl_certs_dir           => '',
-              ssl_key                 => '/key.pem',
-              ssl_ca                  => '/ca.pem',
-              ssl_chain               => '/ca.pem',
-              ssl_crl                 => '/crl.pem',
-              ssl_protocol            => '-all +TLSv1.2',
-              ssl_verify_client       => 'optional',
-              user                    => 'foreman',
-              passenger               => true,
-              passenger_ruby          => '/usr/bin/tfm-ruby',
-              passenger_prestart      => true,
-              passenger_min_instances => 1,
-              passenger_start_timeout => 600,
-              servername              => '#{facts[:fqdn]}',
-              serveraliases           => ['foreman'],
-              foreman_url             => 'https://#{facts[:fqdn]}',
-              server_port             => 80,
-              server_ssl_port         => 443,
-              proxy_backend           => 'http://127.0.0.1:3000/',
-              ipa_authentication      => false,
-          }"
+          <<~PUPPET
+          class { 'foreman::config::apache':
+            ssl => true,
+          }
+          PUPPET
         end
 
         context 'with ssl_content parameter' do

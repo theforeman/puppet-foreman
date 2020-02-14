@@ -94,6 +94,33 @@ class foreman::config {
   }
 
   if $::foreman::apache  {
+    class { 'foreman::config::apache':
+      passenger               => $::foreman::passenger,
+      app_root                => $::foreman::app_root,
+      passenger_ruby          => $::foreman::passenger_ruby,
+      priority                => $::foreman::vhost_priority,
+      servername              => $::foreman::servername,
+      serveraliases           => $::foreman::serveraliases,
+      server_port             => $::foreman::server_port,
+      server_ssl_port         => $::foreman::server_ssl_port,
+      proxy_backend           => "http://${::foreman::foreman_service_bind}:${::foreman::foreman_service_port}/",
+      ssl                     => $::foreman::ssl,
+      ssl_ca                  => $::foreman::server_ssl_ca,
+      ssl_chain               => $::foreman::server_ssl_chain,
+      ssl_cert                => $::foreman::server_ssl_cert,
+      ssl_certs_dir           => $::foreman::server_ssl_certs_dir,
+      ssl_key                 => $::foreman::server_ssl_key,
+      ssl_crl                 => $::foreman::server_ssl_crl,
+      ssl_protocol            => $::foreman::server_ssl_protocol,
+      ssl_verify_client       => $::foreman::server_ssl_verify_client,
+      user                    => $::foreman::user,
+      passenger_prestart      => $::foreman::passenger_prestart,
+      passenger_min_instances => $::foreman::passenger_min_instances,
+      passenger_start_timeout => $::foreman::passenger_start_timeout,
+      foreman_url             => $::foreman::foreman_url,
+      ipa_authentication      => $::foreman::ipa_authentication,
+    }
+
     contain foreman::config::apache
 
     if $::foreman::ipa_authentication {
