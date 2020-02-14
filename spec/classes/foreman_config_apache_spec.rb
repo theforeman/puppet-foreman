@@ -4,34 +4,7 @@ describe 'foreman::config::apache' do
   on_os_under_test.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
-      let(:params) do
-        {
-          app_root: '/usr/share/foreman',
-          priority: '05',
-          servername: facts[:fqdn],
-          serveraliases: ['foreman', 'also.foreman'],
-          ssl: false,
-          ssl_cert: '/cert.pem',
-          ssl_certs_dir: '',
-          ssl_key: '/key.pem',
-          ssl_ca: '/ca.pem',
-          ssl_chain: '/chain.pem',
-          ssl_crl: '/crl.pem',
-          ssl_protocol: '-all +TLSv1.2',
-          ssl_verify_client: 'optional',
-          user: 'foreman',
-          passenger: true,
-          passenger_ruby: '/usr/bin/tfm-ruby',
-          passenger_prestart: true,
-          passenger_min_instances: 1,
-          passenger_start_timeout: 90,
-          foreman_url: "https://#{facts[:fqdn]}",
-          server_port: 80,
-          server_ssl_port: 443,
-          proxy_backend: 'http://127.0.0.1:3000/',
-          ipa_authentication: false,
-        }
-      end
+      let(:params) { {} }
 
       let(:http_dir) do
         case facts[:osfamily]
@@ -43,7 +16,13 @@ describe 'foreman::config::apache' do
       end
 
       describe 'with passenger' do
-        let(:params) { super().merge(passenger: true) }
+        let(:params) do
+          super().merge(
+            passenger: true,
+            passenger_ruby: '/usr/bin/tfm-ruby',
+          )
+        end
+
         it 'should include apache with modules' do
           should contain_class('apache')
           should contain_class('apache::mod::headers')
@@ -53,22 +32,49 @@ describe 'foreman::config::apache' do
           should_not contain_class('apache::mod::proxy_wstunnel')
         end
 
-        it 'should ensure ownership' do
-          should contain_file('/usr/share/foreman/config.ru').with_owner('foreman')
-          should contain_file('/usr/share/foreman/config/environment.rb').with_owner('foreman')
+        it 'should ensure not ownership' do
+          should_not contain_file('/usr/share/foreman/config.ru').with_owner('foreman')
+          should_not contain_file('/usr/share/foreman/config/environment.rb').with_owner('foreman')
         end
 
         it 'should include a http vhost' do
           should contain_apache__vhost('foreman')
             .with_passenger_min_instances(1)
-            .with_passenger_pre_start("http://#{facts[:fqdn]}:80")
+            .without_passenger_pre_start
             .with_passenger_start_timeout(90)
             .with_passenger_ruby('/usr/bin/tfm-ruby')
+        end
+
+        describe 'with prestart' do
+          let(:params) { super().merge(passenger_prestart: true) }
+
+          it { should contain_apache__vhost('foreman').with_passenger_pre_start("http://#{facts[:fqdn]}:80") }
+        end
+
+        describe 'with user' do
+          let(:params) { super().merge(user: 'foreman') }
+
+          it 'should ensure ownership' do
+            should contain_file('/usr/share/foreman/config.ru').with_owner('foreman')
+            should contain_file('/usr/share/foreman/config/environment.rb').with_owner('foreman')
+          end
         end
       end
 
       describe 'with ssl' do
-        let(:params) { super().merge(ssl: true) }
+        let(:params) do
+          {
+            ssl: true,
+            ssl_cert: '/cert.pem',
+            ssl_key: '/key.pem',
+            ssl_crl: '/crl.pem',
+            ssl_chain: '/chain.pem',
+            ssl_ca: '/ca.pem',
+            ssl_certs_dir: '',
+            ssl_protocol: '-all +TLSv1.2',
+            ssl_verify_client: 'require',
+          }
+        end
 
         it 'should not contain the docroot' do
           should_not contain_file('/usr/share/foreman/public')
@@ -86,7 +92,7 @@ describe 'foreman::config::apache' do
           should contain_apache__vhost('foreman')
             .with_ip(nil)
             .with_servername(facts[:fqdn])
-            .with_serveraliases(['foreman', 'also.foreman'])
+            .with_serveraliases([])
             .with_add_default_charset('UTF-8')
             .with_docroot('/usr/share/foreman/public')
             .with_priority('05')
@@ -99,7 +105,7 @@ describe 'foreman::config::apache' do
           should contain_apache__vhost('foreman-ssl')
             .with_ip(nil)
             .with_servername(facts[:fqdn])
-            .with_serveraliases(['foreman', 'also.foreman'])
+            .with_serveraliases([])
             .with_add_default_charset('UTF-8')
             .with_docroot('/usr/share/foreman/public')
             .with_priority('05')
@@ -113,7 +119,7 @@ describe 'foreman::config::apache' do
             .with_ssl_ca('/ca.pem')
             .with_ssl_crl('/crl.pem')
             .with_ssl_protocol('-all +TLSv1.2')
-            .with_ssl_verify_client('optional')
+            .with_ssl_verify_client('require')
             .with_ssl_options('+StdEnvVars +ExportCertData')
             .with_ssl_verify_depth('3')
             .with_ssl_crl_check('chain')
@@ -121,17 +127,14 @@ describe 'foreman::config::apache' do
         end
 
         describe 'with vhost and ssl, no CRL explicitly' do
-          let :params do
+          let(:params) do
             super().merge(
               ssl_certs_dir: '',
-              ssl_crl: ''
+              ssl_crl: '',
             )
           end
 
-          it do
-            should contain_apache__vhost('foreman-ssl').without_ssl_crl
-            should contain_apache__vhost('foreman-ssl').without_ssl_crl_chain
-          end
+          it { should contain_apache__vhost('foreman-ssl').without_ssl_crl.without_ssl_crl_chain }
         end
 
         describe 'with a different priority set' do
@@ -162,7 +165,7 @@ describe 'foreman::config::apache' do
         end
 
         describe 'with different ports set' do
-          let :params do
+          let(:params) do
             super().merge(
               server_port: 8080,
               server_ssl_port: 8443,
@@ -174,8 +177,8 @@ describe 'foreman::config::apache' do
             should contain_apache__vhost('foreman-ssl').with_port(8443)
           end
 
-          describe 'with passenger' do
-            let(:params) { super().merge(passenger: true) }
+          describe 'with passenger and prestart' do
+            let(:params) { super().merge(passenger: true, passenger_prestart: true) }
 
             it 'should set passenger_pre_start' do
               should contain_apache__vhost('foreman').with_passenger_pre_start("http://#{facts[:fqdn]}:8080")
@@ -212,14 +215,14 @@ describe 'foreman::config::apache' do
                 .with_proxy_pass(
                   "no_proxy_uris" => ['/pulp', '/streamer', '/pub'],
                   "path"          => '/',
-                  "url"           => 'http://127.0.0.1:3000/',
+                  "url"           => 'http://localhost:3000/',
                   "params"        => { "retry" => '0' },
                 )
                 .with_rewrites([
                   {
                     'comment'      => 'Upgrade Websocket connections',
                     'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
-                    'rewrite_rule' => '/(.*) ws://127.0.0.1:3000/$1 [P,L]',
+                    'rewrite_rule' => '/(.*) ws://localhost:3000/$1 [P,L]',
                   },
                 ])
             end
@@ -239,14 +242,14 @@ describe 'foreman::config::apache' do
                 .with_proxy_pass(
                   "no_proxy_uris" => ['/pulp', '/streamer', '/pub'],
                   "path"          => '/',
-                  "url"           => 'http://127.0.0.1:3000/',
+                  "url"           => 'http://localhost:3000/',
                   "params"        => { "retry" => '0' },
                 )
                 .with_rewrites([
                   {
                     'comment'      => 'Upgrade Websocket connections',
                     'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
-                    'rewrite_rule' => '/(.*) ws://127.0.0.1:3000/$1 [P,L]',
+                    'rewrite_rule' => '/(.*) ws://localhost:3000/$1 [P,L]',
                   },
                 ])
             end

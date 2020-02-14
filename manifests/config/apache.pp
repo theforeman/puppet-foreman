@@ -1,96 +1,137 @@
-# Configure the foreman service using Apache
+# @summary Configure the foreman service using Apache
 #
-# === Parameters:
+# @param app_root
+#   Root of the application.
 #
-# $app_root::                 Root of the application.
+# @param passenger_ruby
+#   Path to Ruby interpreter
 #
-# $passenger_ruby::           Path to Ruby interpreter
+# @param priority
+#   Apache vhost priority
 #
-# $priority::                 Apache vhost priority
+# @param servername
+#   Servername for the vhost.
 #
-# $servername::               Servername for the vhost.
+# @param serveraliases
+#   Serveraliases for the vhost.
 #
-# $serveraliases::            Serveraliases for the vhost.
+# @param server_port
+#   Port for Apache to listen on HTTP requests
 #
-# $server_port::              Port for Apache to listen on HTTP requests
+# @param server_ssl_port
+#   Port for Apache to listen on HTTPS requests
 #
-# $server_ssl_port::          Port for Apache to listen on HTTPS requests
+# @param ssl
+#   Whether to enable SSL.
 #
-# $ssl::                      Whether to enable SSL.
+# @param ssl_cert
+#   Location of the SSL certificate file.
 #
-# $ssl_cert::                 Location of the SSL certificate file.
+# @param ssl_certs_dir
+#   Location of additional certificates for SSL client authentication.
 #
-# $ssl_certs_dir::            Location of additional certificates for SSL client authentication.
+# @param ssl_key
+#   Location of the SSL key file.
 #
-# $ssl_key::                  Location of the SSL key file.
+# @param ssl_ca
+#   Location of the SSL CA file
 #
-# $ssl_ca::                   Location of the SSL CA file
+# @param ssl_chain
+#   Location of the SSL chain file
 #
-# $ssl_chain::                Location of the SSL chain file
+# @param ssl_crl
+#   Location of the SSL certificate revocation list file
 #
-# $ssl_crl::                  Location of the SSL certificate revocation list file
+# @param ssl_protocol
+#   SSLProtocol configuration to use
 #
-# $ssl_protocol::             SSLProtocol configuration to use
+# @param ssl_verify_client
+#   The level of SSL client verification to apply
 #
-# $user::                     The user under which the application runs.
+# @param user
+#   The user under which the application runs.
 #
-# $passenger_prestart::       Pre-start the first passenger worker instance process during httpd start.
+# @param passenger
+#   Whether to use passenger as an application server. If false, the reverse
+#   proxy setup is used.
 #
-# $passenger_min_instances::  Minimum passenger worker instances to keep when application is idle.
+# @param passenger_prestart
+#   Pre-start the first passenger worker instance process during httpd start.
 #
-# $passenger_start_timeout::  Amount of seconds to wait for Ruby application boot.
+# @param passenger_min_instances
+#   Minimum passenger worker instances to keep when application is idle.
 #
-# $foreman_url::              The URL Foreman should be reachable under. Used for loading the application
-#                             on startup rather than on demand.
+# @param passenger_start_timeout
+#   Amount of seconds to wait for Ruby application boot.
 #
-# $access_log_format::        Apache log format to use
+# @param proxy_backend
+#   The backend service to proxy to. Only used when passenger is false
 #
-# $ipa_authentication::       Whether to install support for IPA authentication
+# @param proxy_params
+#   The proxy parameters to use when proxying. Only used when passenger is false
 #
-# === Advanced options:
+# @param proxy_no_proxy_uris
+#   URIs not to proxy. Only used when passenger is false
 #
-# $http_vhost_options::       Direct options to apache::vhost for the http vhost
+# @param foreman_url
+#   The URL Foreman should be reachable under. Used for loading the application
+#   on startup rather than on demand.
 #
-# $https_vhost_options::      Direct options to apache::vhost for the https vhost
+# @param access_log_format
+#   Apache log format to use
+#
+# @param ipa_authentication
+#   Whether to install support for IPA authentication
+#
+# @param http_vhost_options
+#   Direct options to apache::vhost for the http vhost
+#
+# @param https_vhost_options
+#   Direct options to apache::vhost for the https vhost
 #
 class foreman::config::apache(
-  Boolean $passenger = $::foreman::passenger,
-  Stdlib::Absolutepath $app_root = $::foreman::app_root,
-  Optional[String] $passenger_ruby = $::foreman::passenger_ruby,
-  String $priority = $::foreman::vhost_priority,
-  Stdlib::Fqdn $servername = $::foreman::servername,
-  Array[Stdlib::Fqdn] $serveraliases = $::foreman::serveraliases,
-  Stdlib::Port $server_port = $::foreman::server_port,
-  Stdlib::Port $server_ssl_port = $::foreman::server_ssl_port,
-  Stdlib::Httpurl $proxy_backend = "http://${::foreman::foreman_service_bind}:${::foreman::foreman_service_port}/",
+  Stdlib::Absolutepath $app_root = '/usr/share/foreman',
+  String $priority = '05',
+  Stdlib::Fqdn $servername = $facts['networking']['fqdn'],
+  Array[Stdlib::Fqdn] $serveraliases = [],
+  Stdlib::Port $server_port = 80,
+  Stdlib::Port $server_ssl_port = 443,
+  Stdlib::Httpurl $proxy_backend = 'http://localhost:3000/',
   Hash $proxy_params = {'retry' => '0'},
   Array[String] $proxy_no_proxy_uris = ['/pulp', '/streamer', '/pub'],
-  Boolean $ssl = $::foreman::ssl,
-  Stdlib::Absolutepath $ssl_ca = $::foreman::server_ssl_ca,
-  Stdlib::Absolutepath $ssl_chain = $::foreman::server_ssl_chain,
-  Stdlib::Absolutepath $ssl_cert = $::foreman::server_ssl_cert,
-  Variant[Enum[''], Stdlib::Absolutepath] $ssl_certs_dir = $::foreman::server_ssl_certs_dir,
-  Stdlib::Absolutepath $ssl_key = $::foreman::server_ssl_key,
-  Variant[Enum[''], Stdlib::Absolutepath] $ssl_crl = $::foreman::server_ssl_crl,
-  Optional[String] $ssl_protocol = $::foreman::server_ssl_protocol,
-  Enum['none','optional','require','optional_no_ca'] $ssl_verify_client = $::foreman::server_ssl_verify_client,
-  String $user = $::foreman::user,
-  Boolean $passenger_prestart = $::foreman::passenger_prestart,
-  Integer[0] $passenger_min_instances = $::foreman::passenger_min_instances,
-  Integer[0] $passenger_start_timeout = $::foreman::passenger_start_timeout,
-  Stdlib::HTTPUrl $foreman_url = $::foreman::foreman_url,
+  Boolean $ssl = false,
+  Optional[Stdlib::Absolutepath] $ssl_ca = undef,
+  Optional[Stdlib::Absolutepath] $ssl_chain = undef,
+  Optional[Stdlib::Absolutepath] $ssl_cert = undef,
+  Variant[Undef, Enum[''], Stdlib::Absolutepath] $ssl_certs_dir = undef,
+  Optional[Stdlib::Absolutepath] $ssl_key = undef,
+  Variant[Undef, Enum[''], Stdlib::Absolutepath] $ssl_crl = undef,
+  Optional[String] $ssl_protocol = undef,
+  Enum['none','optional','require','optional_no_ca'] $ssl_verify_client = 'optional',
+  Optional[String] $user = undef,
+  Boolean $passenger = false,
+  Optional[String] $passenger_ruby = undef,
+  Boolean $passenger_prestart = false,
+  Integer[0] $passenger_min_instances = 1,
+  Integer[0] $passenger_start_timeout = 90,
+  Optional[Stdlib::HTTPUrl] $foreman_url = undef,
   Optional[String] $access_log_format = undef,
-  Boolean $ipa_authentication = $::foreman::ipa_authentication,
+  Boolean $ipa_authentication = false,
   Hash[String, Any] $http_vhost_options = {},
   Hash[String, Any] $https_vhost_options = {},
 ) {
   $docroot = "${app_root}/public"
-  $suburi_parts = split($foreman_url, '/')
-  $suburi_parts_count = size($suburi_parts) - 1
-  if $suburi_parts_count >= 3 {
-    $suburi_without_slash = join(values_at($suburi_parts, ["3-${suburi_parts_count}"]), '/')
-    if $suburi_without_slash {
-      $suburi = "/${suburi_without_slash}"
+
+  if $foreman_url {
+    $suburi_parts = split($foreman_url, '/')
+    $suburi_parts_count = size($suburi_parts) - 1
+    if $suburi_parts_count >= 3 {
+      $suburi_without_slash = join(values_at($suburi_parts, ["3-${suburi_parts_count}"]), '/')
+      if $suburi_without_slash {
+        $suburi = "/${suburi_without_slash}"
+      } else {
+        $suburi = undef
+      }
     } else {
       $suburi = undef
     }
@@ -120,7 +161,7 @@ class foreman::config::apache(
       $vhost_https_internal_options = $passenger_options
     }
 
-    if $app_root {
+    if $app_root and $user {
       file { ["${app_root}/config.ru", "${app_root}/config/environment.rb"]:
         owner => $user,
       }
