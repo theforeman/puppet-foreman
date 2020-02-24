@@ -22,7 +22,7 @@ describe 'foreman' do
           }
 
           if facts[:operatingsystem] != 'Fedora'
-            it { should contain_package('tfm-rubygem-passenger-native') }
+            it { should_not contain_package('tfm-rubygem-passenger-native') }
           end
         when 'Debian'
           it {
@@ -36,7 +36,7 @@ describe 'foreman' do
         it { should contain_class('foreman::install') }
         it { should contain_package('foreman-postgresql').with_ensure('present') }
         it { should_not contain_package('foreman-journald') }
-        it { should_not contain_package('foreman-service') }
+        it { should contain_package('foreman-service') }
 
         # config
         it do
@@ -60,9 +60,9 @@ describe 'foreman' do
             .with_content(/^:logging:\n\s*:level:\s*info$/)
             .with_content(/^:dynflow:\n\s*:pool_size:\s*5$/)
             .with_content(/^:hsts_enabled:\s*true$/)
-            .without_content(/^:ssl_client_dn_env:/)
-            .without_content(/^:ssl_client_verify_env:/)
-            .without_content(/^:ssl_client_cert_env:/)
+            .with_content(/^:ssl_client_dn_env:/)
+            .with_content(/^:ssl_client_verify_env:/)
+            .with_content(/^:ssl_client_cert_env:/)
 
           should contain_concat('/etc/foreman/settings.yaml')
             .with_owner('root')
@@ -78,7 +78,7 @@ describe 'foreman' do
             .with_content(/adapter: postgresql/)
         end
 
-        it { should_not contain_systemd__dropin_file('installer.conf') }
+        it { should contain_systemd__dropin_file('installer.conf') }
 
         it { should contain_file('/usr/share/foreman').with_ensure('directory') }
 
@@ -145,20 +145,24 @@ describe 'foreman' do
 
         # service
         it { should contain_class('foreman::service') }
-        it { should_not contain_service('foreman') }
+        it { should contain_service('foreman') }
         it { is_expected.to contain_service('dynflow-sidekiq@orchestrator').with_ensure('running').with_enable(true) }
         it { is_expected.to contain_service('dynflow-sidekiq@worker').with_ensure('running').with_enable(true) }
 
-        it 'should restart passenger' do
+        # settings
+        it { should contain_class('foreman::settings').that_requires('Class[foreman::database]') }
+      end
+
+      context 'should restart passenger' do 
+        let(:params) { super().merge(passenger: true) }
+
+        it do
           should contain_exec('restart_foreman')
             .with_command('/bin/touch /usr/share/foreman/tmp/restart.txt')
             .with_refreshonly(true)
             .with_cwd('/usr/share/foreman')
             .with_path('/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin')
         end
-
-        # settings
-        it { should contain_class('foreman::settings').that_requires('Class[foreman::database]') }
       end
 
       context 'without passenger' do
@@ -315,24 +319,28 @@ describe 'foreman' do
         }
       end
 
-      describe 'with url ending with trailing slash' do
-        let(:params) { super().merge(foreman_url: 'https://example.com/') }
-        it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }
-      end
+      context 'with passenger' do 
+        let(:params) { super().merge(passenger: true) }
 
-      describe 'with sub-uri' do
-        let(:params) { super().merge(foreman_url: 'https://example.com/foreman') }
-        it { should contain_apache__vhost('foreman').with_custom_fragment(%r{Alias /foreman}) }
-      end
+        describe 'with url ending with trailing slash' do
+          let(:params) { super().merge(foreman_url: 'https://example.com/') }
+          it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }
+        end
 
-      describe 'with sub-uri ending with trailing slash' do
-        let(:params) { super().merge(foreman_url: 'https://example.com/foreman/') }
-        it { should contain_apache__vhost('foreman').with_custom_fragment(%r{Alias /foreman}) }
-      end
+        describe 'with sub-uri' do
+          let(:params) { super().merge(foreman_url: 'https://example.com/foreman') }
+          it { should contain_apache__vhost('foreman').with_custom_fragment(%r{Alias /foreman}) }
+        end
 
-      describe 'with sub-uri ending with more levels' do
-        let(:params) { super().merge(foreman_url: 'https://example.com/apps/foreman/') }
-        it { should contain_apache__vhost('foreman').with_custom_fragment(%r{Alias /apps/foreman}) }
+        describe 'with sub-uri ending with trailing slash' do
+          let(:params) { super().merge(foreman_url: 'https://example.com/foreman/') }
+          it { should contain_apache__vhost('foreman').with_custom_fragment(%r{Alias /foreman}) }
+        end
+
+        describe 'with sub-uri ending with more levels' do
+          let(:params) { super().merge(foreman_url: 'https://example.com/apps/foreman/') }
+          it { should contain_apache__vhost('foreman').with_custom_fragment(%r{Alias /apps/foreman}) }
+        end
       end
 
       describe 'with loggers' do
