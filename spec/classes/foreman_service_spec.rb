@@ -7,11 +7,11 @@ describe 'foreman::service' do
 
   let :params do
     {
-      passenger: true,
+      passenger: false,
       apache: true,
       app_root: '/usr/share/foreman',
       ssl: true,
-      use_foreman_service: false,
+      use_foreman_service: true,
       foreman_service: 'foreman',
       foreman_service_ensure: 'running',
       foreman_service_enable: true,
@@ -20,7 +20,7 @@ describe 'foreman::service' do
   end
 
   context 'with passenger' do
-    let(:params) { super().merge(passenger: true) }
+    let(:params) { super().merge(passenger: true, use_foreman_service: false) }
     let(:pre_condition) { 'include ::apache' }
 
     context 'with ssl' do

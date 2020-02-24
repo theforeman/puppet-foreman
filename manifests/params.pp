@@ -12,7 +12,7 @@ class foreman::params {
   # configure foreman via apache
   $apache         = true
   # configure apache with passenger
-  $passenger      = true
+  $passenger      = false
   # Server name of the VirtualHost
   $servername     = $::fqdn
   # Server aliases of the VirtualHost
