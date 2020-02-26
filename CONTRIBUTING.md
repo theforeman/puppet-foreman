@@ -135,9 +135,18 @@ Our puppet modules provide [`Gemfile`](./Gemfile)s which can tell a ruby
 package manager such as [bundler](https://bundler.io/) what Ruby packages,
 or Gems, are required to build, develop, and test this software.
 
-Please make sure you have [bundler installed](https://bundler.io/#getting-started)
-on your system, then use it to install all dependencies needed for this project,
-by running
+**Prerequisites**
+1. Make sure you have [bundler installed](https://bundler.io/#getting-started)
+on your system. If you are using Fedora, you can get `bundler` using
+   ```shell
+     % sudo dnf install rubygem-bundler
+   ```
+2. If you are using Fedora, you may need these additional packages
+    ```shell
+      % sudo dnf install -y ruby-devel redhat-rpm-config rubygem-bundler
+    ```
+Now, go to the root directory of this project and use `bundler` to install all
+dependencies needed for this project by running
 
 ```shell
 % bundle install
