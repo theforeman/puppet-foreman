@@ -174,6 +174,18 @@ and so on. rspec tests may have the same kind of dependencies as the
 module they are testing. While the module defines in its [Modulefile](./Modulefile),
 rspec tests define them in [.fixtures.yml](./fixtures.yml).
 
+To run specific tests, use the spec test file name and a filter like:
+
+```shell
+bundle exec rspec spec/classes/foreman_spec.rb -e 'should restart passenger'
+```
+
+To run OS specific tests:
+
+```shell
+SPEC_FACTS_OS=redhat-7-x86_64 bundle exec rspec spec/classes/foreman_spec.rb
+```
+
 Writing Tests
 -------------
 
