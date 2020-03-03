@@ -48,7 +48,7 @@ Puppet::Functions.create_function(:'foreman::foreman') do
     required_param 'Enum["environments", "fact_values", "hosts", "hostgroups", "puppetclasses", "smart_proxies", "subnets"]', :item
     required_param 'String', :search
     optional_param 'Variant[Integer[0], Pattern[/\d+/]]', :per_page
-    optional_param 'Stdlib::Httpurl', :foreman_url
+    optional_param 'Stdlib::HTTPUrl', :foreman_url
     optional_param 'String', :foreman_user
     optional_param 'String', :foreman_pass
     optional_param 'Integer[0]', :timeout
