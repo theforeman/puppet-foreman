@@ -62,7 +62,7 @@ class foreman::config::apache(
   Array[Stdlib::Fqdn] $serveraliases = $::foreman::serveraliases,
   Stdlib::Port $server_port = $::foreman::server_port,
   Stdlib::Port $server_ssl_port = $::foreman::server_ssl_port,
-  Stdlib::Httpurl $proxy_backend = "http://${::foreman::foreman_service_bind}:${::foreman::foreman_service_port}/",
+  Stdlib::HTTPUrl $proxy_backend = "http://${::foreman::foreman_service_bind}:${::foreman::foreman_service_port}/",
   Hash $proxy_params = {'retry' => '0'},
   Array[String] $proxy_no_proxy_uris = ['/pulp', '/streamer', '/pub'],
   Boolean $ssl = $::foreman::ssl,
