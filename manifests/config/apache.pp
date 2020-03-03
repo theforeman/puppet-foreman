@@ -96,7 +96,7 @@ class foreman::config::apache(
   Array[Stdlib::Fqdn] $serveraliases = [],
   Stdlib::Port $server_port = 80,
   Stdlib::Port $server_ssl_port = 443,
-  Stdlib::Httpurl $proxy_backend = 'http://localhost:3000/',
+  Stdlib::HTTPUrl $proxy_backend = 'http://localhost:3000/',
   Hash $proxy_params = {'retry' => '0'},
   Array[String] $proxy_no_proxy_uris = ['/pulp', '/streamer', '/pub'],
   Boolean $ssl = false,
