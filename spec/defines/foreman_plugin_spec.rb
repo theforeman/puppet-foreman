@@ -71,8 +71,8 @@ describe 'foreman::plugin' do
           should contain_file('/etc/foreman/plugins/foreman_myplugin.yaml')
             .with_ensure('file')
             .with_owner('root')
-            .with_group('root')
-            .with_mode('0644')
+            .with_group('foreman')
+            .with_mode('0640')
             .with_content('the config content')
             .that_requires('Package[myplugin]')
         end
