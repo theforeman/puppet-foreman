@@ -1,25 +1,20 @@
-# = Foreman Tasks
+# @summary Install the foreman-tasks plugin
 #
-# Installs the foreman-tasks plugin
+# @param automatic_cleanup
+#   Enable automatic task cleanup using a cron job
 #
-# === Parameters:
-#
-# $package:: Package name to install
-#
-# $automatic_cleanup:: Enable automatic task cleanup using a cron job
-#
-# $cron_line:: Cron line defining when the cleanup cron job should run
+# @param cron_line
+#   Cron line defining when the cleanup cron job should run
 #
 class foreman::plugin::tasks(
-  String $package = $::foreman::plugin::tasks::params::package,
-  Boolean $automatic_cleanup = $::foreman::plugin::tasks::params::automatic_cleanup,
-  String $cron_line = $::foreman::plugin::tasks::params::cron_line,
-) inherits foreman::plugin::tasks::params {
+  Boolean $automatic_cleanup = false,
+  String $cron_line = '45 19 * * *',
+) {
   foreman::plugin { 'tasks':
-    package => $package,
+    package => $foreman::plugin_prefix.regsubst(/foreman[_-]/, 'foreman-tasks'),
   }
   $cron_state = $automatic_cleanup ? {
-    true    => 'present',
+    true    => 'file',
     default => 'absent',
   }
   file { '/etc/cron.d/foreman-tasks':
