@@ -8,22 +8,17 @@ describe 'foreman::plugin::puppetdb' do
       end
 
       let(:pre_condition) { 'include foreman' }
-
-      it { should compile.with_all_deps }
-
-      if facts[:operatingsystem] == 'Fedora'
-        it 'should call the plugin' do
-          should contain_foreman__plugin('puppetdb').with_package('rubygem-puppetdb_foreman')
-        end
-      elsif facts[:osfamily] == 'RedHat'
-        it 'should call the plugin' do
-          should contain_foreman__plugin('puppetdb').with_package('tfm-rubygem-puppetdb_foreman')
-        end
-      elsif facts[:osfamily] == 'Debian'
-        it 'should call the plugin' do
-          should contain_foreman__plugin('puppetdb').with_package('ruby-puppetdb-foreman')
+      let(:package_name) do
+        case facts[:osfamily]
+        when 'RedHat'
+          facts[:operatingsystem] == 'Fedora' ? 'rubygem-puppetdb_foreman' : 'tfm-rubygem-puppetdb_foreman'
+        when 'Debian'
+          'ruby-puppetdb_foreman'
         end
       end
+
+      it { should compile.with_all_deps }
+      it { should contain_foreman__plugin('puppetdb').with_package(package_name) }
     end
   end
 end

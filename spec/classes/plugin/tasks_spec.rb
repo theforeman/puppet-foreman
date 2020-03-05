@@ -9,28 +9,18 @@ describe 'foreman::plugin::tasks' do
 
       let(:pre_condition) { 'include foreman' }
 
-      case facts[:osfamily]
-      when 'RedHat'
-        package_name = case facts[:operatingsystem]
-                       when 'Fedora'
-                         'rubygem-foreman-tasks'
-                       else
-                         'tfm-rubygem-foreman-tasks'
-                       end
-      when 'Debian'
-        package_name = 'ruby-foreman-tasks'
-      else
-        package_name = 'foreman-tasks'
+      let(:package_name) do
+        case facts[:osfamily]
+        when 'RedHat'
+          facts[:operatingsystem] == 'Fedora' ?  'rubygem-foreman-tasks' : 'tfm-rubygem-foreman-tasks'
+        when 'Debian'
+          'ruby-foreman-tasks'
+        end
       end
 
       it { should compile.with_all_deps }
-
-      it 'should call the plugin' do
-        should contain_foreman__plugin('tasks').with_package(package_name)
-        should contain_file('/etc/cron.d/foreman-tasks').
-          with_path('/etc/cron.d/foreman-tasks').
-          with_ensure('absent')
-      end
+      it { should contain_foreman__plugin('tasks').with_package(package_name) }
+      it { should contain_file('/etc/cron.d/foreman-tasks').with_ensure('absent') }
 
       describe 'with automatic task cleanup' do
         let(:cron_line) { "30 10 * * *" }
@@ -41,13 +31,12 @@ describe 'foreman::plugin::tasks' do
 
         it 'should deploy the cron job' do
           should contain_file('/etc/cron.d/foreman-tasks').
-            with_path('/etc/cron.d/foreman-tasks').
             with_content(%r{SHELL=/bin/sh}).
             with_content(%r{RAILS_ENV=production}).
             with_content(%r{FOREMAN_HOME=/usr/share/foreman}).
             with_content(%r{/usr/sbin/foreman-rake foreman_tasks:cleanup}).
             with_content(%r{#{cron_line}}).
-            with_ensure('present')
+            with_ensure('file')
         end
       end
     end

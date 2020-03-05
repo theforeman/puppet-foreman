@@ -1,15 +1,6 @@
-# = oVirt Provisioning Plugin
-#
-# Installs the ovirt_provision plugin
-#
-# === Parameters:
-#
-# $package:: Package name to install
-#
-class foreman::plugin::ovirt_provision (
-  String $package = $::foreman::plugin::ovirt_provision::params::package,
-) inherits foreman::plugin::ovirt_provision::params {
+# @summary install the ovirt_provision plugin
+class foreman::plugin::ovirt_provision {
   foreman::plugin {'ovirt_provision':
-    package => $package,
+    package => $foreman::plugin_prefix.regsubst(/foreman[_-]/, 'ovirt_provision_plugin'),
   }
 }
