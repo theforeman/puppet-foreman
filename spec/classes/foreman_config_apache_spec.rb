@@ -222,7 +222,7 @@ describe 'foreman::config::apache' do
                   'set SSL_CLIENT_VERIFY ""'
                 ])
                 .with_proxy_pass(
-                  "no_proxy_uris" => ['/pulp', '/streamer', '/pub'],
+                  "no_proxy_uris" => ['/pulp', '/pulp2', '/streamer', '/pub'],
                   "path"          => '/',
                   "url"           => 'http://localhost:3000/',
                   "params"        => { "retry" => '0' },
@@ -249,7 +249,7 @@ describe 'foreman::config::apache' do
                 ])
                 .with_ssl_proxyengine(true)
                 .with_proxy_pass(
-                  "no_proxy_uris" => ['/pulp', '/streamer', '/pub'],
+                  "no_proxy_uris" => ['/pulp', '/pulp2', '/streamer', '/pub'],
                   "path"          => '/',
                   "url"           => 'http://localhost:3000/',
                   "params"        => { "retry" => '0' },
