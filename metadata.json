@@ -1,6 +1,6 @@
 {
   "name": "theforeman-foreman",
-  "version": "14.0.0",
+  "version": "15.0.0",
   "author": "theforeman",
   "summary": "Foreman server configuration",
   "license": "GPL-3.0+",
