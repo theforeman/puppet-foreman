@@ -85,6 +85,11 @@ describe 'Scenario: install foreman with journald' do
     it { is_expected.to be_running }
   end
 
+  describe service('foreman') do
+    it { is_expected.to be_enabled }
+    it { is_expected.to be_running }
+  end
+
   describe package('foreman-journald') do
     it { is_expected.to be_installed }
   end
@@ -104,7 +109,7 @@ describe 'Scenario: install foreman with journald' do
 
   # Logging to the journal is broken on Travis and EL7 but works in Vagrant VMs
   # and regular docker containers
-  describe command("journalctl -u #{apache_service_name}"), unless: ENV['TRAVIS'] == 'true' && os[:family] == 'redhat' && os[:release] =~ /^7\./ do
+  describe command('journalctl -u foreman'), unless: ENV['TRAVIS'] == 'true' && os[:family] == 'redhat' && os[:release] =~ /^7\./ do
     its(:stdout) { is_expected.to match(%r{Redirected to https://#{host_inventory['fqdn']}/users/login}) }
   end
 
