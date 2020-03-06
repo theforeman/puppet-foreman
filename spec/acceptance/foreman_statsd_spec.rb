@@ -85,6 +85,11 @@ describe 'Scenario: install foreman with statsd' do
     it { is_expected.to be_running }
   end
 
+  describe service('foreman') do
+    it { is_expected.to be_enabled }
+    it { is_expected.to be_running }
+  end
+
   describe package('foreman-telemetry') do
     it { is_expected.to be_installed }
   end
