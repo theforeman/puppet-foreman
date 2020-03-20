@@ -333,7 +333,7 @@ class foreman (
     $foreman_service_bind = '127.0.0.1'
   } else {
     $use_foreman_service = true
-    $foreman_service_bind = undef
+    $foreman_service_bind = '0.0.0.0'
   }
 
   include ::foreman::repo

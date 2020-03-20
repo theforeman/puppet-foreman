@@ -78,7 +78,8 @@ describe 'foreman' do
             .with_content(/adapter: postgresql/)
         end
 
-        it { should contain_systemd__dropin_file('installer.conf') }
+        it { should contain_systemd__dropin_file('foreman-socket') }
+        it { should contain_systemd__dropin_file('foreman-service') }
 
         it { should contain_file('/usr/share/foreman').with_ensure('directory') }
 
@@ -154,9 +155,11 @@ describe 'foreman' do
         it { should contain_class('foreman::settings').that_requires('Class[foreman::database]') }
       end
 
-      context 'should restart passenger' do 
+      context 'with passenger' do
         let(:params) { super().merge(passenger: true) }
 
+        it { should_not contain_systemd__dropin_file('foreman-socket') }
+        it { should_not contain_systemd__dropin_file('foreman-service') }
         it do
           should contain_exec('restart_foreman')
             .with_command('/bin/touch /usr/share/foreman/tmp/restart.txt')
@@ -171,6 +174,8 @@ describe 'foreman' do
 
         it { should compile.with_all_deps }
         it { should contain_class('foreman::config::apache').with_passenger(false) }
+        it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenSocket=127\.0\.0\.1:3000$/) }
+        it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service').with_content(/^Environment=FOREMAN_BIND=127.0.0.1$/) }
         it do
           should contain_concat__fragment('foreman_settings+01-header.yaml')
             .with_content(/^:ssl_client_dn_env: HTTP_SSL_CLIENT_S_DN$/)
@@ -185,7 +190,8 @@ describe 'foreman' do
         it { should compile.with_all_deps }
         it { should_not contain_class('foreman::config::apache') }
         it { should contain_package('foreman-service').with_ensure('installed') }
-        it { should contain_systemd__dropin_file('installer.conf').with_unit('foreman.service') }
+        it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenSocket=0\.0\.0\.0:3000$/) }
+        it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service') }
         it { should contain_service('foreman').with_ensure('running') }
         it { should_not contain_exec('restart_foreman') }
       end

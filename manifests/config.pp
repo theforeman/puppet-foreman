@@ -43,10 +43,22 @@ class foreman::config {
     ensure => absent,
   }
 
+  $listen_socket = $foreman::foreman_service_bind ? {
+    Stdlib::IP::Address::V6 => "[${foreman::foreman_service_bind}]:${foreman::foreman_service_port}",
+    default                 => "${foreman::foreman_service_bind}:${foreman::foreman_service_port}",
+  }
+
   if $::foreman::use_foreman_service {
-    systemd::dropin_file { 'installer.conf':
-      unit    => "${::foreman::foreman_service}.service",
-      content => template('foreman/foreman.service-overrides.erb'),
+    systemd::dropin_file { 'foreman-socket':
+      filename => 'installer.conf',
+      unit     => "${::foreman::foreman_service}.socket",
+      content  => template('foreman/foreman.socket-overrides.erb'),
+    }
+
+    systemd::dropin_file { 'foreman-service':
+      filename => 'installer.conf',
+      unit     => "${::foreman::foreman_service}.service",
+      content  => template('foreman/foreman.service-overrides.erb'),
     }
   }
 
@@ -103,7 +115,7 @@ class foreman::config {
       serveraliases           => $::foreman::serveraliases,
       server_port             => $::foreman::server_port,
       server_ssl_port         => $::foreman::server_ssl_port,
-      proxy_backend           => "http://${::foreman::foreman_service_bind}:${::foreman::foreman_service_port}/",
+      proxy_backend           => "http://${listen_socket}/",
       ssl                     => $::foreman::ssl,
       ssl_ca                  => $::foreman::server_ssl_ca,
       ssl_chain               => $::foreman::server_ssl_chain,
