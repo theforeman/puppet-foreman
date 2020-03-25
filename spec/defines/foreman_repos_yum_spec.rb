@@ -37,12 +37,7 @@ describe 'foreman::repos::yum' do
           .with_gpgcheck('0')
           .with_enabled('0')
 
-        should contain_yumrepo('foreman-rails')
-          .with_descr('Rails SCL for Foreman nightly')
-          .with_baseurl('https://yum.theforeman.org/rails/foreman-nightly/el7/$basearch')
-          .with_gpgcheck('0')
-          .with_enabled('1')
-          .with_gpgkey('https://yum.theforeman.org/rails/foreman-nightly/RPM-GPG-KEY-copr')
+        should contain_yumrepo('foreman-rails').with_ensure('absent')
       end
     end
 
@@ -76,12 +71,7 @@ describe 'foreman::repos::yum' do
           .with_gpgcheck('0')
           .with_enabled('0')
 
-        should contain_yumrepo('foreman-rails')
-          .with_descr('Rails SCL for Foreman nightly')
-          .with_baseurl('https://yum.theforeman.org/rails/foreman-nightly/el7/$basearch')
-          .with_gpgcheck('0')
-          .with_enabled('1')
-          .with_gpgkey('https://yum.theforeman.org/rails/foreman-nightly/RPM-GPG-KEY-copr')
+        should contain_yumrepo('foreman-rails').with_ensure('absent')
       end
     end
   end
@@ -119,12 +109,7 @@ describe 'foreman::repos::yum' do
           .with_gpgcheck('0')
           .with_enabled('0')
 
-        should contain_yumrepo('foreman-rails')
-          .with_descr('Rails SCL for Foreman 1.19')
-          .with_baseurl('https://yum.theforeman.org/rails/foreman-1.19/el7/$basearch')
-          .with_gpgcheck('1')
-          .with_enabled('1')
-          .with_gpgkey('https://yum.theforeman.org/rails/foreman-1.19/RPM-GPG-KEY-copr')
+        should contain_yumrepo('foreman-rails').with_ensure('absent')
       end
     end
 
@@ -158,12 +143,7 @@ describe 'foreman::repos::yum' do
           .with_gpgcheck('0')
           .with_enabled('0')
 
-        should contain_yumrepo('foreman-rails')
-          .with_descr('Rails SCL for Foreman 1.19')
-          .with_baseurl('https://yum.theforeman.org/rails/foreman-1.19/el7/$basearch')
-          .with_gpgcheck('0')
-          .with_enabled('1')
-          .with_gpgkey('https://yum.theforeman.org/rails/foreman-1.19/RPM-GPG-KEY-copr')
+        should contain_yumrepo('foreman-rails').with_ensure('absent')
       end
     end
   end
