@@ -9,29 +9,6 @@ describe 'foreman' do
       context 'with default parameters' do
         it { is_expected.to compile.with_all_deps }
 
-        # repo
-        it { should contain_class('foreman::repo').that_notifies('Class[foreman::install]') }
-        it { should_not contain_foreman__repos('foreman') }
-        case facts[:osfamily]
-        when 'RedHat'
-          configure_repo = facts[:operatingsystem] != 'Fedora'
-          it {
-            should contain_class('foreman::repos::extra')
-              .with_configure_scl_repo(configure_repo)
-              .with_configure_epel_repo(configure_repo)
-          }
-
-          if facts[:operatingsystem] != 'Fedora'
-            it { should_not contain_package('tfm-rubygem-passenger-native') }
-          end
-        when 'Debian'
-          it {
-            should contain_class('foreman::repos::extra')
-              .with_configure_scl_repo(false)
-              .with_configure_epel_repo(false)
-          }
-        end
-
         # install
         it { should contain_class('foreman::install') }
         it { should contain_package('foreman-postgresql').with_ensure('present') }
@@ -208,10 +185,6 @@ describe 'foreman' do
             servername: 'localhost',
             serveraliases: ['foreman'],
             ssl: true,
-            repo: 'nightly',
-            configure_epel_repo: true,
-            configure_scl_repo: false,
-            gpgcheck: true,
             version: '1.12',
             plugin_version: 'installed',
             db_manage: true,
