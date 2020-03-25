@@ -63,15 +63,6 @@
 #
 # $ssl::                          Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
 #
-# $repo::                         This can be a specific version or nightly
-#
-# $configure_epel_repo::          If disabled the EPEL repo will not be configured on Red Hat family systems.
-#
-# $configure_scl_repo::           If disabled the SCL repo will not be configured on Red Hat clone systems.
-#                                 (Currently only installs repos for CentOS and Scientific)
-#
-# $gpgcheck::                     Turn on/off gpg check in repo files (effective only on RedHat family systems)
-#
 # $version::                      Foreman package version, it's passed to ensure parameter of package resource
 #                                 can be set to specific version number, 'latest', 'present' etc.
 #
@@ -227,10 +218,6 @@ class foreman (
   Stdlib::Fqdn $servername = $foreman::params::servername,
   Array[Stdlib::Fqdn] $serveraliases = $foreman::params::serveraliases,
   Boolean $ssl = $foreman::params::ssl,
-  Optional[String] $repo = $foreman::params::repo,
-  Boolean $configure_epel_repo = $foreman::params::configure_epel_repo,
-  Boolean $configure_scl_repo = $foreman::params::configure_scl_repo,
-  Boolean $gpgcheck = $foreman::params::gpgcheck,
   String $version = $foreman::params::version,
   Enum['installed', 'present', 'latest'] $plugin_version = $foreman::params::plugin_version,
   Boolean $db_manage = $foreman::params::db_manage,
@@ -336,13 +323,12 @@ class foreman (
     $foreman_service_bind = '0.0.0.0'
   }
 
-  include foreman::repo
   include foreman::install
   include foreman::config
   include foreman::database
   contain foreman::service
 
-  Class['foreman::repo'] ~> Class['foreman::install']
+  Anchor <| title == 'foreman::repo' |> ~> Class['foreman::install']
   Class['foreman::install'] ~> Class['foreman::config', 'foreman::service']
   Class['foreman::config'] ~> Class['foreman::database', 'foreman::service']
   Class['foreman::database'] ~> Class['foreman::service']
@@ -365,13 +351,8 @@ class foreman (
   ~> Package <| tag == 'foreman-compute' |>
   ~> Class['foreman::service']
 
-  Class['foreman::repo']
-  ~> Package <| tag == 'foreman::cli' |>
-  ~> Class['foreman']
-
-  Class['foreman::repo']
-  ~> Package <| tag == 'foreman::providers' |>
-  -> Class['foreman']
+  Package <| tag == 'foreman::cli' |> -> Class['foreman']
+  Package <| tag == 'foreman::providers' |> -> Class['foreman']
 
   contain 'foreman::settings' # lint:ignore:relative_classname_inclusion (PUP-1597)
   Class['foreman::database'] -> Class['foreman::settings']

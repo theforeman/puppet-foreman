@@ -13,10 +13,9 @@ describe 'foreman' do
       end
 
       describe 'with repo' do
-        let(:params) { super().merge(repo: 'nightly') }
-        it { should contain_class('foreman::repo') }
-        it { should contain_foreman__repos('foreman') }
-        it { should contain_package('foreman-postgresql').that_requires('Class[foreman::repo]') }
+        let(:pre_condition) { 'include foreman::repo' }
+
+        it { should contain_package('foreman-postgresql').that_requires('Anchor[foreman::repo]') }
       end
 
       describe 'sidekiq jobs' do

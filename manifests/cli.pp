@@ -86,4 +86,6 @@ class foreman::cli (
       content => template('foreman/hammer_root.yml.erb'),
     }
   }
+
+  Anchor <| title == 'foreman::repo' |> ~> Package <| tag == 'foreman::cli' |>
 }

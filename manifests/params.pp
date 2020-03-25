@@ -24,12 +24,7 @@ class foreman::params {
   $passenger_min_instances = 1
   $passenger_start_timeout = 90
 
-  # Additional software repos
-  $configure_epel_repo      = ($facts['os']['family'] == 'RedHat' and $facts['os']['name'] != 'Fedora')
-
   # Advanced configuration
-  # this can be a version or nightly
-  $repo              = undef
   $app_root          = '/usr/share/foreman'
   $plugin_config_dir = '/etc/foreman/plugins'
   $manage_user       = true
@@ -37,7 +32,6 @@ class foreman::params {
   $group             = 'foreman'
   $user_groups       = ['puppet']
   $rails_env         = 'production'
-  $gpgcheck          = true
   $version           = 'present'
   $plugin_version    = 'present'
 

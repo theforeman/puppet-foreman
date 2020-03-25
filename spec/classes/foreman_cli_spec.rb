@@ -64,6 +64,13 @@ describe 'foreman::cli' do
         end
       end
 
+      context 'with repo included' do
+        let(:pre_condition) { 'include foreman::repo' }
+
+        it { is_expected.to compile.with_all_deps }
+        it { should contain_package('foreman-cli').that_subscribes_to('Anchor[foreman::repo]') }
+      end
+
       context 'with settings from foreman' do
         let :pre_condition do
           <<-PUPPET
@@ -80,7 +87,6 @@ describe 'foreman::cli' do
         it do
           should contain_package('foreman-cli')
             .with_ensure('installed')
-            .that_subscribes_to('Class[foreman::repo]')
         end
 
         it 'should contain settings in /etc from foreman' do
