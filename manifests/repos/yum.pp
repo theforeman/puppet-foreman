@@ -38,11 +38,8 @@ define foreman::repos::yum (
     gpgcheck => '0',
     enabled  => '0',
   }
+  # Foreman 2.0 dropped the separate rails repository
   yumrepo { "${name}-rails":
-    descr    => "Rails SCL for Foreman ${repo}",
-    baseurl  => "https://yum.theforeman.org/rails/foreman-${repo}/${yumcode}/\$basearch",
-    gpgcheck => $gpgcheck_enabled,
-    enabled  => '1',
-    gpgkey   => "https://yum.theforeman.org/rails/foreman-${repo}/RPM-GPG-KEY-copr",
+    ensure => absent,
   }
 }
