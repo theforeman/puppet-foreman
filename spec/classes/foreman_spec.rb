@@ -174,7 +174,7 @@ describe 'foreman' do
 
         it { should compile.with_all_deps }
         it { should contain_class('foreman::config::apache').with_passenger(false) }
-        it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenSocket=127\.0\.0\.1:3000$/) }
+        it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenStream=127\.0\.0\.1:3000$/) }
         it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service').with_content(/^Environment=FOREMAN_BIND=127.0.0.1$/) }
         it do
           should contain_concat__fragment('foreman_settings+01-header.yaml')
@@ -190,7 +190,7 @@ describe 'foreman' do
         it { should compile.with_all_deps }
         it { should_not contain_class('foreman::config::apache') }
         it { should contain_package('foreman-service').with_ensure('installed') }
-        it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenSocket=0\.0\.0\.0:3000$/) }
+        it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenStream=0\.0\.0\.0:3000$/) }
         it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service') }
         it { should contain_service('foreman').with_ensure('running') }
         it { should_not contain_exec('restart_foreman') }
