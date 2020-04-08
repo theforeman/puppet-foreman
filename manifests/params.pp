@@ -26,8 +26,6 @@ class foreman::params {
 
   # Additional software repos
   $configure_epel_repo      = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
-  # Only configure extra SCL repos on EL
-  $configure_scl_repo       = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
 
   # Advanced configuration
   # this can be a version or nightly
@@ -108,16 +106,19 @@ class foreman::params {
         $passenger_ruby = undef
         $passenger_ruby_package = undef
         $plugin_prefix = 'rubygem-foreman_'
+        $configure_scl_repo = false
       } else {
         $passenger_ruby = '/usr/bin/tfm-ruby'
         $passenger_ruby_package = 'tfm-rubygem-passenger-native'
         $plugin_prefix = 'tfm-rubygem-foreman_'
+        $configure_scl_repo = true
       }
     }
     'Debian': {
       $passenger_ruby = '/usr/bin/foreman-ruby'
       $passenger_ruby_package = undef
       $plugin_prefix = 'ruby-foreman-'
+      $configure_scl_repo = false
     }
     'Linux': {
       case $::operatingsystem {
@@ -126,6 +127,7 @@ class foreman::params {
           $passenger_ruby = '/usr/bin/tfm-ruby'
           $passenger_ruby_package = 'tfm-rubygem-passenger-native'
           $plugin_prefix = 'tfm-rubygem-foreman_'
+          $configure_scl_repo = true
         }
         default: {
           fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")
