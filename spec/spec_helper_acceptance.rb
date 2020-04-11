@@ -1,39 +1,24 @@
-ENV['PUPPET_INSTALL_TYPE'] ||= 'agent'
-ENV['BEAKER_IS_PE'] ||= 'no'
-ENV['BEAKER_PUPPET_COLLECTION'] ||= 'puppet6'
-ENV['BEAKER_debug'] ||= 'true'
+require 'voxpupuli/acceptance/spec_helper_acceptance'
+
 ENV['BEAKER_setfile'] ||= 'centos7-64{hostname=centos7-64.example.com}'
-ENV['BEAKER_HYPERVISOR'] ||= 'docker'
 
-require 'beaker-puppet'
-require 'beaker-rspec'
-require 'beaker/puppet_install_helper'
-require 'beaker/module_install_helper'
+configure_beaker do |host|
+  install_module_from_forge('camptocamp-systemd', '>= 1.0.0')
 
-run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
-install_module_on(hosts)
-install_module_dependencies_on(hosts)
-install_module_from_forge('camptocamp-systemd', '>= 1.0.0')
-
-RSpec.configure do |c|
-  # Readable test descriptions
-  c.formatter = :documentation
-
-  # Configure all nodes in nodeset
-  c.before :suite do
-    # Install module and dependencies
-    hosts.each do |host|
-      if fact_on(host, 'osfamily') == 'RedHat'
-        # don't delete downloaded rpm for use with BEAKER_provision=no +
-        # BEAKER_destroy=no
-        on host, 'sed -i "s/keepcache=.*/keepcache=1/" /etc/yum.conf'
-        # refresh check if cache needs refresh on next yum command
-        on host, 'yum clean expire-cache'
-
-        host.install_package('centos-release-scl-rh')
-        host.install_package('rh-redis5-redis')
-      end
+  if fact_on(host, 'os.family') == 'RedHat'
+    unless fact_on(host, 'os.name') == 'Fedora'
+      # don't delete downloaded rpm for use with BEAKER_provision=no +
+      # BEAKER_destroy=no
+      on host, 'sed -i "s/keepcache=.*/keepcache=1/" /etc/yum.conf'
     end
+    # refresh check if cache needs refresh on next yum command
+    on host, 'yum clean expire-cache'
+  end
+
+  local_setup = File.join(__dir__, 'setup_acceptance_node.pp')
+  if File.exist?(local_setup)
+    puts "Configuring #{host} by applying #{local_setup}"
+    apply_manifest_on(host, File.read(local_setup), catch_failures: true)
   end
 end
 
