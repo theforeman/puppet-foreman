@@ -36,6 +36,7 @@ junit/
 pkg/
 coverage/
 .yardoc/
+REFERENCE.md
 
 ## InteliJ / RubyMine
 .idea

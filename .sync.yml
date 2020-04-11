@@ -12,13 +12,6 @@ Gemfile:
     - gem: webmock
       version: '~> 2.0'
     - gem: oauth
-Rakefile:
-  param_docs_pattern:
-    - manifests/cli.pp
-    - manifests/cli/*.pp
-    - manifests/init.pp
-    - manifests/compute/*.pp
-    - manifests/plugin/*.pp
 spec/spec_helper.rb:
   requires:
     - webmock/rspec

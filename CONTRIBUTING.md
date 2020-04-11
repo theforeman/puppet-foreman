@@ -135,12 +135,22 @@ Our puppet modules provide [`Gemfile`](./Gemfile)s which can tell a ruby
 package manager such as [bundler](https://bundler.io/) what Ruby packages,
 or Gems, are required to build, develop, and test this software.
 
-Please make sure you have [bundler installed](https://bundler.io/#getting-started)
-on your system, then use it to install all dependencies needed for this project,
-by running
+**Prerequisites**
+1. Make sure you have [bundler installed](https://bundler.io/#getting-started)
+on your system. If you are using Fedora, you can get `bundler` using
+   ```shell
+   sudo dnf install rubygem-bundler
+   ```
+2. If you are using Fedora, you may need these additional packages
+   ```shell
+   sudo dnf install -y ruby-devel redhat-rpm-config
+   ```
 
-```shell
-% bundle install
+Now, go to the root directory of this project and use `bundler` to install all
+dependencies needed for this project by running
+
+```console
+$ bundle install
 Fetching gem metadata from https://rubygems.org/........
 Fetching gem metadata from https://rubygems.org/..
 Using rake (10.1.0)
@@ -159,20 +169,42 @@ NOTE some systems may require you to run this command with sudo.
 If you already have those gems installed, make sure they are up-to-date:
 
 ```shell
-% bundle update
+bundle update
 ```
 
 With all dependencies in place and up-to-date we can now run the tests:
 
 ```shell
-% rake spec
+rake spec
 ```
 
-This will execute all the [rspec tests](http://rspec-puppet.com/) tests
-under [spec/defines](./spec/defines), [spec/classes](./spec/classes),
-and so on. rspec tests may have the same kind of dependencies as the
-module they are testing. While the module defines in its [Modulefile](./Modulefile),
+This will execute all the [rspec tests](http://rspec-puppet.com/) tests under
+[spec/defines](./spec/defines), [spec/classes](./spec/classes), and so on.
+rspec tests may have the same kind of dependencies as the module they are
+testing. While the module defines in its [metadata.json](./metadata.json),
 rspec tests define them in [.fixtures.yml](./fixtures.yml).
+
+To run specific tests, use the spec test file name and a filter like:
+
+```shell
+bundle exec rspec spec/classes/foreman_spec.rb -e 'should restart passenger'
+```
+More filter info available [here](https://relishapp.com/rspec/rspec-core/v/3-9/docs/command-line/example-option)
+
+To run OS specific tests:
+
+```shell
+SPEC_FACTS_OS=redhat-7-x86_64 bundle exec rspec spec/classes/foreman_spec.rb
+```
+
+If you have more than one version of `redhat` OS specified in metadata.json,
+you can run them all like:
+
+```shell
+SPEC_FACTS_OS=redhat bundle exec rspec spec/classes/foreman_spec.rb
+```
+For more information on running the tests, see [rspec-puppet-facts](https://github.com/mcanevet/rspec-puppet-facts)
+and specifically the [section for running tests](https://github.com/mcanevet/rspec-puppet-facts#running-your-tests).
 
 Writing Tests
 -------------
@@ -246,3 +278,13 @@ Additional Resources
 
 * [GitHub pull request documentation](https://help.github.com/send-pull-requests/)
 
+
+Modulesync
+==========
+
+Various files, including this one, are
+[modulesynced](https://github.com/voxpupuli/modulesync) using
+[foreman-installer-modulesync](https://github.com/theforeman/foreman-installer-modulesync)
+configuration. Changes should be made over there and then synced to
+all [managed
+modules](https://github.com/theforeman/foreman-installer-modulesync/blob/master/managed_modules.yml).
