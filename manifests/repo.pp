@@ -1,4 +1,5 @@
-# Configure the foreman repo
+# @summary Configure the foreman repo
+# @api private
 class foreman::repo(
   $repo                = $::foreman::repo,
   $gpgcheck            = $::foreman::gpgcheck,

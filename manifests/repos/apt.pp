@@ -1,4 +1,5 @@
-# Install an apt repo
+# @summary Install an apt repo
+# @api private
 define foreman::repos::apt (
   Variant[Enum['nightly'], Pattern['^\d+\.\d+$']] $repo,
   Variant[String, Hash] $key = 'AE0AF310E2EA96B6B6F4BD726F8600B9563278F6',

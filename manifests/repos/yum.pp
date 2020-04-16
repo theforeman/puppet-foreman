@@ -1,4 +1,5 @@
-# Install a yum repo
+# @summary Install a yum repo
+# @api private
 define foreman::repos::yum (
   Variant[Enum['nightly'], Pattern['^\d+\.\d+$']] $repo,
   String $yumcode,

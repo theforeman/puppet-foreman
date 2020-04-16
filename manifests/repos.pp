@@ -1,4 +1,5 @@
-# Set up a repository for foreman
+# @summary Set up a repository for foreman
+# @api private
 define foreman::repos(
   Variant[Enum['nightly'], Pattern['^\d+\.\d+$']] $repo,
   Boolean $gpgcheck = true,

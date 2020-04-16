@@ -1,5 +1,36 @@
+# @summary Set up Foreman integration for a Puppetserver
+#
 # This class includes the necessary scripts for Foreman on the puppetmaster and
 # is intented to be added to your puppetmaster
+#
+# @param foreman_url
+#   The Foreman URL
+# @param enc
+#   Whether to install the ENC script
+# @param receive_facts
+#   Whether to configure the ENC to send facts to Foreman
+# @param puppet_home
+#   The Puppet home where the YAML files with facts live. Used for the ENC script
+# @param reports
+#   Whether to enable the report processor
+# @param puppet_user
+#   The user used to run the Puppetserver
+# @param puppet_group
+#   The group used to run the Puppetserver
+# @param puppet_basedir
+#   The directory used to install the report processor to
+# @param puppet_etcdir
+#   The directory used to put the configuration in.
+# @param timeout
+#   The timeout to use on HTTP calls in the ENC script
+# @param report_timeout
+#   The timeout to use on HTTP calls in the report processor
+# @param ssl_ca
+#   The SSL CA file path to use
+# @param ssl_cert
+#   The SSL certificate file path to use
+# @param ssl_key
+#   The SSL key file path to use
 class foreman::puppetmaster (
   Stdlib::HTTPUrl $foreman_url = $::foreman::puppetmaster::params::foreman_url,
   Boolean $reports = $::foreman::puppetmaster::params::reports,

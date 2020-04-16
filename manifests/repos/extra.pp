@@ -1,4 +1,5 @@
-# Configure thirdparty repos
+# @summary Configure thirdparty repos
+# @api private
 class foreman::repos::extra(
   Boolean $configure_epel_repo = $::foreman::configure_epel_repo,
   Boolean $configure_scl_repo = $::foreman::configure_scl_repo,
