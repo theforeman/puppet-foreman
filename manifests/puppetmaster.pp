@@ -2,8 +2,6 @@
 # is intented to be added to your puppetmaster
 class foreman::puppetmaster (
   Stdlib::HTTPUrl $foreman_url = $::foreman::puppetmaster::params::foreman_url,
-  Optional[String] $foreman_user = $::foreman::puppetmaster::params::foreman_user,
-  Optional[String] $foreman_password = $::foreman::puppetmaster::params::foreman_password,
   Boolean $reports = $::foreman::puppetmaster::params::reports,
   Boolean $enc = $::foreman::puppetmaster::params::enc,
   Boolean $receive_facts = $::foreman::puppetmaster::params::receive_facts,
