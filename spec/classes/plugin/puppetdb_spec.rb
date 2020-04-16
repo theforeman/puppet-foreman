@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'foreman::plugin::puppetdb' do
-  on_os_under_test.each do |os, facts|
+  on_supported_os.each do |os, facts|
     context "on #{os}" do
       let :facts do
         facts

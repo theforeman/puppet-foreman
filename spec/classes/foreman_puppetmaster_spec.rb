@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'foreman::puppetmaster' do
-  on_os_under_test.each do |os, facts|
+  on_supported_os.each do |os, facts|
     context "on #{os}" do
       let :facts do
         if (facts[:osfamily] == 'RedHat') && (facts[:operatingsystemmajrelease] == '6')
@@ -106,7 +106,7 @@ describe 'foreman::puppetmaster' do
     end
   end
 
-  # TODO: on_os_under_test?
+  # TODO: on_supported_os?
   context 'Amazon' do
     let :facts do
       {

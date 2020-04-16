@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'foreman' do
-  on_os_under_test.each do |os, facts|
+  on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       let(:params) { {} }

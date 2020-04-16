@@ -5,7 +5,7 @@ describe 'foreman::repos' do
   let(:repo) { '1.18' }
   let(:params) { { repo: repo } }
 
-  on_os_under_test.each do |os, facts|
+  on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
 
@@ -30,7 +30,7 @@ describe 'foreman::repos' do
     end
   end
 
-  # TODO: on_os_under_test?
+  # TODO: on_supported_os?
   context 'on Amazon' do
     let :facts do
       {
