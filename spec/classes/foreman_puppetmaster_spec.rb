@@ -62,19 +62,23 @@ describe 'foreman::puppetmaster' do
 
         it 'should create puppet.yaml' do
           should contain_file("#{etc_dir}/puppet/foreman.yaml")
-            .with_content(%r{^:url: "https://#{facts[:fqdn]}"$})
-            .with_content(%r{^:ssl_ca: "#{puppet_vardir}/ssl/certs/ca.pem"$})
-            .with_content(%r{^:ssl_cert: "#{puppet_vardir}/ssl/certs/#{facts[:fqdn]}.pem"$})
-            .with_content(%r{^:ssl_key: "#{puppet_vardir}/ssl/private_keys/#{facts[:fqdn]}.pem"$})
-            .with_content(/^:user: ""$/)
-            .with_content(/^:password: ""$/)
-            .with_content(/^:puppetdir: "#{puppet_vardir}"$/)
-            .with_content(/^:facts: true$/)
-            .with_content(/^:timeout: 60$/)
-            .with_content(/^:report_timeout: 60$/)
             .with_mode('0640')
             .with_owner('root')
             .with_group('puppet')
+
+          verify_exact_contents(catalogue, "#{etc_dir}/puppet/foreman.yaml", [
+            "---",
+            ":url: \"https://#{facts[:fqdn]}\"",
+            ":ssl_ca: \"#{puppet_vardir}/ssl/certs/ca.pem\"",
+            ":ssl_cert: \"#{puppet_vardir}/ssl/certs/#{facts[:fqdn]}.pem\"",
+            ":ssl_key: \"#{puppet_vardir}/ssl/private_keys/#{facts[:fqdn]}.pem\"",
+            ":puppetdir: \"#{puppet_vardir}\"",
+            ':puppetuser: "puppet"',
+            ':facts: true',
+            ':timeout: 60',
+            ':report_timeout: 60',
+            ':threads: null',
+          ])
         end
       end
 
