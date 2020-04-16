@@ -2,47 +2,47 @@
 class foreman::install {
 
   package { 'foreman-postgresql':
-    ensure => $::foreman::version,
+    ensure => $foreman::version,
   }
 
-  if $facts['selinux'] {
+  if $facts['os']['selinux']['enabled'] {
     package { 'foreman-selinux':
-      ensure => $::foreman::version,
+      ensure => $foreman::version,
     }
   }
 
-  if $::foreman::apache and $::foreman::passenger and $::foreman::passenger_ruby_package {
-    package { $::foreman::passenger_ruby_package:
+  if $foreman::apache and $foreman::passenger and $foreman::passenger_ruby_package {
+    package { $foreman::passenger_ruby_package:
       ensure => installed,
       before => Class['apache::service'],
     }
   }
 
-  if $::foreman::use_foreman_service {
+  if $foreman::use_foreman_service {
     package { 'foreman-service':
       ensure => installed,
     }
   }
 
-  if $::foreman::jobs_manage_service {
+  if $foreman::jobs_manage_service {
     package { 'foreman-dynflow-sidekiq':
       ensure => installed,
     }
   }
 
-  if $::foreman::ipa_authentication and $::foreman::ipa_manage_sssd {
+  if $foreman::ipa_authentication and $foreman::ipa_manage_sssd {
     package { 'sssd-dbus':
       ensure => installed,
     }
   }
 
-  if $::foreman::telemetry_statsd_enabled or $::foreman::telemetry_prometheus_enabled {
+  if $foreman::telemetry_statsd_enabled or $foreman::telemetry_prometheus_enabled {
     package { 'foreman-telemetry':
       ensure => installed,
     }
   }
 
-  if $::foreman::logging_type == 'journald' {
+  if $foreman::logging_type == 'journald' {
     package { 'foreman-journald':
       ensure => installed,
     }

@@ -1,13 +1,13 @@
 # @summary Configure settings in Foreman's database
 # @api private
 class foreman::settings(
-  $email_delivery_method     = $::foreman::email_delivery_method,
-  $email_smtp_address        = $::foreman::email_smtp_address,
-  $email_smtp_port           = $::foreman::email_smtp_port,
-  $email_smtp_domain         = $::foreman::email_smtp_domain,
-  $email_smtp_authentication = $::foreman::email_smtp_authentication,
-  $email_smtp_user_name      = $::foreman::email_smtp_user_name,
-  $email_smtp_password       = $::foreman::email_smtp_password,
+  $email_delivery_method     = $foreman::email_delivery_method,
+  $email_smtp_address        = $foreman::email_smtp_address,
+  $email_smtp_port           = $foreman::email_smtp_port,
+  $email_smtp_domain         = $foreman::email_smtp_domain,
+  $email_smtp_authentication = $foreman::email_smtp_authentication,
+  $email_smtp_user_name      = $foreman::email_smtp_user_name,
+  $email_smtp_password       = $foreman::email_smtp_password,
 ) {
   unless empty($email_delivery_method) {
     foreman_config_entry { 'delivery_method':

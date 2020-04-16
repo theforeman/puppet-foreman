@@ -6,11 +6,11 @@ class foreman::config {
     Class['puppet::server::install'] -> Class['foreman::config']
   }
 
-  if $::foreman::jobs_manage_service {
-    if $::foreman::jobs_sidekiq_redis_url != undef {
-      $jobs_redis_url = $::foreman::jobs_sidekiq_redis_url
+  if $foreman::jobs_manage_service {
+    if $foreman::jobs_sidekiq_redis_url != undef {
+      $jobs_redis_url = $foreman::jobs_sidekiq_redis_url
     } else {
-      include ::redis
+      include redis
       $jobs_redis_url = "redis://localhost:${::redis::port}/6"
     }
 
@@ -27,13 +27,13 @@ class foreman::config {
 
   concat {'/etc/foreman/settings.yaml':
     owner => 'root',
-    group => $::foreman::group,
+    group => $foreman::group,
     mode  => '0640',
   }
 
   file { '/etc/foreman/database.yml':
     owner   => 'root',
-    group   => $::foreman::group,
+    group   => $foreman::group,
     mode    => '0640',
     content => template('foreman/database.yml.erb'),
   }
@@ -48,54 +48,54 @@ class foreman::config {
     default                 => "${foreman::foreman_service_bind}:${foreman::foreman_service_port}",
   }
 
-  if $::foreman::use_foreman_service {
+  if $foreman::use_foreman_service {
     systemd::dropin_file { 'foreman-socket':
       filename => 'installer.conf',
-      unit     => "${::foreman::foreman_service}.socket",
+      unit     => "${foreman::foreman_service}.socket",
       content  => template('foreman/foreman.socket-overrides.erb'),
     }
 
     systemd::dropin_file { 'foreman-service':
       filename => 'installer.conf',
-      unit     => "${::foreman::foreman_service}.service",
+      unit     => "${foreman::foreman_service}.service",
       content  => template('foreman/foreman.service-overrides.erb'),
     }
   }
 
-  file { $::foreman::app_root:
+  file { $foreman::app_root:
     ensure  => directory,
   }
 
-  if $::foreman::db_root_cert {
-    $pg_cert_dir = "${::foreman::app_root}/.postgresql"
+  if $foreman::db_root_cert {
+    $pg_cert_dir = "${foreman::app_root}/.postgresql"
 
     file { $pg_cert_dir:
       ensure => 'directory',
       owner  => 'root',
-      group  => $::foreman::group,
+      group  => $foreman::group,
       mode   => '0640',
     }
 
     file { "${pg_cert_dir}/root.crt":
       ensure => file,
-      source => $::foreman::db_root_cert,
+      source => $foreman::db_root_cert,
       owner  => 'root',
-      group  => $::foreman::group,
+      group  => $foreman::group,
       mode   => '0640',
     }
   }
 
-  if $::foreman::manage_user {
-    group { $::foreman::group:
+  if $foreman::manage_user {
+    group { $foreman::group:
       ensure => 'present',
     }
-    user { $::foreman::user:
+    user { $foreman::user:
       ensure  => 'present',
       shell   => '/bin/false',
       comment => 'Foreman',
-      home    => $::foreman::app_root,
-      gid     => $::foreman::group,
-      groups  => $::foreman::user_groups,
+      home    => $foreman::app_root,
+      gid     => $foreman::group,
+      groups  => $foreman::user_groups,
     }
   }
 
@@ -105,52 +105,52 @@ class foreman::config {
     ensure  => absent,
   }
 
-  if $::foreman::apache  {
+  if $foreman::apache  {
     class { 'foreman::config::apache':
-      passenger               => $::foreman::passenger,
-      app_root                => $::foreman::app_root,
-      passenger_ruby          => $::foreman::passenger_ruby,
-      priority                => $::foreman::vhost_priority,
-      servername              => $::foreman::servername,
-      serveraliases           => $::foreman::serveraliases,
-      server_port             => $::foreman::server_port,
-      server_ssl_port         => $::foreman::server_ssl_port,
+      passenger               => $foreman::passenger,
+      app_root                => $foreman::app_root,
+      passenger_ruby          => $foreman::passenger_ruby,
+      priority                => $foreman::vhost_priority,
+      servername              => $foreman::servername,
+      serveraliases           => $foreman::serveraliases,
+      server_port             => $foreman::server_port,
+      server_ssl_port         => $foreman::server_ssl_port,
       proxy_backend           => "http://${listen_socket}/",
-      ssl                     => $::foreman::ssl,
-      ssl_ca                  => $::foreman::server_ssl_ca,
-      ssl_chain               => $::foreman::server_ssl_chain,
-      ssl_cert                => $::foreman::server_ssl_cert,
-      ssl_certs_dir           => $::foreman::server_ssl_certs_dir,
-      ssl_key                 => $::foreman::server_ssl_key,
-      ssl_crl                 => $::foreman::server_ssl_crl,
-      ssl_protocol            => $::foreman::server_ssl_protocol,
-      ssl_verify_client       => $::foreman::server_ssl_verify_client,
-      user                    => $::foreman::user,
-      passenger_prestart      => $::foreman::passenger_prestart,
-      passenger_min_instances => $::foreman::passenger_min_instances,
-      passenger_start_timeout => $::foreman::passenger_start_timeout,
-      foreman_url             => $::foreman::foreman_url,
-      ipa_authentication      => $::foreman::ipa_authentication,
-      keycloak                => $::foreman::keycloak,
-      keycloak_app_name       => $::foreman::keycloak_app_name,
-      keycloak_realm          => $::foreman::keycloak_realm,
+      ssl                     => $foreman::ssl,
+      ssl_ca                  => $foreman::server_ssl_ca,
+      ssl_chain               => $foreman::server_ssl_chain,
+      ssl_cert                => $foreman::server_ssl_cert,
+      ssl_certs_dir           => $foreman::server_ssl_certs_dir,
+      ssl_key                 => $foreman::server_ssl_key,
+      ssl_crl                 => $foreman::server_ssl_crl,
+      ssl_protocol            => $foreman::server_ssl_protocol,
+      ssl_verify_client       => $foreman::server_ssl_verify_client,
+      user                    => $foreman::user,
+      passenger_prestart      => $foreman::passenger_prestart,
+      passenger_min_instances => $foreman::passenger_min_instances,
+      passenger_start_timeout => $foreman::passenger_start_timeout,
+      foreman_url             => $foreman::foreman_url,
+      ipa_authentication      => $foreman::ipa_authentication,
+      keycloak                => $foreman::keycloak,
+      keycloak_app_name       => $foreman::keycloak_app_name,
+      keycloak_realm          => $foreman::keycloak_realm,
     }
 
     contain foreman::config::apache
 
-    if $::foreman::ipa_authentication {
+    if $foreman::ipa_authentication {
       unless 'ipa' in $facts and 'default_server' in $facts['ipa'] and 'default_realm' in $facts['ipa'] {
-        fail("${::hostname}: The system does not seem to be IPA-enrolled")
+        fail("${facts['networking']['hostname']}: The system does not seem to be IPA-enrolled")
       }
 
-      if $facts['selinux'] {
+      if $facts['os']['selinux']['enabled'] {
         selboolean { ['allow_httpd_mod_auth_pam', 'httpd_dbus_sssd']:
           persistent => true,
           value      => 'on',
         }
       }
 
-      if $::foreman::ipa_manage_sssd {
+      if $foreman::ipa_manage_sssd {
         service { 'sssd':
           ensure  => running,
           enable  => true,
@@ -169,11 +169,11 @@ class foreman::config {
       exec { 'ipa-getkeytab':
         command => "/bin/echo Get keytab \
           && KRB5CCNAME=KEYRING:session:get-http-service-keytab kinit -k \
-          && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -s ${facts['ipa']['default_server']} -k ${foreman::http_keytab} -p HTTP/${::fqdn} \
+          && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -s ${facts['ipa']['default_server']} -k ${foreman::http_keytab} -p HTTP/${facts['networking']['fqdn']} \
           && kdestroy -c KEYRING:session:get-http-service-keytab",
-        creates => $::foreman::http_keytab,
+        creates => $foreman::http_keytab,
       }
-      -> file { $::foreman::http_keytab:
+      -> file { $foreman::http_keytab:
         ensure => file,
         owner  => apache,
         mode   => '0600',
@@ -192,7 +192,7 @@ class foreman::config {
       }
 
 
-      if $::foreman::ipa_manage_sssd {
+      if $foreman::ipa_manage_sssd {
         $sssd_services = join(unique(pick($facts['sssd']['services'], []) + ['ifp']), ', ')
         $sssd_ldap_user_extra_attrs = join(unique(pick($facts['sssd']['ldap_user_extra_attrs'], []) + ['email:mail', 'lastname:sn', 'firstname:givenname']), ', ')
         $sssd_allowed_uids = join(unique(pick($facts['sssd']['allowed_uids'], []) + ['apache', 'root']), ', ')

@@ -1,6 +1,6 @@
 # Defaults for the puppetmaster
 class foreman::puppetmaster::params {
-  $lower_fqdn = downcase($::fqdn)
+  $lower_fqdn = downcase($facts['networking']['fqdn'])
 
   # Basic configurations
   $foreman_url      = "https://${lower_fqdn}"
@@ -18,13 +18,13 @@ class foreman::puppetmaster::params {
   $puppetmaster_timeout = 60
   $puppetmaster_report_timeout = 60
 
-  if $::rubysitedir =~ /\/opt\/puppetlabs\/puppet/ {
+  if $facts['ruby']['sitedir'] =~ /\/opt\/puppetlabs\/puppet/ {
     $puppet_basedir = '/opt/puppetlabs/puppet/lib/ruby/vendor_ruby/puppet'
     $puppet_etcdir = '/etc/puppetlabs/puppet'
     $puppet_home = '/opt/puppetlabs/server/data/puppetserver'
     $puppet_ssldir = '/etc/puppetlabs/puppet/ssl'
   } else {
-    case $::osfamily {
+    case $facts['os']['family'] {
       'RedHat': {
         $puppet_basedir  = '/usr/share/ruby/vendor_ruby/puppet'
         $puppet_etcdir = '/etc/puppet'
@@ -36,24 +36,24 @@ class foreman::puppetmaster::params {
         $puppet_home = '/var/lib/puppet'
       }
       'Linux': {
-        case $::operatingsystem {
+        case $facts['os']['name'] {
           'Amazon': {
-            $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
+            $puppet_basedir = regsubst($facts['ruby']['version'], '^(\d+\.\d+).*$', '/usr/lib/ruby/site_ruby/\1/puppet')
             $puppet_etcdir = '/etc/puppet'
             $puppet_home = '/var/lib/puppet'
           }
           default: {
-            fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")
+            fail("${facts['networking']['hostname']}: This module does not support operatingsystem ${facts['os']['name']}")
           }
         }
       }
       'Archlinux': {
-        $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/lib/ruby/vendor_ruby/\1/puppet')
+        $puppet_basedir = regsubst($facts['ruby']['version'], '^(\d+\.\d+).*$', '/usr/lib/ruby/vendor_ruby/\1/puppet')
         $puppet_etcdir = '/etc/puppetlabs/puppet'
         $puppet_home = '/var/lib/puppet'
       }
       /^(FreeBSD|DragonFly)$/: {
-        $puppet_basedir = regsubst($::rubyversion, '^(\d+\.\d+).*$', '/usr/local/lib/ruby/site_ruby/\1/puppet')
+        $puppet_basedir = regsubst($facts['ruby']['version'], '^(\d+\.\d+).*$', '/usr/local/lib/ruby/site_ruby/\1/puppet')
         $puppet_etcdir = '/usr/local/etc/puppet'
         $puppet_home = '/var/puppet'
       }

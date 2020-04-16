@@ -1,15 +1,15 @@
 # @summary Configure the foreman service
 # @api private
 class foreman::service(
-  Boolean $apache = $::foreman::apache,
-  Boolean $passenger = $::foreman::passenger,
-  Stdlib::Absolutepath $app_root = $::foreman::app_root,
-  Boolean $ssl = $::foreman::ssl,
-  Boolean $use_foreman_service = $::foreman::use_foreman_service,
-  String $foreman_service = $::foreman::foreman_service,
-  Stdlib::Ensure::Service $foreman_service_ensure = $::foreman::foreman_service_ensure,
-  Boolean $foreman_service_enable = $::foreman::foreman_service_enable,
-  Boolean $jobs_manage_service = $::foreman::jobs_manage_service,
+  Boolean $apache = $foreman::apache,
+  Boolean $passenger = $foreman::passenger,
+  Stdlib::Absolutepath $app_root = $foreman::app_root,
+  Boolean $ssl = $foreman::ssl,
+  Boolean $use_foreman_service = $foreman::use_foreman_service,
+  String $foreman_service = $foreman::foreman_service,
+  Stdlib::Ensure::Service $foreman_service_ensure = $foreman::foreman_service_ensure,
+  Boolean $foreman_service_enable = $foreman::foreman_service_enable,
+  Boolean $jobs_manage_service = $foreman::jobs_manage_service,
 ) {
   if $jobs_manage_service {
     foreman::dynflow::worker { 'orchestrator':

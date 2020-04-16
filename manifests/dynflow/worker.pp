@@ -25,9 +25,9 @@ define foreman::dynflow::worker (
   Integer[1] $concurrency = $foreman::dynflow_pool_size,
   Array[String] $queues = ['default', 'remote_execution'],
   String $config_owner = 'root',
-  String $config_group = $::foreman::group,
-  Stdlib::Ensure::Service $service_ensure = $::foreman::jobs_service_ensure,
-  Boolean $service_enable = $::foreman::jobs_service_enable
+  String $config_group = $foreman::group,
+  Stdlib::Ensure::Service $service_ensure = $foreman::jobs_service_ensure,
+  Boolean $service_enable = $foreman::jobs_service_enable
 ) {
 
   file { "/etc/foreman/dynflow/${service_name}.yml":

@@ -34,8 +34,10 @@ describe 'foreman::repos' do
   context 'on Amazon' do
     let :facts do
       {
-        operatingsystem: 'Amazon',
-        osfamily: 'Linux'
+        os: {
+          family: 'Linux',
+          name: 'Amazon',
+        },
       }
     end
 
@@ -50,8 +52,12 @@ describe 'foreman::repos' do
   context 'on unsupported osfamily' do
     let :facts do
       {
-        hostname: 'localhost',
-        osfamily: 'unsupported'
+        networking: {
+          hostname: 'localhost',
+        },
+        os: {
+          family: 'unsupported',
+        },
       }
     end
 

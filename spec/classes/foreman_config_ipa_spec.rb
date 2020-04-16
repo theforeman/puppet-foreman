@@ -55,14 +55,22 @@ describe 'foreman' do
               .with_ssl_content(/^\s*require pam-account foreman$/)
           end
 
-          describe 'on non-selinux' do
-            let(:facts) { super().merge(selinux: false) }
-            it { should_not contain_selboolean('httpd_dbus_sssd') }
-          end
+          context 'with SELinux' do
+            let(:facts) { override_facts(super(), os: {'selinux' => {'enabled' => selinux}}) }
 
-          context 'on selinux system' do
-            let(:facts) { super().merge(selinux: true) }
-            it { should contain_selboolean('httpd_dbus_sssd') }
+            context 'enabled' do
+              let(:selinux) { true }
+
+              it { should contain_selboolean('allow_httpd_mod_auth_pam') }
+              it { should contain_selboolean('httpd_dbus_sssd') }
+            end
+
+            context 'disabled' do
+              let(:selinux) { false }
+
+              it { should_not contain_selboolean('allow_httpd_mod_auth_pam') }
+              it { should_not contain_selboolean('httpd_dbus_sssd') }
+            end
           end
         end
       end
