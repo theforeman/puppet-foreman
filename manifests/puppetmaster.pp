@@ -15,8 +15,6 @@ class foreman::puppetmaster (
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_ca = $::foreman::puppetmaster::params::client_ssl_ca,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_cert = $::foreman::puppetmaster::params::client_ssl_cert,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_key = $::foreman::puppetmaster::params::client_ssl_key,
-  Enum['v2'] $enc_api = 'v2',
-  Enum['v2'] $report_api = 'v2',
 ) inherits foreman::puppetmaster::params {
 
   case $::osfamily {
@@ -43,14 +41,14 @@ class foreman::puppetmaster (
       mode    => '0644',
       owner   => 'root',
       group   => '0',
-      source  => "puppet:///modules/${module_name}/foreman-report_${report_api}.rb",
+      source  => "puppet:///modules/${module_name}/foreman-report_v2.rb",
       require => Exec['Create Puppet Reports dir'],
     }
   }
 
   if $enc {
     file { "${puppet_etcdir}/node.rb":
-      source => "puppet:///modules/${module_name}/external_node_${enc_api}.rb",
+      source => "puppet:///modules/${module_name}/external_node_v2.rb",
       mode   => '0550',
       owner  => $puppet_user,
       group  => $puppet_group,
