@@ -1,6 +1,25 @@
-# Initialize the dynflow worker
+# @summary Initialize the dynflow worker
+#
+# @param service_name
+#   The name of the service instance. Will get prefixed with dynflow-sidekiq@
+#
 # @param concurrency
 #   Defines number of threads used for job processing
+#
+# @param queues
+#   The Queues this worker should process
+#
+# @param config_owner
+#   The user who owns the config file
+#
+# @param config_group
+#   The group that owns the config file
+#
+# @param service_ensure
+#   The state of the service to ensuree
+#
+# @param service_enable
+#   Whether to enable the service. This means starting at boot
 define foreman::dynflow::worker (
   String $service_name = $name,
   Integer[1] $concurrency = $foreman::dynflow_pool_size,

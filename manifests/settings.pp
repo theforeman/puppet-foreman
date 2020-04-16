@@ -1,4 +1,5 @@
-# Configure settings in Foreman's database
+# @summary Configure settings in Foreman's database
+# @api private
 class foreman::settings(
   $email_delivery_method     = $::foreman::email_delivery_method,
   $email_smtp_address        = $::foreman::email_smtp_address,

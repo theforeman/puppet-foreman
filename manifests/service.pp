@@ -1,4 +1,5 @@
-# Configure the foreman service
+# @summary Configure the foreman service
+# @api private
 class foreman::service(
   Boolean $apache = $::foreman::apache,
   Boolean $passenger = $::foreman::passenger,

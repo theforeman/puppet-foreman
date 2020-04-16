@@ -1,4 +1,16 @@
-# Run a Foreman rake task when notified
+# @summary Run a Foreman rake task when notified
+#
+# @param environment
+#   Environment variables to set
+# @param timeout
+#   The timeout to set on the exec resource
+# @param user
+#   The user to run this rake task
+# @param app_root
+#   The application root to use
+# @param unless
+#   Don't execute the rake task if this command passes. If not passed in, the
+#   exec is refreshonly.
 define foreman::rake(
   Hash[String, String] $environment = {},
   $timeout  = undef,

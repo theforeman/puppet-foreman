@@ -89,6 +89,15 @@
 # @param https_vhost_options
 #   Direct options to apache::vhost for the https vhost
 #
+# @param keycloak
+#   Whether to enable keycloak support
+#
+# @param keycloak_app_name
+#   The app name as passed to keycloak-httpd-client-install
+#
+# @param keycloak_realm
+#   The realm as passed to keycloak-httpd-client-install
+#
 class foreman::config::apache(
   Stdlib::Absolutepath $app_root = '/usr/share/foreman',
   String $priority = '05',
