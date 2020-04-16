@@ -11,9 +11,8 @@ Many Foreman plugins can be installed by adding additional `foreman::plugin::*`
 classes, extra compute resource support via `foreman::compute::*` classes and
 the Hammer CLI can be installed by adding `foreman::cli`.
 
-By default, it configures Foreman to run under Apache and Passenger plus
-with a PostgreSQL database. A standalone service can be configured instead by
-setting `passenger` to false, though this isn't recommended in production.
+By default, it configures Foreman to run as a standalone service fronted by
+Apache as a reverse proxy with a PostgreSQL database.
 
 The web interface is configured to use Puppet's SSL certificates by default, so
 ensure they're present first, reconfigure `server_ssl_*` or disable the `ssl`
@@ -47,14 +46,6 @@ previous stable release.
 ### Foreman version compatibility notes
 
 This module targets Foreman 2.0+.
-
-## Running without passenger
-
-To use this module without passenger, the `passenger` parameter must be set to
-`false`. This will install the `foreman-service` package and ensure the service
-is running.
-
-This introduces a soft dependency on `camptocamp-systemd`.
 
 ## Types and providers
 
