@@ -9,7 +9,7 @@ define foreman::config::apache::fragment(
   Optional[String[1]] $content = undef,
   Optional[String[1]] $ssl_content = undef,
 ) {
-  require ::foreman::config::apache
+  require foreman::config::apache
 
   $_priority = $foreman::config::apache::priority
 
@@ -30,7 +30,7 @@ define foreman::config::apache::fragment(
     }
   }
 
-  if $ssl_content and $::foreman::config::apache::ssl {
+  if $ssl_content and $foreman::config::apache::ssl {
     file { $https_path:
       ensure  => file,
       content => $ssl_content,

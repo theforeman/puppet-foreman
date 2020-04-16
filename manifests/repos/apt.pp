@@ -5,7 +5,7 @@ define foreman::repos::apt (
   Variant[String, Hash] $key = 'AE0AF310E2EA96B6B6F4BD726F8600B9563278F6',
   Stdlib::HTTPUrl $location = 'https://deb.theforeman.org/',
 ) {
-  include ::apt
+  include apt
 
   ::apt::source { $name:
     repos    => $repo,

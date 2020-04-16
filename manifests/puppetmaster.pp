@@ -32,23 +32,23 @@
 # @param ssl_key
 #   The SSL key file path to use
 class foreman::puppetmaster (
-  Stdlib::HTTPUrl $foreman_url = $::foreman::puppetmaster::params::foreman_url,
-  Boolean $reports = $::foreman::puppetmaster::params::reports,
-  Boolean $enc = $::foreman::puppetmaster::params::enc,
-  Boolean $receive_facts = $::foreman::puppetmaster::params::receive_facts,
-  Stdlib::Absolutepath $puppet_home = $::foreman::puppetmaster::params::puppet_home,
-  String $puppet_user = $::foreman::puppetmaster::params::puppet_user,
-  String $puppet_group = $::foreman::puppetmaster::params::puppet_group,
-  Stdlib::Absolutepath $puppet_basedir = $::foreman::puppetmaster::params::puppet_basedir,
-  Stdlib::Absolutepath $puppet_etcdir = $::foreman::puppetmaster::params::puppet_etcdir,
-  Integer $timeout = $::foreman::puppetmaster::params::puppetmaster_timeout,
-  Integer $report_timeout = $::foreman::puppetmaster::params::puppetmaster_report_timeout,
-  Variant[Enum[''], Stdlib::Absolutepath] $ssl_ca = $::foreman::puppetmaster::params::client_ssl_ca,
-  Variant[Enum[''], Stdlib::Absolutepath] $ssl_cert = $::foreman::puppetmaster::params::client_ssl_cert,
-  Variant[Enum[''], Stdlib::Absolutepath] $ssl_key = $::foreman::puppetmaster::params::client_ssl_key,
+  Stdlib::HTTPUrl $foreman_url = $foreman::puppetmaster::params::foreman_url,
+  Boolean $reports = $foreman::puppetmaster::params::reports,
+  Boolean $enc = $foreman::puppetmaster::params::enc,
+  Boolean $receive_facts = $foreman::puppetmaster::params::receive_facts,
+  Stdlib::Absolutepath $puppet_home = $foreman::puppetmaster::params::puppet_home,
+  String $puppet_user = $foreman::puppetmaster::params::puppet_user,
+  String $puppet_group = $foreman::puppetmaster::params::puppet_group,
+  Stdlib::Absolutepath $puppet_basedir = $foreman::puppetmaster::params::puppet_basedir,
+  Stdlib::Absolutepath $puppet_etcdir = $foreman::puppetmaster::params::puppet_etcdir,
+  Integer $timeout = $foreman::puppetmaster::params::puppetmaster_timeout,
+  Integer $report_timeout = $foreman::puppetmaster::params::puppetmaster_report_timeout,
+  Variant[Enum[''], Stdlib::Absolutepath] $ssl_ca = $foreman::puppetmaster::params::client_ssl_ca,
+  Variant[Enum[''], Stdlib::Absolutepath] $ssl_cert = $foreman::puppetmaster::params::client_ssl_cert,
+  Variant[Enum[''], Stdlib::Absolutepath] $ssl_key = $foreman::puppetmaster::params::client_ssl_key,
 ) inherits foreman::puppetmaster::params {
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'Debian': { $json_package = 'ruby-json' }
     default:  { $json_package = 'rubygem-json' }
   }

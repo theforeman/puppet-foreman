@@ -14,8 +14,8 @@
 define foreman::rake(
   Hash[String, String] $environment = {},
   $timeout  = undef,
-  $user     = $::foreman::user,
-  $app_root = $::foreman::app_root,
+  $user     = $foreman::user,
+  $app_root = $foreman::app_root,
   $unless   = undef,
 ) {
   # https://github.com/rodjek/puppet-lint/issues/327

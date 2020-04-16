@@ -30,14 +30,20 @@ describe 'foreman' do
         end
       end
 
-      context 'with SELinux enabled' do
-        let(:facts) { super().merge(selinux: true) }
-        it { should contain_package('foreman-selinux') }
-      end
+      context 'with SELinux' do
+        let(:facts) { override_facts(super(), os: {'selinux' => {'enabled' => selinux}}) }
 
-      context 'with SELinux disabled' do
-        let(:facts) { super().merge(selinux: false) }
-        it { should_not contain_package('foreman-selinux') }
+        context 'enabled' do
+          let(:selinux) { true }
+
+          it { should contain_package('foreman-selinux') }
+        end
+
+        context 'disabled' do
+          let(:selinux) { false }
+
+          it { should_not contain_package('foreman-selinux') }
+        end
       end
     end
   end

@@ -105,36 +105,4 @@ describe 'foreman::puppetmaster' do
       end
     end
   end
-
-  # TODO: on_supported_os?
-  context 'Amazon' do
-    let :facts do
-      {
-        operatingsystem: 'Amazon',
-        rubyversion: '1.8.7',
-        osfamily: 'Linux',
-        puppetversion: Puppet.version,
-        rubysitedir: '/usr/lib/ruby/site_ruby'
-      }
-    end
-
-    describe 'without custom parameters' do
-      it 'should set up reports' do
-        should contain_exec('Create Puppet Reports dir')
-          .with_command('/bin/mkdir -p /usr/lib/ruby/site_ruby/1.8/puppet/reports')
-          .with_creates('/usr/lib/ruby/site_ruby/1.8/puppet/reports')
-
-        should contain_file('/usr/lib/ruby/site_ruby/1.8/puppet/reports/foreman.rb')
-          .with_mode('0644')
-          .with_owner('root')
-          .with_group('0')
-          .with_source('puppet:///modules/foreman/foreman-report_v2.rb')
-          .with_require('Exec[Create Puppet Reports dir]')
-      end
-
-      it 'should install json package' do
-        should contain_package('rubygem-json').with_ensure('present')
-      end
-    end
-  end
 end

@@ -1,6 +1,6 @@
 # The foreman default parameters
 class foreman::params {
-  $lower_fqdn = downcase($::fqdn)
+  $lower_fqdn = downcase($facts['networking']['fqdn'])
 
   # Basic configurations
   $foreman_url      = "https://${lower_fqdn}"
@@ -14,7 +14,7 @@ class foreman::params {
   # configure apache with passenger
   $passenger      = false
   # Server name of the VirtualHost
-  $servername     = $::fqdn
+  $servername     = $facts['networking']['fqdn']
   # Server aliases of the VirtualHost
   $serveraliases  = [ 'foreman' ]
   # force SSL (note: requires apache)
@@ -25,7 +25,7 @@ class foreman::params {
   $passenger_start_timeout = 90
 
   # Additional software repos
-  $configure_epel_repo      = ($::osfamily == 'RedHat' and $::operatingsystem != 'Fedora')
+  $configure_epel_repo      = ($facts['os']['family'] == 'RedHat' and $facts['os']['name'] != 'Fedora')
 
   # Advanced configuration
   # this can be a version or nightly
@@ -99,10 +99,10 @@ class foreman::params {
   $hsts_enabled = true
 
   # OS specific paths
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat': {
       # We use system packages except on EL7
-      if versioncmp($facts['operatingsystemmajrelease'], '8') >= 0 {
+      if versioncmp($facts['os']['release']['major'], '8') >= 0 {
         $passenger_ruby = undef
         $passenger_ruby_package = undef
         $plugin_prefix = 'rubygem-foreman_'
@@ -121,7 +121,7 @@ class foreman::params {
       $configure_scl_repo = false
     }
     'Linux': {
-      case $::operatingsystem {
+      case $facts['os']['name'] {
         'Amazon': {
           # add passenger::install::scl as EL uses SCL on Foreman 1.2+
           $passenger_ruby = '/usr/bin/tfm-ruby'
@@ -130,16 +130,16 @@ class foreman::params {
           $configure_scl_repo = true
         }
         default: {
-          fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")
+          fail("${facts['networking']['hostname']}: This module does not support operatingsystem ${facts['os']['name']}")
         }
       }
     }
     default: {
-      fail("${::hostname}: This module does not support osfamily ${::osfamily}")
+      fail("${facts['networking']['hostname']}: This module does not support osfamily ${facts['os']['family']}")
     }
   }
 
-  if $::rubysitedir =~ /\/opt\/puppetlabs\/puppet/ {
+  if $facts['ruby']['sitedir'] =~ /\/opt\/puppetlabs\/puppet/ {
     $puppet_ssldir = '/etc/puppetlabs/puppet/ssl'
   } else {
     $puppet_ssldir = '/var/lib/puppet/ssl'

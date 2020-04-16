@@ -185,7 +185,7 @@ class foreman::config::apache(
       $custom_fragment = file('foreman/_assets.conf.erb')
     }
 
-    include ::apache::mod::proxy_wstunnel
+    include apache::mod::proxy_wstunnel
     $websockets_backend = regsubst($proxy_backend, 'http://', 'ws://')
 
     $vhost_http_internal_options = {
@@ -222,7 +222,7 @@ class foreman::config::apache(
       ],
     }
 
-    if $facts['selinux'] {
+    if $facts['os']['selinux']['enabled'] {
       selboolean { 'httpd_can_network_connect':
         persistent => true,
         value      => 'on',
@@ -230,19 +230,19 @@ class foreman::config::apache(
     }
   }
 
-  include ::apache
-  include ::apache::mod::headers
+  include apache
+  include apache::mod::headers
 
   if $ipa_authentication {
-    include ::apache::mod::authnz_pam
-    include ::apache::mod::intercept_form_submit
-    include ::apache::mod::lookup_identity
-    include ::apache::mod::auth_kerb
+    include apache::mod::authnz_pam
+    include apache::mod::intercept_form_submit
+    include apache::mod::lookup_identity
+    include apache::mod::auth_kerb
   } elsif $keycloak {
     # TODO: https://github.com/puppetlabs/puppetlabs-apache/commit/9f7f38ff21036c9a1ce4d669ccaea816941209ca
     # adds apache::mod::auth_openidc which allows for proper integration but
     # the current release (5.4.0) doesn't include this yet.
-    include ::apache::mod::authz_user
+    include apache::mod::authz_user
     apache::mod { 'auth_openidc':
       package => 'mod_auth_openidc',
     }
