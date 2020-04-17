@@ -11,7 +11,7 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
       password    => 'changeme',
     }
 
-    if $facts['osfamily'] == 'RedHat' {
+    if $facts['os']['family'] == 'RedHat' {
       include foreman::cli::ansible
       include foreman::cli::azure
     }
@@ -27,9 +27,9 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
   it_behaves_like 'hammer'
 
   ['discovery', 'remote_execution', 'tasks', 'templates'].each do |plugin|
-    package_name = case fact('osfamily')
+    package_name = case fact('os.family')
                    when 'RedHat'
-                     fact('operatingsystem') == 'Fedora' ? "rubygem-hammer_cli_foreman_#{plugin}" : "tfm-rubygem-hammer_cli_foreman_#{plugin}"
+                     fact('os.release.major') == '7' ? "tfm-rubygem-hammer_cli_foreman_#{plugin}" : "rubygem-hammer_cli_foreman_#{plugin}"
                    when 'Debian'
                      "ruby-hammer-cli-foreman-#{plugin.tr('_', '-')}"
                    else

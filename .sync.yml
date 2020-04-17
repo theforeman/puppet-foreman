@@ -2,6 +2,7 @@
 .travis.yml:
   beaker_sets:
     - centos7-64
+    - centos8-64
     - debian10-64
     - ubuntu1804-64
   env:
