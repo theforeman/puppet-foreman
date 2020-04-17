@@ -1,4 +1,5 @@
 require 'voxpupuli/acceptance/spec_helper_acceptance'
+require 'beaker-hiera'
 
 ENV['BEAKER_setfile'] ||= 'centos7-64{hostname=centos7-64.example.com}'
 
@@ -11,6 +12,17 @@ configure_beaker do |host|
     end
     # refresh check if cache needs refresh on next yum command
     on host, 'yum clean expire-cache'
+  end
+
+  if File.exist?('spec/acceptance/hieradata')
+    hierarchy = [
+      'fqdn/%{fqdn}.yaml',
+      'os/%{os.family}/%{os.release.major}.yaml',
+      'os/%{os.family}.yaml',
+      'common.yaml',
+    ]
+    write_hiera_config_on(host, hierarchy)
+    copy_hiera_data_to(host, 'spec/acceptance/hieradata')
   end
 
   local_setup = File.join(__dir__, 'setup_acceptance_node.pp')

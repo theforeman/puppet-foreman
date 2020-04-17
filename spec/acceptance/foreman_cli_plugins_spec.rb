@@ -4,7 +4,7 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
   before(:context) { purge_foreman }
 
   let(:pp) do
-    <<-EOS
+    <<-PUPPET
     class { 'foreman::cli':
       foreman_url => 'https://foreman.example.com',
       username    => 'admin',
@@ -12,14 +12,14 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
     }
 
     if $facts['osfamily'] == 'RedHat' {
-      include ::foreman::cli::ansible
-      include ::foreman::cli::azure
+      include foreman::cli::ansible
+      include foreman::cli::azure
     }
-    include ::foreman::cli::discovery
-    include ::foreman::cli::remote_execution
-    include ::foreman::cli::tasks
-    include ::foreman::cli::templates
-    EOS
+    include foreman::cli::discovery
+    include foreman::cli::remote_execution
+    include foreman::cli::tasks
+    include foreman::cli::templates
+    PUPPET
   end
 
   it_behaves_like 'a idempotent resource'
