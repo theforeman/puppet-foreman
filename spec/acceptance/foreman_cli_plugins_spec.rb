@@ -40,6 +40,8 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
 
   it_behaves_like 'a idempotent resource'
 
+  it_behaves_like 'hammer'
+
   ['discovery', 'remote_execution', 'tasks', 'templates'].each do |plugin|
     package_name = case fact('osfamily')
                    when 'RedHat'
@@ -53,9 +55,5 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
     describe package(package_name) do
       it { is_expected.to be_installed }
     end
-  end
-
-  describe command('hammer --version') do
-    its(:stdout) { is_expected.to match(/^hammer/) }
   end
 end
