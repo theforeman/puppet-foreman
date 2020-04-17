@@ -6,7 +6,7 @@ describe 'Scenario: install foreman with prometheus' do
   before(:context) do
     case fact('osfamily')
     when 'RedHat'
-      on default, 'yum -y remove foreman* tfm-* mod_passenger && rm -rf /etc/yum.repos.d/foreman*.repo'
+      on default, 'yum -y remove foreman* tfm-* && rm -rf /etc/yum.repos.d/foreman*.repo'
     when 'Debian'
       on default, 'apt-get purge -y foreman*', { :acceptable_exit_codes => [0, 100] }
       on default, 'apt-get purge -y ruby-hammer-cli-*', { :acceptable_exit_codes => [0, 100] }
@@ -18,16 +18,6 @@ describe 'Scenario: install foreman with prometheus' do
 
   let(:pp) do
     <<-EOS
-    # Workarounds
-
-    ## Ensure repos are present before installing
-    Yumrepo <| |> -> Package <| |>
-
-    ## We want passenger from EPEL
-    class { '::apache::mod::passenger':
-      manage_repo => false,
-    }
-
     if $facts['os']['family'] == 'RedHat' and $facts['os']['name'] != 'Fedora' {
       class { 'redis::globals':
         scl => 'rh-redis5',
