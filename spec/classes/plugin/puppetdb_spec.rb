@@ -11,7 +11,7 @@ describe 'foreman::plugin::puppetdb' do
       let(:package_name) do
         case facts[:osfamily]
         when 'RedHat'
-          facts[:operatingsystem] == 'Fedora' ? 'rubygem-puppetdb_foreman' : 'tfm-rubygem-puppetdb_foreman'
+          facts[:os]['release']['major'] == '7' ? 'tfm-rubygem-puppetdb_foreman' : 'rubygem-puppetdb_foreman'
         when 'Debian'
           'ruby-puppetdb_foreman'
         end
