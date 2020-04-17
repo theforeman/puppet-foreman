@@ -6,7 +6,7 @@ describe 'Scenario: install foreman', if: os[:family] == 'centos' do
   before(:context) do
     case fact('osfamily')
     when 'RedHat'
-      on default, 'yum -y remove foreman* tfm-* mod_passenger && rm -rf /etc/yum.repos.d/foreman*.repo'
+      on default, 'yum -y remove foreman* tfm-* && rm -rf /etc/yum.repos.d/foreman*.repo'
     when 'Debian'
       on default, 'apt-get purge -y foreman*', { :acceptable_exit_codes => [0, 100] }
       on default, 'apt-get purge -y ruby-hammer-cli-*', { :acceptable_exit_codes => [0, 100] }
