@@ -1,0 +1,11 @@
+---
+postgresql::globals::version: '12'
+postgresql::globals::client_package_name: 'rh-postgresql12-postgresql-syspaths'
+postgresql::globals::server_package_name: 'rh-postgresql12-postgresql-server-syspaths'
+postgresql::globals::contrib_package_name: 'rh-postgresql12-postgresql-contrib-syspaths'
+postgresql::globals::service_name: 'postgresql'
+postgresql::globals::datadir: '/var/lib/pgsql/data'
+postgresql::globals::confdir: '/var/lib/pgsql/data'
+postgresql::globals::bindir: '/usr/bin'
+
+redis::globals::scl: rh-redis5

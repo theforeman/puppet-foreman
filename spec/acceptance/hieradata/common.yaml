@@ -1,0 +1,8 @@
+---
+foreman::initial_admin_password: changeme
+foreman::server_ssl_ca: /etc/foreman-certs/certificate.pem
+foreman::server_ssl_cert: /etc/foreman-certs/certificate.pem
+foreman::server_ssl_chain: /etc/foreman-certs/certificate.pem
+foreman::server_ssl_crl: ""
+foreman::server_ssl_key: /etc/foreman-certs/key.pem
+foreman::user_groups: []
