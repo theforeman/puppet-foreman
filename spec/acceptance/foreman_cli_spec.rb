@@ -31,7 +31,5 @@ describe 'Scenario: install foreman-cli without foreman' do
 
   it_behaves_like 'a idempotent resource'
 
-  describe command('hammer --version') do
-    its(:stdout) { is_expected.to match(/^hammer/) }
-  end
+  it_behaves_like 'hammer'
 end
