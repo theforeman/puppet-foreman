@@ -3,37 +3,15 @@ require 'spec_helper'
 describe 'foreman::puppetmaster' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let :facts do
-        if (facts[:osfamily] == 'RedHat') && (facts[:operatingsystemmajrelease] == '6')
-          facts[:rubyversion] = '1.8.7'
-        end
-
-        facts
-      end
+      let(:facts) { facts  }
+      let(:site_ruby) { '/opt/puppetlabs/puppet/lib/ruby/vendor_ruby' }
+      let(:etc_dir) { '/etc/puppetlabs/puppet' }
+      let(:ssl_dir) { '/etc/puppetlabs/puppet/ssl' }
+      let(:var_dir) { '/opt/puppetlabs/server/data/puppetserver' }
+      let(:json_package) { facts[:os]['family'] == 'Debian' ? 'ruby-json' : 'rubygem-json' }
 
       describe 'without custom parameters' do
-        case facts[:osfamily]
-        when 'RedHat'
-          site_ruby = case facts[:operatingsystemmajrelease]
-                      when '6'
-                        '/usr/lib/ruby/site_ruby/1.8'
-                      else
-                        '/usr/share/ruby/vendor_ruby'
-                      end
-          json_package = 'rubygem-json'
-          etc_dir = '/etc'
-          puppet_vardir = '/var/lib/puppet'
-        when 'Debian'
-          site_ruby = '/usr/lib/ruby/vendor_ruby'
-          json_package = 'ruby-json'
-          etc_dir = '/etc'
-          puppet_vardir = '/var/lib/puppet'
-        when 'FreeBSD'
-          site_ruby = '/usr/local/lib/ruby/site_ruby/2.1'
-          json_package = 'rubygem-json'
-          etc_dir = '/usr/local/etc'
-          puppet_vardir = '/var/puppet'
-        end
+        it { should contain_class('foreman::puppetmaster::params') }
 
         it 'should set up reports' do
           should contain_exec('Create Puppet Reports dir')
@@ -49,11 +27,34 @@ describe 'foreman::puppetmaster' do
         end
 
         it 'should set up enc' do
-          should contain_file("#{etc_dir}/puppet/node.rb")
+          should contain_file("#{etc_dir}/node.rb")
             .with_mode('0550')
             .with_owner('puppet')
             .with_group('puppet')
             .with_source('puppet:///modules/foreman/external_node_v2.rb')
+        end
+
+        it 'should set up directories for the ENC' do
+          should contain_file("#{var_dir}/yaml")
+            .with_ensure('directory')
+            .with_owner('puppet')
+            .with_group('puppet')
+            .with_mode('0750')
+          should contain_file("#{var_dir}/yaml/facts")
+            .with_ensure('directory')
+            .with_owner('puppet')
+            .with_group('puppet')
+            .with_mode('0750')
+          should contain_file("#{var_dir}/yaml/foreman")
+            .with_ensure('directory')
+            .with_owner('puppet')
+            .with_group('puppet')
+            .with_mode('0750')
+          should contain_file("#{var_dir}/yaml/node")
+            .with_ensure('directory')
+            .with_owner('puppet')
+            .with_group('puppet')
+            .with_mode('0750')
         end
 
         it 'should install json package' do
@@ -61,18 +62,18 @@ describe 'foreman::puppetmaster' do
         end
 
         it 'should create puppet.yaml' do
-          should contain_file("#{etc_dir}/puppet/foreman.yaml")
+          should contain_file("#{etc_dir}/foreman.yaml")
             .with_mode('0640')
             .with_owner('root')
             .with_group('puppet')
 
-          verify_exact_contents(catalogue, "#{etc_dir}/puppet/foreman.yaml", [
+          verify_exact_contents(catalogue, "#{etc_dir}/foreman.yaml", [
             "---",
             ":url: \"https://#{facts[:fqdn]}\"",
-            ":ssl_ca: \"#{puppet_vardir}/ssl/certs/ca.pem\"",
-            ":ssl_cert: \"#{puppet_vardir}/ssl/certs/#{facts[:fqdn]}.pem\"",
-            ":ssl_key: \"#{puppet_vardir}/ssl/private_keys/#{facts[:fqdn]}.pem\"",
-            ":puppetdir: \"#{puppet_vardir}\"",
+            ":ssl_ca: \"#{ssl_dir}/certs/ca.pem\"",
+            ":ssl_cert: \"#{ssl_dir}/certs/#{facts[:fqdn]}.pem\"",
+            ":ssl_key: \"#{ssl_dir}/private_keys/#{facts[:fqdn]}.pem\"",
+            ":puppetdir: \"#{var_dir}\"",
             ':puppetuser: "puppet"',
             ':facts: true',
             ':timeout: 60',
@@ -89,8 +90,7 @@ describe 'foreman::puppetmaster' do
 
         it 'should not include reports' do
           should_not contain_exec('Create Puppet Reports dir')
-
-          should_not contain_file('/usr/lib/ruby/site_ruby/1.8/puppet/reports/foreman.rb')
+          should_not contain_file("#{site_ruby}/puppet/reports/foreman.rb")
         end
       end
 
@@ -100,7 +100,7 @@ describe 'foreman::puppetmaster' do
         end
 
         it 'should not include enc' do
-          should_not contain_file('/etc/puppet/node.rb')
+          should_not contain_file("#{etc_dir}/node.rb")
         end
       end
     end
