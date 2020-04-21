@@ -6,11 +6,10 @@ describe 'Scenario: install foreman with statsd' do
   before(:context) do
     case fact('osfamily')
     when 'RedHat'
-      on default, 'yum -y remove foreman* tfm-* mod_passenger && rm -rf /etc/yum.repos.d/foreman*.repo'
+      on default, 'yum -y remove foreman* tfm-* mod_passenger'
     when 'Debian'
       on default, 'apt-get purge -y foreman*', { :acceptable_exit_codes => [0, 100] }
       on default, 'apt-get purge -y ruby-hammer-cli-*', { :acceptable_exit_codes => [0, 100] }
-      on default, 'rm -rf /etc/apt/sources.list.d/foreman*'
     end
 
     on default, "systemctl stop #{apache_service_name}", { :acceptable_exit_codes => [0, 5] }
@@ -54,7 +53,6 @@ describe 'Scenario: install foreman with statsd' do
       mode  => '0640',
     } ->
     class { '::foreman':
-      repo                     => 'nightly',
       user_groups              => [],
       initial_admin_username   => 'admin',
       initial_admin_password   => 'changeme',
