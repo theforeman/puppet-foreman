@@ -23,7 +23,7 @@ shared_examples 'the foreman application' do
     it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
   end
 
-  describe command("curl -s --cacert /etc/foreman/certificate.pem https://#{host_inventory['fqdn']} -w '\%{redirect_url}' -o /dev/null") do
+  describe command("curl -s --cacert /etc/foreman-certs/certificate.pem https://#{host_inventory['fqdn']} -w '\%{redirect_url}' -o /dev/null") do
     its(:stdout) { is_expected.to eq("https://#{host_inventory['fqdn']}/users/login") }
     its(:exit_status) { is_expected.to eq 0 }
   end
