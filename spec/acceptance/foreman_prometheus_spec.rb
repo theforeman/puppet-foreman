@@ -23,26 +23,11 @@ describe 'Scenario: install foreman with prometheus' do
       }
     }
 
-    $directory = '/etc/foreman'
+    $directory = '/etc/foreman-certs'
     $certificate = "${directory}/certificate.pem"
     $key = "${directory}/key.pem"
-    exec { 'Create certificate directory':
-      command => "mkdir -p ${directory}",
-      path    => ['/bin', '/usr/bin'],
-      creates => $directory,
-    } ->
-    exec { 'Generate certificate':
-      command => "openssl req -nodes -x509 -newkey rsa:2048 -subj '/CN=${facts['fqdn']}' -keyout '${key}' -out '${certificate}' -days 365",
-      path    => ['/bin', '/usr/bin'],
-      creates => $certificate,
-      umask   => '0022',
-    } ->
-    file { [$key, $certificate]:
-      owner => 'root',
-      group => 'root',
-      mode  => '0640',
-    } ->
-    class { '::foreman':
+
+    class { 'foreman':
       user_groups                  => [],
       initial_admin_username       => 'admin',
       initial_admin_password       => 'changeme',

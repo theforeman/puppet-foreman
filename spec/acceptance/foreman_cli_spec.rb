@@ -13,7 +13,7 @@ describe 'Scenario: install foreman-cli without foreman' do
 
   let(:pp) do
     <<-EOS
-    class { '::foreman::cli':
+    class { 'foreman::cli':
       foreman_url => 'https://foreman.example.com',
       username    => 'admin',
       password    => 'changeme',
