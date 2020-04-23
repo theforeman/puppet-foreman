@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'Scenario: install foreman', if: os[:family] == 'centos' do
+describe 'Scenario: install foreman with rex cockpit', if: os[:family] == 'centos' do
   apache_service_name = ['debian', 'ubuntu'].include?(os[:family]) ? 'apache2' : 'httpd'
 
   before(:context) do
