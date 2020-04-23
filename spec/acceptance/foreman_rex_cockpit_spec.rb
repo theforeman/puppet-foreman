@@ -1,19 +1,7 @@
 require 'spec_helper_acceptance'
 
 describe 'Scenario: install foreman with rex cockpit', if: os[:family] == 'centos' do
-  apache_service_name = ['debian', 'ubuntu'].include?(os[:family]) ? 'apache2' : 'httpd'
-
-  before(:context) do
-    case fact('osfamily')
-    when 'RedHat'
-      on default, 'yum -y remove foreman* tfm-*'
-    when 'Debian'
-      on default, 'apt-get purge -y foreman*', { :acceptable_exit_codes => [0, 100] }
-      on default, 'apt-get purge -y ruby-hammer-cli-*', { :acceptable_exit_codes => [0, 100] }
-    end
-
-    on default, "systemctl stop #{apache_service_name}", { :acceptable_exit_codes => [0, 5] }
-  end
+  before(:context) { purge_foreman }
 
   let(:pp) do
     <<-EOS

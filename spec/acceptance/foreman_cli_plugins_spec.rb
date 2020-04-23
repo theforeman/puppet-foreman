@@ -1,15 +1,7 @@
 require 'spec_helper_acceptance'
 
 describe 'Scenario: install foreman-cli + plugins without foreman' do
-  before(:context) do
-    case fact('osfamily')
-    when 'RedHat'
-      on default, 'yum -y remove foreman* tfm-*'
-    when 'Debian'
-      on default, 'apt-get purge -y foreman*', { :acceptable_exit_codes => [0, 100] }
-      on default, 'apt-get purge -y ruby-hammer-cli-*', { :acceptable_exit_codes => [0, 100] }
-    end
-  end
+  before(:context) { purge_foreman }
 
   let(:pp) do
     <<-EOS
