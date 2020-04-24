@@ -1,7 +1,7 @@
 $configure_scl_repo = $facts['os']['family'] == 'RedHat' and $facts['os']['release']['major'] == '7'
 
 class { 'foreman::repo':
-  repo                => 'nightly',
+  repo                => '2.0',
   gpgcheck            => false,
   configure_epel_repo => false,
   configure_scl_repo  => $configure_scl_repo,
