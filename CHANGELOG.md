@@ -1,5 +1,19 @@
 # Changelog
 
+## [14.0.1](https://github.com/theforeman/puppet-foreman/tree/14.0.1) (2020-04-29)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/14.0.0...14.0.1)
+
+**Implemented enhancements:**
+
+- Only install foreman-release-scl on CentOS EL 7 [\#822](https://github.com/theforeman/puppet-foreman/pull/822) ([ehelms](https://github.com/ehelms))
+- Allow extlib 5.x [\#820](https://github.com/theforeman/puppet-foreman/pull/820) ([mmoll](https://github.com/mmoll))
+
+**Fixed bugs:**
+
+- Drop the separate rails repository [\#826](https://github.com/theforeman/puppet-foreman/pull/826) ([ekohl](https://github.com/ekohl))
+- Correct casing on Stdlib::HTTPUrl [\#806](https://github.com/theforeman/puppet-foreman/pull/806) ([ekohl](https://github.com/ekohl))
+
 ## [14.0.0](https://github.com/theforeman/puppet-foreman/tree/14.0.0) (2020-02-12)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/13.1.0...14.0.0)
