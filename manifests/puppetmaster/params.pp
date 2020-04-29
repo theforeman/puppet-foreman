@@ -48,12 +48,16 @@ class foreman::puppetmaster::params {
         }
       }
       'Archlinux': {
-        $puppet_basedir = regsubst($facts['ruby']['version'], '^(\d+\.\d+).*$', '/usr/lib/ruby/vendor_ruby/\1/puppet')
+        # lint:ignore:legacy_facts
+        $puppet_basedir = regsubst($facts['rubyversion'], '^(\d+\.\d+).*$', '/usr/lib/ruby/vendor_ruby/\1/puppet')
+        # lint:endignore
         $puppet_etcdir = '/etc/puppetlabs/puppet'
         $puppet_home = '/var/lib/puppet'
       }
       /^(FreeBSD|DragonFly)$/: {
-        $puppet_basedir = regsubst($facts['ruby']['version'], '^(\d+\.\d+).*$', '/usr/local/lib/ruby/site_ruby/\1/puppet')
+        # lint:ignore:legacy_facts
+        $puppet_basedir = regsubst($facts['rubyversion'], '^(\d+\.\d+).*$', '/usr/local/lib/ruby/site_ruby/\1/puppet')
+        # lint:endignore
         $puppet_etcdir = '/usr/local/etc/puppet'
         $puppet_home = '/var/puppet'
       }
