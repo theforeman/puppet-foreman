@@ -3,17 +3,19 @@ class foreman::providers::params {
   # Dependency packages for different providers supplied in this module
   $oauth = true
 
+  $is_aio = fact('aio_agent_version') =~ String[1]
+
   # OS specific package names
   case $facts['os']['family'] {
     'RedHat': {
-      if $facts['ruby']['sitedir'] =~ /\/opt\/puppetlabs\/puppet/ {
+      if $is_aio {
         $oauth_package = 'puppet-agent-oauth'
       } else {
         $oauth_package = 'rubygem-oauth'
       }
     }
     'Debian': {
-      if $facts['ruby']['sitedir'] =~ /\/opt\/puppetlabs\/puppet/ {
+      if $is_aio {
         $oauth_package = 'puppet-agent-oauth'
       } else {
         $oauth_package = 'ruby-oauth'
@@ -28,7 +30,7 @@ class foreman::providers::params {
     'Linux': {
       case $facts['os']['name'] {
         'Amazon': {
-          if $facts['ruby']['sitedir'] =~ /\/opt\/puppetlabs\/puppet/ {
+          if $is_aio {
             $oauth_package = 'puppet-agent-oauth'
           } else {
             $oauth_package = 'rubygem-oauth'

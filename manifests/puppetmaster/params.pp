@@ -18,7 +18,7 @@ class foreman::puppetmaster::params {
   $puppetmaster_timeout = 60
   $puppetmaster_report_timeout = 60
 
-  if $facts['ruby']['sitedir'] =~ /\/opt\/puppetlabs\/puppet/ {
+  if fact('aio_agent_version') =~ String[1] {
     $puppet_basedir = '/opt/puppetlabs/puppet/lib/ruby/vendor_ruby/puppet'
     $puppet_etcdir = '/etc/puppetlabs/puppet'
     $puppet_home = '/opt/puppetlabs/server/data/puppetserver'
