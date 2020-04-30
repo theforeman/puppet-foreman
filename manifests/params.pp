@@ -133,7 +133,7 @@ class foreman::params {
     }
   }
 
-  if $facts['ruby']['sitedir'] =~ /\/opt\/puppetlabs\/puppet/ {
+  if fact('aio_agent_version') =~ String[1] {
     $puppet_ssldir = '/etc/puppetlabs/puppet/ssl'
   } else {
     $puppet_ssldir = '/var/lib/puppet/ssl'
