@@ -3,6 +3,9 @@
 
 require 'voxpupuli/test/rake'
 
+# We use fixtures in our modules, which is not the default
+task :beaker => 'spec_prep'
+
 # blacksmith isn't always present, e.g. on Travis with --without development
 begin
   require 'puppet_blacksmith/rake_tasks'

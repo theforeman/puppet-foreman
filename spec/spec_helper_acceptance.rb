@@ -3,7 +3,7 @@ require 'beaker-hiera'
 
 ENV['BEAKER_setfile'] ||= 'centos7-64{hostname=centos7-64.example.com}'
 
-configure_beaker do |host|
+configure_beaker(modules: :fixtures) do |host|
   if fact_on(host, 'os.family') == 'RedHat'
     unless fact_on(host, 'os.name') == 'Fedora'
       # don't delete downloaded rpm for use with BEAKER_provision=no +
