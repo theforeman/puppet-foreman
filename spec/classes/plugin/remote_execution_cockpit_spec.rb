@@ -24,6 +24,11 @@ describe 'foreman::plugin::remote_execution::cockpit' do
 
       it { is_expected.to contain_service('foreman-cockpit').with_ensure('running').with_enable('true') }
 
+      it do
+        is_expected.to contain_foreman_config_entry('remote_execution_cockpit_url')
+          .that_requires(['Class[foreman::database]', 'Foreman::Plugin[remote_execution-cockpit]'])
+      end
+
       it 'creates configs' do
         is_expected.to contain_file('/etc/foreman/cockpit/cockpit.conf')
           .with_ensure('file')
