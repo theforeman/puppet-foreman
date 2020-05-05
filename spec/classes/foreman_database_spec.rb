@@ -10,6 +10,7 @@ describe 'foreman' do
         let(:params) { super().merge(db_manage: false) }
 
         it { should_not contain_class('foreman::database::postgresql') }
+        it { should_not contain_package('glibc-langpack-en') }
 
         it { should contain_foreman__rake('db:migrate') }
         it { should contain_foreman_config_entry('db_pending_seed') }

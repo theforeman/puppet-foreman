@@ -10,6 +10,9 @@ describe 'foreman' do
         let(:params) { super().merge(version: 'latest') }
         it { should_not contain_foreman__repos('foreman') }
         it { should contain_package('foreman-postgresql').with_ensure('latest') }
+        if facts[:os]['family'] == 'RedHat'
+          it { should contain_package('glibc-langpack-en') }
+        end
       end
 
       describe 'with repo' do

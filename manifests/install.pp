@@ -1,6 +1,13 @@
 # Install the needed packages for foreman
 class foreman::install {
 
+  if $foreman::db_manage and $facts['os']['family'] == 'RedHat' {
+    package { 'glibc-langpack-en':
+      ensure => installed,
+      before => Class['foreman::database'],
+    }
+  }
+
   package { 'foreman-postgresql':
     ensure => $foreman::version,
   }
