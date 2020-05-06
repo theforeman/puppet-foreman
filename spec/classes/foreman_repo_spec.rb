@@ -11,10 +11,10 @@ describe 'foreman::repo' do
         it { is_expected.not_to contain_foreman__repos('foreman') }
 
         it do
-          if facts[:osfamily] == 'RedHat' && facts[:operatingsystemmajrelease] == '7'
-            is_expected.to contain_package('foreman-release-scl')
+          if facts[:operatingsystem] == 'CentOS' && facts[:operatingsystemmajrelease] == '7'
+            is_expected.to contain_package('centos-release-scl-rh')
           else
-            is_expected.not_to contain_package('foreman-release-scl')
+            is_expected.not_to contain_package('centos-release-scl-rh')
           end
         end
       end
@@ -26,10 +26,10 @@ describe 'foreman::repo' do
         it { is_expected.to contain_foreman__repos('foreman').with_repo('nightly').with_gpgcheck(true) }
 
         it do
-          if facts[:osfamily] == 'RedHat' && facts[:operatingsystemmajrelease] == '7'
-            is_expected.to contain_package('foreman-release-scl')
+          if facts[:operatingsystem] == 'CentOS' && facts[:operatingsystemmajrelease] == '7'
+            is_expected.to contain_package('centos-release-scl-rh')
           else
-            is_expected.not_to contain_package('foreman-release-scl')
+            is_expected.not_to contain_package('centos-release-scl-rh')
           end
         end
       end
@@ -50,7 +50,7 @@ describe 'foreman::repo' do
             .with_gpgcheck(true)
         end
 
-        it { is_expected.not_to contain_package('foreman-release-scl') }
+        it { is_expected.not_to contain_package('centos-release-scl-rh') }
       end
     end
   end

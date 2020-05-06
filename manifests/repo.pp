@@ -16,7 +16,7 @@
 class foreman::repo(
   Optional[Variant[Enum['nightly'], Pattern['^\d+\.\d+$']]] $repo = undef,
   Boolean $gpgcheck = true,
-  Boolean $configure_scl_repo = $facts['os']['family'] == 'RedHat' and $facts['os']['release']['major'] == '7',
+  Boolean $configure_scl_repo = $facts['os']['name'] == 'CentOS' and $facts['os']['release']['major'] == '7',
   String $scl_repo_ensure = 'installed',
 ) {
   if $repo {
@@ -27,12 +27,12 @@ class foreman::repo(
     }
 
     if $configure_scl_repo {
-      Foreman::Repos['foreman'] -> Package['foreman-release-scl']
+      Foreman::Repos['foreman'] -> Package['centos-release-scl-rh']
     }
   }
 
   if $configure_scl_repo {
-    package {'foreman-release-scl':
+    package {'centos-release-scl-rh':
       ensure => $scl_repo_ensure,
       before => Anchor['foreman::repo'],
     }
