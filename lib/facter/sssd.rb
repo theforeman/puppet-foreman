@@ -2,7 +2,13 @@ require 'facter/util/sssd'
 
 if defined? Facter::Util::Sssd
   # == Fact: ipa
-  Facter.add(:ipa, :type => :aggregate) do
+  # Deprecated but here for compatibility
+  Facter.add(:ipa) do
+    setcode { Facter.value(:foreman_ipa) }
+  end
+
+  # == Fact: foreman_ipa
+  Facter.add(:foreman_ipa, :type => :aggregate) do
     {
       :default_realm => 'global/realm',
       :default_server => 'global/server',
@@ -15,7 +21,13 @@ if defined? Facter::Util::Sssd
   end
 
   # == Fact: sssd
-  Facter.add(:sssd, :type => :aggregate) do
+  # Deprecated but here for compatibility
+  Facter.add(:sssd) do
+    setcode { Facter.value(:foreman_sssd) }
+  end
+
+  # == Fact: foreman_sssd
+  Facter.add(:foreman_sssd, :type => :aggregate) do
     {
       :services => 'target[.="sssd"]/services',
       :ldap_user_extra_attrs => 'target[.=~regexp("domain/.*")][1]/ldap_user_extra_attrs',

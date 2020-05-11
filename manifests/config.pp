@@ -97,7 +97,7 @@ class foreman::config {
     contain foreman::config::apache
 
     if $::foreman::ipa_authentication {
-      unless 'ipa' in $facts and 'default_server' in $facts['ipa'] and 'default_realm' in $facts['ipa'] {
+      unless fact('foreman_ipa.default_server') and fact('foreman_ipa.default_realm') {
         fail("${::hostname}: The system does not seem to be IPA-enrolled")
       }
 
@@ -127,7 +127,7 @@ class foreman::config {
       exec { 'ipa-getkeytab':
         command => "/bin/echo Get keytab \
           && KRB5CCNAME=KEYRING:session:get-http-service-keytab kinit -k \
-          && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -s ${facts['ipa']['default_server']} -k ${foreman::http_keytab} -p HTTP/${::fqdn} \
+          && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -s ${facts['foreman_ipa']['default_server']} -k ${foreman::http_keytab} -p HTTP/${facts['networking']['fqdn']} \
           && kdestroy -c KEYRING:session:get-http-service-keytab",
         creates => $::foreman::http_keytab,
       }
@@ -151,10 +151,11 @@ class foreman::config {
 
 
       if $::foreman::ipa_manage_sssd {
-        $sssd_services = join(unique(pick($facts['sssd']['services'], []) + ['ifp']), ', ')
-        $sssd_ldap_user_extra_attrs = join(unique(pick($facts['sssd']['ldap_user_extra_attrs'], []) + ['email:mail', 'lastname:sn', 'firstname:givenname']), ', ')
-        $sssd_allowed_uids = join(unique(pick($facts['sssd']['allowed_uids'], []) + ['apache', 'root']), ', ')
-        $sssd_user_attributes = join(unique(pick($facts['sssd']['user_attributes'], []) + ['+email', '+firstname', '+lastname']), ', ')
+        $sssd = $facts['foreman_sssd']
+        $sssd_services = join(unique(pick($sssd['services'], []) + ['ifp']), ', ')
+        $sssd_ldap_user_extra_attrs = join(unique(pick($sssd['ldap_user_extra_attrs'], []) + ['email:mail', 'lastname:sn', 'firstname:givenname']), ', ')
+        $sssd_allowed_uids = join(unique(pick($sssd['allowed_uids'], []) + ['apache', 'root']), ', ')
+        $sssd_user_attributes = join(unique(pick($sssd['user_attributes'], []) + ['+email', '+firstname', '+lastname']), ', ')
 
         augeas { 'sssd-ifp-extra-attributes':
           context => '/files/etc/sssd/sssd.conf',

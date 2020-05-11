@@ -27,11 +27,11 @@ describe 'foreman' do
         describe 'enrolled system' do
           let(:facts) do
             super().merge(
-              ipa: {
+              foreman_ipa: {
                 default_server: 'ipa.example.com',
                 default_realm: 'REALM'
               },
-              sssd: {
+              foreman_sssd: {
                 services: ['ifp']
               }
             )
