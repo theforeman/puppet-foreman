@@ -1,5 +1,51 @@
 # Changelog
 
+## [16.0.0](https://github.com/theforeman/puppet-foreman/tree/16.0.0) (2020-05-13)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/14.0.1...16.0.0)
+
+**Breaking changes:**
+
+- Use modern facts [\#841](https://github.com/theforeman/puppet-foreman/issues/841)
+- Prefix ipa and sssd facts with foreman\_ [\#839](https://github.com/theforeman/puppet-foreman/pull/839) ([ekohl](https://github.com/ekohl))
+- Remove unused parameters from puppetmaster [\#824](https://github.com/theforeman/puppet-foreman/pull/824) ([ekohl](https://github.com/ekohl))
+- Rename inventory\_upload to rh\_cloud [\#821](https://github.com/theforeman/puppet-foreman/pull/821) ([ShimShtein](https://github.com/ShimShtein))
+- Refactor repository handling [\#815](https://github.com/theforeman/puppet-foreman/pull/815) ([ekohl](https://github.com/ekohl))
+- Use plugin\_prefix to determine plugin packages [\#809](https://github.com/theforeman/puppet-foreman/pull/809) ([ekohl](https://github.com/ekohl))
+- Fixes [\#29148](https://projects.theforeman.org/issues/29148) - Use Puma instead of Passenger by default [\#802](https://github.com/theforeman/puppet-foreman/pull/802) ([sthirugn](https://github.com/sthirugn))
+
+**Implemented enhancements:**
+
+- Allow puppet/redis 6.x [\#840](https://github.com/theforeman/puppet-foreman/pull/840) ([ekohl](https://github.com/ekohl))
+- Refs [\#29601](https://projects.theforeman.org/issues/29601): Drop foreman-release-scl in favor of centos-release-scl-rh [\#838](https://github.com/theforeman/puppet-foreman/pull/838) ([ehelms](https://github.com/ehelms))
+- Switch AIO detection to use aio\_agent\_version fact [\#834](https://github.com/theforeman/puppet-foreman/pull/834) ([ekohl](https://github.com/ekohl))
+- Add Leapp plugin [\#833](https://github.com/theforeman/puppet-foreman/pull/833) ([stejskalleos](https://github.com/stejskalleos))
+- Fixes [\#29212](https://projects.theforeman.org/issues/29212) - support el8 [\#828](https://github.com/theforeman/puppet-foreman/pull/828) ([wbclark](https://github.com/wbclark))
+- Only install foreman-release-scl on CentOS EL 7 [\#822](https://github.com/theforeman/puppet-foreman/pull/822) ([ehelms](https://github.com/ehelms))
+- Allow extlib 5.x [\#820](https://github.com/theforeman/puppet-foreman/pull/820) ([mmoll](https://github.com/mmoll))
+- Refs [\#29144](https://projects.theforeman.org/issues/29144) - Use systemd socket activation [\#814](https://github.com/theforeman/puppet-foreman/pull/814) ([ekohl](https://github.com/ekohl))
+- Fixes [\#29255](https://projects.theforeman.org/issues/29255) - Set plugin config file mode to 0640 [\#807](https://github.com/theforeman/puppet-foreman/pull/807) ([ekohl](https://github.com/ekohl))
+- Fixes [\#28955](https://projects.theforeman.org/issues/28955) - Add puma configuration tuning options [\#790](https://github.com/theforeman/puppet-foreman/pull/790) ([sthirugn](https://github.com/sthirugn))
+- Fixes [\#28436](https://projects.theforeman.org/issues/28436) - Add keycloak support [\#779](https://github.com/theforeman/puppet-foreman/pull/779) ([ekohl](https://github.com/ekohl))
+- Add options for rails\_cache\_store [\#762](https://github.com/theforeman/puppet-foreman/pull/762) ([dgoetz](https://github.com/dgoetz))
+
+**Fixed bugs:**
+
+- Ensure Foreman is provisioned before configuring cockpit [\#835](https://github.com/theforeman/puppet-foreman/pull/835) ([ekohl](https://github.com/ekohl))
+- Drop the separate rails repository [\#826](https://github.com/theforeman/puppet-foreman/pull/826) ([ekohl](https://github.com/ekohl))
+- Refs [\#29148](https://projects.theforeman.org/issues/29148): Do not proxy /pulp2 to Puma [\#811](https://github.com/theforeman/puppet-foreman/pull/811) ([ehelms](https://github.com/ehelms))
+- Correct casing on Stdlib::HTTPUrl [\#806](https://github.com/theforeman/puppet-foreman/pull/806) ([ekohl](https://github.com/ekohl))
+- Fixes [\#28739](https://projects.theforeman.org/issues/28739): Fix static asset caching when using Puma [\#788](https://github.com/theforeman/puppet-foreman/pull/788) ([ehelms](https://github.com/ehelms))
+
+**Closed issues:**
+
+- db\_username changes do not work [\#750](https://github.com/theforeman/puppet-foreman/issues/750)
+
+**Merged pull requests:**
+
+- Make camptocamp/systemd a hard dependency [\#825](https://github.com/theforeman/puppet-foreman/pull/825) ([ekohl](https://github.com/ekohl))
+- Make foreman::config::apache standalone [\#800](https://github.com/theforeman/puppet-foreman/pull/800) ([ekohl](https://github.com/ekohl))
+
 ## [14.0.0](https://github.com/theforeman/puppet-foreman/tree/14.0.0) (2020-02-12)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/13.1.0...14.0.0)
