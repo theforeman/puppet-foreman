@@ -15,7 +15,10 @@ describe 'foreman::service' do
       foreman_service: 'foreman',
       foreman_service_ensure: 'running',
       foreman_service_enable: true,
-      jobs_manage_service: false
+      dynflow_manage_services: false,
+      dynflow_orchestrator_ensure: 'present',
+      dynflow_worker_instances: 1,
+      dynflow_worker_concurrency: 5,
     }
   end
 

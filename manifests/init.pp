@@ -177,16 +177,6 @@
 #
 # $telemetry_logger_level::       Telemetry debugging logs level
 #
-# $dynflow_pool_size::            How many threads per worker process should Dynflow use
-#
-# $jobs_manage_service::          Whether to manage the dynflow services
-#
-# $jobs_service_enable::          Whether the Dynflow executor should be enabled
-#
-# $jobs_service_ensure::          Whether the Dynflow executor should be running or stopped
-#
-# $jobs_sidekiq_redis_url::       If set, the redis server is not managed and we use the defined url to connect
-#
 # $hsts_enabled::                 Should HSTS enforcement in https requests be enabled
 #
 # $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing. This requires Foreman 1.22+
@@ -198,6 +188,18 @@
 # $foreman_service_puma_workers::         Number of workers for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
 #
 # $rails_cache_store::            Set rails cache store
+#
+# === Dynflow parameters:
+#
+# $dynflow_manage_services::      Whether to manage the dynflow services
+#
+# $dynflow_orchestrator_ensure::  The state of the dynflow orchestrator instance
+#
+# $dynflow_worker_instances::     The number of worker instances that should be running
+#
+# $dynflow_worker_concurrency::   How many concurrent jobs to handle per worker instance
+#
+# $dynflow_redis_url::            If set, the redis server is not managed and we use the defined url to connect
 #
 # === Keycloak parameters:
 #
@@ -294,11 +296,11 @@ class foreman (
   Enum['statsd', 'statsite', 'datadog'] $telemetry_statsd_protocol = $foreman::params::telemetry_statsd_protocol,
   Boolean $telemetry_logger_enabled = $foreman::params::telemetry_logger_enabled,
   Enum['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'] $telemetry_logger_level = $foreman::params::telemetry_logger_level,
-  Stdlib::Port $dynflow_pool_size = $foreman::params::dynflow_pool_size,
-  Boolean $jobs_manage_service = $foreman::params::jobs_manage_service,
-  Stdlib::Ensure::Service $jobs_service_ensure = $foreman::params::jobs_service_ensure,
-  Boolean $jobs_service_enable = $foreman::params::jobs_service_enable,
-  Optional[Redis::RedisUrl] $jobs_sidekiq_redis_url = $foreman::params::jobs_sidekiq_redis_url,
+  Boolean $dynflow_manage_services = $foreman::params::dynflow_manage_services,
+  Enum['present', 'absent'] $dynflow_orchestrator_ensure = $foreman::params::dynflow_orchestrator_ensure,
+  Integer[0] $dynflow_worker_instances = $foreman::params::dynflow_worker_instances,
+  Integer[0] $dynflow_worker_concurrency = $foreman::params::dynflow_worker_concurrency,
+  Optional[Redis::RedisUrl] $dynflow_redis_url = $foreman::params::dynflow_redis_url,
   Boolean $hsts_enabled = $foreman::params::hsts_enabled,
   Array[Stdlib::HTTPUrl] $cors_domains = $foreman::params::cors_domains,
   Integer[0] $foreman_service_puma_threads_min = $foreman::params::foreman_service_puma_threads_min,

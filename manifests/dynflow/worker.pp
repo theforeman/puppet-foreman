@@ -1,4 +1,7 @@
-# @summary Initialize the dynflow worker
+# @summary manage a dynflow worker
+#
+# @param ensure
+#   The state to ensure for this worker
 #
 # @param service_name
 #   The name of the service instance. Will get prefixed with dynflow-sidekiq@
@@ -15,31 +18,41 @@
 # @param config_group
 #   The group that owns the config file
 #
-# @param service_ensure
-#   The state of the service to ensuree
-#
-# @param service_enable
-#   Whether to enable the service. This means starting at boot
+# @api private
 define foreman::dynflow::worker (
+  Enum['present', 'absent'] $ensure = 'present',
   String $service_name = $name,
-  Integer[1] $concurrency = $foreman::dynflow_pool_size,
-  Array[String] $queues = ['default', 'remote_execution'],
-  String $config_owner = 'root',
-  String $config_group = $foreman::group,
-  Stdlib::Ensure::Service $service_ensure = $foreman::jobs_service_ensure,
-  Boolean $service_enable = $foreman::jobs_service_enable
+  Integer[1] $concurrency = 1,
+  Array[String[1]] $queues = [],
+  String[1] $config_owner = 'root',
+  Optional[String[1]] $config_group = undef,
+  Stdlib::Filemode $config_mode = '0644',
 ) {
+  $filename = "/etc/foreman/dynflow/${service_name}.yml"
+  $service = "dynflow-sidekiq@${service_name}"
 
-  file { "/etc/foreman/dynflow/${service_name}.yml":
-    ensure  => file,
-    owner   => $config_owner,
-    group   => $config_group,
-    mode    => '0644',
-    content => template('foreman/dynflow_worker.yml.erb'),
-  }
-  ~> service { "dynflow-sidekiq@${service_name}":
-    ensure    => $service_ensure,
-    enable    => $service_enable,
-    subscribe => Class['foreman::database'],
+  if $ensure == 'present' {
+    assert_type(Array[String[1], 1], $queues)
+
+    file { $filename:
+      ensure  => file,
+      owner   => $config_owner,
+      group   => pick($config_group, $foreman::group),
+      mode    => $config_mode,
+      content => template('foreman/dynflow_worker.yml.erb'),
+    }
+    ~> service { $service:
+      ensure    => running,
+      enable    => true,
+      subscribe => Class['foreman::database'],
+    }
+  } else {
+    service { $service:
+      ensure => stopped,
+      enable => false,
+    }
+    -> file { $filename:
+      ensure => absent,
+    }
   }
 }

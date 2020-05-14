@@ -9,15 +9,23 @@ class foreman::service(
   String $foreman_service = $foreman::foreman_service,
   Stdlib::Ensure::Service $foreman_service_ensure = $foreman::foreman_service_ensure,
   Boolean $foreman_service_enable = $foreman::foreman_service_enable,
-  Boolean $jobs_manage_service = $foreman::jobs_manage_service,
+  Boolean $dynflow_manage_services = $foreman::dynflow_manage_services,
+  Enum['present', 'absent'] $dynflow_orchestrator_ensure = $foreman::dynflow_orchestrator_ensure,
+  Integer[0] $dynflow_worker_instances = $foreman::dynflow_worker_instances,
+  Integer[0] $dynflow_worker_concurrency = $foreman::dynflow_worker_concurrency,
 ) {
-  if $jobs_manage_service {
+  if $dynflow_manage_services {
     foreman::dynflow::worker { 'orchestrator':
+      ensure      => $dynflow_orchestrator_ensure,
       concurrency => 1,
       queues      => ['dynflow_orchestrator'],
     }
 
-    foreman::dynflow::worker { 'worker': }
+    foreman::dynflow::pool { 'worker':
+      queues      => ['default', 'remote_execution'],
+      instances   => $dynflow_worker_instances,
+      concurrency => $dynflow_worker_concurrency,
+    }
   }
 
   if $apache {

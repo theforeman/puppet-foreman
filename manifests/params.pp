@@ -67,9 +67,6 @@ class foreman::params {
   $telemetry_logger_enabled     = false
   $telemetry_logger_level       = 'DEBUG'
 
-  # Configure how many workers should Dynflow use
-  $dynflow_pool_size = 5
-
   # Define foreman service
   $foreman_service = 'foreman'
   $foreman_service_ensure = 'running'
@@ -79,10 +76,11 @@ class foreman::params {
   $foreman_service_puma_workers = 2
 
   # Define job processing service properties
-  $jobs_manage_service = true
-  $jobs_service_ensure = 'running'
-  $jobs_service_enable = true
-  $jobs_sidekiq_redis_url = undef
+  $dynflow_manage_services = true
+  $dynflow_orchestrator_ensure = 'present'
+  $dynflow_worker_instances = 1
+  $dynflow_worker_concurrency = 5
+  $dynflow_redis_url = undef
 
   # Keycloak
   $keycloak = false
