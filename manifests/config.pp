@@ -6,12 +6,12 @@ class foreman::config {
     Class['puppet::server::install'] -> Class['foreman::config']
   }
 
-  if $foreman::jobs_manage_service {
-    if $foreman::jobs_sidekiq_redis_url != undef {
-      $jobs_redis_url = $foreman::jobs_sidekiq_redis_url
+  if $foreman::dynflow_manage_services {
+    if $foreman::dynflow_redis_url != undef {
+      $dynflow_redis_url = $foreman::dynflow_redis_url
     } else {
       include redis
-      $jobs_redis_url = "redis://localhost:${::redis::port}/6"
+      $dynflow_redis_url = "redis://localhost:${redis::port}/6"
     }
 
     file { '/etc/foreman/dynflow':

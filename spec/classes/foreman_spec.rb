@@ -37,7 +37,6 @@ describe 'foreman' do
             .with_content(%r{^:ssl_ca_file:\s*/etc/puppetlabs/puppet/ssl/certs/ca.pem$})
             .with_content(%r{^:ssl_priv_key:\s*/etc/puppetlabs/puppet/ssl/private_keys/foo\.example\.com\.pem$})
             .with_content(/^:logging:\n\s*:level:\s*info$/)
-            .with_content(/^:dynflow:\n\s*:pool_size:\s*5$/)
             .with_content(/^:hsts_enabled:\s*true$/)
             .with_content(/^:ssl_client_dn_env:/)
             .with_content(/^:ssl_client_verify_env:/)
@@ -120,16 +119,23 @@ describe 'foreman' do
         it { should contain_file('/etc/foreman/dynflow').with_ensure('directory') }
         it {
           should contain_foreman__dynflow__worker('orchestrator')
+            .with_ensure('present')
             .with_concurrency(1)
             .with_queues(['dynflow_orchestrator'])
         }
-        it { should contain_foreman__dynflow__worker('worker') }
+        it { should contain_foreman__dynflow__worker('worker').with_ensure('absent') }
+        it do
+          should contain_foreman__dynflow__worker('worker-1')
+            .with_ensure('present')
+            .with_concurrency(5)
+            .with_queues(['default', 'remote_execution'])
+        end
 
         # service
         it { should contain_class('foreman::service') }
         it { should contain_service('foreman') }
         it { is_expected.to contain_service('dynflow-sidekiq@orchestrator').with_ensure('running').with_enable(true) }
-        it { is_expected.to contain_service('dynflow-sidekiq@worker').with_ensure('running').with_enable(true) }
+        it { is_expected.to contain_service('dynflow-sidekiq@worker-1').with_ensure('running').with_enable(true) }
 
         # settings
         it { should contain_class('foreman::settings').that_requires('Class[foreman::database]') }
@@ -445,7 +451,7 @@ describe 'foreman' do
 
       describe 'with custom redis' do
         context 'with redis_url' do
-          let(:params) { super().merge(jobs_sidekiq_redis_url: 'redis://127.0.0.1:4333/') }
+          let(:params) { super().merge(dynflow_redis_url: 'redis://127.0.0.1:4333/') }
           it { should_not contain_class('redis') }
           it { should_not contain_class('redis::instance') }
         end

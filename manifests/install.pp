@@ -24,7 +24,7 @@ class foreman::install {
     }
   }
 
-  if $foreman::jobs_manage_service {
+  if $foreman::dynflow_manage_services {
     package { 'foreman-dynflow-sidekiq':
       ensure => installed,
     }

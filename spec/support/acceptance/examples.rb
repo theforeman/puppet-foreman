@@ -2,7 +2,7 @@ shared_examples 'the foreman application' do
   [
     ['debian', 'ubuntu'].include?(os[:family]) ? 'apache2' : 'httpd',
     'dynflow-sidekiq@orchestrator',
-    'dynflow-sidekiq@worker',
+    'dynflow-sidekiq@worker-1',
     'foreman',
   ].each do |service_name|
     describe service(service_name) do
