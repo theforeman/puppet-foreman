@@ -7,7 +7,7 @@ class foreman::database::postgresql {
 
   $password = $foreman::db_password ? {
     'UNSET' => false,
-    default => postgresql_password($foreman::db_username, $foreman::db_password),
+    default => postgresql::postgresql_password($foreman::db_username, $foreman::db_password),
   }
 
   # Prevents errors if run from /root etc.
