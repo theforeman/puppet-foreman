@@ -19,6 +19,10 @@ class foreman::config {
     }
   }
 
+  # Used in the settings template
+  $websockets_ssl_cert = pick($foreman::websockets_ssl_cert, $foreman::server_ssl_cert)
+  $websockets_ssl_key = pick($foreman::websockets_ssl_key, $foreman::server_ssl_key)
+
   concat::fragment {'foreman_settings+01-header.yaml':
     target  => '/etc/foreman/settings.yaml',
     content => template('foreman/settings.yaml.erb'),

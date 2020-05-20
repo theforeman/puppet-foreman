@@ -17,8 +17,8 @@
 
 # Websockets
 :websockets_encrypt: <%= scope.lookupvar("foreman::websockets_encrypt") %>
-:websockets_ssl_key: <%= scope.lookupvar("foreman::websockets_ssl_key") %>
-:websockets_ssl_cert: <%= scope.lookupvar("foreman::websockets_ssl_cert") %>
+:websockets_ssl_key: <%= @websockets_ssl_key %>
+:websockets_ssl_cert: <%= @websockets_ssl_cert %>
 
 # SSL-settings
 :ssl_certificate: <%= scope.lookupvar("foreman::client_ssl_cert") %>
