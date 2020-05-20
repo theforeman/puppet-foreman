@@ -183,8 +183,8 @@ class foreman::params {
 
   # Websockets
   $websockets_encrypt = true
-  $websockets_ssl_key = $server_ssl_key
-  $websockets_ssl_cert = $server_ssl_cert
+  $websockets_ssl_key = undef
+  $websockets_ssl_cert = undef
 
   # Application logging
   $logging_level = 'info'

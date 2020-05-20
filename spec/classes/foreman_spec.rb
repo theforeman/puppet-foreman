@@ -31,6 +31,8 @@ describe 'foreman' do
             .with_content(/^:oauth_consumer_key:\s*\w+$/)
             .with_content(/^:oauth_consumer_secret:\s*\w+$/)
             .with_content(/^:websockets_encrypt:\s*true$/)
+            .with_content(%r{^:websockets_ssl_key:\s*/etc/puppetlabs/puppet/ssl/private_keys/foo\.example\.com\.pem$})
+            .with_content(%r{^:websockets_ssl_cert:\s*/etc/puppetlabs/puppet/ssl/certs/foo\.example\.com\.pem$})
             .with_content(%r{^:ssl_certificate:\s*/etc/puppetlabs/puppet/ssl/certs/foo\.example\.com\.pem$})
             .with_content(%r{^:ssl_ca_file:\s*/etc/puppetlabs/puppet/ssl/certs/ca.pem$})
             .with_content(%r{^:ssl_priv_key:\s*/etc/puppetlabs/puppet/ssl/private_keys/foo\.example\.com\.pem$})
@@ -236,8 +238,8 @@ describe 'foreman' do
             pam_service: 'foreman',
             ipa_manage_sssd: true,
             websockets_encrypt: true,
-            websockets_ssl_key: '/etc/ssl/private/snakeoil.pem',
-            websockets_ssl_cert: '/etc/ssl/certs/snakeoil.pem',
+            websockets_ssl_key: '/etc/ssl/private/snakeoil-ws.pem',
+            websockets_ssl_cert: '/etc/ssl/certs/snakeoil-ws.pem',
             logging_level: 'info',
             loggers: {},
             email_delivery_method: 'sendmail',
@@ -259,6 +261,12 @@ describe 'foreman' do
             .with_keycloak(true)
             .with_keycloak_app_name('cloak-app')
             .with_keycloak_realm('myrealm')
+        end
+
+        it 'should configure certificates in settings.yaml' do
+          is_expected.to contain_concat__fragment('foreman_settings+01-header.yaml')
+            .with_content(%r{^:websockets_ssl_key: /etc/ssl/private/snakeoil-ws\.pem$})
+            .with_content(%r{^:websockets_ssl_cert: /etc/ssl/certs/snakeoil-ws\.pem$})
         end
       end
 
