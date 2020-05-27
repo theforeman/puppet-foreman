@@ -189,7 +189,7 @@ class foreman::params {
   # Application logging
   $logging_level = 'info'
   $logging_type = 'file'
-  $logging_layout = 'pattern'
+  $logging_layout = 'multiline_request_pattern'
   $loggers = {}
 
   # Rails Cache Store

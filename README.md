@@ -76,6 +76,9 @@ previous stable release.
 
 This module targets Foreman 2.0+.
 
+If you're running Foreman instance older than Foreman 2.2 you need to change logging layout parameter from 
+`multiline_request_pattern` to `multiline_pattern` due to compatibility.  
+
 ## Types and providers
 
 `foreman_config_entry` can be used to manage settings in Foreman's database, as
