@@ -277,7 +277,7 @@ class foreman (
   Optional[Stdlib::Absolutepath] $websockets_ssl_cert = $foreman::params::websockets_ssl_cert,
   Enum['debug', 'info', 'warn', 'error', 'fatal'] $logging_level = $foreman::params::logging_level,
   Enum['file', 'syslog', 'journald'] $logging_type = $foreman::params::logging_type,
-  Enum['pattern', 'multiline_pattern', 'json'] $logging_layout = $foreman::params::logging_layout,
+  Enum['pattern', 'multiline_pattern', 'multiline_request_pattern', 'json'] $logging_layout = $foreman::params::logging_layout,
   Hash[String, Boolean] $loggers = $foreman::params::loggers,
   Optional[Enum['sendmail', 'smtp']] $email_delivery_method = $foreman::params::email_delivery_method,
   Optional[Stdlib::Host] $email_smtp_address = $foreman::params::email_smtp_address,
