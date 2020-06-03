@@ -15,6 +15,44 @@ describe 'foreman::config::apache' do
         end
       end
 
+      describe 'without manage_selinux_booleans', if: facts[:os]['family'] == 'RedHat' do
+        let :facts do
+          override_facts(super(), os: {'selinux' => {'enabled' => true}})
+        end
+
+        it 'should contain the selinux resource' do
+          should contain_selboolean('httpd_can_network_connect')
+        end
+      end
+
+      describe 'with manage_selinux_booleans to true', if: facts[:os]['family'] == 'RedHat' do
+        let :params do
+          super().merge(
+            manage_selinux_booleans: true
+          )
+        end
+
+        let :facts do
+          override_facts(super(), os: {'selinux' => {'enabled' => true}})
+        end
+
+        it 'should contain the selinux resource' do
+          should contain_selboolean('httpd_can_network_connect')
+        end
+      end
+
+      describe 'with manage_selinux_booleans to false', if: facts[:os]['family'] == 'RedHat' do
+        let :params do
+          super().merge(
+            manage_selinux_booleans: false
+          )
+        end
+
+        it 'should not contain the selinux resource' do
+          should_not contain_selboolean('httpd_can_network_connect')
+        end
+      end
+
       describe 'with passenger' do
         let(:params) do
           super().merge(
