@@ -32,22 +32,20 @@ class foreman::plugin::puppetdb (
   foreman::plugin { 'puppetdb':
     package => $package,
   }
-  -> foreman_config_entry { 'puppetdb_enabled':
-    value => true,
+
+  $config = {
+    'puppetdb_enabled'         => true,
+    'puppetdb_address'         => $address,
+    'puppetdb_ssl_ca_file'     => $ssl_ca_file,
+    'puppetdb_ssl_certificate' => $ssl_certificate,
+    'puppetdb_ssl_private_key' => $ssl_private_key,
+    'puppetdb_api_version'     => $api_version,
   }
-  -> foreman_config_entry { 'puppetdb_address':
-    value => $address,
-  }
-  -> foreman_config_entry { 'puppetdb_ssl_ca_file':
-    value => $ssl_ca_file,
-  }
-  -> foreman_config_entry { 'puppetdb_ssl_certificate':
-    value => $ssl_certificate,
-  }
-  -> foreman_config_entry { 'puppetdb_ssl_private_key':
-    value => $ssl_private_key,
-  }
-  -> foreman_config_entry { 'puppetdb_api_version':
-    value => $api_version,
+
+  $config.each |$setting, $value| {
+    foreman_config_entry { $setting:
+      value   => $value,
+      require => Class['foreman::database'],
+    }
   }
 }
