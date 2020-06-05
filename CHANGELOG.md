@@ -1,5 +1,15 @@
 # Changelog
 
+## [14.0.2](https://github.com/theforeman/puppet-foreman/tree/14.0.2) (2020-04-29)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/14.0.1...14.0.2)
+
+**Fixed bugs:**
+
+- Fixes [\#30026](https://projects.theforeman.org/issues/30026) - Ensure Foreman is provisioned before configuring puppetdb [\#852](https://github.com/theforeman/puppet-foreman/pull/852) ([ekohl](https://github.com/ekohl))
+- Ensure Foreman is provisioned before configuring cockpit [\#850](https://github.com/theforeman/puppet-foreman/pull/850) ([ekohl](https://github.com/ekohl))
+- Fixes [\#29649](https://projects.theforeman.org/issues/29649) - Prefix ipa and sssd facts with foreman\_ [\#848](https://github.com/theforeman/puppet-foreman/pull/848) ([ekohl](https://github.com/ekohl))
+
 ## [14.0.1](https://github.com/theforeman/puppet-foreman/tree/14.0.1) (2020-04-29)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/14.0.0...14.0.1)
