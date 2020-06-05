@@ -24,6 +24,17 @@ describe 'foreman::plugin::puppetdb' do
           should contain_foreman__plugin('puppetdb').with_package('ruby-puppetdb-foreman')
         end
       end
+
+      it do
+        should contain_foreman_config_entry('puppetdb_enabled')
+          .with_value(true)
+          .that_requires(['Class[foreman::database]', 'Foreman::Plugin[puppetdb]'])
+      end
+      it do
+        should contain_foreman_config_entry('puppetdb_address')
+          .with_value('https://localhost:8081/pdb/cmd/v1')
+          .that_requires(['Class[foreman::database]', 'Foreman::Plugin[puppetdb]'])
+      end
     end
   end
 end
