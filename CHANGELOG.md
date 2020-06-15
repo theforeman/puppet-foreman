@@ -1,5 +1,13 @@
 # Changelog
 
+## [15.0.1](https://github.com/theforeman/puppet-foreman/tree/15.0.1) (2020-06-15)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.0.0...15.0.1)
+
+**Fixed bugs:**
+
+- Fixes [\#30026](https://projects.theforeman.org/issues/30026) - Ensure Foreman is provisioned before puppetdb [\#852](https://github.com/theforeman/puppet-foreman/pull/852) ([ekohl](https://github.com/ekohl))
+
 ## [15.0.0](https://github.com/theforeman/puppet-foreman/tree/15.0.0) (2020-05-15)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/14.0.0...15.0.0)
