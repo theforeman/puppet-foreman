@@ -47,6 +47,16 @@ class foreman::config {
     ensure => absent,
   }
 
+  file { $foreman::client_ssl_cert:
+    group => $foreman::group,
+    mode  => '0640',
+  }
+
+  file { $foreman::client_ssl_key:
+    group => $foreman::group,
+    mode  => '0640',
+  }
+
   $listen_socket = $foreman::foreman_service_bind ? {
     Stdlib::IP::Address::V6 => "[${foreman::foreman_service_bind}]:${foreman::foreman_service_port}",
     default                 => "${foreman::foreman_service_bind}:${foreman::foreman_service_port}",
