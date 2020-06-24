@@ -8,12 +8,3 @@
   env:
     global:
       - PARALLEL_TEST_PROCESSORS=8
-Gemfile:
-  extra:
-    - gem: webmock
-      version: '~> 2.0'
-    - gem: oauth
-spec/spec_helper.rb:
-  requires:
-    - webmock/rspec
-    - puppet/reports
