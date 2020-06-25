@@ -1,0 +1,11 @@
+---
+:default_hostgroup:
+  :facts_map:
+<% @hostgroups.each do |group| -%>
+<% group.each do |name, value| -%>
+    '<%= name %>':
+<% value.sort.each do |fact_name, fact_value| -%>
+      '<%= fact_name %>': '<%= fact_value %>'
+<% end -%>
+<% end -%>
+<% end -%>
