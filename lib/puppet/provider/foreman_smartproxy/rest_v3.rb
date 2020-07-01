@@ -4,7 +4,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v3, :parent => Puppet::Type
   def proxy
     @proxy ||= begin
       r = request(:get, 'api/v2/smart_proxies', :search => %{name="#{resource[:name]}"})
-      raise Puppet::Error.new("Proxy #{resource[:name]} cannot be retrieved: #{error_message(r)}") unless success?(r)
+      raise Puppet::Error.new("Proxy #{resource[:name]} cannot be retrieved from Foreman: #{error_message(r)}") unless success?(r)
       JSON.load(r.body)['results'][0]
     end
   end
