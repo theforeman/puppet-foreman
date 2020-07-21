@@ -107,7 +107,7 @@ class foreman::config::apache(
   Stdlib::Port $server_ssl_port = 443,
   Stdlib::HTTPUrl $proxy_backend = 'http://localhost:3000/',
   Hash $proxy_params = {'retry' => '0'},
-  Array[String] $proxy_no_proxy_uris = ['/pulp', '/pulp2', '/streamer', '/pub'],
+  Array[String] $proxy_no_proxy_uris = ['/pulp', '/pulp2', '/streamer', '/pub', '/icons'],
   Boolean $ssl = false,
   Optional[Stdlib::Absolutepath] $ssl_ca = undef,
   Optional[Stdlib::Absolutepath] $ssl_chain = undef,
