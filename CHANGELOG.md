@@ -1,5 +1,19 @@
 # Changelog
 
+## [15.0.2](https://github.com/theforeman/puppet-foreman/tree/15.0.2) (2020-08-03)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.0.1...15.0.2)
+
+**Implemented enhancements:**
+
+- Add foreman\_statistics plugin [\#855](https://github.com/theforeman/puppet-foreman/pull/855) ([ezr-ondrej](https://github.com/ezr-ondrej))
+- add plugin foreman\_column\_view [\#601](https://github.com/theforeman/puppet-foreman/pull/601) ([dgoetz](https://github.com/dgoetz))
+
+**Fixed bugs:**
+
+- Fixes [\#30456](https://projects.theforeman.org/issues/30456) - Fix missing icons on /pub page [\#867](https://github.com/theforeman/puppet-foreman/pull/867) ([adamruzicka](https://github.com/adamruzicka))
+- fix: indent for rails\_cache\_store redis type [\#859](https://github.com/theforeman/puppet-foreman/pull/859) ([ministicraft](https://github.com/ministicraft))
+
 ## [15.0.1](https://github.com/theforeman/puppet-foreman/tree/15.0.1) (2020-06-15)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.0.0...15.0.1)
