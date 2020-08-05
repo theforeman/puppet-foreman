@@ -1,5 +1,37 @@
 # Changelog
 
+## [15.1.0](https://github.com/theforeman/puppet-foreman/tree/15.1.0) (2020-08-07)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.0.2...15.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#30078](https://projects.theforeman.org/issues/30078) - add parameter to accept a hostgroup config hash [\#863](https://github.com/theforeman/puppet-foreman/pull/863) ([apatelKmd](https://github.com/apatelKmd))
+- Fixes [\#29892](https://projects.theforeman.org/issues/29892) - Use server certs for websockets [\#846](https://github.com/theforeman/puppet-foreman/pull/846) ([ekohl](https://github.com/ekohl))
+- Switch to postgresql::postgresql\_password [\#845](https://github.com/theforeman/puppet-foreman/pull/845) ([mmoll](https://github.com/mmoll))
+
+## [15.0.2](https://github.com/theforeman/puppet-foreman/tree/15.0.2) (2020-08-03)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.0.1...15.0.2)
+
+**Implemented enhancements:**
+
+- Add foreman\_statistics plugin [\#855](https://github.com/theforeman/puppet-foreman/pull/855) ([ezr-ondrej](https://github.com/ezr-ondrej))
+- add plugin foreman\_column\_view [\#601](https://github.com/theforeman/puppet-foreman/pull/601) ([dgoetz](https://github.com/dgoetz))
+
+**Fixed bugs:**
+
+- Fixes [\#30456](https://projects.theforeman.org/issues/30456) - Fix missing icons on /pub page [\#867](https://github.com/theforeman/puppet-foreman/pull/867) ([adamruzicka](https://github.com/adamruzicka))
+- fix: indent for rails\_cache\_store redis type [\#859](https://github.com/theforeman/puppet-foreman/pull/859) ([ministicraft](https://github.com/ministicraft))
+
+## [15.0.1](https://github.com/theforeman/puppet-foreman/tree/15.0.1) (2020-06-15)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.0.0...15.0.1)
+
+**Fixed bugs:**
+
+- Fixes [\#30026](https://projects.theforeman.org/issues/30026) - Ensure Foreman is provisioned before puppetdb [\#852](https://github.com/theforeman/puppet-foreman/pull/852) ([ekohl](https://github.com/ekohl))
+
 ## [15.0.0](https://github.com/theforeman/puppet-foreman/tree/15.0.0) (2020-05-15)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/14.0.0...15.0.0)
