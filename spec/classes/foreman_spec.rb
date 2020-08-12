@@ -80,7 +80,7 @@ describe 'foreman' do
         end
 
         it 'should contain foreman::config::apache' do
-          passenger_ruby = if facts[:osfamily] == 'RedHat' && facts[:os]['release']['major'] = '7'
+          passenger_ruby = if facts[:osfamily] == 'RedHat' && facts[:os]['release']['major'] == '7'
                              '/usr/bin/tfm-ruby'
                            elsif facts[:osfamily] == 'Debian'
                              '/usr/bin/foreman-ruby'
