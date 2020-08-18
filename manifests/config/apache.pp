@@ -196,6 +196,11 @@ class foreman::config::apache(
         'set SSL_CLIENT_S_DN ""',
         'set SSL_CLIENT_CERT ""',
         'set SSL_CLIENT_VERIFY ""',
+        'unset REMOTE_USER',
+        'unset REMOTE_USER_EMAIL',
+        'unset REMOTE_USER_FIRSTNAME',
+        'unset REMOTE_USER_LASTNAME',
+        'unset REMOTE_USER_USER_GROUPS',
       ],
       'proxy_pass'          => {
         'no_proxy_uris' => $proxy_no_proxy_uris,
@@ -219,6 +224,11 @@ class foreman::config::apache(
         'set SSL_CLIENT_S_DN "%{SSL_CLIENT_S_DN}s"',
         'set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"',
         'set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"',
+        'unset REMOTE_USER',
+        'unset REMOTE_USER_EMAIL',
+        'unset REMOTE_USER_FIRSTNAME',
+        'unset REMOTE_USER_LASTNAME',
+        'unset REMOTE_USER_USER_GROUPS',
       ],
     }
 

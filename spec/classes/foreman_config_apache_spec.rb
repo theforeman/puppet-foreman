@@ -219,7 +219,12 @@ describe 'foreman::config::apache' do
                   'set X_FORWARDED_PROTO "http"',
                   'set SSL_CLIENT_S_DN ""',
                   'set SSL_CLIENT_CERT ""',
-                  'set SSL_CLIENT_VERIFY ""'
+                  'set SSL_CLIENT_VERIFY ""',
+                  'unset REMOTE_USER',
+                  'unset REMOTE_USER_EMAIL',
+                  'unset REMOTE_USER_FIRSTNAME',
+                  'unset REMOTE_USER_LASTNAME',
+                  'unset REMOTE_USER_USER_GROUPS'
                 ])
                 .with_proxy_pass(
                   "no_proxy_uris" => ['/pulp', '/pulp2', '/streamer', '/pub', '/icons'],
@@ -245,7 +250,12 @@ describe 'foreman::config::apache' do
                   'set X_FORWARDED_PROTO "https"',
                   'set SSL_CLIENT_S_DN "%{SSL_CLIENT_S_DN}s"',
                   'set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"',
-                  'set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"'
+                  'set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"',
+                  'unset REMOTE_USER',
+                  'unset REMOTE_USER_EMAIL',
+                  'unset REMOTE_USER_FIRSTNAME',
+                  'unset REMOTE_USER_LASTNAME',
+                  'unset REMOTE_USER_USER_GROUPS'
                 ])
                 .with_ssl_proxyengine(true)
                 .with_proxy_pass(
