@@ -100,6 +100,7 @@ class foreman::config {
       home    => $foreman::app_root,
       gid     => $foreman::group,
       groups  => $foreman::user_groups,
+      system  => true,
     }
   }
 
