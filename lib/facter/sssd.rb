@@ -1,14 +1,14 @@
-require 'facter/util/sssd'
-
+require_relative 'util/sssd'
 if defined? Facter::Util::Sssd
+
   # == Fact: foreman_ipa
   Facter.add(:foreman_ipa, :type => :aggregate) do
     {
-      :default_realm => 'global/realm',
-      :default_server => 'global/server',
+      :default_server => 'target[.=~regexp("domain/.*")][1]/ipa_server',
+      :default_realm  => 'target[.="sssd"]/domains'
     }.each do |key, path|
       chunk(key) do
-        val = Facter::Util::Sssd.ipa_value(path)
+        val = Facter::Util::Sssd.sssd_value(path)
         {key => val} if val
       end
     end
