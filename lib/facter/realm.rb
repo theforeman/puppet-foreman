@@ -13,6 +13,7 @@ if defined? Facter::Util::Realm
       end
     end
   end
+  # == Fact: foreman_sssd
   Facter.add(:foreman_sssd, :type => :aggregate) do
     {
       :services => 'target[.="sssd"]/services',
