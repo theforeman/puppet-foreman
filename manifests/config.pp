@@ -143,7 +143,7 @@ class foreman::config {
     contain foreman::config::apache
 
     if $foreman::ipa_authentication {
-      unless fact('foreman_ipa.default_server') and fact('foreman_ipa.default_realm') {
+      unless (fact('foreman_ipa.default_server') or fact('foreman_sssd.server')) and fact('foreman_ipa.default_realm') {
         fail("${facts['networking']['hostname']}: The system does not seem to be IPA-enrolled")
       }
 
