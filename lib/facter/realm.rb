@@ -17,7 +17,7 @@ if defined? Facter::Util::Realm
   Facter.add(:foreman_sssd, :type => :aggregate) do
     {
       :services => 'target[.="sssd"]/services',
-      :server => 'target[.=~regexp("domain/.*")][1]/ipa_server',
+      :servers => 'target[.=~regexp("domain/.*")][1]/ipa_server',
       :ldap_user_extra_attrs => 'target[.=~regexp("domain/.*")][1]/ldap_user_extra_attrs',
       :allowed_uids => 'target[.="ifp"]/allowed_uids',
       :user_attributes => 'target[.="ifp"]/user_attributes',
