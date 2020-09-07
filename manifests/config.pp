@@ -35,6 +35,12 @@ class foreman::config {
     mode  => '0640',
   }
 
+  if $foreman::use_foreman_service {
+    $db_pool = max($foreman::db_pool, $foreman::foreman_service_puma_threads_max)
+  } else {
+    $db_pool = $foreman::db_pool
+  }
+
   file { '/etc/foreman/database.yml':
     owner   => 'root',
     group   => $foreman::group,
