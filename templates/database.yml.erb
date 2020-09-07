@@ -27,6 +27,4 @@
 <% unless (password = scope.lookupvar("::foreman::db_password")) == 'UNSET' -%>
   password: "<%= password %>"
 <% end -%>
-<% unless (pool = scope.lookupvar("::foreman::db_pool")) == 'UNSET' -%>
-  pool: <%= pool %>
-<% end -%>
+  pool: <%= @db_pool %>
