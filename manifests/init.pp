@@ -83,7 +83,8 @@
 #
 # $db_root_cert::                 Root cert used to verify SSL connection to postgres
 #
-# $db_pool::                      Database 'production' size of connection pool
+# $db_pool::                      Database 'production' size of connection pool. When running as a reverse proxy,
+#                                 the value of `$foreman_service_puma_threads_max` is used if it's higher than `$db_pool`.
 #
 # $db_manage_rake::               if enabled, will run rake jobs, which depend on the database
 #
