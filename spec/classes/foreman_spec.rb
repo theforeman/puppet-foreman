@@ -154,8 +154,8 @@ describe 'foreman' do
 
         it { should compile.with_all_deps }
         it { should contain_class('foreman::config::apache').with_passenger(false) }
-        it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenStream=127\.0\.0\.1:3000$/) }
-        it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service').with_content(/^Environment=FOREMAN_BIND=127.0.0.1$/) }
+        it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenStream=\/run\/foreman\.sock$/) }
+        it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service').with_content(/^Environment=FOREMAN_BIND=unix:\/\/\/run\/foreman\.sock$/) }
         it do
           should contain_concat__fragment('foreman_settings+01-header.yaml')
             .with_content(/^:ssl_client_dn_env: HTTP_SSL_CLIENT_S_DN$/)

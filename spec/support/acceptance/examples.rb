@@ -19,8 +19,8 @@ shared_examples 'the foreman application' do
     it { is_expected.to be_listening }
   end
 
-  describe port(3000) do
-    it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
+  describe file('/run/foreman.sock') do
+    it { should be_socket }
   end
 
   describe command("curl -s --cacert /etc/foreman-certs/certificate.pem https://#{host_inventory['fqdn']} -w '\%{redirect_url}' -o /dev/null") do

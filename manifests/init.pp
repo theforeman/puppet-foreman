@@ -325,10 +325,10 @@ class foreman (
 
   if $apache {
     $use_foreman_service = ! $passenger
-    $foreman_service_bind = '127.0.0.1'
+    $foreman_service_bind = 'unix:///run/foreman.sock'
   } else {
     $use_foreman_service = true
-    $foreman_service_bind = '0.0.0.0'
+    $foreman_service_bind = 'tcp://0.0.0.0:3000'
   }
 
   include foreman::install

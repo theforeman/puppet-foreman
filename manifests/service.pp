@@ -40,9 +40,15 @@ class foreman::service(
   }
 
   if $use_foreman_service {
-    service { $foreman_service:
+    service { "${foreman_service}.socket":
       ensure => $foreman_service_ensure,
       enable => $foreman_service_enable,
+    }
+
+    service { $foreman_service:
+      ensure  => $foreman_service_ensure,
+      enable  => $foreman_service_enable,
+      require => Service["${foreman_service}.socket"],
     }
   }
 }
