@@ -53,12 +53,13 @@ class foreman::config {
     ensure => absent,
   }
 
-  $listen_socket = $foreman::foreman_service_bind ? {
-    Stdlib::IP::Address::V6 => "[${foreman::foreman_service_bind}]:${foreman::foreman_service_port}",
-    default                 => "${foreman::foreman_service_bind}:${foreman::foreman_service_port}",
-  }
-
   if $foreman::use_foreman_service {
+    if $foreman::apache {
+      include apache
+    }
+
+    $listen_stream = regsubst($foreman::foreman_service_bind, 'unix://|tcp://', '')
+
     systemd::dropin_file { 'foreman-socket':
       filename => 'installer.conf',
       unit     => "${foreman::foreman_service}.socket",
@@ -125,7 +126,7 @@ class foreman::config {
       serveraliases           => $foreman::serveraliases,
       server_port             => $foreman::server_port,
       server_ssl_port         => $foreman::server_ssl_port,
-      proxy_backend           => "http://${listen_socket}/",
+      proxy_backend           => $foreman::foreman_service_bind,
       ssl                     => $foreman::ssl,
       ssl_ca                  => $foreman::server_ssl_ca,
       ssl_chain               => $foreman::server_ssl_chain,

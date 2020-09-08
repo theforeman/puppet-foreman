@@ -105,7 +105,7 @@ class foreman::config::apache(
   Array[Stdlib::Fqdn] $serveraliases = [],
   Stdlib::Port $server_port = 80,
   Stdlib::Port $server_ssl_port = 443,
-  Stdlib::HTTPUrl $proxy_backend = 'http://localhost:3000/',
+  Pattern['^(https?|unix)://'] $proxy_backend = 'unix:///run/foreman.sock',
   Hash $proxy_params = {'retry' => '0'},
   Array[String] $proxy_no_proxy_uris = ['/pulp', '/pulp2', '/streamer', '/pub', '/icons'],
   Boolean $ssl = false,
@@ -133,6 +133,12 @@ class foreman::config::apache(
   String[1] $keycloak_realm = 'ssl-realm',
 ) {
   $docroot = "${app_root}/public"
+
+  if $proxy_backend =~ 'unix://' {
+    $_proxy_backend = "${proxy_backend}|http://${servername}/"
+  } else {
+    $_proxy_backend = regsubst($proxy_backend, 'tcp://', 'http://')
+  }
 
   if $foreman_url {
     $suburi_parts = split($foreman_url, '/')
@@ -186,7 +192,7 @@ class foreman::config::apache(
     }
 
     include apache::mod::proxy_wstunnel
-    $websockets_backend = regsubst($proxy_backend, 'http://', 'ws://')
+    $websockets_backend = regsubst($_proxy_backend, 'http://', 'ws://')
 
     $vhost_http_internal_options = {
       'proxy_preserve_host' => true,
@@ -205,7 +211,7 @@ class foreman::config::apache(
       'proxy_pass'          => {
         'no_proxy_uris' => $proxy_no_proxy_uris,
         'path'          => pick($suburi, '/'),
-        'url'           => $proxy_backend,
+        'url'           => $_proxy_backend,
         'params'        => $proxy_params,
       },
       'rewrites'            => [
