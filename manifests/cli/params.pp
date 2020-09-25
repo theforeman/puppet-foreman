@@ -7,6 +7,7 @@ class foreman::cli::params {
   $password = undef
   $refresh_cache = false
   $request_timeout = 120
+  $use_sessions = false
   $ssl_ca_file = undef
 
   # OS specific paths
