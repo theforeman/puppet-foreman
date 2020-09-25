@@ -22,7 +22,9 @@ describe 'foreman::cli' do
             verify_exact_contents(catalogue, '/etc/hammer/cli.modules.d/foreman.yml', [
                                     ':foreman:',
                                     '  :enable_module: true',
-                                    "  :host: 'http://example.com'"
+                                    "  :host: 'http://example.com'",
+                                    '  :refresh_cache: false',
+                                    '  :request_timeout: 120',
                                   ])
           end
         end
@@ -35,8 +37,6 @@ describe 'foreman::cli' do
                                     ':foreman:',
                                     "  :username: 'joe'",
                                     "  :password: 'secret'",
-                                    '  :refresh_cache: false',
-                                    '  :request_timeout: 120'
                                   ])
           end
         end
@@ -56,6 +56,8 @@ describe 'foreman::cli' do
                                       ':foreman:',
                                       '  :enable_module: true',
                                       "  :host: 'http://example.com'",
+                                      '  :refresh_cache: false',
+                                      '  :request_timeout: 120',
                                       ':ssl:',
                                       "  :ssl_ca_file: '/etc/ca.pub'"
                                     ])
@@ -94,6 +96,8 @@ describe 'foreman::cli' do
                                   ':foreman:',
                                   '  :enable_module: true',
                                   "  :host: 'https://foreman.example.com'",
+                                  '  :refresh_cache: false',
+                                  '  :request_timeout: 120',
                                   ':ssl:',
                                   "  :ssl_ca_file: '/etc/puppetlabs/puppet/ssl/certs/ca.pub'"
                                 ])
@@ -104,8 +108,6 @@ describe 'foreman::cli' do
                                   ':foreman:',
                                   "  :username: 'jane'",
                                   "  :password: 'supersecret'",
-                                  '  :refresh_cache: false',
-                                  '  :request_timeout: 120'
                                 ])
         end
       end
