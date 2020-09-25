@@ -23,6 +23,7 @@ describe 'foreman::cli' do
                                     ':foreman:',
                                     '  :enable_module: true',
                                     "  :host: 'http://example.com'",
+                                    '  :use_sessions: false',
                                     '  :refresh_cache: false',
                                     '  :request_timeout: 120',
                                   ])
@@ -56,6 +57,7 @@ describe 'foreman::cli' do
                                       ':foreman:',
                                       '  :enable_module: true',
                                       "  :host: 'http://example.com'",
+                                      '  :use_sessions: false',
                                       '  :refresh_cache: false',
                                       '  :request_timeout: 120',
                                       ':ssl:',
@@ -96,6 +98,7 @@ describe 'foreman::cli' do
                                   ':foreman:',
                                   '  :enable_module: true',
                                   "  :host: 'https://foreman.example.com'",
+                                  '  :use_sessions: false',
                                   '  :refresh_cache: false',
                                   '  :request_timeout: 120',
                                   ':ssl:',

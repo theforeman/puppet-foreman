@@ -14,6 +14,8 @@
 #
 # $manage_root_config::   Whether to manage /root/.hammer configuration.
 #
+# $use_sessions::         Enable using sessions
+#
 # $refresh_cache::        Check API documentation cache status on each request
 #
 # $request_timeout::      API request timeout, set -1 for infinity
@@ -31,6 +33,7 @@ class foreman::cli (
   Boolean $manage_root_config = $foreman::cli::params::manage_root_config,
   Optional[String] $username = $foreman::cli::params::username,
   Optional[String] $password = $foreman::cli::params::password,
+  Boolean $use_sessions = $foreman::cli::params::use_sessions,
   Boolean $refresh_cache = $foreman::cli::params::refresh_cache,
   Integer[-1] $request_timeout = $foreman::cli::params::request_timeout,
   Optional[Stdlib::Absolutepath] $ssl_ca_file = $foreman::cli::params::ssl_ca_file,
