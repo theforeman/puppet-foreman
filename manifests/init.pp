@@ -16,7 +16,34 @@
 #
 # $initial_admin_timezone::       Initial timezone of the admin user
 #
+# $initial_organization::         Name of an initial organization
+#
+# $initial_location::             Name of an initial location
+#
+# === Database parameters:
+#
 # $db_manage::                    If enabled, will install and configure the database server on this host
+#
+# $db_host::                      Database 'production' host
+#
+# $db_port::                      Database 'production' port
+#
+# $db_database::                  Database 'production' database (e.g. foreman)
+#
+# $db_username::                  Database 'production' user (e.g. foreman)
+#
+# $db_password::                  Database 'production' password, default is randomly generated
+#
+# $db_sslmode::                   Database 'production' ssl mode
+#
+# $db_root_cert::                 Root cert used to verify SSL connection to postgres
+#
+# $db_pool::                      Database 'production' size of connection pool. When running as a reverse proxy,
+#                                 the value of `$foreman_service_puma_threads_max` is used if it's higher than `$db_pool`.
+#
+# $db_manage_rake::               if enabled, will run rake jobs, which depend on the database
+#
+# === Email parameters:
 #
 # $email_delivery_method::        Email delivery method
 #
@@ -32,19 +59,15 @@
 #
 # $email_smtp_password::          Password for SMTP server auth, if authentication is enabled
 #
-# $initial_organization::         Name of an initial organization
-#
-# $initial_location::             Name of an initial location
-#
-# $ipa_authentication::           Enable configuration for external authentication via IPA
-#
-# === Advanced parameters:
-#
-# $foreman_url::                  URL on which foreman is going to run
+# === Provisioning parameters:
 #
 # $unattended::                   Should Foreman manage host provisioning as well
 #
 # $unattended_url::               URL hosts will retrieve templates from during build (normally http as many installers don't support https)
+#
+# === Deployment parameters:
+#
+# $foreman_url::                  URL on which foreman is going to run
 #
 # $apache::                       Configure Foreman via Apache. By default via passenger but otherwise as a reverse proxy.
 #
@@ -68,25 +91,6 @@
 #
 # $plugin_version::               Foreman plugins package version, it's passed to ensure parameter of package resource
 #                                 can be set to 'installed', 'latest', 'present' only
-#
-# $db_host::                      Database 'production' host
-#
-# $db_port::                      Database 'production' port
-#
-# $db_database::                  Database 'production' database (e.g. foreman)
-#
-# $db_username::                  Database 'production' user (e.g. foreman)
-#
-# $db_password::                  Database 'production' password, default is randomly generated
-#
-# $db_sslmode::                   Database 'production' ssl mode
-#
-# $db_root_cert::                 Root cert used to verify SSL connection to postgres
-#
-# $db_pool::                      Database 'production' size of connection pool. When running as a reverse proxy,
-#                                 the value of `$foreman_service_puma_threads_max` is used if it's higher than `$db_pool`.
-#
-# $db_manage_rake::               if enabled, will run rake jobs, which depend on the database
 #
 # $app_root::                     Name of foreman root directory
 #
@@ -142,18 +146,25 @@
 #
 # $oauth_consumer_secret::        OAuth consumer secret
 #
-# $http_keytab::                  Path to keytab to be used for Kerberos authentication on the WebUI
-#
-# $pam_service::                  PAM service used for host-based access control in IPA
-#
-# $ipa_manage_sssd::              If ipa_authentication is true, should the installer manage SSSD? You can disable it
-#                                 if you use another module for SSSD configuration
-#
 # $websockets_encrypt::           Whether to encrypt websocket connections
 #
 # $websockets_ssl_key::           SSL key file to use when encrypting websocket connections
 #
 # $websockets_ssl_cert::          SSL certificate file to use when encrypting websocket connections
+#
+# $hsts_enabled::                 Should HSTS enforcement in https requests be enabled
+#
+# $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing. This requires Foreman 1.22+
+#
+# $foreman_service_puma_threads_min::     Minimum number of threads for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
+#
+# $foreman_service_puma_threads_max::     Maximum number of threads for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
+#
+# $foreman_service_puma_workers::         Number of workers for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
+#
+# $rails_cache_store::            Set rails cache store
+#
+# === Logging parameters:
 #
 # $logging_level::                Logging level of the Foreman application
 #
@@ -162,6 +173,20 @@
 # $logging_layout::               Logging layout of the Foreman application
 #
 # $loggers::                      Enable or disable specific loggers, e.g. {"sql" => true}
+#
+# === Jobs parameters:
+#
+# $dynflow_pool_size::            How many threads per worker process should Dynflow use
+#
+# $jobs_manage_service::          Whether to manage the dynflow services
+#
+# $jobs_service_enable::          Whether the Dynflow executor should be enabled
+#
+# $jobs_service_ensure::          Whether the Dynflow executor should be running or stopped
+#
+# $jobs_sidekiq_redis_url::       If set, the redis server is not managed and we use the defined url to connect
+#
+# === Telemetry parameters:
 #
 # $telemetry_prefix::             Prefix for all metrics
 #
@@ -177,27 +202,16 @@
 #
 # $telemetry_logger_level::       Telemetry debugging logs level
 #
-# $dynflow_pool_size::            How many threads per worker process should Dynflow use
+# === IPA parameters:
 #
-# $jobs_manage_service::          Whether to manage the dynflow services
+# $ipa_authentication::           Enable configuration for external authentication via IPA
 #
-# $jobs_service_enable::          Whether the Dynflow executor should be enabled
+# $ipa_manage_sssd::              If ipa_authentication is true, should the installer manage SSSD? You can disable it
+#                                 if you use another module for SSSD configuration
 #
-# $jobs_service_ensure::          Whether the Dynflow executor should be running or stopped
+# $http_keytab::                  Path to keytab to be used for Kerberos authentication on the WebUI
 #
-# $jobs_sidekiq_redis_url::       If set, the redis server is not managed and we use the defined url to connect
-#
-# $hsts_enabled::                 Should HSTS enforcement in https requests be enabled
-#
-# $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing. This requires Foreman 1.22+
-#
-# $foreman_service_puma_threads_min::     Minimum number of threads for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
-#
-# $foreman_service_puma_threads_max::     Maximum number of threads for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
-#
-# $foreman_service_puma_workers::         Number of workers for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
-#
-# $rails_cache_store::            Set rails cache store
+# $pam_service::                  PAM service used for host-based access control in IPA
 #
 # === Keycloak parameters:
 #
