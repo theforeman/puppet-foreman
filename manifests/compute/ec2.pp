@@ -2,7 +2,7 @@
 #
 # Provides support for EC2 compute resources
 #
-# === Parameters:
+# === Advanced parameters:
 #
 # $version::  Package version to install, defaults to installed
 #
