@@ -2,7 +2,7 @@
 #
 # Provides support for oVirt compute resources
 #
-# === Parameters:
+# === Advanced parameters:
 #
 # $version::  Package version to install, defaults to installed
 #
