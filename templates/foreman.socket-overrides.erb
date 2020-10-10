@@ -1,5 +1,5 @@
 [Socket]
 ListenStream=
-ListenStream=<%= @listen_socket %>
+ListenStream=<%= scope['foreman::listen_socket'] %>
 SocketUser=<%= scope['apache::user'] %>
 SocketMode=0600

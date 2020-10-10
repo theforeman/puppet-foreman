@@ -25,16 +25,6 @@ class foreman::service(
     }
   }
 
-  if $apache {
-    Class['apache::service'] -> Class['foreman::service']
-
-    # Ensure SSL certs from the puppetmaster are available
-    # Relationship is duplicated there as defined() is parse-order dependent
-    if $ssl and defined(Class['puppet::server::config']) {
-      Class['puppet::server::config'] -> Class['foreman::service']
-    }
-  }
-
   service { "${foreman_service}.socket":
     ensure => $foreman_service_ensure,
     enable => $foreman_service_enable,
