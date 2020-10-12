@@ -1,5 +1,13 @@
 # Changelog
 
+## [15.0.3](https://github.com/theforeman/puppet-foreman/tree/15.0.3) (2020-10-12)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.0.2...15.0.3)
+
+**Fixed bugs:**
+
+- Fixes [\#30789](https://projects.theforeman.org/issues/30789) - Set DB pool size dynamically [\#](https://github.com/theforeman/puppet-foreman/pull/890) ([ekohl](https://github.com/ekohl))
+
 ## [15.0.2](https://github.com/theforeman/puppet-foreman/tree/15.0.2) (2020-08-03)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.0.1...15.0.2)
