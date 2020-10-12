@@ -1,4 +1,7 @@
+# = Foreman Salt plugin
+#
 # Installs foreman_salt plugin
+#
 class foreman::plugin::salt {
 
   include foreman::plugin::tasks

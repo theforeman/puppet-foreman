@@ -1,19 +1,20 @@
-# @summary Install the puppetdb_foreman plugin
+# = Foreman PuppetDB plugin
 #
-# @param address
-#   Address of puppetdb API.
+# Install the puppetdb_foreman plugin
 #
-# @param ssl_ca_file
-#   CA certificate file which will be used to connect to the PuppetDB API.
+# === Parameters:
 #
-# @param ssl_certificate
-#   Certificate file which will be used to connect to the PuppetDB API.
+# $address::   Address of puppetdb API.
 #
-# @param ssl_private_key
-#   Private key file which will be used to connect to the PuppetDB API.
+# === Advanced parameters:
 #
-# @param api_version
-#   PuppetDB API version.
+# $ssl_ca_file::   CA certificate file which will be used to connect to the PuppetDB API.
+#
+# $ssl_certificate::   Certificate file which will be used to connect to the PuppetDB API.
+#
+# $ssl_private_key::   Private key file which will be used to connect to the PuppetDB API.
+#
+# $api_version::   PuppetDB API version.
 #
 class foreman::plugin::puppetdb (
   Stdlib::HTTPUrl $address = 'https://localhost:8081/pdb/cmd/v1',

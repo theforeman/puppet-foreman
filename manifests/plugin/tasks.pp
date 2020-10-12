@@ -1,10 +1,12 @@
-# @summary Install the foreman-tasks plugin
+# = Foreman Tasks plugin
 #
-# @param automatic_cleanup
-#   Enable automatic task cleanup using a cron job
+# Install the foreman-tasks plugin
 #
-# @param cron_line
-#   Cron line defining when the cleanup cron job should run
+# === Advanced parameters:
+#
+# $automatic_cleanup::   Enable automatic task cleanup using a cron job
+#
+# $cron_line::   Cron line defining when the cleanup cron job should run
 #
 class foreman::plugin::tasks(
   Boolean $automatic_cleanup = false,

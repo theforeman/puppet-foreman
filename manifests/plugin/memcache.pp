@@ -6,6 +6,8 @@
 #
 # $hosts::      an array of hosts running memcache
 #
+# === Advanced parameters:
+#
 # $expires_in:: global default for key TTL in seconds
 #
 # $namespace::  prepends each key with this value to provide simple namespacing

@@ -1,4 +1,7 @@
+# = Foreman Ansible plugin
+#
 # Installs foreman_ansible plugin
+#
 class foreman::plugin::ansible {
   include foreman::plugin::tasks
 

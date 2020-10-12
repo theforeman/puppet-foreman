@@ -1,7 +1,10 @@
-# @summary Install the column view plugin and optionally manage the configuration file
+# = Column View plugin
 #
-# @param columns
-#   an hash of columns to add to the configuration
+# Install the column view plugin and optionally manage the configuration file
+#
+# === Parameters:
+#
+# $columns::    a hash of columns to add to the configuration
 #
 class foreman::plugin::column_view (
   Hash[String, Hash] $columns = {},
