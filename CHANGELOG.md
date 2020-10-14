@@ -1,5 +1,14 @@
 # Changelog
 
+## [15.1.1](https://github.com/theforeman/puppet-foreman/tree/15.1.1) (2020-10-14)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.1.0...15.1.1)
+
+**Fixed bugs:**
+
+- Fixes [\#30535](https://projects.theforeman.org/issues/30535) - Set HTTP headers proxy requests [\#872](https://github.com/theforeman/puppet-foreman/pull/872) ([hsahmed](https://github.com/hsahmed))
+- Fixes [\#30789](https://projects.theforeman.org/issues/30789) - Set DB pool size dynamically [\#882](https://github.com/theforeman/puppet-foreman/pull/882) ([ekohl](https://github.com/ekohl))
+
 ## [15.1.0](https://github.com/theforeman/puppet-foreman/tree/15.1.0) (2020-08-07)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.0.2...15.1.0)
