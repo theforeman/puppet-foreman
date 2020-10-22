@@ -200,7 +200,7 @@ class foreman::config::apache(
         'unset REMOTE_USER_EMAIL',
         'unset REMOTE_USER_FIRSTNAME',
         'unset REMOTE_USER_LASTNAME',
-        'unset REMOTE_USER_USER_GROUPS',
+        'unset REMOTE_USER_GROUPS',
       ],
       'proxy_pass'          => {
         'no_proxy_uris' => $proxy_no_proxy_uris,
@@ -228,7 +228,7 @@ class foreman::config::apache(
         'unset REMOTE_USER_EMAIL',
         'unset REMOTE_USER_FIRSTNAME',
         'unset REMOTE_USER_LASTNAME',
-        'unset REMOTE_USER_USER_GROUPS',
+        'unset REMOTE_USER_GROUPS',
       ],
     }
 
