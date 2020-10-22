@@ -224,7 +224,7 @@ describe 'foreman::config::apache' do
                   'unset REMOTE_USER_EMAIL',
                   'unset REMOTE_USER_FIRSTNAME',
                   'unset REMOTE_USER_LASTNAME',
-                  'unset REMOTE_USER_USER_GROUPS'
+                  'unset REMOTE_USER_GROUPS'
                 ])
                 .with_proxy_pass(
                   "no_proxy_uris" => ['/pulp', '/pulp2', '/streamer', '/pub', '/icons'],
@@ -255,7 +255,7 @@ describe 'foreman::config::apache' do
                   'unset REMOTE_USER_EMAIL',
                   'unset REMOTE_USER_FIRSTNAME',
                   'unset REMOTE_USER_LASTNAME',
-                  'unset REMOTE_USER_USER_GROUPS'
+                  'unset REMOTE_USER_GROUPS'
                 ])
                 .with_ssl_proxyengine(true)
                 .with_proxy_pass(
