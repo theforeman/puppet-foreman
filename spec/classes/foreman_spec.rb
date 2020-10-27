@@ -280,7 +280,7 @@ describe 'foreman' do
                                             '  :level: info',
                                             '  :production:',
                                             '    :type: journald',
-                                            '    :layout: pattern'
+                                            '    :layout: multiline_request_pattern'
                                           ])
         end
       end
@@ -316,7 +316,7 @@ describe 'foreman' do
         }
       end
 
-      context 'with passenger' do 
+      context 'with passenger' do
         let(:params) { super().merge(passenger: true) }
 
         describe 'with url ending with trailing slash' do
