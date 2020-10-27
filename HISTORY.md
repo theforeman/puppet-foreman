@@ -1,3 +1,31 @@
+## [16.0.0](https://github.com/theforeman/puppet-foreman/tree/16.0.0) (2020-10-30)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.1.1...16.0.0)
+
+**Breaking changes:**
+
+- Drop Rackspace compute resource that was dropped in Foreman 2.1 [\#894](https://github.com/theforeman/puppet-foreman/pull/894) ([ehelms](https://github.com/ehelms))
+- fixes [\#29938](https://projects.theforeman.org/issues/29938) - change default logging layout [\#847](https://github.com/theforeman/puppet-foreman/pull/847) ([domitea](https://github.com/domitea))
+
+**Implemented enhancements:**
+
+- Set compute resource version parameter to advanced [\#886](https://github.com/theforeman/puppet-foreman/pull/886) ([ehelms](https://github.com/ehelms))
+- Fixes [\#31215](https://projects.theforeman/org/issues/31215) - Generate DSL docs [\#892](https://github.com/theforeman/puppet-foreman/pull/892) ([ofedoren](https://github.com/ofedoren))
+
+**Fixed bugs:**
+
+- Refs [\#30535](https://projects.theforeman.org/issues/30535) - Correctly unset remote user groups [\#896](https://github.com/theforeman/puppet-foreman/pull/896) ([tbrisker](https://github.com/tbrisker))
+- Drop foreman\_compute that was removed in 1.22 [\#895](https://github.com/theforeman/puppet-foreman/pull/895) ([ehelms](https://github.com/ehelms))
+
+## [15.1.1](https://github.com/theforeman/puppet-foreman/tree/15.1.1) (2020-10-14)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.1.0...15.1.1)
+
+**Fixed bugs:**
+
+- Fixes [\#30535](https://projects.theforeman.org/issues/30535) - Set HTTP headers proxy requests [\#872](https://github.com/theforeman/puppet-foreman/pull/872) ([hsahmed](https://github.com/hsahmed))
+- Fixes [\#30789](https://projects.theforeman.org/issues/30789) - Set DB pool size dynamically [\#882](https://github.com/theforeman/puppet-foreman/pull/882) ([ekohl](https://github.com/ekohl))
+
 ## [15.1.0](https://github.com/theforeman/puppet-foreman/tree/15.1.0) (2020-08-07)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.0.2...15.1.0)
