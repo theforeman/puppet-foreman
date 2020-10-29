@@ -31,6 +31,6 @@ class foreman::database {
     ~> foreman::rake { 'db:seed':
       environment => delete_undef_values($seed_env),
     }
-    ~> Foreman::Rake['apipie:cache:index']
+    ~> Foreman::Rake['apipie:cache:index', 'apipie_dsl:cache']
   }
 }
