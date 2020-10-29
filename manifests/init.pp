@@ -319,6 +319,10 @@ class foreman (
     timeout => 0,
   }
 
+  foreman::rake { 'apipie_dsl:cache':
+    timeout => 0,
+  }
+
   if $apache {
     $use_foreman_service = ! $passenger
     $foreman_service_bind = '127.0.0.1'
