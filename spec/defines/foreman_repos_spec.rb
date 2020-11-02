@@ -62,7 +62,7 @@ describe 'foreman::repos' do
     end
 
     it 'should fail' do
-      is_expected.to raise_error(/#{facts[:hostname]}: This module does not support osfamily #{facts[:osfamily]}/)
+      is_expected.to compile.and_raise_error(/#{facts[:hostname]}: This module does not support osfamily #{facts[:osfamily]}/)
     end
   end
 end
