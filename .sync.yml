@@ -1,13 +1,4 @@
 ---
-.travis.yml:
-  beaker_sets:
-    - centos7-64
-    - centos8-64
-    - debian10-64
-    - ubuntu1804-64
-  env:
-    global:
-      - PARALLEL_TEST_PROCESSORS=8
 Gemfile:
   extra:
     - gem: webmock

@@ -71,6 +71,7 @@ jobs:
           bundle config path vendor/bundle
           bundle config without 'development test'
           bundle install --jobs 4 --retry 3
+
   acceptance:
     if: github.repository == 'theforeman/puppet-foreman'
     needs: build_cache
@@ -81,6 +82,8 @@ jobs:
         setfile:
           - centos7-64{hostname=centos7-64.example.com}
           - centos8-64{hostname=centos8-64.example.com}
+          - debian10-64{hostname=debian10-64.example.com}
+          - ubuntu1804-64{hostname=ubuntu1804-64.example.com}
         puppet:
           - "6"
           - "5"
