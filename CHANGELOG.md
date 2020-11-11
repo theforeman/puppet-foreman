@@ -1,5 +1,17 @@
 # Changelog
 
+## [15.1.2](https://github.com/theforeman/puppet-foreman/tree/15.1.2) (2020-11-11)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.1.1...15.1.2)
+
+**Implemented enhancements:**
+
+ - [\#29938](https://projects.theforeman.org/issues/29938) - allow 'multiline_request_pattern' logging layout [\#902](https://github.com/theforeman/puppet-foreman/pull/902) ([domitea](https://github.com/domitea)) + [\#904](https://github.com/theforeman/puppet-foreman/pull/904) ([wbclark](https://github.com/wbclark))
+
+**Fixed bugs:**
+
+- Refs [\#30535](https://projects.theforeman.org/issues/30535) - Correctly unset remote user groups [\#896](https://github.com/theforeman/puppet-foreman/pull/896) ([tbrisker](https://github.com/tbrisker))
+
 ## [15.1.1](https://github.com/theforeman/puppet-foreman/tree/15.1.1) (2020-10-14)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.1.0...15.1.1)
