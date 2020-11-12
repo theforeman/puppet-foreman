@@ -280,7 +280,7 @@ describe 'foreman' do
                                             '  :level: info',
                                             '  :production:',
                                             '    :type: journald',
-                                            '    :layout: multiline_request_pattern'
+                                            '    :layout: pattern'
                                           ])
         end
       end
