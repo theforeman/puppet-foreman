@@ -40,10 +40,7 @@ class foreman::cli (
   String $hammer_plugin_prefix = $foreman::cli::params::hammer_plugin_prefix,
 ) inherits foreman::cli::params {
   # Inherit URL & auth parameters from foreman class if possible
-  #
-  # The parameter existence must be checked in case strict variables is enabled, but this will only
-  # work since PUP-4072 (3.7.5+) due to a bug resolving variables outside of this class.
-  if versioncmp($::puppetversion, '3.7.5') < 0 or defined('$foreman::foreman_url') {
+  if defined('$foreman::foreman_url') {
     $foreman_url_real = pick($foreman_url, $foreman::foreman_url)
     $username_real    = pick($username, $foreman::initial_admin_username)
     $password_real    = pick($password, $foreman::initial_admin_password)
