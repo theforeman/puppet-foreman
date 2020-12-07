@@ -228,14 +228,14 @@ describe 'foreman::config::apache' do
                 .with_proxy_pass(
                   "no_proxy_uris" => ['/pulp', '/pulp2', '/streamer', '/pub', '/icons'],
                   "path"          => '/',
-                  "url"           => 'unix:///run/foreman.sock|http://foo.example.com/',
+                  "url"           => 'unix:///run/foreman.sock|http://foreman/',
                   "params"        => { "retry" => '0' },
                 )
                 .with_rewrites([
                   {
                     'comment'      => 'Upgrade Websocket connections',
                     'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
-                    'rewrite_rule' => '/(.*) unix:///run/foreman.sock|ws://foo.example.com/$1 [P,L]',
+                    'rewrite_rule' => '/(.*) unix:///run/foreman.sock|ws://foreman/$1 [P,L]',
                   },
                 ])
             end
@@ -260,14 +260,14 @@ describe 'foreman::config::apache' do
                 .with_proxy_pass(
                   "no_proxy_uris" => ['/pulp', '/pulp2', '/streamer', '/pub', '/icons'],
                   "path"          => '/',
-                  "url"           => 'unix:///run/foreman.sock|http://foo.example.com/',
+                  "url"           => 'unix:///run/foreman.sock|http://foreman/',
                   "params"        => { "retry" => '0' },
                 )
                 .with_rewrites([
                   {
                     'comment'      => 'Upgrade Websocket connections',
                     'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
-                    'rewrite_rule' => '/(.*) unix:///run/foreman.sock|ws://foo.example.com/$1 [P,L]',
+                    'rewrite_rule' => '/(.*) unix:///run/foreman.sock|ws://foreman/$1 [P,L]',
                   },
                 ])
             end

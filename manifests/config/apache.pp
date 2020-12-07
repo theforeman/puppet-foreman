@@ -135,7 +135,7 @@ class foreman::config::apache(
   $docroot = "${app_root}/public"
 
   if $proxy_backend =~ 'unix://' {
-    $_proxy_backend = "${proxy_backend}|http://${servername}/"
+    $_proxy_backend = "${proxy_backend}|http://foreman/"
   } else {
     $_proxy_backend = regsubst($proxy_backend, 'tcp://', 'http://')
   }
