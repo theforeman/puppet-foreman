@@ -98,6 +98,9 @@
 # @param keycloak_realm
 #   The realm as passed to keycloak-httpd-client-install
 #
+# @param manage_selinux_booleans
+#   If true AND selinux is enabled on the node, set httpd_can_network_connect so apache works properly
+#
 class foreman::config::apache(
   Stdlib::Absolutepath $app_root = '/usr/share/foreman',
   String $priority = '05',
@@ -131,6 +134,7 @@ class foreman::config::apache(
   Boolean $keycloak = false,
   String[1] $keycloak_app_name = 'foreman-openidc',
   String[1] $keycloak_realm = 'ssl-realm',
+  Boolean $manage_selinux_booleans = true,
 ) {
   $docroot = "${app_root}/public"
 
@@ -238,7 +242,7 @@ class foreman::config::apache(
       ],
     }
 
-    if $facts['os']['selinux']['enabled'] {
+    if $facts['os']['selinux']['enabled'] and $manage_selinux_booleans {
       selboolean { 'httpd_can_network_connect':
         persistent => true,
         value      => 'on',
