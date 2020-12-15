@@ -197,7 +197,7 @@ class foreman::config::apache(
     $vhost_http_internal_options = {
       'setenv'              => [
         'proxy-nokeepalive 1',
-        'force-proxy-request-1.0 1'
+        'force-proxy-request-1.0 1',
       ],
       'proxy_preserve_host' => true,
       'proxy_add_headers'   => true,
