@@ -215,6 +215,7 @@ describe 'foreman' do
             server_ssl_key: '/etc/ssl/private/snakeoil.pem',
             server_ssl_crl: '/etc/ssl/certs/ca/crl.pem',
             server_ssl_protocol: '-all +TLSv1.2',
+            server_ca_file_configure: true,
             client_ssl_ca: '/etc/ssl/certs/ca.pem',
             client_ssl_cert: '/etc/ssl/certs/snakeoil.pem',
             client_ssl_key: '/etc/ssl/private/key.pem',
@@ -268,6 +269,7 @@ describe 'foreman' do
           is_expected.to contain_concat__fragment('foreman_settings+01-header.yaml')
             .with_content(%r{^:websockets_ssl_key: /etc/ssl/private/snakeoil-ws\.pem$})
             .with_content(%r{^:websockets_ssl_cert: /etc/ssl/certs/snakeoil-ws\.pem$})
+            .with_content(%r{^:server_ca_file: /etc/ssl/certs/ca\.pem$})
         end
       end
 

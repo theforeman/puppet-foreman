@@ -156,6 +156,8 @@ class foreman::params {
   $server_ssl_protocol = undef
   $server_ssl_verify_client = 'optional'
 
+  $server_ca_file_configure = false
+
   # We need the REST API interface with OAuth for some REST Puppet providers
   $oauth_active = true
   $oauth_map_users = false
