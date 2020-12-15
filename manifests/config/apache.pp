@@ -195,6 +195,10 @@ class foreman::config::apache(
     $websockets_backend = regsubst($_proxy_backend, 'http://', 'ws://')
 
     $vhost_http_internal_options = {
+      'setenv'              => [
+        'proxy-nokeepalive 1',
+        'force-proxy-request-1.0 1'
+      ],
       'proxy_preserve_host' => true,
       'proxy_add_headers'   => true,
       'request_headers'     => [
