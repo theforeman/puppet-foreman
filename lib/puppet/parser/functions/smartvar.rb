@@ -3,6 +3,7 @@
 # this function simply ask foreman for the right value for this host.
 
 
+require "cgi"
 require "net/http"
 require "net/https"
 require "uri"
@@ -24,7 +25,7 @@ module Puppet::Parser::Functions
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true if uri.scheme == 'https'
 
-    path = URI.escape("/hosts/#{fqdn}/lookup_keys/#{var}")
+    path = "/hosts/#{CGI.escape(fqdn)}/lookup_keys/#{CGI.escape(var)}"
     req = Net::HTTP::Get.new(path)
     req.basic_auth(foreman_user, foreman_pass)
     req['Content-Type'] = 'application/json'

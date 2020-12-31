@@ -38,6 +38,7 @@
 #
 # Happy Foreman API-ing!
 
+require "cgi"
 require "yaml"
 require "net/http"
 require "net/https"
@@ -65,7 +66,7 @@ module Puppet::Parser::Functions
     raise Puppet::ParseError, "Foreman: Invalid filter_result: #{filter_result}, must be a String or an Array" unless filter_result.is_a? String or filter_result.is_a? Array or filter_result.is_a? Hash or filter_result == false
 
     begin
-      path = URI.escape("/api/#{item}?search=#{search}&per_page=#{per_page}")
+      path = "/api/#{CGI.escape(item)}?search=#{CGI.escape(search)}&per_page=#{CGI.escape(per_page)}"
 
       req = Net::HTTP::Get.new(path)
       req['Content-Type'] = 'application/json'
