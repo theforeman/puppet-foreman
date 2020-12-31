@@ -1,7 +1,7 @@
 # Base provider for other Puppet types managing Foreman resources
 #
-# This provider uses Net::HTTP from Ruby stdlib, JSON (stdlib on 1.9+ or the
-# gem on 1.8) and the oauth gem for auth, so requiring minimal dependencies.
+# This provider uses Net::HTTP from Ruby stdlib, JSON and the oauth gem for
+# auth, so requiring minimal dependencies.
 
 require 'cgi'
 require 'uri'
