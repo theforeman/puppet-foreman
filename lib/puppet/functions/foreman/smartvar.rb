@@ -16,7 +16,7 @@ Puppet::Functions.create_function(:'foreman::smartvar') do
     optional_param 'String', :foreman_pass
   end
 
-   def smartvar(var, foreman_url = "http://foreman", foreman_user = "admin", foreman_pass = "changeme")
+  def smartvar(var, foreman_url = "http://foreman", foreman_user = "admin", foreman_pass = "changeme")
     scope = closure_scope
     fqdn = scope['facts']['fqdn']
 
