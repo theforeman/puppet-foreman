@@ -3,6 +3,7 @@
 # This provider uses Net::HTTP from Ruby stdlib, JSON (stdlib on 1.9+ or the
 # gem on 1.8) and the oauth gem for auth, so requiring minimal dependencies.
 
+require 'cgi'
 require 'uri'
 
 Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
@@ -59,7 +60,7 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
     base_url += '/' unless base_url.end_with?('/')
 
     uri = URI.join(base_url, path)
-    uri.query = params.map { |p,v| "#{URI.escape(p.to_s)}=#{URI.escape(v.to_s)}" }.join('&') unless params.empty?
+    uri.query = params.map { |p,v| "#{CGI.escape(p.to_s)}=#{CGI.escape(v.to_s)}" }.join('&') unless params.empty?
 
     headers = {
       'Accept' => 'application/json',
