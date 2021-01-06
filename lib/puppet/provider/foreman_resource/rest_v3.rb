@@ -99,6 +99,20 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
   end
 
   def error_message(response)
-    JSON.parse(response.body)['error']['full_messages'].join(' ') rescue "unknown error (response #{response.code})"
+    explanations = {
+      '400' => 'Something is wrong with the data sent to Foreman server',
+      '401' => 'Often this is caused by invalid Oauth credentials',
+      '404' => 'The requested resource was not found',
+      '500' => 'Check /var/log/foreman/production.log on Foreman server for detailed information',
+      '502' => 'The webserver received an invalid response from the backend service. Was Foreman unable to handle the request?',
+      '503' => 'The webserver was unable to reach the backend service. Is foreman.service running?',
+      '504' => 'The webserver timed out waiting for a response from the backend service. Is Foreman under unusually heavy load?'
+    }
+
+    if (explanation = explanations[response.code.to_str])
+      "Response: #{response.code} #{response.message}: #{explanation}"
+    else
+      JSON.parse(response.body)['error']['full_messages'].join(' ') rescue "Response: #{response.code} #{response.message}"
+    end
   end
 end
