@@ -35,6 +35,14 @@ class foreman::config {
     mode  => '0640',
   }
 
+  file { 'foreman_uuid.json':
+    path => '/opt/puppetlabs/facter/facts.d/foreman_uuid.json',
+    owner => $foreman::user,
+    group => $foreman::group,
+    mode => '0644',
+    content => template("foreman/uuid_fact.json.erb"),
+  }
+
   $db_pool = max($foreman::db_pool, $foreman::foreman_service_puma_threads_max)
 
   file { '/etc/foreman/database.yml':

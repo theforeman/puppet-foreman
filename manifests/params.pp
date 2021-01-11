@@ -28,6 +28,7 @@ class foreman::params {
   $rails_env         = 'production'
   $version           = 'present'
   $plugin_version    = 'present'
+  $instance_id       = foreman::generate_uuid()
 
   $cors_domains = []
 

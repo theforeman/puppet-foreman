@@ -8,6 +8,7 @@ class foreman::settings(
   $email_smtp_authentication = $foreman::email_smtp_authentication,
   $email_smtp_user_name      = $foreman::email_smtp_user_name,
   $email_smtp_password       = $foreman::email_smtp_password,
+  $instance_id               = $foreman::instance_id,
 ) {
   unless empty($email_delivery_method) {
     foreman_config_entry { 'delivery_method':
@@ -41,5 +42,9 @@ class foreman::settings(
     foreman_config_entry { 'smtp_password':
       value => $email_smtp_password,
     }
+  }
+
+  foreman_config_entry { 'instance_id':
+    value => $instance_id,
   }
 }
