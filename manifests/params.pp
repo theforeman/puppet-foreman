@@ -53,6 +53,8 @@ class foreman::params {
   $email_smtp_authentication = 'none'
   $email_smtp_user_name      = undef
   $email_smtp_password       = undef
+  $email_reply_address       = undef
+  $email_subject_prefix      = undef
 
   # Telemetry
   $telemetry_prefix             = 'fm_rails'

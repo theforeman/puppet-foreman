@@ -36,6 +36,10 @@
 #
 # $email_smtp_password::          Password for SMTP server auth, if authentication is enabled
 #
+# $email_reply_address::          Email reply address for emails that Foreman is sending
+#
+# $email_subject_prefix::         Prefix to add to all outgoing email
+#
 # $initial_organization::         Name of an initial organization
 #
 # $initial_location::             Name of an initial location
@@ -276,6 +280,8 @@ class foreman (
   Enum['none', 'plain', 'login', 'cram-md5'] $email_smtp_authentication = $foreman::params::email_smtp_authentication,
   Optional[String] $email_smtp_user_name = $foreman::params::email_smtp_user_name,
   Optional[String] $email_smtp_password = $foreman::params::email_smtp_password,
+  Optional[String] $email_reply_address = $foreman::params::email_reply_address,
+  Optional[String] $email_subject_prefix = $foreman::params::email_subject_prefix,
   String $telemetry_prefix = $foreman::params::telemetry_prefix,
   Boolean $telemetry_prometheus_enabled = $foreman::params::telemetry_prometheus_enabled,
   Boolean $telemetry_statsd_enabled = $foreman::params::telemetry_statsd_enabled,

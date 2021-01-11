@@ -233,6 +233,8 @@ describe 'foreman' do
             email_smtp_authentication: 'none',
             email_smtp_user_name: 'root',
             email_smtp_password: 'secret',
+            email_reply_address: 'noreply@foreman.domain',
+            email_subject_prefix: '[prefix]',
             keycloak: true,
             keycloak_app_name: 'cloak-app',
             keycloak_realm: 'myrealm',
@@ -368,7 +370,9 @@ describe 'foreman' do
               email_smtp_domain: 'example.com',
               email_smtp_authentication: 'none',
               email_smtp_user_name: 'smtp-username',
-              email_smtp_password: 'smtp-password'
+              email_smtp_password: 'smtp-password',
+              email_reply_address: 'noreply@foreman.domain',
+              email_subject_prefix: '[prefix]'
             )
           end
 
@@ -379,6 +383,8 @@ describe 'foreman' do
           it { should contain_foreman_config_entry('smtp_authentication').with_value('') }
           it { should contain_foreman_config_entry('smtp_user_name').with_value('smtp-username') }
           it { should contain_foreman_config_entry('smtp_password').with_value('smtp-password') }
+          it { should contain_foreman_config_entry('email_reply_address').with_value('noreply@foreman.domain') }
+          it { should contain_foreman_config_entry('email_subject_prefix').with_value('[prefix]') }
         end
 
         context 'with email_smtp_authentication=cram-md5' do
