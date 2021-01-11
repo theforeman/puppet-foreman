@@ -52,6 +52,10 @@ Puppet::Type.newtype(:foreman_smartproxy) do
     newvalues(URI.regexp)
   end
 
+  newparam(:instance_id) do
+    desc 'Instance id of the smartproxy'
+  end
+
   newparam(:timeout) do
     desc "Timeout for HTTP(s) requests"
 
