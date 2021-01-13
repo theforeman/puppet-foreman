@@ -55,11 +55,14 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
     OAuth::AccessToken.new(oauth_consumer)
   end
 
-  def request(method, path, params = {}, data = nil, headers = {})
+  def request_uri(path)
     base_url = resource[:base_url]
     base_url += '/' unless base_url.end_with?('/')
+    URI.join(base_url, path)
+  end
 
-    uri = URI.join(base_url, path)
+  def request(method, path, params = {}, data = nil, headers = {})
+    uri = request_uri(path)
     uri.query = params.map { |p,v| "#{CGI.escape(p.to_s)}=#{CGI.escape(v.to_s)}" }.join('&') unless params.empty?
 
     headers = {
