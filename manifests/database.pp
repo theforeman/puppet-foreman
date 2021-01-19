@@ -1,5 +1,8 @@
-# Set up the foreman database
-class foreman::database {
+# @summary Set up the foreman database
+# @api private
+class foreman::database(
+  Integer[0] $timeout = 3600,
+) {
   if $foreman::db_manage {
     contain foreman::database::postgresql
 
@@ -22,7 +25,8 @@ class foreman::database {
     }
 
     foreman::rake { 'db:migrate':
-      unless => '/usr/sbin/foreman-rake db:abort_if_pending_migrations',
+      timeout => $timeout,
+      unless  => '/usr/sbin/foreman-rake db:abort_if_pending_migrations',
     }
     ~> foreman_config_entry { 'db_pending_seed':
       value => false,
