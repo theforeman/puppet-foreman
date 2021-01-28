@@ -1,5 +1,27 @@
 # Changelog
 
+## [16.1.0](https://github.com/theforeman/puppet-foreman/tree/16.1.0) (2021-01-28)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/16.0.0...16.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#31670](https://projects.theforeman.org/issues/31670) - don't timeout when running db:migrate [\#915](https://github.com/theforeman/puppet-foreman/pull/915) ([evgeni](https://github.com/evgeni))
+- Fixes [\#30284](https://projects.theforeman.org/issues/30284) - Improve smartproxy registration failure error messages [\#912](https://github.com/theforeman/puppet-foreman/pull/912) ([wbclark](https://github.com/wbclark))
+- Set the reverse proxy host to the name of the service [\#909](https://github.com/theforeman/puppet-foreman/pull/909) ([ehelms](https://github.com/ehelms))
+- Use apache::mod::auth\_openidc [\#906](https://github.com/theforeman/puppet-foreman/pull/906) ([ekohl](https://github.com/ekohl))
+- CLI: Allow to configure use\_sessions setting [\#905](https://github.com/theforeman/puppet-foreman/pull/905) ([neomilium](https://github.com/neomilium))
+- CLI: make refresh\_cache and request\_timeout params global [\#884](https://github.com/theforeman/puppet-foreman/pull/884) ([neomilium](https://github.com/neomilium))
+- Fixes [\#30803](https://projects.theforeman.org/issues/30803): Bind to socket for Puma and Apache [\#883](https://github.com/theforeman/puppet-foreman/pull/883) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- Fix URI.escape deprecation warning [\#911](https://github.com/theforeman/puppet-foreman/pull/911) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- Drop Puppet \< 3.7.5 version check [\#907](https://github.com/theforeman/puppet-foreman/pull/907) ([ekohl](https://github.com/ekohl))
+
 ## [16.0.0](https://github.com/theforeman/puppet-foreman/tree/16.0.0) (2020-10-30)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.1.1...16.0.0)
