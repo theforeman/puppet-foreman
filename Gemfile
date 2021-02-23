@@ -15,8 +15,9 @@ gem 'puppet-lint-strict_indent-check', {"groups"=>["test"]}
 gem 'puppet-lint-undef_in_function-check', {"groups"=>["test"]}
 gem 'voxpupuli-test', '~> 1.4'
 gem 'github_changelog_generator', '>= 1.15.0', {"groups"=>["development"]}
+gem 'puppet_metadata', '~> 0.3'
 gem 'puppet-blacksmith', '>= 6.0.0', {"groups"=>["development"]}
-gem 'voxpupuli-acceptance', '~> 0.2', {"groups"=>["system_tests"]}
+gem 'voxpupuli-acceptance', '~> 0.3', {"groups"=>["system_tests"]}
 gem 'beaker-hiera', {"git"=>"https://github.com/ekohl/beaker-hiera", "branch"=>"fix", "groups"=>["system_tests"]}
 gem 'webmock', '~> 2.0'
 gem 'oauth'
