@@ -19,7 +19,7 @@ describe 'foreman::dynflow::worker' do
             .with_group('foreman')
             .with_mode('0644')
             .with_content(/:concurrency: 5/)
-            .with_content(/:queues:\n  - default\n  - remote_execution/)
+            .with_content(/:queues:\n  - ["default", 1]\n  - ["remote_execution", 1]/)
         }
         it {
           should contain_service('dynflow-sidekiq@test_worker')

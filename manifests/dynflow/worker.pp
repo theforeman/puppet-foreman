@@ -23,7 +23,7 @@
 define foreman::dynflow::worker (
   String $service_name = $name,
   Integer[1] $concurrency = $foreman::dynflow_pool_size,
-  Array[String] $queues = ['default', 'remote_execution'],
+  Array[String] $queues = ['["default", 1]', '["remote_execution", 1]'],
   String $config_owner = 'root',
   String $config_group = $foreman::group,
   Stdlib::Ensure::Service $service_ensure = $foreman::jobs_service_ensure,
