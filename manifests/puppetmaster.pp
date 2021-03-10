@@ -31,6 +31,8 @@
 #   The SSL certificate file path to use
 # @param ssl_key
 #   The SSL key file path to use
+# @param fact_extension
+#   The fact extension to use. Puppetserver < 7 defaults to yaml, >= 7 defaults to json.
 class foreman::puppetmaster (
   Stdlib::HTTPUrl $foreman_url = $foreman::puppetmaster::params::foreman_url,
   Boolean $reports = $foreman::puppetmaster::params::reports,
@@ -46,6 +48,7 @@ class foreman::puppetmaster (
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_ca = $foreman::puppetmaster::params::client_ssl_ca,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_cert = $foreman::puppetmaster::params::client_ssl_cert,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_key = $foreman::puppetmaster::params::client_ssl_key,
+  Enum['yaml', 'json'] $fact_extension = 'json',
 ) inherits foreman::puppetmaster::params {
 
   case $facts['os']['family'] {

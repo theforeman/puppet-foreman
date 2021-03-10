@@ -35,9 +35,33 @@ def puppetuser
   SETTINGS[:puppetuser] || 'puppet'
 end
 
-def stat_file(certname)
-  FileUtils.mkdir_p "#{puppetdir}/yaml/foreman/"
-  "#{puppetdir}/yaml/foreman/#{certname}.yaml"
+def fact_extension
+  SETTINGS[:fact_extension] || 'yaml'
+end
+
+def fact_directory
+  if fact_extension == 'yaml'
+    File.join(puppetdir, fact_extension, 'facts')
+  else
+    File.join(puppetdir, 'server_data', 'facts')
+  end
+end
+
+def fact_file(certname)
+  File.join(fact_directory, "#{certname}.#{fact_extension}")
+end
+
+def fact_files
+  Dir[File.join(fact_directory, "*.#{fact_extension}")]
+end
+
+def certname_from_filename(filename)
+  File.basename(filename, ".#{fact_extension}")
+end
+
+def stat_file(certname, extension='yaml')
+  FileUtils.mkdir_p "#{puppetdir}/#{extension}/foreman/"
+  "#{puppetdir}/#{extension}/foreman/#{certname}.#{extension}"
 end
 
 def tsecs
@@ -93,44 +117,56 @@ rescue LoadError
   end
 end
 
-def empty_values_hash?(facts_file)
-  facts = File.read(facts_file)
-  puppet_facts = YAML::load(facts.gsub(/\!ruby\/object.*$/,''))
+def parse_file(filename, mac_address_workaround = false)
+  case File.extname(filename)
+  when '.yaml'
+    data = File.read(file)
+    quote_macs!(data) if mac_address_workaround && YAML.load('22:22:22:22:22:22').is_a?(Integer)
+    YAML.load(data.gsub(/\!ruby\/object.*$/,''))
+  when '.json'
+    JSON.parse(File.read(filename))
+  else
+    raise "Unknown extension for file '#{filename}'"
+  end
+end
 
+def empty_values_hash?(facts_file)
+  puppet_facts = parse_file(facts_file)
   puppet_facts['values'].empty?
 end
 
 def process_host_facts(certname)
-    f = "#{puppetdir}/yaml/facts/#{certname}.yaml"
-    if File.size(f) != 0
-      if empty_values_hash?(f)
-        puts "Empty values hash in fact file #{f}, not uploading"
-        return 0
-      end
-
-      req = generate_fact_request(certname, f)
-      begin
-        upload_facts(certname, req) if req
-        return 0
-      rescue => e
-        $stderr.puts "During fact upload occured an exception: #{e}"
-        return 1
-      end
-    else
-      $stderr.puts "Fact file #{f} does not contain any fact"
-      return 2
+  f = fact_file(certname)
+  if File.size(f) != 0
+    if empty_values_hash?(f)
+      puts "Empty values hash in fact file #{f}, not uploading"
+      return 0
     end
+
+    req = generate_fact_request(certname, f)
+    begin
+      upload_facts(certname, req) if req
+      return 0
+    rescue => e
+      $stderr.puts "During fact upload occured an exception: #{e}"
+      return 1
+    end
+  else
+    $stderr.puts "Fact file #{f} does not contain any fact"
+    return 2
+  end
 end
 
 def process_all_facts(http_requests)
-  Dir["#{puppetdir}/yaml/facts/*.yaml"].each do |f|
-    certname = File.basename(f, ".yaml")
-    # Skip empty host fact yaml files
+  fact_files.each do |f|
+    # Skip empty host fact files
     if File.size(f) != 0
       if empty_values_hash?(f)
         puts "Empty values hash in fact file #{f}, not uploading"
         next
       end
+
+      certname = certname_from_filename(f)
       req = generate_fact_request(certname, f)
       if http_requests
         http_requests << [certname, req]
@@ -150,10 +186,7 @@ def quote_macs! facts
 end
 
 def build_body(certname,filename)
-  # Strip the Puppet:: ruby objects and keep the plain hash
-  facts        = File.read(filename)
-  quote_macs! facts if YAML.load('22:22:22:22:22:22').is_a? Integer
-  puppet_facts = YAML::load(facts.gsub(/\!ruby\/object.*$/,''))
+  puppet_facts = parse_file(filename, true)
   hostname     = puppet_facts['values']['fqdn'] || certname
 
   # if there is no environment in facts
@@ -161,8 +194,8 @@ def build_body(certname,filename)
   unless puppet_facts['values'].key?('environment') || puppet_facts['values'].key?('agent_specified_environment')
     node_filename = filename.sub('/facts/', '/node/')
     if File.exist?(node_filename)
-      node_yaml = File.read(node_filename)
-      node_data = YAML::load(node_yaml.gsub(/\!ruby\/object.*$/,''))
+      node_data = parse_file(node_filename)
+
       if node_data.key?('environment')
         puppet_facts['values']['environment'] = node_data['environment']
       end
@@ -301,19 +334,21 @@ def watch_and_send_facts(parallel)
 
   inotify = Inotify.new
 
+  fact_dir = fact_directory
+
   # actually we need only MOVED_TO events because puppet uses File.rename after tmp file created and flushed.
   # see lib/puppet/util.rb near line 469
-  inotify.add_watch("#{puppetdir}/yaml/facts", Inotify::CREATE | Inotify::MOVED_TO )
+  inotify.add_watch(fact_dir, Inotify::CREATE | Inotify::MOVED_TO )
 
-  yamls = Dir["#{puppetdir}/yaml/facts/*.yaml"]
+  files = fact_files
 
-  if yamls.length > inotify_limit
-    puts "Looks like your inotify watch limit is #{inotify_limit} but you are asking to watch at least #{yamls.length} fact files."
+  if files.length > inotify_limit
+    puts "Looks like your inotify watch limit is #{inotify_limit} but you are asking to watch at least #{files.length} fact files."
     puts "Increase the watch limit via the system tunable fs.inotify.max_user_watches, exiting."
     exit 2
   end
 
-  yamls.each do |f|
+  files.each do |f|
     begin
       watch_descriptors[inotify.add_watch(f, Inotify::CLOSE_WRITE)] = f
     end
@@ -323,14 +358,14 @@ def watch_and_send_facts(parallel)
     fn = watch_descriptors[ev.wd]
     add_watch = false
 
-    if !fn
+    unless fn
       # inotify returns basename for renamed file as ev.name
       # but we need full path
-      fn = "#{puppetdir}/yaml/facts/#{ev.name}"
+      fn = File.join(fact_dir, ev.name)
       add_watch = true
     end
 
-    if File.extname(fn) != ".yaml"
+    if File.extname(fn) != ".#{fact_extension}"
       next
     end
 
@@ -339,7 +374,7 @@ def watch_and_send_facts(parallel)
     end
 
     if fn
-      certname = File.basename(fn, ".yaml")
+      certname = certname_from_filename(fn)
       req = generate_fact_request certname, fn
       if parallel
         pending << [certname,req]
@@ -404,7 +439,7 @@ if __FILE__ == $0 then
           # if you use this option below, make sure that you don't send facts to foreman via the rake task or push facts alternatives.
           #
           if SETTINGS[:facts]
-            req = generate_fact_request certname, "#{puppetdir}/yaml/facts/#{certname}.yaml"
+            req = generate_fact_request(certname, fact_file(certname))
             upload_facts(certname, req)
           end
 
