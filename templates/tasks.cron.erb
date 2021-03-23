@@ -1,6 +1,7 @@
 SHELL=/bin/sh
 RAILS_ENV=production
 FOREMAN_HOME=/usr/share/foreman
+TASK_BACKUP=<%= @backup %>
 
 # Clean up expired tasks from the database
 <% user = scope.lookupvar('foreman::user') %>
