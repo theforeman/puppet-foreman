@@ -12,7 +12,7 @@ describe 'foreman::repos::apt' do
   end
 
   let(:apt_key_title) do
-    "Add key: #{apt_key} from Apt::Source foreman"
+    "foreman"
   end
 
   context 'with repo => 1.18' do
