@@ -34,6 +34,7 @@ describe 'foreman::plugin::tasks' do
             with_content(%r{SHELL=/bin/sh}).
             with_content(%r{RAILS_ENV=production}).
             with_content(%r{FOREMAN_HOME=/usr/share/foreman}).
+            with_content(%r{TASK_BACKUP=false}).
             with_content(%r{/usr/sbin/foreman-rake foreman_tasks:cleanup}).
             with_content(%r{#{cron_line}}).
             with_ensure('file')
