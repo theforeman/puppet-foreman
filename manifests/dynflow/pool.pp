@@ -23,7 +23,7 @@ define foreman::dynflow::pool (
   String $service_name = $name,
   Integer[0] $instances = $foreman::dynflow_worker_instances,
   Integer[1] $concurrency = $foreman::dynflow_worker_concurrency,
-  Array[String[1], 1] $queues = [],
+  Array[Variant[String[1], Tuple[String, Integer[0]]], 1] $queues = [],
   Optional[String[1]] $config_owner = undef,
   Optional[String[1]] $config_group = undef,
 ) {

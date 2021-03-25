@@ -22,7 +22,7 @@ class foreman::service(
     }
 
     foreman::dynflow::pool { 'worker':
-      queues      => ['default', 'remote_execution'],
+      queues      => [['default', 1], ['remote_execution', 1]],
       instances   => $dynflow_worker_instances,
       concurrency => $dynflow_worker_concurrency,
     }

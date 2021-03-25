@@ -128,7 +128,7 @@ describe 'foreman' do
           should contain_foreman__dynflow__worker('worker-1')
             .with_ensure('present')
             .with_concurrency(5)
-            .with_queues(['default', 'remote_execution'])
+            .with_queues([['default', 1], ['remote_execution', 1]])
         end
 
         # service
