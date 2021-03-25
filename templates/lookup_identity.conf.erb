@@ -1,5 +1,5 @@
 
-<LocationMatch ^/users/(ext)?login$>
+<LocationMatch ^/users/(ext)?login/?$>
   LookupUserAttr email REMOTE_USER_EMAIL
   LookupUserAttr firstname REMOTE_USER_FIRSTNAME
   LookupUserAttr lastname REMOTE_USER_LASTNAME
