@@ -34,12 +34,17 @@ define foreman::dynflow::worker (
   if $ensure == 'present' {
     assert_type(Array[String[1], 1], $queues)
 
+    $config = {
+      'concurrency' => $concurrency,
+      'queues'      => $queues,
+    }
+
     file { $filename:
       ensure  => file,
       owner   => $config_owner,
       group   => pick($config_group, $foreman::group),
       mode    => $config_mode,
-      content => template('foreman/dynflow_worker.yml.erb'),
+      content => foreman::to_symbolized_yaml($config),
     }
     ~> service { $service:
       ensure    => running,
