@@ -23,7 +23,7 @@ define foreman::dynflow::worker (
   Enum['present', 'absent'] $ensure = 'present',
   String $service_name = $name,
   Integer[1] $concurrency = 1,
-  Array[String[1]] $queues = [],
+  Array[Variant[String[1], Tuple[String, Integer[0]]]] $queues = [],
   String[1] $config_owner = 'root',
   Optional[String[1]] $config_group = undef,
   Stdlib::Filemode $config_mode = '0644',
@@ -32,7 +32,7 @@ define foreman::dynflow::worker (
   $service = "dynflow-sidekiq@${service_name}"
 
   if $ensure == 'present' {
-    assert_type(Array[String[1], 1], $queues)
+    assert_type(Array[Variant[String[1], Tuple[String, Integer[0]]], 1], $queues)
 
     $config = {
       'concurrency' => $concurrency,
