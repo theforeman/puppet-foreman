@@ -42,6 +42,16 @@ describe 'foreman::dynflow::worker' do
             {queues: ['default', 'remote_execution']}
           end
 
+          let(:expected_content) do
+            <<~CONTENT
+              ---
+              :concurrency: 1
+              :queues:
+              - default
+              - remote_execution
+            CONTENT
+          end
+
           it { should compile.with_all_deps }
           it {
             should contain_file('/etc/foreman/dynflow/test_worker.yml')
@@ -49,14 +59,41 @@ describe 'foreman::dynflow::worker' do
               .with_owner('root')
               .with_group('foreman')
               .with_mode('0644')
-              .with_content(/:concurrency: 1/)
-              .with_content(/:queues:\n  - default\n  - remote_execution/)
+              .with_content(expected_content)
           }
           it {
             should contain_service('dynflow-sidekiq@test_worker')
               .with_ensure('running')
               .with_enable(true)
           }
+
+          context 'and priorities' do
+            let(:params) do
+              {queues: [['default', 1], ['remote_execution', 1]]}
+            end
+
+            let(:expected_content) do
+              <<~CONTENT
+                ---
+                :concurrency: 1
+                :queues:
+                - - default
+                  - 1
+                - - remote_execution
+                  - 1
+              CONTENT
+            end
+
+            it { should compile.with_all_deps }
+            it do
+              should contain_file('/etc/foreman/dynflow/test_worker.yml')
+                .with_ensure('file')
+                .with_owner('root')
+                .with_group('foreman')
+                .with_mode('0644')
+                .with_content(expected_content)
+            end
+          end
         end
 
         context 'with custom concurrency and queues' do
@@ -67,14 +104,22 @@ describe 'foreman::dynflow::worker' do
             }
           end
 
+          let(:expected_content) do
+            <<~CONTENT
+              ---
+              :concurrency: 10
+              :queues:
+              - katello
+            CONTENT
+          end
+
           it { should compile.with_all_deps }
           it { should contain_file('/etc/foreman/dynflow/test_worker.yml')
               .with_ensure('file')
               .with_owner('root')
               .with_group('foreman')
               .with_mode('0644')
-              .with_content(/:concurrency: 10/)
-              .with_content(/:queues:\n  - katello\n$/) }
+              .with_content(expected_content) }
         end
       end
     end
