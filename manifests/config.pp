@@ -44,18 +44,6 @@ class foreman::config {
     content => template('foreman/database.yml.erb'),
   }
 
-  if $foreman::apache {
-    include apache
-  }
-
-  $listen_stream = regsubst($foreman::foreman_service_bind, 'unix://|tcp://', '')
-
-  systemd::dropin_file { 'foreman-socket':
-    filename => 'installer.conf',
-    unit     => "${foreman::foreman_service}.socket",
-    content  => template('foreman/foreman.socket-overrides.erb'),
-  }
-
   systemd::dropin_file { 'foreman-service':
     filename => 'installer.conf',
     unit     => "${foreman::foreman_service}.service",
@@ -99,7 +87,9 @@ class foreman::config {
     }
   }
 
-  if $foreman::apache  {
+  if $foreman::apache {
+    $listen_socket = '/run/foreman.sock'
+
     class { 'foreman::config::apache':
       app_root           => $foreman::app_root,
       priority           => $foreman::vhost_priority,
@@ -107,7 +97,7 @@ class foreman::config {
       serveraliases      => $foreman::serveraliases,
       server_port        => $foreman::server_port,
       server_ssl_port    => $foreman::server_ssl_port,
-      proxy_backend      => $foreman::foreman_service_bind,
+      proxy_backend      => "unix://${listen_socket}",
       ssl                => $foreman::ssl,
       ssl_ca             => $foreman::server_ssl_ca,
       ssl_chain          => $foreman::server_ssl_chain,
@@ -126,6 +116,8 @@ class foreman::config {
     }
 
     contain foreman::config::apache
+
+    $foreman_socket_override = template('foreman/foreman.socket-overrides.erb')
 
     if $foreman::ipa_authentication {
       unless fact('foreman_ipa.default_server') and fact('foreman_ipa.default_realm') {
@@ -164,7 +156,7 @@ class foreman::config {
       }
       -> file { $foreman::http_keytab:
         ensure => file,
-        owner  => apache,
+        owner  => $apache::user,
         mode   => '0600',
       }
 
@@ -207,5 +199,14 @@ class foreman::config {
         order   => '02',
       }
     }
+  } else {
+    $foreman_socket_override = undef
+  }
+
+  systemd::dropin_file { 'foreman-socket':
+    ensure   => bool2str($foreman_socket_override =~ Undef, 'absent', 'present'),
+    filename => 'installer.conf',
+    unit     => "${foreman::foreman_service}.socket",
+    content  => $foreman_socket_override,
   }
 }
