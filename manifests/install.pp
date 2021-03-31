@@ -11,17 +11,15 @@ class foreman::install {
     }
   }
 
-  if $foreman::apache and $foreman::passenger and $foreman::passenger_ruby_package {
+  # Foreman 2.5 dropped support for Passenger. On EL7 there was a native package built for SCL that should be absent.
+  if $foreman::passenger_ruby_package {
     package { $foreman::passenger_ruby_package:
-      ensure => installed,
-      before => Class['apache::service'],
+      ensure => absent,
     }
   }
 
-  if $foreman::use_foreman_service {
-    package { 'foreman-service':
-      ensure => installed,
-    }
+  package { 'foreman-service':
+    ensure => installed,
   }
 
   if $foreman::dynflow_manage_services {

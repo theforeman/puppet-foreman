@@ -7,11 +7,7 @@ describe 'foreman::service' do
 
   let :params do
     {
-      passenger: false,
-      apache: true,
-      app_root: '/usr/share/foreman',
       ssl: true,
-      use_foreman_service: true,
       foreman_service: 'foreman',
       foreman_service_ensure: 'running',
       foreman_service_enable: true,
@@ -22,49 +18,28 @@ describe 'foreman::service' do
     }
   end
 
-  context 'with passenger' do
-    let(:params) { super().merge(passenger: true, use_foreman_service: false) }
-    let(:pre_condition) { 'include ::apache' }
+  context 'without apache' do
+    let(:params) { super().merge(apache: false) }
 
-    context 'with ssl' do
-      let(:params) { super().merge(ssl: true) }
-      it { is_expected.to compile.with_all_deps }
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to contain_service('foreman.socket').with_ensure('running').with_enable(true) }
+    it { is_expected.to contain_service('foreman').with_ensure('running').with_enable(true) }
+  end
 
-      it 'should restart passenger' do
-        should contain_exec('restart_foreman')
-          .with_command('/bin/touch /usr/share/foreman/tmp/restart.txt')
-          .with_refreshonly(true)
-          .with_cwd('/usr/share/foreman')
-          .with_path('/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin')
-      end
+  context 'with apache' do
+    # Mock the apache service
+    let(:pre_condition) { 'class apache::service {} include apache::service' }
+    let(:params) { super().merge(apache: true) }
 
-      it { should contain_service('httpd').that_comes_before('Class[foreman::service]') }
-      it { should contain_class('apache::service').that_comes_before('Class[foreman::service]') }
-      it { should_not contain_service('foreman') }
-    end
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to contain_class('foreman::service').that_requires('Class[apache::service]') }
+    it { is_expected.to contain_service('foreman.socket').with_ensure('running').with_enable(true) }
+    it { is_expected.to contain_service('foreman').with_ensure('running').with_enable(true) }
 
     context 'without ssl' do
       let(:params) { super().merge(ssl: false) }
+
       it { is_expected.to compile.with_all_deps }
-    end
-  end
-
-  context 'without apache' do
-    let(:params) { super().merge(apache: false, use_foreman_service: true) }
-    it { is_expected.to compile.with_all_deps }
-    it { should_not contain_exec('restart_foreman') }
-    it { should contain_service('foreman').with_ensure('running').with_enable(true) }
-  end
-
-  context 'without passenger' do
-    let(:pre_condition) { 'class apache::service {} include apache::service' }
-    let(:params) { super().merge(passenger: false, use_foreman_service: true) }
-    it { is_expected.to compile.with_all_deps }
-    it { should_not contain_exec('restart_foreman') }
-    it do
-      should contain_service('foreman')
-        .with_ensure('running')
-        .with_enable(true)
     end
   end
 end

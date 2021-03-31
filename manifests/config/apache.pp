@@ -3,9 +3,6 @@
 # @param app_root
 #   Root of the application.
 #
-# @param passenger_ruby
-#   Path to Ruby interpreter
-#
 # @param priority
 #   Apache vhost priority
 #
@@ -51,27 +48,14 @@
 # @param user
 #   The user under which the application runs.
 #
-# @param passenger
-#   Whether to use passenger as an application server. If false, the reverse
-#   proxy setup is used.
-#
-# @param passenger_prestart
-#   Pre-start the first passenger worker instance process during httpd start.
-#
-# @param passenger_min_instances
-#   Minimum passenger worker instances to keep when application is idle.
-#
-# @param passenger_start_timeout
-#   Amount of seconds to wait for Ruby application boot.
-#
 # @param proxy_backend
-#   The backend service to proxy to. Only used when passenger is false
+#   The backend service to proxy to
 #
 # @param proxy_params
-#   The proxy parameters to use when proxying. Only used when passenger is false
+#   The proxy parameters to use when proxying
 #
 # @param proxy_no_proxy_uris
-#   URIs not to proxy. Only used when passenger is false
+#   URIs not to proxy
 #
 # @param foreman_url
 #   The URL Foreman should be reachable under. Used for loading the application
@@ -118,11 +102,6 @@ class foreman::config::apache(
   Optional[String] $ssl_protocol = undef,
   Enum['none','optional','require','optional_no_ca'] $ssl_verify_client = 'optional',
   Optional[String] $user = undef,
-  Boolean $passenger = false,
-  Optional[String] $passenger_ruby = undef,
-  Boolean $passenger_prestart = false,
-  Integer[0] $passenger_min_instances = 1,
-  Integer[0] $passenger_start_timeout = 90,
   Optional[Stdlib::HTTPUrl] $foreman_url = undef,
   Optional[String] $access_log_format = undef,
   Boolean $ipa_authentication = false,
@@ -157,92 +136,70 @@ class foreman::config::apache(
     $suburi = undef
   }
 
-  if $passenger {
-    if $suburi {
-      $custom_fragment = template('foreman/_suburi.conf.erb')
-    } else {
-      $custom_fragment = file('foreman/_assets.conf.erb')
-    }
-
-    $passenger_options = {
-      'passenger_app_root' => $app_root,
-      'passenger_min_instances' => $passenger_min_instances,
-      'passenger_start_timeout' => $passenger_start_timeout,
-      'passenger_ruby' => $passenger_ruby,
-    }
-
-    if $passenger_prestart {
-      $vhost_http_internal_options = $passenger_options + {'passenger_pre_start' => "http://${servername}:${server_port}"}
-      $vhost_https_internal_options = $passenger_options + {'passenger_pre_start' => "https://${servername}:${server_ssl_port}"}
-    } else {
-      $vhost_http_internal_options = $passenger_options
-      $vhost_https_internal_options = $passenger_options
-    }
-
-    if $app_root and $user {
-      file { ["${app_root}/config.ru", "${app_root}/config/environment.rb"]:
-        owner => $user,
-      }
-    }
+  if $suburi {
+    $custom_fragment = undef
   } else {
-    if $suburi {
-      $custom_fragment = undef
-    } else {
-      $custom_fragment = file('foreman/_assets.conf.erb')
-    }
+    $custom_fragment = file('foreman/_assets.conf.erb')
+  }
 
-    include apache::mod::proxy_wstunnel
-    $websockets_backend = regsubst($_proxy_backend, 'http://', 'ws://')
+  # This sets the headers matching what $vhost_https_internal_options sets
+  concat::fragment { 'foreman_settings+03-reverse-proxy-headers.yaml':
+    target  => '/etc/foreman/settings.yaml',
+    content => file('foreman/settings-reverse-proxy-headers.yaml'),
+    order   => '03',
+  }
 
-    $vhost_http_internal_options = {
-      'proxy_preserve_host' => true,
-      'proxy_add_headers'   => true,
-      'request_headers'     => [
-        'set X_FORWARDED_PROTO "http"',
-        'set SSL_CLIENT_S_DN ""',
-        'set SSL_CLIENT_CERT ""',
-        'set SSL_CLIENT_VERIFY ""',
-        'unset REMOTE_USER',
-        'unset REMOTE_USER_EMAIL',
-        'unset REMOTE_USER_FIRSTNAME',
-        'unset REMOTE_USER_LASTNAME',
-        'unset REMOTE_USER_GROUPS',
-      ],
-      'proxy_pass'          => {
-        'no_proxy_uris' => $proxy_no_proxy_uris,
-        'path'          => pick($suburi, '/'),
-        'url'           => $_proxy_backend,
-        'params'        => $proxy_params,
+  include apache::mod::proxy_wstunnel
+  $websockets_backend = regsubst($_proxy_backend, 'http://', 'ws://')
+
+  $vhost_http_internal_options = {
+    'proxy_preserve_host' => true,
+    'proxy_add_headers'   => true,
+    'request_headers'     => [
+      'set X_FORWARDED_PROTO "http"',
+      'set SSL_CLIENT_S_DN ""',
+      'set SSL_CLIENT_CERT ""',
+      'set SSL_CLIENT_VERIFY ""',
+      'unset REMOTE_USER',
+      'unset REMOTE_USER_EMAIL',
+      'unset REMOTE_USER_FIRSTNAME',
+      'unset REMOTE_USER_LASTNAME',
+      'unset REMOTE_USER_GROUPS',
+    ],
+    'proxy_pass'          => {
+      'no_proxy_uris' => $proxy_no_proxy_uris,
+      'path'          => pick($suburi, '/'),
+      'url'           => $_proxy_backend,
+      'params'        => $proxy_params,
+    },
+    'rewrites'            => [
+      {
+        'comment'      => 'Upgrade Websocket connections',
+        'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
+        'rewrite_rule' => "/(.*) ${websockets_backend}\$1 [P,L]",
       },
-      'rewrites'            => [
-        {
-          'comment'      => 'Upgrade Websocket connections',
-          'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
-          'rewrite_rule' => "/(.*) ${websockets_backend}\$1 [P,L]",
-        },
-      ],
-    }
+    ],
+  }
 
-    $vhost_https_internal_options = $vhost_http_internal_options + {
-      'ssl_proxyengine' => true,
-      'request_headers' => [
-        'set X_FORWARDED_PROTO "https"',
-        'set SSL_CLIENT_S_DN "%{SSL_CLIENT_S_DN}s"',
-        'set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"',
-        'set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"',
-        'unset REMOTE_USER',
-        'unset REMOTE_USER_EMAIL',
-        'unset REMOTE_USER_FIRSTNAME',
-        'unset REMOTE_USER_LASTNAME',
-        'unset REMOTE_USER_GROUPS',
-      ],
-    }
+  $vhost_https_internal_options = $vhost_http_internal_options + {
+    'ssl_proxyengine' => true,
+    'request_headers' => [
+      'set X_FORWARDED_PROTO "https"',
+      'set SSL_CLIENT_S_DN "%{SSL_CLIENT_S_DN}s"',
+      'set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"',
+      'set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"',
+      'unset REMOTE_USER',
+      'unset REMOTE_USER_EMAIL',
+      'unset REMOTE_USER_FIRSTNAME',
+      'unset REMOTE_USER_LASTNAME',
+      'unset REMOTE_USER_GROUPS',
+    ],
+  }
 
-    if $facts['os']['selinux']['enabled'] {
-      selboolean { 'httpd_can_network_connect':
-        persistent => true,
-        value      => 'on',
-      }
+  if $facts['os']['selinux']['enabled'] {
+    selboolean { 'httpd_can_network_connect':
+      persistent => true,
+      value      => 'on',
     }
   }
 

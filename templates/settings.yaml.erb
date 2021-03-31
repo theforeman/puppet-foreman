@@ -98,10 +98,3 @@
     :namespace: foreman
 <%   end -%>
 <% end -%>
-<% if scope.lookupvar("foreman::apache") && !scope.lookupvar("foreman::passenger") -%>
-
-# Configure reverse proxy headers
-:ssl_client_dn_env: HTTP_SSL_CLIENT_S_DN
-:ssl_client_verify_env: HTTP_SSL_CLIENT_VERIFY
-:ssl_client_cert_env: HTTP_SSL_CLIENT_CERT
-<% end -%>
