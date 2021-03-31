@@ -46,14 +46,7 @@
 #
 # $unattended_url::               URL hosts will retrieve templates from during build (normally http as many installers don't support https)
 #
-# $apache::                       Configure Foreman via Apache. By default via passenger but otherwise as a reverse proxy.
-#
-# $passenger::                    Whether to configure Apache with passenger or as a reverse proxy.
-#
-# $passenger_ruby::               Ruby interpreter used to run Foreman under Passenger
-#
-# $passenger_ruby_package::       Package to install to provide Passenger libraries for the active Ruby
-#                                 interpreter
+# $apache::                       Configure Apache as a reverse proxy for the Foreman server
 #
 # $plugin_prefix::                String which is prepended to the plugin package names
 #
@@ -61,7 +54,7 @@
 #
 # $serveraliases::                Server aliases of the VirtualHost in the webserver
 #
-# $ssl::                          Enable and set require_ssl in Foreman settings (note: requires passenger, SSL does not apply to kickstarts)
+# $ssl::                          Enable and set require_ssl in Foreman settings (note: requires Apache, SSL does not apply to kickstarts)
 #
 # $version::                      Foreman package version, it's passed to ensure parameter of package resource
 #                                 can be set to specific version number, 'latest', 'present' etc.
@@ -99,12 +92,6 @@
 # $rails_env::                    Rails environment of foreman
 #
 # $user_groups::                  Additional groups for the Foreman user
-#
-# $passenger_prestart::           Pre-start the first passenger worker instance process during httpd start.
-#
-# $passenger_min_instances::      Minimum passenger worker instances to keep when application is idle.
-#
-# $passenger_start_timeout::      Number of seconds to wait for Ruby application boot.
 #
 # $vhost_priority::               Defines Apache vhost priority for the Foreman vhost conf file.
 #
@@ -181,11 +168,11 @@
 #
 # $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing
 #
-# $foreman_service_puma_threads_min::     Minimum number of threads for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
+# $foreman_service_puma_threads_min::     Minimum number of threads for every Puma worker
 #
-# $foreman_service_puma_threads_max::     Maximum number of threads for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
+# $foreman_service_puma_threads_max::     Maximum number of threads for every Puma worker
 #
-# $foreman_service_puma_workers::         Number of workers for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
+# $foreman_service_puma_workers::         Number of workers for Puma
 #
 # $rails_cache_store::            Set rails cache store
 #
@@ -216,9 +203,6 @@ class foreman (
   Boolean $unattended = $foreman::params::unattended,
   Optional[Stdlib::HTTPUrl] $unattended_url = $foreman::params::unattended_url,
   Boolean $apache = $foreman::params::apache,
-  Boolean $passenger = $foreman::params::passenger,
-  Optional[String] $passenger_ruby = $foreman::params::passenger_ruby,
-  Optional[String] $passenger_ruby_package = $foreman::params::passenger_ruby_package,
   String $plugin_prefix = $foreman::params::plugin_prefix,
   Stdlib::Fqdn $servername = $foreman::params::servername,
   Array[Stdlib::Fqdn] $serveraliases = $foreman::params::serveraliases,
@@ -259,9 +243,6 @@ class foreman (
   Boolean $oauth_map_users = $foreman::params::oauth_map_users,
   String $oauth_consumer_key = $foreman::params::oauth_consumer_key,
   String $oauth_consumer_secret = $foreman::params::oauth_consumer_secret,
-  Boolean $passenger_prestart = $foreman::params::passenger_prestart,
-  Integer[0] $passenger_min_instances = $foreman::params::passenger_min_instances,
-  Integer[0] $passenger_start_timeout = $foreman::params::passenger_start_timeout,
   String $initial_admin_username = $foreman::params::initial_admin_username,
   String $initial_admin_password = $foreman::params::initial_admin_password,
   Optional[String] $initial_admin_first_name = $foreman::params::initial_admin_first_name,
@@ -326,10 +307,8 @@ class foreman (
   }
 
   if $apache {
-    $use_foreman_service = ! $passenger
     $foreman_service_bind = 'unix:///run/foreman.sock'
   } else {
-    $use_foreman_service = true
     $foreman_service_bind = 'tcp://0.0.0.0:3000'
   }
 

@@ -11,18 +11,12 @@ class foreman::params {
   $unattended_url = undef
   # configure foreman via apache
   $apache         = true
-  # configure apache with passenger
-  $passenger      = false
   # Server name of the VirtualHost
   $servername     = $facts['networking']['fqdn']
   # Server aliases of the VirtualHost
   $serveraliases  = [ 'foreman' ]
   # force SSL (note: requires apache)
   $ssl            = true
-  # further passenger parameters
-  $passenger_prestart = true
-  $passenger_min_instances = 1
-  $passenger_start_timeout = 90
 
   # Advanced configuration
   $app_root          = '/usr/share/foreman'
@@ -94,19 +88,16 @@ class foreman::params {
     'RedHat': {
       # We use system packages except on EL7
       if versioncmp($facts['os']['release']['major'], '8') >= 0 {
-        $passenger_ruby = undef
         $passenger_ruby_package = undef
         $plugin_prefix = 'rubygem-foreman_'
         $configure_scl_repo = false
       } else {
-        $passenger_ruby = '/usr/bin/tfm-ruby'
         $passenger_ruby_package = 'tfm-rubygem-passenger-native'
         $plugin_prefix = 'tfm-rubygem-foreman_'
         $configure_scl_repo = true
       }
     }
     'Debian': {
-      $passenger_ruby = '/usr/bin/foreman-ruby'
       $passenger_ruby_package = undef
       $plugin_prefix = 'ruby-foreman-'
       $configure_scl_repo = false
@@ -114,8 +105,6 @@ class foreman::params {
     'Linux': {
       case $facts['os']['name'] {
         'Amazon': {
-          # add passenger::install::scl as EL uses SCL on Foreman 1.2+
-          $passenger_ruby = '/usr/bin/tfm-ruby'
           $passenger_ruby_package = 'tfm-rubygem-passenger-native'
           $plugin_prefix = 'tfm-rubygem-foreman_'
           $configure_scl_repo = true
@@ -144,7 +133,7 @@ class foreman::params {
 
   $vhost_priority = '05'
 
-  # Set these values if you want Passenger to serve a CA-provided cert instead of puppet's
+  # Set these values if you want Apache to serve a CA-provided cert instead of puppet's
   $server_ssl_ca    = "${puppet_ssldir}/certs/ca.pem"
   $server_ssl_chain = "${puppet_ssldir}/certs/ca.pem"
   $server_ssl_cert  = "${puppet_ssldir}/certs/${lower_fqdn}.pem"

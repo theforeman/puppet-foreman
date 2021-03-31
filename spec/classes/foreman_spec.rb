@@ -38,9 +38,6 @@ describe 'foreman' do
             .with_content(%r{^:ssl_priv_key:\s*/etc/puppetlabs/puppet/ssl/private_keys/foo\.example\.com\.pem$})
             .with_content(/^:logging:\n\s*:level:\s*info$/)
             .with_content(/^:hsts_enabled:\s*true$/)
-            .with_content(/^:ssl_client_dn_env:/)
-            .with_content(/^:ssl_client_verify_env:/)
-            .with_content(/^:ssl_client_cert_env:/)
 
           should contain_concat('/etc/foreman/settings.yaml')
             .with_owner('root')
@@ -74,16 +71,19 @@ describe 'foreman' do
 
         # apache
         it 'should contain foreman::config::apache' do
-          passenger_ruby = if facts[:osfamily] == 'RedHat' && facts[:os]['release']['major'] == '7'
-                             '/usr/bin/tfm-ruby'
-                           elsif facts[:osfamily] == 'Debian'
-                             '/usr/bin/foreman-ruby'
-                           end
-
           should contain_class('foreman::config::apache')
-            .with_passenger_ruby(passenger_ruby)
             .with_keycloak(false)
         end
+
+        it do
+          should contain_concat__fragment('foreman_settings+03-reverse-proxy-headers.yaml')
+            .with_content(/^:ssl_client_dn_env: HTTP_SSL_CLIENT_S_DN$/)
+            .with_content(/^:ssl_client_verify_env: HTTP_SSL_CLIENT_VERIFY$/)
+            .with_content(/^:ssl_client_cert_env: HTTP_SSL_CLIENT_CERT$/)
+        end
+
+        it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenStream=\/run\/foreman\.sock$/) }
+        it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service').with_content(/^Environment=FOREMAN_BIND=unix:\/\/\/run\/foreman\.sock$/) }
 
         it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }
 
@@ -136,45 +136,16 @@ describe 'foreman' do
         it { should contain_class('foreman::settings').that_requires('Class[foreman::database]') }
       end
 
-      context 'with passenger' do
-        let(:params) { super().merge(passenger: true) }
-
-        it { should_not contain_systemd__dropin_file('foreman-socket') }
-        it { should_not contain_systemd__dropin_file('foreman-service') }
-        it do
-          should contain_exec('restart_foreman')
-            .with_command('/bin/touch /usr/share/foreman/tmp/restart.txt')
-            .with_refreshonly(true)
-            .with_cwd('/usr/share/foreman')
-            .with_path('/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin')
-        end
-      end
-
-      context 'without passenger' do
-        let(:params) { super().merge(passenger: false) }
-
-        it { should compile.with_all_deps }
-        it { should contain_class('foreman::config::apache').with_passenger(false) }
-        it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenStream=\/run\/foreman\.sock$/) }
-        it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service').with_content(/^Environment=FOREMAN_BIND=unix:\/\/\/run\/foreman\.sock$/) }
-        it do
-          should contain_concat__fragment('foreman_settings+01-header.yaml')
-            .with_content(/^:ssl_client_dn_env: HTTP_SSL_CLIENT_S_DN$/)
-            .with_content(/^:ssl_client_verify_env: HTTP_SSL_CLIENT_VERIFY$/)
-            .with_content(/^:ssl_client_cert_env: HTTP_SSL_CLIENT_CERT$/)
-        end
-      end
-
       context 'without apache' do
         let(:params) { super().merge(apache: false) }
 
         it { should compile.with_all_deps }
         it { should_not contain_class('foreman::config::apache') }
+        it { should_not contain_concat__fragment('foreman_settings+03-reverse-proxy-headers.yaml') }
         it { should contain_package('foreman-service').with_ensure('installed') }
         it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenStream=0\.0\.0\.0:3000$/) }
         it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service') }
         it { should contain_service('foreman').with_ensure('running') }
-        it { should_not contain_exec('restart_foreman') }
       end
 
       describe 'with all parameters' do
@@ -182,9 +153,6 @@ describe 'foreman' do
           {
             foreman_url: 'http://localhost',
             unattended: true,
-            passenger: true,
-            passenger_ruby: '/usr/bin/ruby',
-            passenger_ruby_package: 'ruby-gem-passenger',
             plugin_prefix: 'ruby-foreman',
             servername: 'localhost',
             serveraliases: ['foreman'],
@@ -223,9 +191,6 @@ describe 'foreman' do
             oauth_map_users: false,
             oauth_consumer_key: 'random',
             oauth_consumer_secret: 'random',
-            passenger_prestart: false,
-            passenger_min_instances: 3,
-            passenger_start_timeout: 20,
             initial_admin_username: 'admin',
             initial_admin_password: 'secret',
             initial_admin_first_name: 'Alice',
@@ -316,30 +281,6 @@ describe 'foreman' do
           should contain_concat__fragment('foreman_settings+01-header.yaml')
             .with_content(%r{^:unattended_url:\s*http://example.com$})
         }
-      end
-
-      context 'with passenger' do
-        let(:params) { super().merge(passenger: true) }
-
-        describe 'with url ending with trailing slash' do
-          let(:params) { super().merge(foreman_url: 'https://example.com/') }
-          it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }
-        end
-
-        describe 'with sub-uri' do
-          let(:params) { super().merge(foreman_url: 'https://example.com/foreman') }
-          it { should contain_apache__vhost('foreman').with_custom_fragment(%r{Alias /foreman}) }
-        end
-
-        describe 'with sub-uri ending with trailing slash' do
-          let(:params) { super().merge(foreman_url: 'https://example.com/foreman/') }
-          it { should contain_apache__vhost('foreman').with_custom_fragment(%r{Alias /foreman}) }
-        end
-
-        describe 'with sub-uri ending with more levels' do
-          let(:params) { super().merge(foreman_url: 'https://example.com/apps/foreman/') }
-          it { should contain_apache__vhost('foreman').with_custom_fragment(%r{Alias /apps/foreman}) }
-        end
       end
 
       describe 'with loggers' do

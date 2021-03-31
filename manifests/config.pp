@@ -35,11 +35,7 @@ class foreman::config {
     mode  => '0640',
   }
 
-  if $foreman::use_foreman_service {
-    $db_pool = max($foreman::db_pool, $foreman::foreman_service_puma_threads_max)
-  } else {
-    $db_pool = $foreman::db_pool
-  }
+  $db_pool = max($foreman::db_pool, $foreman::foreman_service_puma_threads_max)
 
   file { '/etc/foreman/database.yml':
     owner   => 'root',
@@ -48,24 +44,22 @@ class foreman::config {
     content => template('foreman/database.yml.erb'),
   }
 
-  if $foreman::use_foreman_service {
-    if $foreman::apache {
-      include apache
-    }
+  if $foreman::apache {
+    include apache
+  }
 
-    $listen_stream = regsubst($foreman::foreman_service_bind, 'unix://|tcp://', '')
+  $listen_stream = regsubst($foreman::foreman_service_bind, 'unix://|tcp://', '')
 
-    systemd::dropin_file { 'foreman-socket':
-      filename => 'installer.conf',
-      unit     => "${foreman::foreman_service}.socket",
-      content  => template('foreman/foreman.socket-overrides.erb'),
-    }
+  systemd::dropin_file { 'foreman-socket':
+    filename => 'installer.conf',
+    unit     => "${foreman::foreman_service}.socket",
+    content  => template('foreman/foreman.socket-overrides.erb'),
+  }
 
-    systemd::dropin_file { 'foreman-service':
-      filename => 'installer.conf',
-      unit     => "${foreman::foreman_service}.service",
-      content  => template('foreman/foreman.service-overrides.erb'),
-    }
+  systemd::dropin_file { 'foreman-service':
+    filename => 'installer.conf',
+    unit     => "${foreman::foreman_service}.service",
+    content  => template('foreman/foreman.service-overrides.erb'),
   }
 
   file { $foreman::app_root:
@@ -107,33 +101,28 @@ class foreman::config {
 
   if $foreman::apache  {
     class { 'foreman::config::apache':
-      passenger               => $foreman::passenger,
-      app_root                => $foreman::app_root,
-      passenger_ruby          => $foreman::passenger_ruby,
-      priority                => $foreman::vhost_priority,
-      servername              => $foreman::servername,
-      serveraliases           => $foreman::serveraliases,
-      server_port             => $foreman::server_port,
-      server_ssl_port         => $foreman::server_ssl_port,
-      proxy_backend           => $foreman::foreman_service_bind,
-      ssl                     => $foreman::ssl,
-      ssl_ca                  => $foreman::server_ssl_ca,
-      ssl_chain               => $foreman::server_ssl_chain,
-      ssl_cert                => $foreman::server_ssl_cert,
-      ssl_certs_dir           => $foreman::server_ssl_certs_dir,
-      ssl_key                 => $foreman::server_ssl_key,
-      ssl_crl                 => $foreman::server_ssl_crl,
-      ssl_protocol            => $foreman::server_ssl_protocol,
-      ssl_verify_client       => $foreman::server_ssl_verify_client,
-      user                    => $foreman::user,
-      passenger_prestart      => $foreman::passenger_prestart,
-      passenger_min_instances => $foreman::passenger_min_instances,
-      passenger_start_timeout => $foreman::passenger_start_timeout,
-      foreman_url             => $foreman::foreman_url,
-      ipa_authentication      => $foreman::ipa_authentication,
-      keycloak                => $foreman::keycloak,
-      keycloak_app_name       => $foreman::keycloak_app_name,
-      keycloak_realm          => $foreman::keycloak_realm,
+      app_root           => $foreman::app_root,
+      priority           => $foreman::vhost_priority,
+      servername         => $foreman::servername,
+      serveraliases      => $foreman::serveraliases,
+      server_port        => $foreman::server_port,
+      server_ssl_port    => $foreman::server_ssl_port,
+      proxy_backend      => $foreman::foreman_service_bind,
+      ssl                => $foreman::ssl,
+      ssl_ca             => $foreman::server_ssl_ca,
+      ssl_chain          => $foreman::server_ssl_chain,
+      ssl_cert           => $foreman::server_ssl_cert,
+      ssl_certs_dir      => $foreman::server_ssl_certs_dir,
+      ssl_key            => $foreman::server_ssl_key,
+      ssl_crl            => $foreman::server_ssl_crl,
+      ssl_protocol       => $foreman::server_ssl_protocol,
+      ssl_verify_client  => $foreman::server_ssl_verify_client,
+      user               => $foreman::user,
+      foreman_url        => $foreman::foreman_url,
+      ipa_authentication => $foreman::ipa_authentication,
+      keycloak           => $foreman::keycloak,
+      keycloak_app_name  => $foreman::keycloak_app_name,
+      keycloak_realm     => $foreman::keycloak_realm,
     }
 
     contain foreman::config::apache
