@@ -74,10 +74,7 @@ previous stable release.
 
 ### Foreman version compatibility notes
 
-This module targets Foreman 2.0+.
-
-If you're running Foreman instance older than Foreman 2.2 you need to change logging layout parameter from
-`multiline_request_pattern` to `multiline_pattern` due to compatibility.
+This module targets Foreman 2.4+.
 
 ## Types and providers
 

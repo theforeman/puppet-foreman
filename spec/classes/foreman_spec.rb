@@ -5,6 +5,7 @@ describe 'foreman' do
     context "on #{os}" do
       let(:facts) { facts }
       let(:params) { {} }
+      let(:apache_user) { facts[:osfamily] == 'Debian' ? 'www-data' : 'apache' }
 
       context 'with default parameters' do
         it { is_expected.to compile.with_all_deps }
@@ -53,7 +54,7 @@ describe 'foreman' do
             .with_content(/adapter: postgresql/)
         end
 
-        it { should contain_systemd__dropin_file('foreman-socket') }
+        it { should contain_systemd__dropin_file('foreman-socket').with_ensure('present') }
         it { should contain_systemd__dropin_file('foreman-service') }
 
         it { should contain_file('/usr/share/foreman').with_ensure('directory') }
@@ -82,8 +83,16 @@ describe 'foreman' do
             .with_content(/^:ssl_client_cert_env: HTTP_SSL_CLIENT_CERT$/)
         end
 
-        it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenStream=\/run\/foreman\.sock$/) }
-        it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service').with_content(/^Environment=FOREMAN_BIND=unix:\/\/\/run\/foreman\.sock$/) }
+        it 'overrides foreman.socket systemd service' do
+          should contain_systemd__dropin_file('foreman-socket')
+            .with_ensure('present')
+            .with_filename('installer.conf')
+            .with_unit('foreman.socket')
+            .with_content(%r{^ListenStream=/run/foreman\.sock$})
+            .with_content(/^SocketUser=#{apache_user}$/)
+        end
+
+        it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service') }
 
         it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }
 
@@ -143,7 +152,13 @@ describe 'foreman' do
         it { should_not contain_class('foreman::config::apache') }
         it { should_not contain_concat__fragment('foreman_settings+03-reverse-proxy-headers.yaml') }
         it { should contain_package('foreman-service').with_ensure('installed') }
-        it { should contain_systemd__dropin_file('foreman-socket').with_filename('installer.conf').with_unit('foreman.socket').with_content(/^ListenStream=0\.0\.0\.0:3000$/) }
+        it 'removes foreman.socket systemd override' do
+          should contain_systemd__dropin_file('foreman-socket')
+            .with_ensure('absent')
+            .with_filename('installer.conf')
+            .with_unit('foreman.socket')
+            .without_content
+        end
         it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service') }
         it { should contain_service('foreman').with_ensure('running') }
       end

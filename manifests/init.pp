@@ -306,12 +306,6 @@ class foreman (
     timeout => 0,
   }
 
-  if $apache {
-    $foreman_service_bind = 'unix:///run/foreman.sock'
-  } else {
-    $foreman_service_bind = 'tcp://0.0.0.0:3000'
-  }
-
   include foreman::install
   include foreman::config
   include foreman::database
