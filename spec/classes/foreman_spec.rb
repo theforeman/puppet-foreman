@@ -72,12 +72,7 @@ describe 'foreman' do
           )
         }
 
-        it 'should remove old crons' do
-          should contain_cron('clear_session_table').with_ensure('absent')
-          should contain_cron('expire_old_reports').with_ensure('absent')
-          should contain_cron('daily summary').with_ensure('absent')
-        end
-
+        # apache
         it 'should contain foreman::config::apache' do
           passenger_ruby = if facts[:osfamily] == 'RedHat' && facts[:os]['release']['major'] == '7'
                              '/usr/bin/tfm-ruby'
@@ -392,7 +387,6 @@ describe 'foreman' do
       context 'with email configured for SMTP' do
         let(:params) { super().merge(email_delivery_method: 'smtp') }
 
-        it { should contain_file('/etc/foreman/email.yaml').with_ensure('absent') }
         it { should contain_foreman_config_entry('delivery_method').with_value('smtp') }
         it { should contain_foreman_config_entry('smtp_authentication').with_value('') }
 
@@ -404,7 +398,6 @@ describe 'foreman' do
 
       describe 'with email configured for sendmail' do
         let(:params) { super().merge(email_delivery_method: 'sendmail') }
-        it { should contain_file('/etc/foreman/email.yaml').with_ensure('absent') }
         it { should contain_foreman_config_entry('delivery_method').with_value('sendmail') }
 
         describe 'with sample parameters' do

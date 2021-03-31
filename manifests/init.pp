@@ -179,7 +179,7 @@
 #
 # $hsts_enabled::                 Should HSTS enforcement in https requests be enabled
 #
-# $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing. This requires Foreman 1.22+
+# $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing
 #
 # $foreman_service_puma_threads_min::     Minimum number of threads for Puma. Relevant only when Puma service is used and ignored when Passenger is used.
 #

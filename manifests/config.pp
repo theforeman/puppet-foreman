@@ -48,11 +48,6 @@ class foreman::config {
     content => template('foreman/database.yml.erb'),
   }
 
-  # email.yaml support has been removed in 1.16.
-  file { '/etc/foreman/email.yaml':
-    ensure => absent,
-  }
-
   if $foreman::use_foreman_service {
     if $foreman::apache {
       include apache
@@ -108,12 +103,6 @@ class foreman::config {
       gid     => $foreman::group,
       groups  => $foreman::user_groups,
     }
-  }
-
-  # remove crons previously installed here, they've moved to the package's
-  # cron.d file
-  cron { ['clear_session_table', 'expire_old_reports', 'daily summary']:
-    ensure  => absent,
   }
 
   if $foreman::apache  {
