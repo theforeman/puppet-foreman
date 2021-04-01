@@ -7,7 +7,7 @@
 #   The package to manage
 #
 # @param config
-#   Content of the configg
+#   Content of the config
 #
 # @param config_file
 #   The path to the config file. Only relevant if `config` is given.
@@ -20,7 +20,7 @@
 #
 # @param config_file_group
 #   The mode of the config file. Only relevant if `config` is given.
-define foreman::plugin(
+define foreman::plugin (
   String[1] $version = $foreman::plugin_version,
   String[1] $package = "${foreman::plugin_prefix}${title}",
   Stdlib::Absolutepath $config_file = "${foreman::plugin_config_dir}/foreman_${title}.yaml",
