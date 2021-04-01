@@ -20,6 +20,10 @@
 #
 # @param config_file_group
 #   The mode of the config file. Only relevant if `config` is given.
+#
+# @param has_api
+#   Whether or not the plugin has an API. If the plugin has an API, it means
+#   the apipie cache needs to be updated.
 define foreman::plugin (
   String[1] $version = $foreman::plugin_version,
   String[1] $package = "${foreman::plugin_prefix}${title}",
@@ -28,6 +32,7 @@ define foreman::plugin (
   String[1] $config_file_group = $foreman::group,
   Stdlib::Filemode $config_file_mode = '0640',
   Optional[String] $config = undef,
+  Boolean $has_api = false,
 ) {
   # Debian gem2deb converts underscores to hyphens
   case $facts['os']['family'] {
@@ -41,7 +46,7 @@ define foreman::plugin (
   package { $real_package:
     ensure => $version,
   }
-  ~> Foreman::Rake['apipie:cache:index', 'apipie_dsl:cache']
+  ~> Foreman::Rake['apipie_dsl:cache']
 
   if $config {
     file { $config_file:
@@ -56,4 +61,9 @@ define foreman::plugin (
 
   Foreman::Plugin[$name] -> Class['foreman::database']
   Foreman::Plugin[$name] ~> Class['foreman::service']
+
+  if $has_api {
+    include foreman::rake::apipie
+    Foreman::Plugin[$name] ~> Class['foreman::rake::apipie']
+  }
 }

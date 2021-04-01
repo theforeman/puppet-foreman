@@ -4,5 +4,6 @@
 #
 class foreman::plugin::discovery {
   foreman::plugin {'discovery':
+    has_api => true,
   }
 }
