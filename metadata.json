@@ -30,7 +30,7 @@
     },
     {
       "name": "puppetlabs/postgresql",
-      "version_requirement": ">= 6.5.0 < 7.0.0"
+      "version_requirement": ">= 6.5.0 < 8.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
