@@ -126,10 +126,6 @@ class foreman::config {
     $foreman_socket_override = template('foreman/foreman.socket-overrides.erb')
 
     if $foreman::ipa_authentication {
-      unless fact('foreman_ipa.default_server') {
-        fail("${facts['networking']['hostname']}: The system does not seem to be IPA-enrolled")
-      }
-
       if $facts['os']['selinux']['enabled'] {
         selboolean { ['allow_httpd_mod_auth_pam', 'httpd_dbus_sssd']:
           persistent => true,
@@ -158,7 +154,7 @@ class foreman::config {
       exec { 'ipa-getkeytab':
         command => "/bin/echo Get keytab \
           && KRB5CCNAME=KEYRING:session:get-http-service-keytab kinit -k \
-          && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -s ${facts['foreman_ipa']['default_server']} -k ${http_keytab} -p HTTP/${facts['networking']['fqdn']} \
+          && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -k ${http_keytab} -p HTTP/${facts['networking']['fqdn']} \
           && kdestroy -c KEYRING:session:get-http-service-keytab",
         creates => $http_keytab,
       }
@@ -182,7 +178,7 @@ class foreman::config {
 
 
       if $foreman::ipa_manage_sssd {
-        $sssd = $facts['foreman_sssd']
+        $sssd = pick(fact('foreman_sssd'), {})
         $sssd_services = join(unique(pick($sssd['services'], []) + ['ifp']), ', ')
         $sssd_ldap_user_extra_attrs = join(unique(pick($sssd['ldap_user_extra_attrs'], []) + ['email:mail', 'lastname:sn', 'firstname:givenname']), ', ')
         $sssd_allowed_uids = join(unique(pick($sssd['allowed_uids'], []) + [$apache::user, 'root']), ', ')
