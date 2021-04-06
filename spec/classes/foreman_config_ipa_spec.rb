@@ -16,23 +16,9 @@ describe 'foreman' do
       context 'with apache' do
         let(:params) { super().merge(apache: true) }
 
-        describe 'not IPA-enrolled system' do
-          describe 'ipa_server fact missing' do
-            it { should raise_error(Puppet::Error, /The system does not seem to be IPA-enrolled/) }
-          end
-
-          describe 'default_ipa_realm fact missing' do
-            it { should raise_error(Puppet::Error, /The system does not seem to be IPA-enrolled/) }
-          end
-        end
-
         describe 'enrolled system' do
           let(:facts) do
             super().merge(
-              foreman_ipa: {
-                default_server: 'ipa.example.com',
-                default_realm: 'REALM'
-              },
               foreman_sssd: {
                 services: ['ifp']
               }
