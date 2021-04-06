@@ -7,4 +7,3 @@ Gemfile:
 spec/spec_helper.rb:
   requires:
     - webmock/rspec
-    - puppet/reports
