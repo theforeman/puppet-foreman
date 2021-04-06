@@ -2,7 +2,6 @@
 #   https://github.com/theforeman/foreman-installer-modulesync
 
 require 'webmock/rspec'
-require 'puppet/reports'
 
 require 'voxpupuli/test/spec_helper'
 
