@@ -3,41 +3,77 @@ require 'spec_helper_acceptance'
 describe 'Scenario: install foreman-cli + plugins without foreman' do
   before(:context) { purge_foreman }
 
-  let(:pp) do
-    <<-PUPPET
-    class { 'foreman::cli':
-      foreman_url => 'https://foreman.example.com',
-      username    => 'admin',
-      password    => 'changeme',
-    }
+  package_prefix = fact('os.release.major') == '7' ? "tfm-" : ""
 
-    if $facts['os']['family'] == 'RedHat' {
-      include foreman::cli::ansible
-      include foreman::cli::azure
-    }
-    include foreman::cli::discovery
-    include foreman::cli::remote_execution
-    include foreman::cli::tasks
-    include foreman::cli::templates
-    PUPPET
+  context 'for standard plugins' do
+    let(:pp) do
+      <<-PUPPET
+      class { 'foreman::cli':
+        foreman_url => 'https://foreman.example.com',
+        username    => 'admin',
+        password    => 'changeme',
+      }
+
+      if $facts['os']['family'] == 'RedHat' {
+        include foreman::cli::ansible
+        include foreman::cli::azure
+      }
+      include foreman::cli::discovery
+      include foreman::cli::remote_execution
+      include foreman::cli::tasks
+      include foreman::cli::templates
+      PUPPET
+    end
+
+    it_behaves_like 'a idempotent resource'
+
+    it_behaves_like 'hammer'
+
+    ['discovery', 'remote_execution', 'tasks', 'templates'].each do |plugin|
+      package_name = case fact('os.family')
+                     when 'RedHat'
+                       "#{package_prefix}rubygem-hammer_cli_foreman_#{plugin}"
+                     when 'Debian'
+                       "ruby-hammer-cli-foreman-#{plugin.tr('_', '-')}"
+                     else
+                       plugin
+                     end
+
+      describe package(package_name) do
+        it { is_expected.to be_installed }
+      end
+    end
   end
 
-  it_behaves_like 'a idempotent resource'
+  if fact('os.family') == 'RedHat'
+    context 'for katello' do
+      let(:pp) do
+        <<-PUPPET
+        yumrepo { 'katello':
+          baseurl  => "http://yum.theforeman.org/katello/nightly/katello/el${facts['os']['release']['major']}/x86_64/",
+          gpgcheck => 0,
+        }
 
-  it_behaves_like 'hammer'
+        class { 'foreman::cli':
+          foreman_url => 'https://foreman.example.com',
+          username    => 'admin',
+          password    => 'changeme',
+        }
 
-  ['discovery', 'remote_execution', 'tasks', 'templates'].each do |plugin|
-    package_name = case fact('os.family')
-                   when 'RedHat'
-                     fact('os.release.major') == '7' ? "tfm-rubygem-hammer_cli_foreman_#{plugin}" : "rubygem-hammer_cli_foreman_#{plugin}"
-                   when 'Debian'
-                     "ruby-hammer-cli-foreman-#{plugin.tr('_', '-')}"
-                   else
-                     plugin
-                   end
+        include foreman::cli::katello
 
-    describe package(package_name) do
-      it { is_expected.to be_installed }
+        Yumrepo['katello'] -> Class['foreman::cli::katello']
+        PUPPET
+      end
+
+      it_behaves_like 'a idempotent resource'
+
+      it_behaves_like 'hammer'
+
+      package_name = "#{package_prefix}rubygem-hammer_cli_katello"
+      describe package(package_name) do
+        it { is_expected.to be_installed }
+      end
     end
   end
 end
