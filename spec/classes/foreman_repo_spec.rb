@@ -32,6 +32,14 @@ describe 'foreman::repo' do
             is_expected.not_to contain_package('centos-release-scl-rh')
           end
         end
+
+        it do
+          if facts[:operatingsystemmajrelease] == '8'
+            is_expected.to contain_package('ruby:2.7')
+          else
+            is_expected.not_to contain_package('ruby:2.7')
+          end
+        end
       end
 
       describe 'with explicit parameters' do
@@ -51,6 +59,29 @@ describe 'foreman::repo' do
         end
 
         it { is_expected.not_to contain_package('centos-release-scl-rh') }
+
+        it do
+          is_expected.not_to contain_package('ruby:2.7')
+        end
+      end
+
+      describe 'with repo set to 2.5' do
+        let :params do
+          {
+            repo: '2.5',
+            configure_scl_repo: false
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+
+        it do
+          if facts[:operatingsystemmajrelease] == '8'
+            is_expected.to contain_package('ruby:2.7')
+          else
+            is_expected.not_to contain_package('ruby:2.7')
+          end
+        end
       end
     end
   end
