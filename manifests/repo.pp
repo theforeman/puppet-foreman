@@ -29,6 +29,14 @@ class foreman::repo(
     if $configure_scl_repo {
       Foreman::Repos['foreman'] -> Package['centos-release-scl-rh']
     }
+
+    if $facts['os']['release']['major'] == '8' and ($repo == 'nightly' or versioncmp($repo, '2.5') >= 0) {
+      package { 'ruby:2.7':
+        ensure      => installed,
+        enable_only => true,
+        provider    => 'dnfmodule',
+      }
+    }
   }
 
   if $configure_scl_repo {
