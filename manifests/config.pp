@@ -37,11 +37,11 @@ class foreman::config {
 
   $uuid_fact_signature = foreman::hmac_signature($foreman::oauth_consumer_secret, $foreman::instance_id)
   file { 'foreman_uuid.json':
-    path => '/opt/puppetlabs/facter/facts.d/foreman_uuid.json',
-    owner => $foreman::user,
-    group => $foreman::group,
-    mode => '0644',
-    content => template("foreman/uuid_fact.json.erb"),
+    path    => '/opt/puppetlabs/facter/facts.d/foreman_uuid.json',
+    owner   => $foreman::user,
+    group   => $foreman::group,
+    mode    => '0644',
+    content => template('foreman/uuid_fact.json.erb'),
   }
 
   $db_pool = max($foreman::db_pool, $foreman::foreman_service_puma_threads_max)
