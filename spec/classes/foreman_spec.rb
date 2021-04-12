@@ -405,6 +405,16 @@ describe 'foreman' do
           it { should_not contain_class('redis::instance') }
         end
       end
+
+      describe 'insfrastructure fact generation' do
+        let(:params) { super().merge(oauth_consumer_secret: 'random', instance_id: '12345') }
+        let(:signature) { "c309290f876203f69a64a84e85a58b1c8ee495a0837fe169e23fb458232ee06ceffda9b3494436fe1f045e09c063c1195113c58b8c953346882488459eebd8ac" }
+        it 'foobar' do
+          is_expected.to contain_file('foreman_uuid.json')
+            .with_content(/"foreman_uuid": "12345"/)
+            .with_content(/"foreman_uuid_signature": "#{signature}"/)
+        end
+      end
     end
   end
 end
