@@ -1,1 +1,2 @@
-{"foreman_uuid": "<%= scope.lookupvar("foreman::instance_id") %>"}
+{"foreman_uuid": "<%= scope.lookupvar("foreman::instance_id") -%>",
+"foreman_uuid_signature": "<%= @uuid_fact_signature %>"}
