@@ -1,6 +1,6 @@
 Puppet::Functions.create_function(:'foreman::generate_uuid') do
   dispatch :uuid do
-    # no arguments
+    return_type 'String'
   end
 
   def uuid

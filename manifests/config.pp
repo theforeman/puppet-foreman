@@ -41,7 +41,7 @@ class foreman::config {
     owner   => $foreman::user,
     group   => $foreman::group,
     mode    => '0644',
-    content => template('foreman/uuid_fact.json.erb'),
+    content => to_json({'foreman_uuid' => $foreman::instance_id, 'foreman_uuid_signature' => $uuid_fact_signature}),
   }
 
   $db_pool = max($foreman::db_pool, $foreman::foreman_service_puma_threads_max)
