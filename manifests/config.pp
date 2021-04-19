@@ -37,10 +37,10 @@ class foreman::config {
 
   $uuid_fact_signature = foreman::hmac_signature($foreman::oauth_consumer_secret, $foreman::instance_id)
   file { 'foreman_uuid.json':
-    path    => '/opt/puppetlabs/facter/facts.d/foreman_uuid.json',
-    owner   => $foreman::user,
-    group   => $foreman::group,
-    mode    => '0644',
+    path    => '/etc/puppetlabs/facter/facts.d/foreman_uuid.json',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0440',
     content => to_json({'foreman_uuid' => $foreman::instance_id, 'foreman_uuid_signature' => $uuid_fact_signature}),
   }
 
