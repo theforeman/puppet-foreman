@@ -24,7 +24,7 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v3, :parent => Puppet::Type
   end
 
   def create
-    post_data = {:smart_proxy => {:name => resource[:name], :url => resource[:url]}}.to_json
+    post_data = {:smart_proxy => {:name => resource[:name], :url => resource[:url], :instance_id => resource[:instance_id]}}.to_json
     path = 'api/v2/smart_proxies'
     r = request(:post, path, {}, post_data)
 
