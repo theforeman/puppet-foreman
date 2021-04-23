@@ -414,12 +414,13 @@ describe 'foreman' do
             is_expected.to contain_file('foreman_uuid.json')
               .with_content(/"foreman_uuid":"12345"/)
               .with_content(/"foreman_uuid_signature":"#{signature}"/)
+              .with_ensure('file')
           end
         end
 
         context 'with instance id not exposed' do
           let(:params) { super().merge(oauth_consumer_secret: 'random', instance_id: '12345', expose_instance_id: false) }
-          it { should_not contain_file('foreman_uuid.json') }
+          it { should contain_file('foreman_uuid.json').with_ensure('absent') }
         end
       end
     end

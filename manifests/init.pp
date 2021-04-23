@@ -178,7 +178,7 @@
 #
 # $instance_id::                  Foreman instance id
 #
-# $expose_instance_id::           Expose Foreman instance id
+# $expose_instance_id::           Deploy a custom fact to expose the Foreman instance id
 #
 # === Dynflow parameters:
 #

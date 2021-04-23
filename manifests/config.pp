@@ -35,15 +35,14 @@ class foreman::config {
     mode  => '0640',
   }
 
-  if $foreman::expose_instance_id {
-    $uuid_fact_signature = foreman::hmac_signature($foreman::oauth_consumer_secret, $foreman::instance_id)
-    file { 'foreman_uuid.json':
-      path    => '/opt/puppetlabs/facter/facts.d/foreman_uuid.json',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0440',
-      content => to_json({'foreman_uuid' => $foreman::instance_id, 'foreman_uuid_signature' => $uuid_fact_signature}),
-    }
+  $uuid_fact_signature = foreman::hmac_signature($foreman::oauth_consumer_secret, $foreman::instance_id)
+  file { 'foreman_uuid.json':
+    path    => '/opt/puppetlabs/facter/facts.d/foreman_uuid.json',
+    ensure  => bool2str($foreman::expose_instance_id, 'file', 'absent'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0440',
+    content => to_json({'foreman_uuid' => $foreman::instance_id, 'foreman_uuid_signature' => $uuid_fact_signature}),
   }
 
   $db_pool = max($foreman::db_pool, $foreman::foreman_service_puma_threads_max)
