@@ -178,6 +178,8 @@
 #
 # $instance_id::                  Foreman instance id
 #
+# $expose_instance_id::           Expose Foreman instance id
+#
 # === Dynflow parameters:
 #
 # $dynflow_manage_services::      Whether to manage the dynflow services
@@ -294,6 +296,7 @@ class foreman (
   String[1] $keycloak_app_name = $foreman::params::keycloak_app_name,
   String[1] $keycloak_realm = $foreman::params::keycloak_realm,
   String $instance_id = $foreman::params::instance_id,
+  Boolean $expose_instance_id = $foreman::params::expose_instance_id,
 ) inherits foreman::params {
   if $db_sslmode == 'UNSET' and $db_root_cert {
     $db_sslmode_real = 'verify-full'
