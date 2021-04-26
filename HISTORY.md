@@ -1,3 +1,51 @@
+## [17.0.0](https://github.com/theforeman/puppet-foreman/tree/17.0.0) (2021-04-26)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/16.1.0...17.0.0)
+
+**Breaking changes:**
+
+- Drop Puppetserver integration [\#933](https://github.com/theforeman/puppet-foreman/pull/933) ([ekohl](https://github.com/ekohl))
+- Remove old email.yaml and cronjob cleanups [\#931](https://github.com/theforeman/puppet-foreman/pull/931) ([ekohl](https://github.com/ekohl))
+- Fixes [\#29780](https://projects.theforeman.org/issues/29780) - Drop Passenger support and target Foreman 2.4+ [\#928](https://github.com/theforeman/puppet-foreman/pull/928) ([ekohl](https://github.com/ekohl))
+- Fixes [\#31964](https://projects.theforeman.org/issues/31964) - Assign equal weight to sidekiq queues [\#927](https://github.com/theforeman/puppet-foreman/pull/927) ([ekohl](https://github.com/ekohl))
+- Fixes [\#29817](https://projects.theforeman.org/issues/29817) - Implement a dynflow worker pool [\#843](https://github.com/theforeman/puppet-foreman/pull/843) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Enable Ruby 2.7 module for EL8 on Foreman 2.5+ [\#937](https://github.com/theforeman/puppet-foreman/pull/937) ([ehelms](https://github.com/ehelms))
+- Refs [\#32276](https://projects.theforeman.org/issues/32276): Add Katello hammer plugin [\#936](https://github.com/theforeman/puppet-foreman/pull/936) ([ehelms](https://github.com/ehelms))
+- Mark compatible with puppetlabs/postgresql 7.x [\#930](https://github.com/theforeman/puppet-foreman/pull/930) ([ekohl](https://github.com/ekohl))
+- use deb gpg key from our server, not the gpg network [\#924](https://github.com/theforeman/puppet-foreman/pull/924) ([evgeni](https://github.com/evgeni))
+- Fixes [\#32175](https://projects.theforeman.org/issues/32175): Allow toggling task backup when cleaning them up [\#922](https://github.com/theforeman/puppet-foreman/pull/922) ([ehelms](https://github.com/ehelms))
+- Add foreman\_webhooks plugin [\#920](https://github.com/theforeman/puppet-foreman/pull/920) ([adamruzicka](https://github.com/adamruzicka))
+- Add foreman\_puppet plugin [\#917](https://github.com/theforeman/puppet-foreman/pull/917) ([ezr-ondrej](https://github.com/ezr-ondrej))
+
+**Fixed bugs:**
+
+- Fixes [\#32208](https://projects.theforeman.org/issues/32208) - accept trailing slash in Krb auth url [\#926](https://github.com/theforeman/puppet-foreman/pull/926) ([ezr-ondrej](https://github.com/ezr-ondrej))
+
+## [16.1.0](https://github.com/theforeman/puppet-foreman/tree/16.1.0) (2021-01-28)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/16.0.0...16.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#31670](https://projects.theforeman.org/issues/31670) - don't timeout when running db:migrate [\#915](https://github.com/theforeman/puppet-foreman/pull/915) ([evgeni](https://github.com/evgeni))
+- Fixes [\#30284](https://projects.theforeman.org/issues/30284) - Improve smartproxy registration failure error messages [\#912](https://github.com/theforeman/puppet-foreman/pull/912) ([wbclark](https://github.com/wbclark))
+- Set the reverse proxy host to the name of the service [\#909](https://github.com/theforeman/puppet-foreman/pull/909) ([ehelms](https://github.com/ehelms))
+- Use apache::mod::auth\_openidc [\#906](https://github.com/theforeman/puppet-foreman/pull/906) ([ekohl](https://github.com/ekohl))
+- CLI: Allow to configure use\_sessions setting [\#905](https://github.com/theforeman/puppet-foreman/pull/905) ([neomilium](https://github.com/neomilium))
+- CLI: make refresh\_cache and request\_timeout params global [\#884](https://github.com/theforeman/puppet-foreman/pull/884) ([neomilium](https://github.com/neomilium))
+- Fixes [\#30803](https://projects.theforeman.org/issues/30803): Bind to socket for Puma and Apache [\#883](https://github.com/theforeman/puppet-foreman/pull/883) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- Fix URI.escape deprecation warning [\#911](https://github.com/theforeman/puppet-foreman/pull/911) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- Drop Puppet \< 3.7.5 version check [\#907](https://github.com/theforeman/puppet-foreman/pull/907) ([ekohl](https://github.com/ekohl))
+
 ## [16.0.0](https://github.com/theforeman/puppet-foreman/tree/16.0.0) (2020-10-30)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/15.1.1...16.0.0)
