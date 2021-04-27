@@ -42,6 +42,20 @@ describe 'foreman::repos::yum' do
 
           should contain_yumrepo('foreman-rails').with_ensure('absent')
         end
+
+        context 'keypath => custom' do
+          let(:params) { super().merge(keypath: 'http://examplekeys.org/GPG-KEY') }
+
+          it 'should contain repo and source with custom GPG key path and same baseurl' do
+            should contain_yumrepo('foreman')
+              .with_baseurl('http://example.org/releases/nightly/el7/$basearch')
+              .with_gpgkey('http://examplekeys.org/GPG-KEY')
+
+            should contain_yumrepo('foreman-source')
+              .with_baseurl('http://example.org/releases/nightly/el7/source')
+              .with_gpgkey('http://examplekeys.org/GPG-KEY')
+          end
+        end
       end
     end
 

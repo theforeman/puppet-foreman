@@ -5,7 +5,9 @@ define foreman::repos::yum (
   String $yumcode,
   Boolean $gpgcheck,
   Stdlib::HTTPUrl $baseurl,
+  Optional[String] $keypath = undef,
 ) {
+  $_keypath = pick($keypath, "${baseurl}/releases/${repo}/RPM-GPG-KEY-foreman")
   $gpgcheck_enabled_default = $gpgcheck ? {
     false   => '0',
     default => '1',
@@ -18,14 +20,14 @@ define foreman::repos::yum (
     descr    => "Foreman ${repo}",
     baseurl  => "${baseurl}/releases/${repo}/${yumcode}/\$basearch",
     gpgcheck => $gpgcheck_enabled,
-    gpgkey   => "${baseurl}/releases/${repo}/RPM-GPG-KEY-foreman",
+    gpgkey   => $_keypath,
     enabled  => '1',
   }
   yumrepo { "${name}-source":
     descr    => "Foreman ${repo} - source",
     baseurl  => "${baseurl}/releases/${repo}/${yumcode}/source",
     gpgcheck => $gpgcheck_enabled,
-    gpgkey   => "${baseurl}/releases/${repo}/RPM-GPG-KEY-foreman",
+    gpgkey   => $_keypath,
     enabled  => '0',
   }
   yumrepo { "${name}-plugins":
