@@ -23,7 +23,11 @@ describe 'foreman::repo' do
         let(:params) { {repo: 'nightly'} }
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_foreman__repos('foreman').with_repo('nightly').with_gpgcheck(true) }
+        it { is_expected.to contain_foreman__repos('foreman')
+          .with_repo('nightly')
+          .with_gpgcheck(true)
+          .with_yum_repo_baseurl('https://yum.theforeman.org')
+        }
 
         it do
           if facts[:operatingsystem] == 'CentOS' && facts[:operatingsystemmajrelease] == '7'
@@ -46,7 +50,8 @@ describe 'foreman::repo' do
         let :params do
           {
             repo: '1.19',
-            configure_scl_repo: false
+            configure_scl_repo: false,
+            yum_repo_baseurl: 'https://example.org'
           }
         end
 
@@ -56,6 +61,7 @@ describe 'foreman::repo' do
           is_expected.to contain_foreman__repos('foreman')
             .with_repo('1.19')
             .with_gpgcheck(true)
+            .with_yum_repo_baseurl('https://example.org')
         end
 
         it { is_expected.not_to contain_package('centos-release-scl-rh') }

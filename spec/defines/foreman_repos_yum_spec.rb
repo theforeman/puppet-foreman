@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'foreman::repos::yum' do
   let(:title) { 'foreman' }
-  let(:params) { { yumcode: 'el7' } }
+  let(:params) { { yumcode: 'el7', baseurl: 'https://yum.theforeman.org' } }
 
   context 'with repo => nightly' do
     let(:params) { super().merge(repo: 'nightly') }
@@ -10,34 +10,38 @@ describe 'foreman::repos::yum' do
     context 'gpgcheck => true' do
       let(:params) { super().merge(gpgcheck: true) }
 
-      it 'should contain repo, plugins and source repo' do
-        should contain_yumrepo('foreman')
-          .with_descr('Foreman nightly')
-          .with_baseurl('https://yum.theforeman.org/releases/nightly/el7/$basearch')
-          .with_gpgcheck('0')
-          .with_gpgkey('https://yum.theforeman.org/releases/nightly/RPM-GPG-KEY-foreman')
-          .with_enabled('1')
+      context 'baseurl => custom' do
+        let(:params) { super().merge(baseurl: 'http://example.org') }
 
-        should contain_yumrepo('foreman-source')
-          .with_descr('Foreman nightly - source')
-          .with_baseurl('https://yum.theforeman.org/releases/nightly/el7/source')
-          .with_gpgcheck('0')
-          .with_gpgkey('https://yum.theforeman.org/releases/nightly/RPM-GPG-KEY-foreman')
-          .with_enabled('0')
+        it 'should contain repo, plugins and source repo' do
+          should contain_yumrepo('foreman')
+            .with_descr('Foreman nightly')
+            .with_baseurl('http://example.org/releases/nightly/el7/$basearch')
+            .with_gpgcheck('0')
+            .with_gpgkey('http://example.org/releases/nightly/RPM-GPG-KEY-foreman')
+            .with_enabled('1')
 
-        should contain_yumrepo('foreman-plugins')
-          .with_descr('Foreman plugins nightly')
-          .with_baseurl('https://yum.theforeman.org/plugins/nightly/el7/$basearch')
-          .with_gpgcheck('0')
-          .with_enabled('1')
+          should contain_yumrepo('foreman-source')
+            .with_descr('Foreman nightly - source')
+            .with_baseurl('http://example.org/releases/nightly/el7/source')
+            .with_gpgcheck('0')
+            .with_gpgkey('http://example.org/releases/nightly/RPM-GPG-KEY-foreman')
+            .with_enabled('0')
 
-        should contain_yumrepo('foreman-plugins-source')
-          .with_descr('Foreman plugins nightly - source')
-          .with_baseurl('https://yum.theforeman.org/plugins/nightly/el7/source')
-          .with_gpgcheck('0')
-          .with_enabled('0')
+          should contain_yumrepo('foreman-plugins')
+            .with_descr('Foreman plugins nightly')
+            .with_baseurl('http://example.org/plugins/nightly/el7/$basearch')
+            .with_gpgcheck('0')
+            .with_enabled('1')
 
-        should contain_yumrepo('foreman-rails').with_ensure('absent')
+          should contain_yumrepo('foreman-plugins-source')
+            .with_descr('Foreman plugins nightly - source')
+            .with_baseurl('http://example.org/plugins/nightly/el7/source')
+            .with_gpgcheck('0')
+            .with_enabled('0')
+
+          should contain_yumrepo('foreman-rails').with_ensure('absent')
+        end
       end
     end
 
