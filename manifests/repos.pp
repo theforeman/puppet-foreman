@@ -1,6 +1,7 @@
 # @summary Set up a repository for foreman
 # @api private
 define foreman::repos(
+  Stdlib::HTTPUrl $yum_repo_baseurl,
   Variant[Enum['nightly'], Pattern['^\d+\.\d+$']] $repo,
   Boolean $gpgcheck = true,
 ) {
@@ -16,6 +17,7 @@ define foreman::repos(
         repo     => $repo,
         yumcode  => $yumcode,
         gpgcheck => $gpgcheck,
+        baseurl  => $yum_repo_baseurl,
       }
     }
     'Debian': {

@@ -13,17 +13,21 @@
 # @param scl_repo_ensure
 #   The ensure to set on the SCL repo package
 #
+# @param yum_repo_baseurl
+#   The base URL for Yum repositories
 class foreman::repo(
   Optional[Variant[Enum['nightly'], Pattern['^\d+\.\d+$']]] $repo = undef,
   Boolean $gpgcheck = true,
   Boolean $configure_scl_repo = $facts['os']['name'] == 'CentOS' and $facts['os']['release']['major'] == '7',
   String $scl_repo_ensure = 'installed',
+  Stdlib::HTTPUrl $yum_repo_baseurl = 'https://yum.theforeman.org',
 ) {
   if $repo {
     foreman::repos { 'foreman':
-      repo     => $repo,
-      gpgcheck => $gpgcheck,
-      before   => Anchor['foreman::repo'],
+      repo             => $repo,
+      gpgcheck         => $gpgcheck,
+      yum_repo_baseurl => $yum_repo_baseurl,
+      before           => Anchor['foreman::repo'],
     }
 
     if $configure_scl_repo {

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'foreman::repos' do
   let(:title) { 'foreman' }
   let(:repo) { '1.18' }
-  let(:params) { { repo: repo } }
+  let(:params) { { repo: repo, yum_repo_baseurl: 'http://example.org' } }
 
   on_supported_os.each do |os, facts|
     context "on #{os}" do
@@ -23,6 +23,7 @@ describe 'foreman::repos' do
             .with_repo(repo)
             .with_yumcode(yumcode)
             .with_gpgcheck(true)
+            .with_baseurl('http://example.org')
         end
       when 'Debian'
         it { is_expected.to contain_foreman__repos__apt('foreman').with_repo(repo) }
