@@ -87,6 +87,24 @@ describe 'foreman::config::apache' do
         it { should contain_file("#{http_dir}/conf.d/foreman-openidc_oidc_keycloak_ssl-realm.conf") }
       end
 
+      describe 'with custom HTTP headers to unset' do
+        let(:params) do
+          super().merge(
+            request_headers_to_unset: ['OIDC_FOO'],
+          )
+        end
+
+        it { should contain_apache__vhost('foreman')
+            .with_request_headers([
+              'set X_FORWARDED_PROTO "http"',
+              'set SSL_CLIENT_S_DN ""',
+              'set SSL_CLIENT_CERT ""',
+              'set SSL_CLIENT_VERIFY ""',
+              'unset OIDC_FOO',
+            ])
+        }
+      end
+
       describe 'with ssl' do
         let(:params) do
           {
@@ -208,6 +226,24 @@ describe 'foreman::config::apache' do
             should contain_apache__vhost('foreman').with_port(8080)
             should contain_apache__vhost('foreman-ssl').with_port(8443)
           end
+        end
+
+        describe 'with vhost and ssl, custom HTTP headers to unset' do
+          let(:params) do
+            super().merge(
+              request_headers_to_unset: ['OIDC_FOO'],
+            )
+          end
+
+          it { should contain_apache__vhost('foreman-ssl')
+              .with_request_headers([
+                'set X_FORWARDED_PROTO "https"',
+                'set SSL_CLIENT_S_DN "%{SSL_CLIENT_S_DN}s"',
+                'set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"',
+                'set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"',
+                'unset OIDC_FOO',
+              ])
+          }
         end
       end
     end

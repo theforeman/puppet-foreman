@@ -82,6 +82,9 @@
 # @param keycloak_realm
 #   The realm as passed to keycloak-httpd-client-install
 #
+# @param request_headers_to_unset A list of HTTP headers coming from
+#   the client that will be unset and hence not passed to the
+#   application.
 class foreman::config::apache(
   Stdlib::Absolutepath $app_root = '/usr/share/foreman',
   String $priority = '05',
@@ -110,6 +113,13 @@ class foreman::config::apache(
   Boolean $keycloak = false,
   String[1] $keycloak_app_name = 'foreman-openidc',
   String[1] $keycloak_realm = 'ssl-realm',
+  Array[String[1]] $request_headers_to_unset = [
+    'REMOTE_USER',
+    'REMOTE_USER_EMAIL',
+    'REMOTE_USER_FIRSTNAME',
+    'REMOTE_USER_LASTNAME',
+    'REMOTE_USER_GROUPS',
+  ],
 ) {
   $docroot = "${app_root}/public"
 
@@ -152,20 +162,20 @@ class foreman::config::apache(
   include apache::mod::proxy_wstunnel
   $websockets_backend = regsubst($_proxy_backend, 'http://', 'ws://')
 
+  $vhost_http_request_headers = [
+    'set X_FORWARDED_PROTO "http"',
+    'set SSL_CLIENT_S_DN ""',
+    'set SSL_CLIENT_CERT ""',
+    'set SSL_CLIENT_VERIFY ""',
+  ] +
+  $request_headers_to_unset.map |$header| {
+    "unset ${header}"
+  }
+
   $vhost_http_internal_options = {
     'proxy_preserve_host' => true,
     'proxy_add_headers'   => true,
-    'request_headers'     => [
-      'set X_FORWARDED_PROTO "http"',
-      'set SSL_CLIENT_S_DN ""',
-      'set SSL_CLIENT_CERT ""',
-      'set SSL_CLIENT_VERIFY ""',
-      'unset REMOTE_USER',
-      'unset REMOTE_USER_EMAIL',
-      'unset REMOTE_USER_FIRSTNAME',
-      'unset REMOTE_USER_LASTNAME',
-      'unset REMOTE_USER_GROUPS',
-    ],
+    'request_headers'     => $vhost_http_request_headers,
     'proxy_pass'          => {
       'no_proxy_uris' => $proxy_no_proxy_uris,
       'path'          => pick($suburi, '/'),
@@ -181,19 +191,19 @@ class foreman::config::apache(
     ],
   }
 
+  $vhost_https_request_headers = [
+    'set X_FORWARDED_PROTO "https"',
+    'set SSL_CLIENT_S_DN "%{SSL_CLIENT_S_DN}s"',
+    'set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"',
+    'set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"',
+  ] +
+  $request_headers_to_unset.map |$header| {
+    "unset ${header}"
+  }
+
   $vhost_https_internal_options = $vhost_http_internal_options + {
     'ssl_proxyengine' => true,
-    'request_headers' => [
-      'set X_FORWARDED_PROTO "https"',
-      'set SSL_CLIENT_S_DN "%{SSL_CLIENT_S_DN}s"',
-      'set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"',
-      'set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"',
-      'unset REMOTE_USER',
-      'unset REMOTE_USER_EMAIL',
-      'unset REMOTE_USER_FIRSTNAME',
-      'unset REMOTE_USER_LASTNAME',
-      'unset REMOTE_USER_GROUPS',
-    ],
+    'request_headers' => $vhost_https_request_headers,
   }
 
   if $facts['os']['selinux']['enabled'] {
