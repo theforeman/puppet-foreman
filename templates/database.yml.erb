@@ -1,4 +1,7 @@
-<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
+<% @header = ''
+   ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file))), nil, nil, "@header").result(binding) -%>
+---
+<%= @header -%>
 
 <%
   host     = scope.lookupvar("::foreman::db_host")
