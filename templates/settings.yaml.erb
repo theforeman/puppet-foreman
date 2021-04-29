@@ -1,7 +1,7 @@
 <% @header = ''
    ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file))), nil, nil, "@header").result(binding) -%>
 ---
-<%= @header %>
+<%= @header -%>
 
 :unattended: <%= scope.lookupvar("foreman::unattended") %>
 <% unless [nil, :undefined, :undef].include?(scope.lookupvar("foreman::unattended_url")) -%>
