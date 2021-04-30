@@ -20,6 +20,7 @@ describe 'foreman::cli' do
         describe '/etc/hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings' do
             verify_exact_contents(catalogue, '/etc/hammer/cli.modules.d/foreman.yml', [
+                                    '---',
                                     ':foreman:',
                                     '  :enable_module: true',
                                     "  :host: 'http://example.com'",
@@ -35,6 +36,7 @@ describe 'foreman::cli' do
 
           it 'should contain settings' do
             verify_exact_contents(catalogue, '/root/.hammer/cli.modules.d/foreman.yml', [
+                                    '---',
                                     ':foreman:',
                                     "  :username: 'joe'",
                                     "  :password: 'secret'",
@@ -54,6 +56,7 @@ describe 'foreman::cli' do
           describe '/etc/hammer/cli.modules.d/foreman.yml' do
             it 'should contain settings' do
               verify_exact_contents(catalogue, '/etc/hammer/cli.modules.d/foreman.yml', [
+                                      '---',
                                       ':foreman:',
                                       '  :enable_module: true',
                                       "  :host: 'http://example.com'",
@@ -95,6 +98,7 @@ describe 'foreman::cli' do
 
         it 'should contain settings in /etc from foreman' do
           verify_exact_contents(catalogue, '/etc/hammer/cli.modules.d/foreman.yml', [
+                                  '---',
                                   ':foreman:',
                                   '  :enable_module: true',
                                   "  :host: 'https://foreman.example.com'",
@@ -108,6 +112,7 @@ describe 'foreman::cli' do
 
         it 'should contain settings in /root from foreman' do
           verify_exact_contents(catalogue, '/root/.hammer/cli.modules.d/foreman.yml', [
+                                  '---',
                                   ':foreman:',
                                   "  :username: 'jane'",
                                   "  :password: 'supersecret'",
