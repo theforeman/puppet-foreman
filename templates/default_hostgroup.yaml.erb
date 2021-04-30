@@ -1,4 +1,8 @@
+<% @header = ''
+   ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file))), nil, nil, "@header").result(binding) -%>
 ---
+<%= @header -%>
+
 :default_hostgroup:
   :facts_map:
 <% @hostgroups.each do |group| -%>

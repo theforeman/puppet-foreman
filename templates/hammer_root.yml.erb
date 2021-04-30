@@ -1,3 +1,8 @@
+<% @header = ''
+   ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file))), nil, nil, "@header").result(binding) -%>
+---
+<%= @header -%>
+
 :foreman:
   # Credentials. You'll be asked for the interactively if you leave them blank here
   :username: '<%= @username_real %>'

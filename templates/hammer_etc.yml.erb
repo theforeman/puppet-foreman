@@ -1,3 +1,8 @@
+<% @header = ''
+   ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file))), nil, nil, "@header").result(binding) -%>
+---
+<%= @header -%>
+
 :foreman:
   # Enable/disable foreman commands
   :enable_module: true

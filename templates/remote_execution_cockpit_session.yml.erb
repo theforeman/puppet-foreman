@@ -1,4 +1,8 @@
+<% @header = ''
+   ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file))), nil, nil, "@header").result(binding) -%>
 ---
+<%= @header -%>
+
 <% @cockpit_config.each do |key, value| -%>
 :<%= key %>: "<%= value %>"
 <% end -%>
