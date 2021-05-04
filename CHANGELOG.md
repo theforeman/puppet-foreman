@@ -1,5 +1,23 @@
 # Changelog
 
+## [17.1.0](https://github.com/theforeman/puppet-foreman/tree/17.1.0) (2021-05-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/17.0.0...17.1.0)
+
+**Implemented enhancements:**
+
+- Allow Puppet 7 compatible versions of mods [\#947](https://github.com/theforeman/puppet-foreman/pull/947) ([ekohl](https://github.com/ekohl))
+- Allow customising the list of HTTP headers to unset [\#944](https://github.com/theforeman/puppet-foreman/pull/944) ([nbarrientos](https://github.com/nbarrientos))
+- Customisable Yum repository base URL and GPG key path [\#943](https://github.com/theforeman/puppet-foreman/pull/943) ([nbarrientos](https://github.com/nbarrientos))
+
+**Fixed bugs:**
+
+- Make database.yml and settings.yaml have consistent headers [\#945](https://github.com/theforeman/puppet-foreman/pull/945) ([gcoxmoz](https://github.com/gcoxmoz))
+
+**Closed issues:**
+
+- foreman-report\_v2 disappeared from master branch ? [\#939](https://github.com/theforeman/puppet-foreman/issues/939)
+
 ## [17.0.0](https://github.com/theforeman/puppet-foreman/tree/17.0.0) (2021-04-26)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/16.1.0...17.0.0)
