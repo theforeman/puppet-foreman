@@ -20,6 +20,7 @@ describe 'foreman::repos::yum' do
             .with_gpgcheck('0')
             .with_gpgkey('http://example.org/releases/nightly/RPM-GPG-KEY-foreman')
             .with_enabled('1')
+            .with_priority('absent')
 
           should contain_yumrepo('foreman-source')
             .with_descr('Foreman nightly - source')
@@ -27,18 +28,21 @@ describe 'foreman::repos::yum' do
             .with_gpgcheck('0')
             .with_gpgkey('http://example.org/releases/nightly/RPM-GPG-KEY-foreman')
             .with_enabled('0')
+            .with_priority('absent')
 
           should contain_yumrepo('foreman-plugins')
             .with_descr('Foreman plugins nightly')
             .with_baseurl('http://example.org/plugins/nightly/el7/$basearch')
             .with_gpgcheck('0')
             .with_enabled('1')
+            .with_priority('absent')
 
           should contain_yumrepo('foreman-plugins-source')
             .with_descr('Foreman plugins nightly - source')
             .with_baseurl('http://example.org/plugins/nightly/el7/source')
             .with_gpgcheck('0')
             .with_enabled('0')
+            .with_priority('absent')
 
           should contain_yumrepo('foreman-rails').with_ensure('absent')
         end
@@ -57,6 +61,23 @@ describe 'foreman::repos::yum' do
           end
         end
       end
+
+      context 'priority => 10' do
+        let(:params) { super().merge(priority: 10) }
+        it 'should contain repo, plugins and source with correct priority' do
+          should contain_yumrepo('foreman')
+            .with_priority(10)
+
+          should contain_yumrepo('foreman-source')
+            .with_priority(10)
+
+          should contain_yumrepo('foreman-plugins')
+            .with_priority(10)
+
+          should contain_yumrepo('foreman-plugins-source')
+            .with_priority(10)
+        end
+      end
     end
 
     context 'gpgcheck => false' do
@@ -69,6 +90,7 @@ describe 'foreman::repos::yum' do
           .with_gpgcheck('0')
           .with_gpgkey('https://yum.theforeman.org/releases/nightly/RPM-GPG-KEY-foreman')
           .with_enabled('1')
+          .with_priority('absent')
 
         should contain_yumrepo('foreman-source')
           .with_descr('Foreman nightly - source')
@@ -76,18 +98,21 @@ describe 'foreman::repos::yum' do
           .with_gpgcheck('0')
           .with_gpgkey('https://yum.theforeman.org/releases/nightly/RPM-GPG-KEY-foreman')
           .with_enabled('0')
+          .with_priority('absent')
 
         should contain_yumrepo('foreman-plugins')
           .with_descr('Foreman plugins nightly')
           .with_baseurl('https://yum.theforeman.org/plugins/nightly/el7/$basearch')
           .with_gpgcheck('0')
           .with_enabled('1')
+          .with_priority('absent')
 
         should contain_yumrepo('foreman-plugins-source')
           .with_descr('Foreman plugins nightly - source')
           .with_baseurl('https://yum.theforeman.org/plugins/nightly/el7/source')
           .with_gpgcheck('0')
           .with_enabled('0')
+          .with_priority('absent')
 
         should contain_yumrepo('foreman-rails').with_ensure('absent')
       end
@@ -107,6 +132,7 @@ describe 'foreman::repos::yum' do
           .with_gpgcheck('1')
           .with_gpgkey('https://yum.theforeman.org/releases/1.19/RPM-GPG-KEY-foreman')
           .with_enabled('1')
+          .with_priority('absent')
 
         should contain_yumrepo('foreman-source')
           .with_descr('Foreman 1.19 - source')
@@ -114,18 +140,21 @@ describe 'foreman::repos::yum' do
           .with_gpgcheck('1')
           .with_gpgkey('https://yum.theforeman.org/releases/1.19/RPM-GPG-KEY-foreman')
           .with_enabled('0')
+          .with_priority('absent')
 
         should contain_yumrepo('foreman-plugins')
           .with_descr('Foreman plugins 1.19')
           .with_baseurl('https://yum.theforeman.org/plugins/1.19/el7/$basearch')
           .with_gpgcheck('0')
           .with_enabled('1')
+          .with_priority('absent')
 
         should contain_yumrepo('foreman-plugins-source')
           .with_descr('Foreman plugins 1.19 - source')
           .with_baseurl('https://yum.theforeman.org/plugins/1.19/el7/source')
           .with_gpgcheck('0')
           .with_enabled('0')
+          .with_priority('absent')
 
         should contain_yumrepo('foreman-rails').with_ensure('absent')
       end
@@ -141,6 +170,7 @@ describe 'foreman::repos::yum' do
           .with_gpgcheck('0')
           .with_gpgkey('https://yum.theforeman.org/releases/1.19/RPM-GPG-KEY-foreman')
           .with_enabled('1')
+          .with_priority('absent')
 
         should contain_yumrepo('foreman-source')
           .with_descr('Foreman 1.19 - source')
@@ -148,18 +178,21 @@ describe 'foreman::repos::yum' do
           .with_gpgcheck('0')
           .with_gpgkey('https://yum.theforeman.org/releases/1.19/RPM-GPG-KEY-foreman')
           .with_enabled('0')
+          .with_priority('absent')
 
         should contain_yumrepo('foreman-plugins')
           .with_descr('Foreman plugins 1.19')
           .with_baseurl('https://yum.theforeman.org/plugins/1.19/el7/$basearch')
           .with_gpgcheck('0')
           .with_enabled('1')
+          .with_priority('absent')
 
         should contain_yumrepo('foreman-plugins-source')
           .with_descr('Foreman plugins 1.19 - source')
           .with_baseurl('https://yum.theforeman.org/plugins/1.19/el7/source')
           .with_gpgcheck('0')
           .with_enabled('0')
+          .with_priority('absent')
 
         should contain_yumrepo('foreman-rails').with_ensure('absent')
       end

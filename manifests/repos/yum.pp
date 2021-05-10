@@ -6,6 +6,7 @@ define foreman::repos::yum (
   Boolean $gpgcheck,
   Stdlib::HTTPUrl $baseurl,
   Optional[String] $keypath = undef,
+  Variant[Integer[0, 99], Enum['absent']] $priority = 'absent',
 ) {
   $_keypath = pick($keypath, "${baseurl}/releases/${repo}/RPM-GPG-KEY-foreman")
   $gpgcheck_enabled_default = $gpgcheck ? {
@@ -22,6 +23,7 @@ define foreman::repos::yum (
     gpgcheck => $gpgcheck_enabled,
     gpgkey   => $_keypath,
     enabled  => '1',
+    priority => $priority,
   }
   yumrepo { "${name}-source":
     descr    => "Foreman ${repo} - source",
@@ -29,18 +31,21 @@ define foreman::repos::yum (
     gpgcheck => $gpgcheck_enabled,
     gpgkey   => $_keypath,
     enabled  => '0',
+    priority => $priority,
   }
   yumrepo { "${name}-plugins":
     descr    => "Foreman plugins ${repo}",
     baseurl  => "${baseurl}/plugins/${repo}/${yumcode}/\$basearch",
     gpgcheck => '0',
     enabled  => '1',
+    priority => $priority,
   }
   yumrepo { "${name}-plugins-source":
     descr    => "Foreman plugins ${repo} - source",
     baseurl  => "${baseurl}/plugins/${repo}/${yumcode}/source",
     gpgcheck => '0',
     enabled  => '0',
+    priority => $priority,
   }
   # Foreman 2.0 dropped the separate rails repository
   yumrepo { "${name}-rails":
