@@ -119,27 +119,9 @@ class foreman::params {
     }
   }
 
-  if fact('aio_agent_version') =~ String[1] {
-    $puppet_ssldir = '/etc/puppetlabs/puppet/ssl'
-  } else {
-    $puppet_ssldir = '/var/lib/puppet/ssl'
-  }
-
-  # If CA is specified, remote Foreman host will be verified in reports/ENC scripts
-  $client_ssl_ca   = "${puppet_ssldir}/certs/ca.pem"
-  # Used to authenticate to Foreman, required if require_ssl_puppetmasters is enabled
-  $client_ssl_cert = "${puppet_ssldir}/certs/${lower_fqdn}.pem"
-  $client_ssl_key  = "${puppet_ssldir}/private_keys/${lower_fqdn}.pem"
-
   $vhost_priority = '05'
 
   # Set these values if you want Apache to serve a CA-provided cert instead of puppet's
-  $server_ssl_ca    = "${puppet_ssldir}/certs/ca.pem"
-  $server_ssl_chain = "${puppet_ssldir}/certs/ca.pem"
-  $server_ssl_cert  = "${puppet_ssldir}/certs/${lower_fqdn}.pem"
-  $server_ssl_certs_dir = '' # lint:ignore:empty_string_assignment - this must be empty since we override a default
-  $server_ssl_key   = "${puppet_ssldir}/private_keys/${lower_fqdn}.pem"
-  $server_ssl_crl   = "${puppet_ssldir}/crl.pem"
   $server_ssl_protocol = undef
   $server_ssl_verify_client = 'optional'
 
