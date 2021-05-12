@@ -245,6 +245,17 @@ describe 'foreman::config::apache' do
               ])
           }
         end
+
+        describe 'with proxy_add_headers to false' do
+          let(:params) { super().merge(proxy_add_headers: false) }
+
+          it 'all vhosts must have the setting' do
+            should contain_apache__vhost('foreman')
+              .with_proxy_add_headers(false)
+            should contain_apache__vhost('foreman-ssl')
+              .with_proxy_add_headers(false)
+          end
+        end
       end
     end
   end
