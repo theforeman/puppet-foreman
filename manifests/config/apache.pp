@@ -48,6 +48,10 @@
 # @param user
 #   The user under which the application runs.
 #
+# @param proxy_add_headers
+#   Do not set X-Forwarded-* headers. Useful when having another
+#   balancing layer in front of this Apache instance.
+#
 # @param proxy_backend
 #   The backend service to proxy to
 #
@@ -93,6 +97,7 @@ class foreman::config::apache(
   Stdlib::Port $server_port = 80,
   Stdlib::Port $server_ssl_port = 443,
   Pattern['^(https?|unix)://'] $proxy_backend = 'unix:///run/foreman.sock',
+  Boolean $proxy_add_headers = true,
   Hash $proxy_params = {'retry' => '0'},
   Array[String] $proxy_no_proxy_uris = ['/pulp', '/pulp2', '/streamer', '/pub', '/icons'],
   Boolean $ssl = false,
@@ -174,7 +179,7 @@ class foreman::config::apache(
 
   $vhost_http_internal_options = {
     'proxy_preserve_host' => true,
-    'proxy_add_headers'   => true,
+    'proxy_add_headers'   => $proxy_add_headers,
     'request_headers'     => $vhost_http_request_headers,
     'proxy_pass'          => {
       'no_proxy_uris' => $proxy_no_proxy_uris,
