@@ -2,15 +2,15 @@ require 'spec_helper_acceptance'
 
 describe 'Scenario: install foreman', order: :defined do
   context '2 workers' do
-    let(:pp) do
-      <<-PUPPET
-      class { 'foreman':
-        dynflow_worker_instances => 2,
-      }
-      PUPPET
+    it_behaves_like 'an idempotent resource' do
+      let(:manifest) do
+        <<-PUPPET
+        class { 'foreman':
+          dynflow_worker_instances => 2,
+        }
+        PUPPET
+      end
     end
-
-    it_behaves_like 'a idempotent resource'
 
     it_behaves_like 'the foreman application'
 
@@ -43,15 +43,15 @@ describe 'Scenario: install foreman', order: :defined do
   end
 
   context '1 worker' do
-    let(:pp) do
-      <<-PUPPET
-      class { 'foreman':
-        dynflow_worker_instances => 1,
-      }
-      PUPPET
+    it_behaves_like 'an idempotent resource' do
+      let(:manifest) do
+        <<-PUPPET
+        class { 'foreman':
+          dynflow_worker_instances => 1,
+        }
+        PUPPET
+      end
     end
-
-    it_behaves_like 'a idempotent resource'
 
     it_behaves_like 'the foreman application'
 

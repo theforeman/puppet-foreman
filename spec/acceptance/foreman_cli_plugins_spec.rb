@@ -6,26 +6,27 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
   package_prefix = fact('os.release.major') == '7' ? "tfm-" : ""
 
   context 'for standard plugins' do
-    let(:pp) do
-      <<-PUPPET
-      class { 'foreman::cli':
-        foreman_url => 'https://foreman.example.com',
-        username    => 'admin',
-        password    => 'changeme',
-      }
 
-      if $facts['os']['family'] == 'RedHat' {
-        include foreman::cli::ansible
-        include foreman::cli::azure
-      }
-      include foreman::cli::discovery
-      include foreman::cli::remote_execution
-      include foreman::cli::tasks
-      include foreman::cli::templates
-      PUPPET
+    it_behaves_like 'an idempotent resource' do
+      let(:manifest) do
+        <<-PUPPET
+        class { 'foreman::cli':
+          foreman_url => 'https://foreman.example.com',
+          username    => 'admin',
+          password    => 'changeme',
+        }
+
+        if $facts['os']['family'] == 'RedHat' {
+          include foreman::cli::ansible
+          include foreman::cli::azure
+        }
+        include foreman::cli::discovery
+        include foreman::cli::remote_execution
+        include foreman::cli::tasks
+        include foreman::cli::templates
+        PUPPET
+      end
     end
-
-    it_behaves_like 'a idempotent resource'
 
     it_behaves_like 'hammer'
 
@@ -47,26 +48,26 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
 
   if fact('os.family') == 'RedHat'
     context 'for katello' do
-      let(:pp) do
-        <<-PUPPET
-        yumrepo { 'katello':
-          baseurl  => "http://yum.theforeman.org/katello/nightly/katello/el${facts['os']['release']['major']}/x86_64/",
-          gpgcheck => 0,
-        }
+      it_behaves_like 'an idempotent resource' do
+        let(:manifest) do
+          <<-PUPPET
+          yumrepo { 'katello':
+            baseurl  => "http://yum.theforeman.org/katello/nightly/katello/el${facts['os']['release']['major']}/x86_64/",
+            gpgcheck => 0,
+          }
 
-        class { 'foreman::cli':
-          foreman_url => 'https://foreman.example.com',
-          username    => 'admin',
-          password    => 'changeme',
-        }
+          class { 'foreman::cli':
+            foreman_url => 'https://foreman.example.com',
+            username    => 'admin',
+            password    => 'changeme',
+          }
 
-        include foreman::cli::katello
+          include foreman::cli::katello
 
-        Yumrepo['katello'] -> Class['foreman::cli::katello']
-        PUPPET
+          Yumrepo['katello'] -> Class['foreman::cli::katello']
+          PUPPET
+        end
       end
-
-      it_behaves_like 'a idempotent resource'
 
       it_behaves_like 'hammer'
 
