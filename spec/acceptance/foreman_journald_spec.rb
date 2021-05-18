@@ -3,15 +3,15 @@ require 'spec_helper_acceptance'
 describe 'Scenario: install foreman with journald' do
   before(:context) { purge_foreman }
 
-  let(:pp) do
-    <<-PUPPET
-    class { 'foreman':
-      logging_type => 'journald',
-    }
-    PUPPET
+  it_behaves_like 'an idempotent resource' do
+    let(:manifest) do
+      <<-PUPPET
+      class { 'foreman':
+        logging_type => 'journald',
+      }
+      PUPPET
+    end
   end
-
-  it_behaves_like 'a idempotent resource'
 
   it_behaves_like 'the foreman application'
 

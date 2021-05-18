@@ -3,13 +3,9 @@ require 'spec_helper_acceptance'
 describe 'Scenario: install foreman' do
   before(:context) { purge_foreman }
 
-  let(:pp) do
-    <<-PUPPET
-    include foreman
-    PUPPET
+  it_behaves_like 'an idempotent resource' do
+    let(:manifest) { 'include foreman' }
   end
-
-  it_behaves_like 'a idempotent resource'
 
   it_behaves_like 'the foreman application'
 
