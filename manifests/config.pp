@@ -74,6 +74,12 @@ class foreman::config {
   }
 
   if $foreman::manage_user {
+    if $foreman::puppet_ssldir in $foreman::server_ssl_key or $foreman::puppet_ssldir in $foreman::client_ssl_key {
+      $_user_groups = $foreman::user_groups + ['puppet']
+    } else {
+      $_user_groups = $foreman::user_groups
+    }
+
     group { $foreman::group:
       ensure => 'present',
     }
@@ -83,7 +89,7 @@ class foreman::config {
       comment => 'Foreman',
       home    => $foreman::app_root,
       gid     => $foreman::group,
-      groups  => $foreman::user_groups,
+      groups  => unique($_user_groups),
     }
   }
 
