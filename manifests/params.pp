@@ -24,7 +24,7 @@ class foreman::params {
   $manage_user       = true
   $user              = 'foreman'
   $group             = 'foreman'
-  $user_groups       = ['puppet']
+  $user_groups       = []
   $rails_env         = 'production'
   $version           = 'present'
   $plugin_version    = 'present'

@@ -409,6 +409,19 @@ describe 'foreman' do
           it { should_not contain_class('redis::instance') }
         end
       end
+
+      describe 'with non-Puppet SSL certificates' do
+        let(:params) do
+          super().merge(
+            server_ssl_key: '/etc/pki/localhost.key',
+            server_ssl_cert: '/etc/pki/localhost.crt',
+            client_ssl_key: '/etc/pki/localhost.key',
+            client_ssl_cert: '/etc/pki/localhost.crt',
+          )
+        end
+
+        it { should contain_user('foreman').with('groups' => []) }
+      end
     end
   end
 end
