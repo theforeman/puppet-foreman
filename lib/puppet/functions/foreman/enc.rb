@@ -45,14 +45,6 @@ Puppet::Functions.create_function(:'foreman::enc') do
     ssl_context = use_ssl ? Puppet.lookup(:ssl_context) : nil
     conn = Puppet::Network::HttpPool.connection(uri.host, uri.port, use_ssl: use_ssl, ssl_context: ssl_context)
 
-    # Puppetserver doesn't implement HTTP auth on get requests
-    # https://tickets.puppetlabs.com/browse/SERVER-2597
-    if defined?(Puppet::Server::HttpClient) && conn.is_a?(Puppet::Server::HttpClient) && options[:basic_auth]
-      require 'base64'
-      encoded = Base64.strict_encode64("#{options[:basic_auth][:user]}:#{options[:basic_auth][:password]}")
-      headers["Authorization"] = "Basic #{encoded}"
-    end
-
     path = uri.path
     path += "?#{uri.query}" if uri.query
     response = conn.get(path, headers, options)
