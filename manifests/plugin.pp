@@ -27,7 +27,7 @@ define foreman::plugin(
   String[1] $config_file_owner = 'root',
   String[1] $config_file_group = $foreman::group,
   Stdlib::Filemode $config_file_mode = '0640',
-  Optional[String] $config = undef,
+  Optional[Variant[String, Sensitive[String]]] $config = undef,
 ) {
   # Debian gem2deb converts underscores to hyphens
   case $facts['os']['family'] {

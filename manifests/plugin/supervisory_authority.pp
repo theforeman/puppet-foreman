@@ -30,7 +30,7 @@
 #
 class foreman::plugin::supervisory_authority (
   Stdlib::HTTPUrl              $server_url,
-  String                       $secret_token,
+  Variant[String, Sensitive[String]] $secret_token,
   Pattern[/^[a-zA-Z0-9 _-]+$/] $service_name,
   Integer[0,5]                 $log_level             = 1,
   Integer[0]                   $pool_size             = 1,

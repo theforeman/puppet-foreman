@@ -14,7 +14,7 @@ class foreman::database(
   if $foreman::db_manage_rake {
     $seed_env = {
       'SEED_ADMIN_USER'       => $foreman::initial_admin_username,
-      'SEED_ADMIN_PASSWORD'   => $foreman::initial_admin_password,
+      'SEED_ADMIN_PASSWORD'   => if $foreman::initial_admin_password =~ Sensitive {$foreman::initial_admin_password.unwrap} else {$foreman::initial_admin_password},
       'SEED_ADMIN_FIRST_NAME' => $foreman::initial_admin_first_name,
       'SEED_ADMIN_LAST_NAME'  => $foreman::initial_admin_last_name,
       'SEED_ADMIN_EMAIL'      => $foreman::initial_admin_email,
