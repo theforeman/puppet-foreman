@@ -1,8 +1,8 @@
 <%- |
   Optional[String] $username,
-  Optional[String] $password,
+  Optional[Variant[String, Sensitive[String]]] $password,
 | -%>
 :foreman:
   # Credentials. You'll be asked for the interactively if you leave them blank here
-  :username: '<%= $username %>'
-  :password: '<%= $password %>'
+  :username:<%= if $username { " '${username}'" } %>
+  :password:<%= if $password { " '${password}'" } %>

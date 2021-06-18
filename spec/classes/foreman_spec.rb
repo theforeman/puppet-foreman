@@ -263,6 +263,20 @@ describe 'foreman' do
         end
       end
 
+      describe 'with all parameters and Sensitive for Secrets' do
+        let :params do
+          {
+            db_password: sensitive('secret'),
+            oauth_consumer_key: sensitive('random'),
+            oauth_consumer_secret: sensitive('random'),
+            initial_admin_password: sensitive('secret'),
+            email_smtp_password: sensitive('secret'),
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+      end
+
       context 'with journald logging' do
         let(:params) { super().merge(logging_type: 'journald') }
         it { is_expected.to compile.with_all_deps }
