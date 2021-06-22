@@ -20,6 +20,10 @@
 #
 # $email_delivery_method::        Email delivery method
 #
+# $email_sendmail_location::      The location of the binary to call when sendmail is the delivery method. Unused when SMTP delivery is used.
+#
+# $email_sendmail_arguments::     The arguments to pass to the sendmail binary. Unused when SMTP delivery is used.
+#
 # $email_smtp_address::           SMTP server hostname, when delivery method is SMTP
 #
 # $email_smtp_port::              SMTP port
@@ -264,6 +268,8 @@ class foreman (
   Enum['pattern', 'multiline_pattern', 'multiline_request_pattern', 'json'] $logging_layout = $foreman::params::logging_layout,
   Hash[String, Boolean] $loggers = $foreman::params::loggers,
   Optional[Enum['sendmail', 'smtp']] $email_delivery_method = $foreman::params::email_delivery_method,
+  Optional[Stdlib::Absolutepath] $email_sendmail_location = $foreman::params::email_sendmail_location,
+  Optional[String[1]] $email_sendmail_arguments = $foreman::params::email_sendmail_arguments,
   Optional[Stdlib::Host] $email_smtp_address = $foreman::params::email_smtp_address,
   Stdlib::Port $email_smtp_port = $foreman::params::email_smtp_port,
   Optional[Stdlib::Fqdn] $email_smtp_domain = $foreman::params::email_smtp_domain,

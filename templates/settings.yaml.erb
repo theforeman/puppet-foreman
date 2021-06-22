@@ -71,6 +71,16 @@
     :enabled: <%= scope.lookupvar("foreman::telemetry_logger_enabled") %>
     # logging level as in Logger::LEVEL
     :level: '<%= scope.lookupvar("foreman::telemetry_logger_level") %>'
+<% if scope.lookupvar("foreman::email_sendmail_location") || scope.lookupvar("foreman::email_sendmail_arguments") -%>
+
+# Email settings
+<% if scope.lookupvar("foreman::email_sendmail_location") -%>
+:email_sendmail_location: "<%= scope.lookupvar("foreman::email_sendmail_location") %>"
+<% end -%>
+<% if scope.lookupvar("foreman::email_sendmail_arguments") -%>
+:email_sendmail_arguments: "<%= scope.lookupvar("foreman::email_sendmail_arguments") %>"
+<% end -%>
+<% end -%>
 
 <% if scope.lookupvar("foreman::dynflow_manage_services") -%>
 :dynflow:

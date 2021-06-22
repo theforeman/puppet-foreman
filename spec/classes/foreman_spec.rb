@@ -225,6 +225,8 @@ describe 'foreman' do
             logging_level: 'info',
             loggers: {},
             email_delivery_method: 'sendmail',
+            email_sendmail_location: '/usr/bin/mysendmail',
+            email_sendmail_arguments: '--myargument',
             email_smtp_address: 'smtp.example.com',
             email_smtp_port: 25,
             email_smtp_domain: 'example.com',
@@ -247,6 +249,8 @@ describe 'foreman' do
 
         it 'should configure certificates in settings.yaml' do
           is_expected.to contain_concat__fragment('foreman_settings+01-header.yaml')
+            .with_content(%r{^:email_sendmail_location: "/usr/bin/mysendmail"$})
+            .with_content(%r{^:email_sendmail_arguments: "--myargument"$})
             .with_content(%r{^:websockets_ssl_key: /etc/ssl/private/snakeoil-ws\.pem$})
             .with_content(%r{^:websockets_ssl_cert: /etc/ssl/certs/snakeoil-ws\.pem$})
         end

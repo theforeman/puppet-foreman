@@ -45,6 +45,8 @@ class foreman::params {
 
   # Configure foreman email settings (database or email.yaml)
   $email_delivery_method     = undef
+  $email_sendmail_location   = undef
+  $email_sendmail_arguments  = undef
   $email_smtp_address        = undef
   $email_smtp_port           = 25
   $email_smtp_domain         = undef
