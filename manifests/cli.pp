@@ -60,7 +60,16 @@ class foreman::cli (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('foreman/hammer_etc.yml.erb'),
+    content => epp(
+      'foreman/hammer_etc.yml.epp',
+      {
+        host            => $foreman_url_real,
+        use_sessions    => $use_sessions,
+        refresh_cache   => $refresh_cache,
+        request_timeout => $request_timeout,
+        ssl_ca_file     => $ssl_ca_file_real,
+      }
+    ),
   }
 
   # Separate configuration for admin username/password
@@ -83,7 +92,13 @@ class foreman::cli (
       group   => 'root',
       mode    => '0600',
       replace => false,
-      content => template('foreman/hammer_root.yml.erb'),
+      content => epp(
+        'foreman/hammer_root.yml.epp',
+        {
+          username => $username_real,
+          password => $password_real,
+        }
+      ),
     }
   }
 
