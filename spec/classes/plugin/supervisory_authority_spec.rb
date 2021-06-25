@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe 'foreman::plugin::supervisory_authority' do
-  let(:params) do 
-    { 
+  let(:params) do
+    {
       'server_url'   => 'https://example.com',
       'secret_token' => 'secret_example',
       'service_name' => 'foreman prod',
