@@ -41,7 +41,23 @@ class foreman::plugin::supervisory_authority (
   Boolean                      $http_compression      = false,
   String                       $metrics_interval      = '30s',
 ) {
+  $config = {
+    foreman_supervisory_authority => {
+      server_url            => $server_url,
+      secret_token          => $secret_token,
+      service_name          => $service_name,
+      log_level             => $log_level,
+      pool_size             => $pool_size,
+      api_buffer_size       => $api_buffer_size,
+      api_request_size      => $api_request_size,
+      api_request_time      => $api_request_time,
+      transaction_max_spans => $transaction_max_spans,
+      http_compression      => $http_compression,
+      metrics_interval      => $metrics_interval,
+    },
+  }
+
   foreman::plugin { 'supervisory_authority':
-    config => template('foreman/foreman_supervisory_authority.yaml.erb'),
+    config => foreman::to_symbolized_yaml($config),
   }
 }
