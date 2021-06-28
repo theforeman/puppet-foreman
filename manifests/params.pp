@@ -149,6 +149,7 @@ class foreman::params inherits foreman::globals {
   $oauth_map_users = false
   $oauth_consumer_key = extlib::cache_data('foreman_cache_data', 'oauth_consumer_key', extlib::random_password(32))
   $oauth_consumer_secret = extlib::cache_data('foreman_cache_data', 'oauth_consumer_secret', extlib::random_password(32))
+  $oauth_effective_user = 'admin'
 
   # Initial admin account details
   $initial_admin_username = 'admin'
@@ -186,4 +187,5 @@ class foreman::params inherits foreman::globals {
   $server_port     = 80
   $server_ssl_port = 443
 
+  $register_in_foreman = true
 }
