@@ -121,6 +121,8 @@
 #
 # $oauth_consumer_secret::        OAuth consumer secret
 #
+# $oauth_effective_user::         User to be used for REST interaction
+#
 # $http_keytab::                  Path to keytab to be used for Kerberos authentication on the WebUI. If left empty, it will be automatically determined.
 #
 # $pam_service::                  PAM service used for host-based access control in IPA
@@ -171,6 +173,8 @@
 #                                         CPUs and memory.
 #
 # $rails_cache_store::            Set rails cache store
+#
+# $register_in_foreman::          Register host in Foreman
 #
 # === Dynflow parameters:
 #
@@ -231,6 +235,7 @@ class foreman (
   Boolean $oauth_map_users = $foreman::params::oauth_map_users,
   String $oauth_consumer_key = $foreman::params::oauth_consumer_key,
   String $oauth_consumer_secret = $foreman::params::oauth_consumer_secret,
+  String $oauth_effective_user = $foreman::params::oauth_effective_user,
   String $initial_admin_username = $foreman::params::initial_admin_username,
   String $initial_admin_password = $foreman::params::initial_admin_password,
   Optional[String] $initial_admin_first_name = $foreman::params::initial_admin_first_name,
@@ -283,6 +288,7 @@ class foreman (
   Boolean $keycloak = $foreman::params::keycloak,
   String[1] $keycloak_app_name = $foreman::params::keycloak_app_name,
   String[1] $keycloak_realm = $foreman::params::keycloak_realm,
+  Boolean $register_in_foreman = $foreman::params::register_in_foreman,
 ) inherits foreman::params {
   if $db_sslmode == 'UNSET' and $db_root_cert {
     $db_sslmode_real = 'verify-full'
@@ -308,6 +314,8 @@ class foreman (
   Class['foreman::config'] ~> Class['foreman::database', 'foreman::service']
   Class['foreman::database'] ~> Class['foreman::service']
   Class['foreman::service'] -> Foreman_smartproxy <| base_url == $foreman_url |>
+  anchor { 'foreman::service': } # lint:ignore:anchor_resource
+  Class['foreman::service'] -> Anchor['foreman::service']
 
   if $apache {
     Class['foreman::database'] -> Class['apache::service']
@@ -318,6 +326,10 @@ class foreman (
     fail("${facts['networking']['hostname']}: External authentication via IPA can only be enabled when Apache is used.")
   } elsif $keycloak {
     fail("${facts['networking']['hostname']}: External authentication via Keycloak can only be enabled when Apache is used.")
+  }
+
+  if $foreman::register_in_foreman {
+    include foreman::register
   }
 
   # Anchor these separately so as not to break

@@ -51,4 +51,8 @@ class foreman::install {
       ensure => installed,
     }
   }
+
+  if $foreman::register_in_foreman {
+    contain foreman::providers
+  }
 }
