@@ -68,6 +68,10 @@ Puppet::Type.newtype(:foreman_smartproxy) do
     defaultto 500
   end
 
+  autorequire(:anchor) do
+    ['foreman::providers::oauth']
+  end
+
   def refresh
     if @parameters[:ensure].retrieve == :present
       provider.refresh_features! if provider.respond_to?(:refresh_features!)
