@@ -225,7 +225,7 @@ class foreman::config::apache(
     include apache::mod::authnz_pam
     include apache::mod::intercept_form_submit
     include apache::mod::lookup_identity
-    include apache::mod::auth_kerb
+    include apache::mod::auth_gssapi
   } elsif $keycloak {
     include apache::mod::auth_openidc
 
