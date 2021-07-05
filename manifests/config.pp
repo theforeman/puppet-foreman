@@ -126,7 +126,7 @@ class foreman::config {
     $foreman_socket_override = template('foreman/foreman.socket-overrides.erb')
 
     if $foreman::ipa_authentication {
-      unless fact('foreman_ipa.default_server') and fact('foreman_ipa.default_realm') {
+      unless fact('foreman_ipa.default_server') {
         fail("${facts['networking']['hostname']}: The system does not seem to be IPA-enrolled")
       }
 
@@ -174,8 +174,8 @@ class foreman::config {
         ssl_content => template('foreman/lookup_identity.conf.erb'),
       }
 
-      foreman::config::apache::fragment { 'auth_kerb':
-        ssl_content => template('foreman/auth_kerb.conf.erb'),
+      foreman::config::apache::fragment { 'auth_gssapi':
+        ssl_content => template('foreman/auth_gssapi.conf.erb'),
       }
 
 

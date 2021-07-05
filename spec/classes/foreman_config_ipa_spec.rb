@@ -41,7 +41,7 @@ describe 'foreman' do
           it { should contain_class('apache::mod::authnz_pam') }
           it { should contain_class('apache::mod::intercept_form_submit') }
           it { should contain_class('apache::mod::lookup_identity') }
-          it { should contain_class('apache::mod::auth_kerb') }
+          it { should contain_class('apache::mod::auth_gssapi') }
 
           it 'should contain Apache fragments' do
             should contain_foreman__config__apache__fragment('intercept_form_submit')
@@ -49,9 +49,8 @@ describe 'foreman' do
 
             should contain_foreman__config__apache__fragment('lookup_identity')
 
-            should contain_foreman__config__apache__fragment('auth_kerb')
-              .with_ssl_content(/^\s*KrbAuthRealms REALM$/)
-              .with_ssl_content(%r{^\s*Krb5KeyTab /etc/httpd/conf/http.keytab$})
+            should contain_foreman__config__apache__fragment('auth_gssapi')
+              .with_ssl_content(%r{^\s*GssapiCredStore keytab:/etc/httpd/conf/http.keytab$})
               .with_ssl_content(/^\s*require pam-account foreman$/)
           end
 
