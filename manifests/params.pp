@@ -165,7 +165,7 @@ class foreman::params {
   $initial_location = undef
 
   $ipa_authentication = false
-  $http_keytab = '/etc/httpd/conf/http.keytab'
+  $http_keytab = undef
   $pam_service = 'foreman'
   $ipa_manage_sssd = true
 

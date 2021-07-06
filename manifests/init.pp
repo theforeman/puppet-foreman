@@ -133,7 +133,7 @@
 #
 # $oauth_consumer_secret::        OAuth consumer secret
 #
-# $http_keytab::                  Path to keytab to be used for Kerberos authentication on the WebUI
+# $http_keytab::                  Path to keytab to be used for Kerberos authentication on the WebUI. If left empty, it will be automatically determined.
 #
 # $pam_service::                  PAM service used for host-based access control in IPA
 #
@@ -257,7 +257,7 @@ class foreman (
   Optional[String] $initial_organization = $foreman::params::initial_organization,
   Optional[String] $initial_location = $foreman::params::initial_location,
   Boolean $ipa_authentication = $foreman::params::ipa_authentication,
-  Stdlib::Absolutepath $http_keytab = $foreman::params::http_keytab,
+  Optional[Stdlib::Absolutepath] $http_keytab = $foreman::params::http_keytab,
   String $pam_service = $foreman::params::pam_service,
   Boolean $ipa_manage_sssd = $foreman::params::ipa_manage_sssd,
   Boolean $websockets_encrypt = $foreman::params::websockets_encrypt,
