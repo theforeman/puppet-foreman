@@ -153,14 +153,16 @@ class foreman::config {
         content => template('foreman/pam_service.erb'),
       }
 
+      $http_keytab = pick($foreman::http_keytab, "${apache::conf_dir}/http.keytab")
+
       exec { 'ipa-getkeytab':
         command => "/bin/echo Get keytab \
           && KRB5CCNAME=KEYRING:session:get-http-service-keytab kinit -k \
-          && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -s ${facts['foreman_ipa']['default_server']} -k ${foreman::http_keytab} -p HTTP/${facts['networking']['fqdn']} \
+          && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -s ${facts['foreman_ipa']['default_server']} -k ${http_keytab} -p HTTP/${facts['networking']['fqdn']} \
           && kdestroy -c KEYRING:session:get-http-service-keytab",
-        creates => $foreman::http_keytab,
+        creates => $http_keytab,
       }
-      -> file { $foreman::http_keytab:
+      -> file { $http_keytab:
         ensure => file,
         owner  => $apache::user,
         mode   => '0600',
@@ -183,7 +185,7 @@ class foreman::config {
         $sssd = $facts['foreman_sssd']
         $sssd_services = join(unique(pick($sssd['services'], []) + ['ifp']), ', ')
         $sssd_ldap_user_extra_attrs = join(unique(pick($sssd['ldap_user_extra_attrs'], []) + ['email:mail', 'lastname:sn', 'firstname:givenname']), ', ')
-        $sssd_allowed_uids = join(unique(pick($sssd['allowed_uids'], []) + ['apache', 'root']), ', ')
+        $sssd_allowed_uids = join(unique(pick($sssd['allowed_uids'], []) + [$apache::user, 'root']), ', ')
         $sssd_user_attributes = join(unique(pick($sssd['user_attributes'], []) + ['+email', '+firstname', '+lastname']), ', ')
 
         augeas { 'sssd-ifp-extra-attributes':

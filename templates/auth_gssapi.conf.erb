@@ -3,7 +3,7 @@
   SSLRequireSSL
   AuthType GSSAPI
   AuthName "GSSAPI Single Sign On Login"
-  GssapiCredStore keytab:<%= scope.lookupvar('foreman::http_keytab') %>
+  GssapiCredStore keytab:<%= @http_keytab %>
   GssapiSSLonly On
   GssapiLocalName On
   # require valid-user
