@@ -49,7 +49,7 @@ class foreman::config {
     unit     => "${foreman::foreman_service}.service",
     content  => template('foreman/foreman.service-overrides.erb'),
   }
-  
+
   if ! defined(File[$foreman::app_root]) {
     file { $foreman::app_root:
       ensure  => directory,
