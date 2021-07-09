@@ -1,0 +1,30 @@
+<%- |
+  Optional[Stdlib::HTTPUrl]      $host,
+  Boolean                        $use_sessions,
+  Boolean                        $refresh_cache,
+  Integer[-1]                    $request_timeout,
+  Optional[Stdlib::Absolutepath] $ssl_ca_file,
+| -%>
+:foreman:
+  # Enable/disable foreman commands
+  :enable_module: true
+
+  # Your foreman server address
+  :host: '<%= $host %>'
+
+  # Enable using sessions
+  # When sessions are enabled, hammer ignores credentials stored in the config file
+  # and asks for them interactively at the begining of each session.
+  :use_sessions: <%= $use_sessions %>
+
+  # Check API documentation cache status on each request
+  :refresh_cache: <%= $refresh_cache %>
+
+  # API request timeout in seconds, set -1 for infinity
+  :request_timeout: <%= $request_timeout %>
+
+<% if $ssl_ca_file { -%>
+
+:ssl:
+  :ssl_ca_file: '<%= $ssl_ca_file %>'
+<% } -%>
