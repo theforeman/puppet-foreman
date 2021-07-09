@@ -100,11 +100,14 @@ class foreman::params {
         $plugin_prefix = 'tfm-rubygem-foreman_'
         $configure_scl_repo = true
       }
+
+      $user_shell = '/sbin/nologin'
     }
     'Debian': {
       $passenger_ruby_package = undef
       $plugin_prefix = 'ruby-foreman-'
       $configure_scl_repo = false
+      $user_shell = '/usr/sbin/nologin'
     }
     'Linux': {
       case $facts['os']['name'] {
@@ -112,6 +115,7 @@ class foreman::params {
           $passenger_ruby_package = 'tfm-rubygem-passenger-native'
           $plugin_prefix = 'tfm-rubygem-foreman_'
           $configure_scl_repo = true
+          $user_shell = '/sbin/nologin'
         }
         default: {
           fail("${facts['networking']['hostname']}: This module does not support operatingsystem ${facts['os']['name']}")

@@ -62,7 +62,7 @@ describe 'foreman' do
         it {
           should contain_user('foreman').with(
             'ensure' => 'present',
-            'shell' => '/bin/false',
+            'shell' => %r{^(/usr)?/sbin/nologin$},
             'comment' => 'Foreman',
             'gid' => 'foreman',
             'groups' => ['puppet'],

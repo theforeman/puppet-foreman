@@ -86,7 +86,7 @@ class foreman::config {
     }
     user { $foreman::user:
       ensure  => 'present',
-      shell   => '/bin/false',
+      shell   => $foreman::user_shell,
       comment => 'Foreman',
       home    => $foreman::app_root,
       gid     => $foreman::group,
