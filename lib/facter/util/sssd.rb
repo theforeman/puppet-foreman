@@ -11,10 +11,6 @@ begin
       end
     end
 
-    def self.ipa_value(path)
-      aug_value('Puppet.lns', '/etc/ipa/default.conf', path)
-    end
-
     def self.sssd_value(path)
       val = aug_value('Sssd.lns', '/etc/sssd/sssd.conf', path)
       val.split(',').map(&:strip) if val

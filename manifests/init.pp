@@ -318,19 +318,28 @@ class foreman (
     timeout => 0,
   }
 
+  $listen_socket = '/run/foreman.sock'
+
   include foreman::install
   include foreman::config
   include foreman::database
-  contain foreman::service
+  include foreman::service
+
+  anchor { 'foreman::running': # lint:ignore:anchor_resource
+  }
 
   Anchor <| title == 'foreman::repo' |> ~> Class['foreman::install']
   Class['foreman::install'] ~> Class['foreman::config', 'foreman::service']
   Class['foreman::config'] ~> Class['foreman::database', 'foreman::service']
   Class['foreman::database'] ~> Class['foreman::service']
-  Class['foreman::service'] -> Foreman_smartproxy <| base_url == $foreman_url |>
+  Class['foreman::service'] -> Anchor['foreman::running']
+  Anchor['foreman::running'] -> Foreman_smartproxy <| base_url == $foreman_url |>
 
   if $apache {
-    Class['foreman::database'] -> Class['apache::service']
+    include foreman::apache
+
+    Class['foreman::config', 'foreman::database'] -> Class['foreman::apache']
+    Class['foreman::apache', 'apache::service'] -> Anchor['foreman::running']
     if $ipa_authentication and $keycloak {
       fail("${facts['networking']['hostname']}: External authentication via IPA and Keycloak are mutually exclusive.")
     }
@@ -338,6 +347,15 @@ class foreman (
     fail("${facts['networking']['hostname']}: External authentication via IPA can only be enabled when Apache is used.")
   } elsif $keycloak {
     fail("${facts['networking']['hostname']}: External authentication via Keycloak can only be enabled when Apache is used.")
+  }
+
+  # Ensure SSL certs from the puppetmaster are available
+  # Relationship is duplicated there as defined() is parse-order dependent
+  if $ssl and defined(Class['puppet::server::config']) {
+    Class['puppet::server::config'] -> Class['foreman::service']
+    if $apache {
+      Class['puppet::server::config'] -> Class['foreman::apache']
+    }
   }
 
   # Anchor these separately so as not to break

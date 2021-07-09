@@ -1,19 +1,6 @@
 require 'facter/util/sssd'
 
 if defined? Facter::Util::Sssd
-  # == Fact: foreman_ipa
-  Facter.add(:foreman_ipa, :type => :aggregate) do
-    {
-      :default_realm => 'global/realm',
-      :default_server => 'global/server',
-    }.each do |key, path|
-      chunk(key) do
-        val = Facter::Util::Sssd.ipa_value(path)
-        {key => val} if val
-      end
-    end
-  end
-
   # == Fact: foreman_sssd
   Facter.add(:foreman_sssd, :type => :aggregate) do
     {
