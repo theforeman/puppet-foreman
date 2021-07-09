@@ -82,6 +82,7 @@ class foreman::config {
 
     group { $foreman::group:
       ensure => 'present',
+      system => true,
     }
     user { $foreman::user:
       ensure  => 'present',
@@ -90,6 +91,7 @@ class foreman::config {
       home    => $foreman::app_root,
       gid     => $foreman::group,
       groups  => unique($_user_groups),
+      system  => true,
     }
   }
 
