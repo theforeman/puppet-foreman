@@ -2,9 +2,11 @@ require 'spec_helper'
 
 describe 'foreman' do
   on_supported_os.each do |os, facts|
-    context "on #{os}", if: facts[:osfamily] == 'RedHat' do
+    context "on #{os}" do
       let(:facts) { facts.merge(interfaces: '') }
       let(:params) { { ipa_authentication: true } }
+
+      keytab_path = facts[:osfamily] == 'RedHat' ? '/etc/httpd/conf/http.keytab' : '/etc/apache2/http.keytab'
 
       describe 'without apache' do
         let(:params) { super().merge(apache: false) }
@@ -50,7 +52,7 @@ describe 'foreman' do
             should contain_foreman__config__apache__fragment('lookup_identity')
 
             should contain_foreman__config__apache__fragment('auth_gssapi')
-              .with_ssl_content(%r{^\s*GssapiCredStore keytab:/etc/httpd/conf/http.keytab$})
+              .with_ssl_content(%r{^\s*GssapiCredStore keytab:#{keytab_path}$})
               .with_ssl_content(/^\s*require pam-account foreman$/)
           end
 
