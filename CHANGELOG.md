@@ -1,5 +1,51 @@
 # Changelog
 
+## [18.0.0](https://github.com/theforeman/puppet-foreman/tree/18.0.0) (2021-07-26)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/17.0.0...18.0.0)
+
+**Breaking changes:**
+
+- Fixes [\#33106](https://projects.theforeman.org/issues/33106) - Move user, app\_root, rails\_env & vhost\_prio to globals [\#975](https://github.com/theforeman/puppet-foreman/pull/975) ([ekohl](https://github.com/ekohl))
+- Fixes [\#33089](https://projects.theforeman.org/issues/33089) - move \(hammer\_\)plugin\_prefix to globals [\#974](https://github.com/theforeman/puppet-foreman/pull/974) ([evgeni](https://github.com/evgeni))
+- Drop Puppet 5 support [\#958](https://github.com/theforeman/puppet-foreman/pull/958) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Match Foreman user to what packaging creates [\#971](https://github.com/theforeman/puppet-foreman/pull/971) ([ekohl](https://github.com/ekohl))
+- Fixes [\#32947](https://projects.theforeman.org/issues/32947) - Use Apache module variables [\#968](https://github.com/theforeman/puppet-foreman/pull/968) ([ekohl](https://github.com/ekohl))
+- Fixes [\#32352](https://projects.theforeman.org/issues/32352) - use mod\_auth\_gssapi instead of mod\_auth\_kerb [\#967](https://github.com/theforeman/puppet-foreman/pull/967) ([evgeni](https://github.com/evgeni))
+- Autorequire provider in smartproxy type [\#966](https://github.com/theforeman/puppet-foreman/pull/966) ([ekohl](https://github.com/ekohl))
+- Use to\_symbolized\_yaml instead of a template for supervisory [\#964](https://github.com/theforeman/puppet-foreman/pull/964) ([ekohl](https://github.com/ekohl))
+- Use EPP instead of ERB for some templates [\#962](https://github.com/theforeman/puppet-foreman/pull/962) ([cocker-cc](https://github.com/cocker-cc))
+- Fixes [\#32827](https://projects.theforeman.org/issues/32827) - Add sendmail config options [\#961](https://github.com/theforeman/puppet-foreman/pull/961) ([ekohl](https://github.com/ekohl))
+- Add ACD plugin [\#957](https://github.com/theforeman/puppet-foreman/pull/957) ([sbernhard](https://github.com/sbernhard))
+- Mark compatible with camptocamp/systemd 3.x [\#956](https://github.com/theforeman/puppet-foreman/pull/956) ([ekohl](https://github.com/ekohl))
+- Allow puppet/redis 7.x [\#955](https://github.com/theforeman/puppet-foreman/pull/955) ([ekohl](https://github.com/ekohl))
+- Allow customising ProxyAddHeaders [\#953](https://github.com/theforeman/puppet-foreman/pull/953) ([nbarrientos](https://github.com/nbarrientos))
+- Support setting the priority of the Yum repositories [\#950](https://github.com/theforeman/puppet-foreman/pull/950) ([nbarrientos](https://github.com/nbarrientos))
+- Allow Puppet 7 compatible versions of mods [\#947](https://github.com/theforeman/puppet-foreman/pull/947) ([ekohl](https://github.com/ekohl))
+- Allow customising the list of HTTP headers to unset [\#944](https://github.com/theforeman/puppet-foreman/pull/944) ([nbarrientos](https://github.com/nbarrientos))
+- Customisable Yum repository base URL and GPG key path [\#943](https://github.com/theforeman/puppet-foreman/pull/943) ([nbarrientos](https://github.com/nbarrientos))
+- Refs [\#32885](https://projects.theforeman.org/issues/32885): Add puppet user to user\_groups only if server or client certificate contains puppet path [\#938](https://github.com/theforeman/puppet-foreman/pull/938) ([ehelms](https://github.com/ehelms))
+- Fixes [\#29649](https://projects.theforeman.org/issues/29649) - Drop default\_server argument in IPA [\#935](https://github.com/theforeman/puppet-foreman/pull/935) ([ekohl](https://github.com/ekohl))
+- Support Puppet 7 [\#921](https://github.com/theforeman/puppet-foreman/pull/921) ([ekohl](https://github.com/ekohl))
+- Configurable: email\_reply\_address, email\_subject\_prefix [\#913](https://github.com/theforeman/puppet-foreman/pull/913) ([knorx](https://github.com/knorx))
+- added foreman\_datacenter [\#868](https://github.com/theforeman/puppet-foreman/pull/868) ([Zenya](https://github.com/Zenya))
+- Let Function to\_symbolized\_yaml handle Datatype Sensitive [\#972](https://github.com/theforeman/puppet-foreman/pull/972) ([cocker-cc](https://github.com/cocker-cc))
+- Handle duplicate file declaration for foreman::app\_root [\#969](https://github.com/theforeman/puppet-foreman/pull/969) ([chr1s692](https://github.com/chr1s692))
+
+**Fixed bugs:**
+
+- Remove unused suburi template [\#970](https://github.com/theforeman/puppet-foreman/pull/970) ([ekohl](https://github.com/ekohl))
+- Make database.yml and settings.yaml have consistent headers [\#945](https://github.com/theforeman/puppet-foreman/pull/945) ([gcoxmoz](https://github.com/gcoxmoz))
+
+**Closed issues:**
+
+- Allow customising ProxyAddHeaders [\#952](https://github.com/theforeman/puppet-foreman/issues/952)
+- Allow configuring the priority of the Yum repositories [\#949](https://github.com/theforeman/puppet-foreman/issues/949)
+- foreman-report\_v2 disappeared from master branch ? [\#939](https://github.com/theforeman/puppet-foreman/issues/939)
+
 ## [17.0.0](https://github.com/theforeman/puppet-foreman/tree/17.0.0) (2021-04-26)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/16.1.0...17.0.0)
