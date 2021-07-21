@@ -22,7 +22,7 @@
 #   The mode of the config file. Only relevant if `config` is given.
 define foreman::plugin(
   String[1] $version = $foreman::plugin_version,
-  String[1] $package = "${foreman::plugin_prefix}${title}",
+  String[1] $package = "${foreman::params::plugin_prefix}${title}",
   Stdlib::Absolutepath $config_file = "${foreman::plugin_config_dir}/foreman_${title}.yaml",
   String[1] $config_file_owner = 'root',
   String[1] $config_file_group = $foreman::group,

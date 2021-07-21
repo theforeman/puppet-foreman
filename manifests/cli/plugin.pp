@@ -9,7 +9,7 @@
 # $version:: The package version to ensure
 #
 define foreman::cli::plugin (
-  String $package = "${foreman::cli::hammer_plugin_prefix}${title}",
+  String $package = "${foreman::cli::params::hammer_plugin_prefix}${title}",
   String $version = 'installed',
 ) {
   # Debian gem2deb converts underscores to hyphens

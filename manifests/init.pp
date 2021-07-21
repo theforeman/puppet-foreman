@@ -56,8 +56,6 @@
 #
 # $apache::                       Configure Apache as a reverse proxy for the Foreman server
 #
-# $plugin_prefix::                String which is prepended to the plugin package names
-#
 # $servername::                   Server name of the VirtualHost in the webserver
 #
 # $serveraliases::                Server aliases of the VirtualHost in the webserver
@@ -211,7 +209,6 @@ class foreman (
   Boolean $unattended = $foreman::params::unattended,
   Optional[Stdlib::HTTPUrl] $unattended_url = $foreman::params::unattended_url,
   Boolean $apache = $foreman::params::apache,
-  String $plugin_prefix = $foreman::params::plugin_prefix,
   Stdlib::Fqdn $servername = $foreman::params::servername,
   Array[Stdlib::Fqdn] $serveraliases = $foreman::params::serveraliases,
   Boolean $ssl = $foreman::params::ssl,

@@ -15,7 +15,7 @@ class foreman::plugin::tasks(
   Boolean $backup = false,
 ) {
   foreman::plugin { 'tasks':
-    package => $foreman::plugin_prefix.regsubst(/foreman[_-]/, 'foreman-tasks'),
+    package => $foreman::params::plugin_prefix.regsubst(/foreman[_-]/, 'foreman-tasks'),
   }
   $cron_state = $automatic_cleanup ? {
     true    => 'file',
