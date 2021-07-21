@@ -22,8 +22,6 @@
 #
 # $ssl_ca_file::          Path to SSL certificate authority
 #
-# $hammer_plugin_prefix:: Hammer plugin package prefix based normally on platform
-#
 # $version::              foreman-cli package version, it's passed to ensure parameter of package resource
 #                         can be set to specific version number, 'latest', 'present' etc.
 #
@@ -37,7 +35,6 @@ class foreman::cli (
   Boolean $refresh_cache = $foreman::cli::params::refresh_cache,
   Integer[-1] $request_timeout = $foreman::cli::params::request_timeout,
   Optional[Stdlib::Absolutepath] $ssl_ca_file = $foreman::cli::params::ssl_ca_file,
-  String $hammer_plugin_prefix = $foreman::cli::params::hammer_plugin_prefix,
 ) inherits foreman::cli::params {
   # Inherit URL & auth parameters from foreman class if possible
   if defined('$foreman::foreman_url') {

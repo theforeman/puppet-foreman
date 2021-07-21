@@ -168,7 +168,6 @@ describe 'foreman' do
           {
             foreman_url: 'http://localhost',
             unattended: true,
-            plugin_prefix: 'ruby-foreman',
             servername: 'localhost',
             serveraliases: ['foreman'],
             ssl: true,
