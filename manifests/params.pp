@@ -19,13 +19,7 @@ class foreman::params inherits foreman::globals {
   $ssl            = true
 
   # Advanced configuration
-  $app_root          = '/usr/share/foreman'
   $plugin_config_dir = '/etc/foreman/plugins'
-  $manage_user       = true
-  $user              = 'foreman'
-  $group             = 'foreman'
-  $user_groups       = []
-  $rails_env         = 'production'
   $version           = 'present'
   $plugin_version    = 'present'
 
@@ -139,8 +133,6 @@ class foreman::params inherits foreman::globals {
   # Used to authenticate to Foreman, required if require_ssl_puppetmasters is enabled
   $client_ssl_cert = "${puppet_ssldir}/certs/${lower_fqdn}.pem"
   $client_ssl_key  = "${puppet_ssldir}/private_keys/${lower_fqdn}.pem"
-
-  $vhost_priority = '05'
 
   # Set these values if you want Apache to serve a CA-provided cert instead of puppet's
   $server_ssl_ca    = "${puppet_ssldir}/certs/ca.pem"
