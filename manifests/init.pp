@@ -87,20 +87,6 @@
 #
 # $db_manage_rake::               if enabled, will run rake jobs, which depend on the database
 #
-# $app_root::                     Name of foreman root directory
-#
-# $manage_user::                  Controls whether foreman module will manage the user on the system.
-#
-# $user::                         User under which foreman will run
-#
-# $group::                        Primary group for the Foreman user
-#
-# $rails_env::                    Rails environment of foreman
-#
-# $user_groups::                  Additional groups for the Foreman user
-#
-# $vhost_priority::               Defines Apache vhost priority for the Foreman vhost conf file.
-#
 # $server_port::                  Defines Apache port for HTTP requests
 #
 # $server_ssl_port::              Defines Apache port for HTTPS requests
@@ -224,13 +210,6 @@ class foreman (
   Optional[String] $db_root_cert = undef,
   Integer[0] $db_pool = $foreman::params::db_pool,
   Boolean $db_manage_rake = $foreman::params::db_manage_rake,
-  Stdlib::Absolutepath $app_root = $foreman::params::app_root,
-  Boolean $manage_user = $foreman::params::manage_user,
-  String $user = $foreman::params::user,
-  String $group = $foreman::params::group,
-  Array[String] $user_groups = $foreman::params::user_groups,
-  String $rails_env = $foreman::params::rails_env,
-  String $vhost_priority = $foreman::params::vhost_priority,
   Stdlib::Port $server_port = $foreman::params::server_port,
   Stdlib::Port $server_ssl_port = $foreman::params::server_ssl_port,
   Stdlib::Absolutepath $server_ssl_ca = $foreman::params::server_ssl_ca,
