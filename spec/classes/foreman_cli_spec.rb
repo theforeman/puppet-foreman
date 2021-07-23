@@ -19,26 +19,44 @@ describe 'foreman::cli' do
 
         describe '/etc/hammer/cli.modules.d/foreman.yml' do
           it 'should contain settings' do
-            verify_exact_contents(catalogue, '/etc/hammer/cli.modules.d/foreman.yml', [
-                                    ':foreman:',
-                                    '  :enable_module: true',
-                                    "  :host: 'http://example.com'",
-                                    '  :use_sessions: false',
-                                    '  :refresh_cache: false',
-                                    '  :request_timeout: 120',
-                                  ])
+            is_expected.to contain_file('/etc/hammer/cli.modules.d/foreman.yml')
+              .with_content(
+                <<~CONFIG
+                  :foreman:
+                    # Enable/disable foreman commands
+                    :enable_module: true
+
+                    # Your foreman server address
+                    :host: 'http://example.com'
+
+                    # Enable using sessions
+                    # When sessions are enabled, hammer ignores credentials stored in the config file
+                    # and asks for them interactively at the begining of each session.
+                    :use_sessions: false
+
+                    # Check API documentation cache status on each request
+                    :refresh_cache: false
+
+                    # API request timeout in seconds, set -1 for infinity
+                    :request_timeout: 120
+
+                CONFIG
+              )
           end
         end
 
         describe '/root/.hammer/cli.modules.d/foreman.yml' do
-          it { should contain_file('/root/.hammer/cli.modules.d/foreman.yml').with_replace(false) }
-
           it 'should contain settings' do
-            verify_exact_contents(catalogue, '/root/.hammer/cli.modules.d/foreman.yml', [
-                                    ':foreman:',
-                                    "  :username: 'joe'",
-                                    "  :password: 'secret'",
-                                  ])
+            is_expected.to contain_file('/root/.hammer/cli.modules.d/foreman.yml')
+              .with_replace(false)
+              .with_content(
+                <<~CONFIG
+                  :foreman:
+                    # Credentials. You'll be asked for the interactively if you leave them blank here
+                    :username: 'joe'
+                    :password: 'secret'
+                CONFIG
+              )
           end
         end
 
@@ -53,16 +71,32 @@ describe 'foreman::cli' do
 
           describe '/etc/hammer/cli.modules.d/foreman.yml' do
             it 'should contain settings' do
-              verify_exact_contents(catalogue, '/etc/hammer/cli.modules.d/foreman.yml', [
-                                      ':foreman:',
-                                      '  :enable_module: true',
-                                      "  :host: 'http://example.com'",
-                                      '  :use_sessions: false',
-                                      '  :refresh_cache: false',
-                                      '  :request_timeout: 120',
-                                      ':ssl:',
-                                      "  :ssl_ca_file: '/etc/ca.pub'"
-                                    ])
+              is_expected.to contain_file('/etc/hammer/cli.modules.d/foreman.yml')
+                .with_content(
+                  <<~CONFIG
+                    :foreman:
+                      # Enable/disable foreman commands
+                      :enable_module: true
+
+                      # Your foreman server address
+                      :host: 'http://example.com'
+
+                      # Enable using sessions
+                      # When sessions are enabled, hammer ignores credentials stored in the config file
+                      # and asks for them interactively at the begining of each session.
+                      :use_sessions: false
+
+                      # Check API documentation cache status on each request
+                      :refresh_cache: false
+
+                      # API request timeout in seconds, set -1 for infinity
+                      :request_timeout: 120
+
+
+                    :ssl:
+                      :ssl_ca_file: '/etc/ca.pub'
+                  CONFIG
+                )
             end
           end
         end
@@ -94,24 +128,44 @@ describe 'foreman::cli' do
         end
 
         it 'should contain settings in /etc from foreman' do
-          verify_exact_contents(catalogue, '/etc/hammer/cli.modules.d/foreman.yml', [
-                                  ':foreman:',
-                                  '  :enable_module: true',
-                                  "  :host: 'https://foreman.example.com'",
-                                  '  :use_sessions: false',
-                                  '  :refresh_cache: false',
-                                  '  :request_timeout: 120',
-                                  ':ssl:',
-                                  "  :ssl_ca_file: '/etc/puppetlabs/puppet/ssl/certs/ca.pub'"
-                                ])
+          is_expected.to contain_file('/etc/hammer/cli.modules.d/foreman.yml')
+            .with_content(
+              <<~CONFIG
+                :foreman:
+                  # Enable/disable foreman commands
+                  :enable_module: true
+
+                  # Your foreman server address
+                  :host: 'https://foreman.example.com'
+
+                  # Enable using sessions
+                  # When sessions are enabled, hammer ignores credentials stored in the config file
+                  # and asks for them interactively at the begining of each session.
+                  :use_sessions: false
+
+                  # Check API documentation cache status on each request
+                  :refresh_cache: false
+
+                  # API request timeout in seconds, set -1 for infinity
+                  :request_timeout: 120
+
+
+                :ssl:
+                  :ssl_ca_file: '/etc/puppetlabs/puppet/ssl/certs/ca.pub'
+              CONFIG
+            )
         end
 
         it 'should contain settings in /root from foreman' do
-          verify_exact_contents(catalogue, '/root/.hammer/cli.modules.d/foreman.yml', [
-                                  ':foreman:',
-                                  "  :username: 'jane'",
-                                  "  :password: 'supersecret'",
-                                ])
+          is_expected.to contain_file('/root/.hammer/cli.modules.d/foreman.yml')
+            .with_content(
+              <<~CONFIG
+                :foreman:
+                  # Credentials. You'll be asked for the interactively if you leave them blank here
+                  :username: 'jane'
+                  :password: 'supersecret'
+              CONFIG
+            )
         end
       end
     end
