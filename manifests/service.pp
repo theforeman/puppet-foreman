@@ -3,9 +3,9 @@
 class foreman::service (
   Boolean $apache = $foreman::apache,
   Boolean $ssl = $foreman::ssl,
-  String $foreman_service = $foreman::foreman_service,
-  Stdlib::Ensure::Service $foreman_service_ensure = $foreman::foreman_service_ensure,
-  Boolean $foreman_service_enable = $foreman::foreman_service_enable,
+  String[1] $foreman_service = $foreman::foreman_service,
+  Stdlib::Ensure::Service $foreman_service_ensure = 'running',
+  Boolean $foreman_service_enable = true,
   Boolean $dynflow_manage_services = $foreman::dynflow_manage_services,
   Enum['present', 'absent'] $dynflow_orchestrator_ensure = $foreman::dynflow_orchestrator_ensure,
   Integer[0] $dynflow_worker_instances = $foreman::dynflow_worker_instances,

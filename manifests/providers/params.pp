@@ -2,8 +2,6 @@
 # @api private
 class foreman::providers::params {
   # Dependency packages for different providers supplied in this module
-  $oauth = true
-
   $is_aio = fact('aio_agent_version') =~ String[1]
 
   # OS specific package names

@@ -1,16 +1,6 @@
 # @summary Parameters for Foreman CLI class
 # @api private
 class foreman::cli::params inherits foreman::cli::globals {
-  $foreman_url = undef
-  $version = 'installed'
-  $manage_root_config = true
-  $username = undef
-  $password = undef
-  $refresh_cache = false
-  $request_timeout = 120
-  $use_sessions = false
-  $ssl_ca_file = undef
-
   # OS specific paths
   case $facts['os']['family'] {
     'RedHat': {

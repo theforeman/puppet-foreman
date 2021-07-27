@@ -9,8 +9,6 @@ describe 'foreman::service' do
     {
       ssl: true,
       foreman_service: 'foreman',
-      foreman_service_ensure: 'running',
-      foreman_service_enable: true,
       dynflow_manage_services: false,
       dynflow_orchestrator_ensure: 'present',
       dynflow_worker_instances: 1,

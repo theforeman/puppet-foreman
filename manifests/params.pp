@@ -5,83 +5,18 @@ class foreman::params inherits foreman::globals {
 
   # Basic configurations
   $foreman_url      = "https://${lower_fqdn}"
-  # Should foreman act as an external node classifier (manage puppet class
-  # assignments)
-  # should foreman manage host provisioning as well
-  $unattended     = true
-  $unattended_url = undef
-  # configure foreman via apache
-  $apache         = true
   # Server name of the VirtualHost
   $servername     = $facts['networking']['fqdn']
-  # Server aliases of the VirtualHost
-  $serveraliases  = ['foreman']
-  # force SSL (note: requires apache)
-  $ssl            = true
 
   # Advanced configuration
   $plugin_config_dir = '/etc/foreman/plugins'
-  $version           = 'present'
-  $plugin_version    = 'present'
 
-  $cors_domains = []
-  $trusted_proxies = []
-
-  # if enabled, will install and configure the database server on this host
-  $db_manage   = true
-  # Database 'production' settings
-  $db_username = 'foreman'
   # Generate and cache the password on the master once
   # In multi-puppetmaster setups, the user should specify their own
   $db_password = extlib::cache_data('foreman_cache_data', 'db_password', extlib::random_password(32))
-  # Default database connection pool
-  $db_pool = 5
-  # if enabled, will run rake jobs, which depend on the database
-  $db_manage_rake = true
-
-  # Configure foreman email settings (database or email.yaml)
-  $email_delivery_method     = undef
-  $email_sendmail_location   = undef
-  $email_sendmail_arguments  = undef
-  $email_smtp_address        = undef
-  $email_smtp_port           = 25
-  $email_smtp_domain         = undef
-  $email_smtp_authentication = 'none'
-  $email_smtp_user_name      = undef
-  $email_smtp_password       = undef
-  $email_reply_address       = undef
-  $email_subject_prefix      = undef
-
-  # Telemetry
-  $telemetry_prefix             = 'fm_rails'
-  $telemetry_prometheus_enabled = false
-  $telemetry_statsd_enabled     = false
-  $telemetry_statsd_host        = '127.0.0.1:8125'
-  $telemetry_statsd_protocol    = 'statsd'
-  $telemetry_logger_enabled     = false
-  $telemetry_logger_level       = 'DEBUG'
 
   # Define foreman service
   $foreman_service = 'foreman'
-  $foreman_service_ensure = 'running'
-  $foreman_service_enable = true
-  $foreman_service_puma_threads_min = undef
-  $foreman_service_puma_threads_max = 5
-  $foreman_service_puma_workers = undef
-
-  # Define job processing service properties
-  $dynflow_manage_services = true
-  $dynflow_orchestrator_ensure = 'present'
-  $dynflow_worker_instances = 1
-  $dynflow_worker_concurrency = 5
-  $dynflow_redis_url = undef
-
-  # Keycloak
-  $keycloak = false
-  $keycloak_app_name = 'foreman-openidc'
-  $keycloak_realm = 'ssl-realm'
-
-  $hsts_enabled = true
 
   # OS specific paths
   case $facts['os']['family'] {
@@ -142,51 +77,12 @@ class foreman::params inherits foreman::globals {
   $server_ssl_cert  = "${puppet_ssldir}/certs/${lower_fqdn}.pem"
   $server_ssl_key   = "${puppet_ssldir}/private_keys/${lower_fqdn}.pem"
   $server_ssl_crl   = "${puppet_ssldir}/crl.pem"
-  $server_ssl_protocol = undef
-  $server_ssl_verify_client = 'optional'
 
   # We need the REST API interface with OAuth for some REST Puppet providers
-  $oauth_active = true
-  $oauth_map_users = false
   $oauth_consumer_key = extlib::cache_data('foreman_cache_data', 'oauth_consumer_key', extlib::random_password(32))
   $oauth_consumer_secret = extlib::cache_data('foreman_cache_data', 'oauth_consumer_secret', extlib::random_password(32))
   $oauth_effective_user = 'admin'
 
   # Initial admin account details
-  $initial_admin_username = 'admin'
   $initial_admin_password = extlib::cache_data('foreman_cache_data', 'admin_password', extlib::random_password(16))
-  $initial_admin_first_name = undef
-  $initial_admin_last_name = undef
-  $initial_admin_email = undef
-  $initial_admin_locale = undef
-  $initial_admin_timezone = undef
-
-  # Initial taxonomies
-  $initial_organization = undef
-  $initial_location = undef
-
-  $ipa_authentication = false
-  $http_keytab = undef
-  $pam_service = 'foreman'
-  $ipa_manage_sssd = true
-
-  # Websockets
-  $websockets_encrypt = true
-  $websockets_ssl_key = undef
-  $websockets_ssl_cert = undef
-
-  # Application logging
-  $logging_level = 'info'
-  $logging_type = 'file'
-  $logging_layout = 'multiline_request_pattern'
-  $loggers = {}
-
-  # Rails Cache Store
-  $rails_cache_store = { 'type' => 'file' }
-
-  # Default ports for Apache to listen on
-  $server_port     = 80
-  $server_ssl_port = 443
-
-  $register_in_foreman = true
 }
