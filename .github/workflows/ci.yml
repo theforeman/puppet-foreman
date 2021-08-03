@@ -15,7 +15,7 @@ jobs:
       puppet_major_versions: ${{ steps.get_outputs.outputs.puppet_major_versions }}
       puppet_unit_test_matrix: ${{ steps.get_outputs.outputs.puppet_unit_test_matrix }}
     env:
-      BUNDLE_WITHOUT: development:release
+      BUNDLE_WITHOUT: development:system_tests:release
     steps:
       - uses: actions/checkout@v2
       - name: Setup ruby

@@ -13,11 +13,12 @@ gem 'puppet-lint-param-docs', '>= 1.3.0', {"groups"=>["test"]}
 gem 'puppet-lint-spaceship_operator_without_tag-check', {"groups"=>["test"]}
 gem 'puppet-lint-strict_indent-check', {"groups"=>["test"]}
 gem 'puppet-lint-undef_in_function-check', {"groups"=>["test"]}
-gem 'voxpupuli-test', '~> 1.4'
+gem 'voxpupuli-test', '~> 1.4', {"groups"=>["test"]}
 gem 'github_changelog_generator', '>= 1.15.0', {"groups"=>["development"]}
 gem 'puppet_metadata', '~> 0.3'
 gem 'puppet-blacksmith', '>= 6.0.0', {"groups"=>["development"]}
 gem 'voxpupuli-acceptance', '~> 1.0', {"groups"=>["system_tests"]}
+gem 'puppetlabs_spec_helper', {"groups"=>["system_tests"]}
 gem 'webmock', '~> 2.0'
 gem 'oauth'
 
