@@ -160,7 +160,9 @@
 #
 # $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing
 #
-# $foreman_service_puma_threads_min::     Minimum number of threads for every Puma worker
+# $foreman_service_puma_threads_min::     Minimum number of threads for every Puma worker. If no value is specified, this defaults
+#                                         to setting min threads to maximum threads. Setting min threads equal to max threads has
+#                                         been shown to alleviate memory leaks and in some cases produce better performance.
 #
 # $foreman_service_puma_threads_max::     Maximum number of threads for every Puma worker
 #
@@ -272,7 +274,7 @@ class foreman (
   Optional[Redis::RedisUrl] $dynflow_redis_url = $foreman::params::dynflow_redis_url,
   Boolean $hsts_enabled = $foreman::params::hsts_enabled,
   Array[Stdlib::HTTPUrl] $cors_domains = $foreman::params::cors_domains,
-  Integer[0] $foreman_service_puma_threads_min = $foreman::params::foreman_service_puma_threads_min,
+  Optional[Integer[0]] $foreman_service_puma_threads_min = $foreman::params::foreman_service_puma_threads_min,
   Integer[0] $foreman_service_puma_threads_max = $foreman::params::foreman_service_puma_threads_max,
   Integer[0] $foreman_service_puma_workers = $foreman::params::foreman_service_puma_workers,
   Hash[String, Any] $rails_cache_store = $foreman::params::rails_cache_store,

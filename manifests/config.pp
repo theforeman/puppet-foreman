@@ -44,6 +44,7 @@ class foreman::config {
     content => template('foreman/database.yml.erb'),
   }
 
+  $min_puma_threads = pick($foreman::foreman_service_puma_threads_min, $foreman::foreman_service_puma_threads_max)
   systemd::dropin_file { 'foreman-service':
     filename => 'installer.conf',
     unit     => "${foreman::foreman_service}.service",
