@@ -92,7 +92,18 @@ describe 'foreman' do
             .with_content(/^SocketUser=#{apache_user}$/)
         end
 
-        it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service') }
+        it 'overrides foreman.service systemd service' do
+          should contain_systemd__dropin_file('foreman-service')
+            .with_ensure('present')
+            .with_filename('installer.conf')
+            .with_unit('foreman.service')
+            .with_content(%r{^User=foreman$})
+            .with_content(%r{^Environment=FOREMAN_ENV=production$})
+            .with_content(%r{^Environment=FOREMAN_HOME=/usr/share/foreman$})
+            .with_content(%r{^Environment=FOREMAN_PUMA_THREADS_MIN=16$})
+            .with_content(%r{^Environment=FOREMAN_PUMA_THREADS_MAX=16$})
+            .with_content(%r{^Environment=FOREMAN_PUMA_WORKERS=2$})
+        end
 
         it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }
 
