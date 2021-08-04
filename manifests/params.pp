@@ -65,7 +65,7 @@ class foreman::params {
   $foreman_service = 'foreman'
   $foreman_service_ensure = 'running'
   $foreman_service_enable = true
-  $foreman_service_puma_threads_min = 0
+  $foreman_service_puma_threads_min = undef
   $foreman_service_puma_threads_max = 16
   $foreman_service_puma_workers = 2
 
