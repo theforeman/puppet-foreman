@@ -1,5 +1,14 @@
 # Changelog
 
+## [18.1.0](https://github.com/theforeman/puppet-foreman/tree/18.1.0) (2021-08-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/18.0.0...18.1.0)
+
+**Implemented enhancements:**
+
+- Add hammer plugin for foreman\_puppet [\#979](https://github.com/theforeman/puppet-foreman/pull/979) ([amirfefer](https://github.com/amirfefer))
+- Add hammer plugin for foreman\_webhooks [\#977](https://github.com/theforeman/puppet-foreman/pull/977) ([ofedoren](https://github.com/ofedoren))
+
 ## [18.0.0](https://github.com/theforeman/puppet-foreman/tree/18.0.0) (2021-07-26)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/17.0.0...18.0.0)
@@ -12,7 +21,9 @@
 
 **Implemented enhancements:**
 
+- Let Function to\_symbolized\_yaml handle Datatype Sensitive [\#972](https://github.com/theforeman/puppet-foreman/pull/972) ([cocker-cc](https://github.com/cocker-cc))
 - Match Foreman user to what packaging creates [\#971](https://github.com/theforeman/puppet-foreman/pull/971) ([ekohl](https://github.com/ekohl))
+- Handle duplicate file declaration for foreman::app\_root [\#969](https://github.com/theforeman/puppet-foreman/pull/969) ([chr1s692](https://github.com/chr1s692))
 - Fixes [\#32947](https://projects.theforeman.org/issues/32947) - Use Apache module variables [\#968](https://github.com/theforeman/puppet-foreman/pull/968) ([ekohl](https://github.com/ekohl))
 - Fixes [\#32352](https://projects.theforeman.org/issues/32352) - use mod\_auth\_gssapi instead of mod\_auth\_kerb [\#967](https://github.com/theforeman/puppet-foreman/pull/967) ([evgeni](https://github.com/evgeni))
 - Autorequire provider in smartproxy type [\#966](https://github.com/theforeman/puppet-foreman/pull/966) ([ekohl](https://github.com/ekohl))
@@ -32,8 +43,6 @@
 - Support Puppet 7 [\#921](https://github.com/theforeman/puppet-foreman/pull/921) ([ekohl](https://github.com/ekohl))
 - Configurable: email\_reply\_address, email\_subject\_prefix [\#913](https://github.com/theforeman/puppet-foreman/pull/913) ([knorx](https://github.com/knorx))
 - added foreman\_datacenter [\#868](https://github.com/theforeman/puppet-foreman/pull/868) ([Zenya](https://github.com/Zenya))
-- Let Function to\_symbolized\_yaml handle Datatype Sensitive [\#972](https://github.com/theforeman/puppet-foreman/pull/972) ([cocker-cc](https://github.com/cocker-cc))
-- Handle duplicate file declaration for foreman::app\_root [\#969](https://github.com/theforeman/puppet-foreman/pull/969) ([chr1s692](https://github.com/chr1s692))
 
 **Fixed bugs:**
 
