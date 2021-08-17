@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'foreman' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let(:facts) { facts }
+      let(:facts) { override_facts(facts, processors: { count: 3 }, memory: { system: { total_bytes:  10_737_418_240}}) }
       let(:params) { {} }
       let(:apache_user) { facts[:osfamily] == 'Debian' ? 'www-data' : 'apache' }
 
@@ -100,9 +100,9 @@ describe 'foreman' do
             .with_content(%r{^User=foreman$})
             .with_content(%r{^Environment=FOREMAN_ENV=production$})
             .with_content(%r{^Environment=FOREMAN_HOME=/usr/share/foreman$})
-            .with_content(%r{^Environment=FOREMAN_PUMA_THREADS_MIN=16$})
-            .with_content(%r{^Environment=FOREMAN_PUMA_THREADS_MAX=16$})
-            .with_content(%r{^Environment=FOREMAN_PUMA_WORKERS=2$})
+            .with_content(%r{^Environment=FOREMAN_PUMA_THREADS_MIN=5$})
+            .with_content(%r{^Environment=FOREMAN_PUMA_THREADS_MAX=5$})
+            .with_content(%r{^Environment=FOREMAN_PUMA_WORKERS=4$})
         end
 
         it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }

@@ -44,6 +44,17 @@ class foreman::config {
     content => template('foreman/database.yml.erb'),
   }
 
+  # CPU based calculation is based on https://github.com/puma/puma/blob/master/docs/deployment.md#mri
+  # Memory based calculation is based on https://docs.gitlab.com/ee/install/requirements.html#puma-settings
+  $puma_workers = pick(
+    $foreman::foreman_service_puma_workers,
+    floor(
+      min(
+        $facts['processors']['count'] * 1.5,
+        ($facts['memory']['system']['total_bytes']/(1024 * 1024 * 1024)) - 1.5
+      )
+    )
+  )
   $min_puma_threads = pick($foreman::foreman_service_puma_threads_min, $foreman::foreman_service_puma_threads_max)
   systemd::dropin_file { 'foreman-service':
     filename => 'installer.conf',
