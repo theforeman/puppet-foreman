@@ -166,7 +166,9 @@
 #
 # $foreman_service_puma_threads_max::     Maximum number of threads for every Puma worker
 #
-# $foreman_service_puma_workers::         Number of workers for Puma
+# $foreman_service_puma_workers::         Number of workers for Puma.
+#                                         If not set, the value is dynamically calculated based on available number of
+#                                         CPUs and memory.
 #
 # $rails_cache_store::            Set rails cache store
 #
@@ -276,7 +278,7 @@ class foreman (
   Array[Stdlib::HTTPUrl] $cors_domains = $foreman::params::cors_domains,
   Optional[Integer[0]] $foreman_service_puma_threads_min = $foreman::params::foreman_service_puma_threads_min,
   Integer[0] $foreman_service_puma_threads_max = $foreman::params::foreman_service_puma_threads_max,
-  Integer[0] $foreman_service_puma_workers = $foreman::params::foreman_service_puma_workers,
+  Optional[Integer[0]] $foreman_service_puma_workers = $foreman::params::foreman_service_puma_workers,
   Hash[String, Any] $rails_cache_store = $foreman::params::rails_cache_store,
   Boolean $keycloak = $foreman::params::keycloak,
   String[1] $keycloak_app_name = $foreman::params::keycloak_app_name,

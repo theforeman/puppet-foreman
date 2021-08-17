@@ -64,8 +64,8 @@ class foreman::params inherits foreman::globals {
   $foreman_service_ensure = 'running'
   $foreman_service_enable = true
   $foreman_service_puma_threads_min = undef
-  $foreman_service_puma_threads_max = 16
-  $foreman_service_puma_workers = 2
+  $foreman_service_puma_threads_max = 5
+  $foreman_service_puma_workers = undef
 
   # Define job processing service properties
   $dynflow_manage_services = true
