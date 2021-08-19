@@ -48,8 +48,6 @@
 #
 # === Advanced parameters:
 #
-# $foreman_url::                  URL on which foreman is going to run
-#
 # $unattended::                   Should Foreman manage host provisioning as well
 #
 # $unattended_url::               URL hosts will retrieve templates from during build (normally http as many installers don't support https)
@@ -203,7 +201,6 @@
 # $keycloak_realm::               The realm as passed to keycloak-httpd-client-install
 #
 class foreman (
-  Stdlib::HTTPUrl $foreman_url = $foreman::params::foreman_url,
   Boolean $unattended = true,
   Optional[Stdlib::HTTPUrl] $unattended_url = undef,
   Boolean $apache = true,
@@ -302,6 +299,8 @@ class foreman (
   } else {
     $db_sslmode_real = $db_sslmode
   }
+
+  $foreman_url = "https://${servername}"
 
   include foreman::install
   include foreman::config
