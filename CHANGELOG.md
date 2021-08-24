@@ -1,5 +1,18 @@
 # Changelog
 
+## [18.2.0](https://github.com/theforeman/puppet-foreman/tree/18.2.0) (2021-08-24)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/18.1.0...18.2.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#33320](https://projects.theforeman.org/issues/33320) - Refer to FQDN instead of "Foreman server" in SmartProx… [\#988](https://github.com/theforeman/puppet-foreman/pull/988) ([wbclark](https://github.com/wbclark))
+- Fixes [\#33277](https://projects.theforeman.org/issues/33277): Change Puma default workers to 1.5 \* CPU, max threads to 5 [\#986](https://github.com/theforeman/puppet-foreman/pull/986) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- Fixes [\#33214](https://projects.theforeman.org/issues/33214): Set minimum Puma threads equal to maximum puma threads … [\#984](https://github.com/theforeman/puppet-foreman/pull/984) ([ehelms](https://github.com/ehelms))
+
 ## [18.1.0](https://github.com/theforeman/puppet-foreman/tree/18.1.0) (2021-08-04)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/18.0.0...18.1.0)
