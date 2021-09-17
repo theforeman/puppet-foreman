@@ -14,10 +14,9 @@ fixtures:
     puppet:           'https://github.com/theforeman/puppet-puppet'
     redis:            'https://github.com/voxpupuli/puppet-redis'
     systemd:
-      repo: 'https://github.com/camptocamp/puppet-systemd'
-      ref: '2.12.0'
+      repo: 'https://github.com/voxpupuli/puppet-systemd'
     selinux_core:
-      repo: "https://github.com/puppetlabs/puppetlabs-selinux_core"
+      repo: 'https://github.com/puppetlabs/puppetlabs-selinux_core'
       puppet_version: ">= 6.0.0"
     stdlib:           'https://github.com/puppetlabs/puppetlabs-stdlib'
     yumrepo_core:
