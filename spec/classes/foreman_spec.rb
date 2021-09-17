@@ -149,8 +149,8 @@ describe 'foreman' do
         # service
         it { should contain_class('foreman::service') }
         it { should contain_service('foreman') }
-        it { is_expected.to contain_service('dynflow-sidekiq@orchestrator').with_ensure('running').with_enable(true) }
-        it { is_expected.to contain_service('dynflow-sidekiq@worker-1').with_ensure('running').with_enable(true) }
+        it { is_expected.to contain_service('dynflow-sidekiq@orchestrator').with_ensure('running').with_enable(true).that_requires('Class[redis]') }
+        it { is_expected.to contain_service('dynflow-sidekiq@worker-1').with_ensure('running').with_enable(true).that_requires('Class[redis]') }
 
         # settings
         it { should contain_class('foreman::settings').that_requires('Class[foreman::database]') }
