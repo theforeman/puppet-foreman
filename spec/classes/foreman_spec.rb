@@ -162,7 +162,7 @@ describe 'foreman' do
         it { should compile.with_all_deps }
         it { should_not contain_class('foreman::config::apache') }
         it { should_not contain_concat__fragment('foreman_settings+03-reverse-proxy-headers.yaml') }
-        it { should contain_package('foreman-service').with_ensure('installed') }
+        it { should contain_package('foreman-service').with_ensure('present') }
         it 'removes foreman.socket systemd override' do
           should contain_systemd__dropin_file('foreman-socket')
             .with_ensure('absent')
@@ -245,6 +245,9 @@ describe 'foreman' do
         end
 
         it { is_expected.to compile.with_all_deps }
+        it { should contain_package('foreman-postgresql').with_ensure('1.12') }
+        it { should contain_package('foreman-service').with_ensure('1.12') }
+        it { should contain_package('foreman-dynflow-sidekiq').with_ensure('1.12') }
         it do
           is_expected.to contain_class('foreman::config::apache')
             .with_keycloak(true)
