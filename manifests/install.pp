@@ -19,12 +19,12 @@ class foreman::install {
   }
 
   package { 'foreman-service':
-    ensure => installed,
+    ensure => $foreman::version,
   }
 
   if $foreman::dynflow_manage_services {
     package { 'foreman-dynflow-sidekiq':
-      ensure => installed,
+      ensure => $foreman::version,
     }
   }
 
@@ -36,19 +36,19 @@ class foreman::install {
 
   if $foreman::telemetry_statsd_enabled or $foreman::telemetry_prometheus_enabled {
     package { 'foreman-telemetry':
-      ensure => installed,
+      ensure => $foreman::version,
     }
   }
 
   if $foreman::logging_type == 'journald' {
     package { 'foreman-journald':
-      ensure => installed,
+      ensure => $foreman::version,
     }
   }
 
   if $foreman::rails_cache_store['type'] == 'redis' {
     package { 'foreman-redis':
-      ensure => installed,
+      ensure => $foreman::version,
     }
   }
 
