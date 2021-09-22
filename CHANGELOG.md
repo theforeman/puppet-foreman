@@ -1,5 +1,13 @@
 # Changelog
 
+## [17.0.1](https://github.com/theforeman/puppet-foreman/tree/17.0.1) (2021-09-23)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/17.0.0...17.0.1)
+
+**Fixed bugs:**
+
+- Fixes [\#33214](https://projects.theforeman.org/issues/33214): Set minimum Puma threads equal to maximum puma threads … [\#985](https://github.com/theforeman/puppet-foreman/pull/985) ([ehelms](https://github.com/ehelms))
+
 ## [17.0.0](https://github.com/theforeman/puppet-foreman/tree/17.0.0) (2021-04-26)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/16.1.0...17.0.0)
