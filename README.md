@@ -79,20 +79,10 @@ This module targets Foreman 2.4+.
 ## Types and providers
 
 `foreman_config_entry` can be used to manage settings in Foreman's database, as
-seen in _Administer > Settings_. Provides:
-
-* `cli` provider uses `foreman-rake` to change settings (default)
-
-`foreman_hostgroup` can create and manage host group in Foreman's database.
-Providers:
-
-* `rest_v2` provider uses API v2 with apipie-bindings and OAuth (default)
+seen in _Administer > Settings_. The `cli` provider uses `foreman-rake` to change settings.
 
 `foreman_smartproxy` can create and manage registered smart proxies in
-Foreman's database. Providers:
-
-* `rest_v3` provider uses API v2 with Ruby HTTP library, OAuth and JSON (default)
-* `rest_v2` provider uses API v2 with apipie-bindings and OAuth
+Foreman's database. The `rest_v3` provider uses the API with Ruby's HTTP library, OAuth and JSON.
 
 ## Foreman ENC via hiera
 
