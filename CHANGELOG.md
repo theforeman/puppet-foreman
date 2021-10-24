@@ -1,5 +1,30 @@
 # Changelog
 
+## [19.0.0](https://github.com/theforeman/puppet-foreman/tree/19.0.0) (2021-11-09)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/18.2.0...19.0.0)
+
+**Breaking changes:**
+
+- Drop server\_ssl\_certs\_dir parameter [\#1003](https://github.com/theforeman/puppet-foreman/pull/1003) ([ekohl](https://github.com/ekohl))
+- Fixes [\#33789](https://projects.theforeman.org/issues/33789) - Mark host where the installer is running as foreman [\#965](https://github.com/theforeman/puppet-foreman/pull/965) ([adamruzicka](https://github.com/adamruzicka))
+
+**Implemented enhancements:**
+
+- Refs [\#33760](https://projects.theforeman.org/issues/33760) - Add host\_reports plugin [\#1000](https://github.com/theforeman/puppet-foreman/pull/1000) ([ofedoren](https://github.com/ofedoren))
+- Switch to puppet/systemd [\#997](https://github.com/theforeman/puppet-foreman/pull/997) ([jovandeginste](https://github.com/jovandeginste))
+- Apply version restrictions to all packages [\#996](https://github.com/theforeman/puppet-foreman/pull/996) ([nbarrientos](https://github.com/nbarrientos))
+- Add Ubuntu 20.04 support & drop Ubuntu 18.04 [\#981](https://github.com/theforeman/puppet-foreman/pull/981) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Remove outdated providers docs [\#999](https://github.com/theforeman/puppet-foreman/pull/999) ([alexjfisher](https://github.com/alexjfisher))
+- Fixes [\#33511](https://projects.theforeman.org/issues/33511) - configure redis before dynflow workers [\#995](https://github.com/theforeman/puppet-foreman/pull/995) ([evgeni](https://github.com/evgeni))
+
+**Closed issues:**
+
+- foreman\_config\_entry consuming polluted value [\#989](https://github.com/theforeman/puppet-foreman/issues/989)
+
 ## [18.2.0](https://github.com/theforeman/puppet-foreman/tree/18.2.0) (2021-08-24)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/18.1.0...18.2.0)

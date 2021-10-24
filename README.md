@@ -74,7 +74,8 @@ previous stable release.
 
 ### Foreman version compatibility notes
 
-This module targets Foreman 2.4+.
+This module targets Foreman 3.1+.
+The module can be used with Foreman 2.4+ by setting `register_in_foreman => false`.
 
 ## Types and providers
 
