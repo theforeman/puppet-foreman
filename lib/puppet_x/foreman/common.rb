@@ -1,16 +1,10 @@
 module PuppetX
   module Foreman
     module Common
-      FOREMAN_HOST_PARAMS = Proc.new do
+
+      # Parameters common to several types that use the rest_v3 api provider
+      REST_API_COMMON_PARAMS = Proc.new do
         ensurable
-
-        newparam(:name, :namevar => true) do
-          desc 'The name of the resource.'
-        end
-
-        newparam(:hostname) do
-          desc 'The name of the host.'
-        end
 
         newparam(:base_url) do
           desc 'Foreman\'s base url.'
@@ -49,7 +43,17 @@ module PuppetX
         end
 
         autorequire(:anchor) do
-          ['foreman::service']
+          ['foreman::service','foreman::providers::oauth']
+        end
+      end
+
+      FOREMAN_HOST_PARAMS = Proc.new do
+        newparam(:name, :namevar => true) do
+          desc 'The name of the resource.'
+        end
+
+        newparam(:hostname) do
+          desc 'The name of the host.'
         end
       end
     end

@@ -85,6 +85,10 @@ seen in _Administer > Settings_. The `cli` provider uses `foreman-rake` to chang
 `foreman_smartproxy` can create and manage registered smart proxies in
 Foreman's database. The `rest_v3` provider uses the API with Ruby's HTTP library, OAuth and JSON.
 
+`foreman_hostgroup` can be used to create and destroy hostgroups. Nested hostgroups are supported
+and hostgroups can be assigned to locations/organizations.
+The type currently doesn't support other properties such as `environment`, `puppet classes` etc.
+
 ## Foreman ENC via hiera
 
 There is a function `foreman::enc` to retrieve the ENC data. This returns the
