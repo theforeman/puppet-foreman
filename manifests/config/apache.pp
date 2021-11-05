@@ -24,9 +24,6 @@
 # @param ssl_cert
 #   Location of the SSL certificate file.
 #
-# @param ssl_certs_dir
-#   Location of additional certificates for SSL client authentication.
-#
 # @param ssl_key
 #   Location of the SSL key file.
 #
@@ -104,7 +101,6 @@ class foreman::config::apache(
   Optional[Stdlib::Absolutepath] $ssl_ca = undef,
   Optional[Stdlib::Absolutepath] $ssl_chain = undef,
   Optional[Stdlib::Absolutepath] $ssl_cert = undef,
-  Variant[Undef, Enum[''], Stdlib::Absolutepath] $ssl_certs_dir = undef,
   Optional[Stdlib::Absolutepath] $ssl_key = undef,
   Variant[Undef, Enum[''], Stdlib::Absolutepath] $ssl_crl = undef,
   Optional[String] $ssl_protocol = undef,
@@ -301,7 +297,6 @@ class foreman::config::apache(
       serveraliases         => $serveraliases,
       ssl                   => true,
       ssl_cert              => $ssl_cert,
-      ssl_certs_dir         => $ssl_certs_dir,
       ssl_key               => $ssl_key,
       ssl_chain             => $ssl_chain,
       ssl_ca                => $ssl_ca,

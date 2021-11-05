@@ -114,7 +114,6 @@ describe 'foreman::config::apache' do
             ssl_crl: '/crl.pem',
             ssl_chain: '/chain.pem',
             ssl_ca: '/ca.pem',
-            ssl_certs_dir: '',
             ssl_protocol: '-all +TLSv1.2',
             ssl_verify_client: 'require',
           }
@@ -136,7 +135,7 @@ describe 'foreman::config::apache' do
             .with_port(443)
             .with_ssl(true)
             .with_ssl_cert('/cert.pem')
-            .with_ssl_certs_dir('')
+            .with_ssl_certs_dir(nil)
             .with_ssl_key('/key.pem')
             .with_ssl_chain('/chain.pem')
             .with_ssl_ca('/ca.pem')
@@ -179,7 +178,6 @@ describe 'foreman::config::apache' do
         describe 'with vhost and ssl, no CRL explicitly' do
           let(:params) do
             super().merge(
-              ssl_certs_dir: '',
               ssl_crl: '',
             )
           end

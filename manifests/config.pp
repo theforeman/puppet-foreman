@@ -125,7 +125,6 @@ class foreman::config {
       ssl_ca             => $foreman::server_ssl_ca,
       ssl_chain          => $foreman::server_ssl_chain,
       ssl_cert           => $foreman::server_ssl_cert,
-      ssl_certs_dir      => $foreman::server_ssl_certs_dir,
       ssl_key            => $foreman::server_ssl_key,
       ssl_crl            => $foreman::server_ssl_crl,
       ssl_protocol       => $foreman::server_ssl_protocol,
