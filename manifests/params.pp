@@ -187,4 +187,6 @@ class foreman::params inherits foreman::globals {
   $server_ssl_port = 443
 
   $register_in_foreman = true
+
+  $outofsync_interval = undef
 }

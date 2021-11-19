@@ -325,6 +325,14 @@ describe 'foreman' do
         end
       end
 
+      describe 'with outofsync_interval' do
+        let(:params) { super().merge(outofsync_interval: 42) }
+        it 'should set rails_cache_store config' do
+          should contain_concat__fragment('foreman_settings+01-header.yaml')
+            .with_content(/^:outofsync_interval: 42$/)
+        end
+      end
+
       describe 'with rails_cache_store redis' do
         let(:params) { super().merge(rails_cache_store: { type: "redis", urls: [ "redis.example.com/0" ]}) }
         it 'should set rails_cache_store config' do

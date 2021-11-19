@@ -108,3 +108,6 @@
     :namespace: foreman
 <%   end -%>
 <% end -%>
+<%- if scope['foreman::outofsync_interval'] -%>
+:outofsync_interval: <%= scope['foreman::outofsync_interval'] %>
+<%- end -%>
