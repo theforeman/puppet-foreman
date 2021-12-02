@@ -4,7 +4,7 @@ Puppet::Type.type(:foreman_smartproxy_host).provide(:rest_v3, :parent => Puppet:
   def exists?
     return false if host.nil? || proxy.nil?
 
-    host['smart_proxy_id'] == proxy_id
+    host.fetch('infrastructure_facet', {})['smart_proxy_id'] == proxy_id
   end
 
   def create

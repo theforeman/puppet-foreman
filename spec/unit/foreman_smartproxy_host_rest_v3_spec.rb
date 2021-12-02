@@ -52,19 +52,19 @@ describe Puppet::Type.type(:foreman_smartproxy_host).provider(:rest_v3) do
   describe '#exists?' do
     it 'returns true when host is marked as current proxy' do
       expect(provider).to receive(:proxy).thrice.and_return({"id" => 1})
-      expect(provider).to receive(:host).twice.and_return({"smart_proxy_id" => 1})
+      expect(provider).to receive(:host).twice.and_return({"infrastructure_facet" => {"smart_proxy_id" => 1}})
       expect(provider.exists?).to be true
     end
 
     it 'returns false when host is marked as a different smart proxy' do
       expect(provider).to receive(:proxy).thrice.and_return({"id" => 1})
-      expect(provider).to receive(:host).twice.and_return({"smart_proxy_id" => 2})
+      expect(provider).to receive(:host).twice.and_return({"infrastructure_facet" => {"smart_proxy_id" => 2}})
       expect(provider.exists?).to be false
     end
 
     it 'returns false when host is not marked as a smart proxy' do
       expect(provider).to receive(:proxy).thrice.and_return({"id" => 1})
-      expect(provider).to receive(:host).twice.and_return({"smart_proxy_id" => nil})
+      expect(provider).to receive(:host).twice.and_return({"infrastructure_facet" => {"smart_proxy_id" => nil}})
       expect(provider.exists?).to be false
     end
 
@@ -74,7 +74,7 @@ describe Puppet::Type.type(:foreman_smartproxy_host).provider(:rest_v3) do
     end
 
     it 'returns false when smart proxy does not exist' do
-      expect(provider).to receive(:host).and_return({"smart_proxy_id" => 1})
+      expect(provider).to receive(:host).and_return({"infrastructure_facet" => {"smart_proxy_id" => 1}})
       expect(provider).to receive(:proxy).and_return(nil)
       expect(provider.exists?).to be false
     end
