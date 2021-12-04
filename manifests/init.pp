@@ -105,6 +105,8 @@
 #
 # $server_ssl_verify_client::     Defines the Apache mod_ssl SSLVerifyClient setting in Foreman vhost conf file.
 #
+# $server_ca_file_configure::     Defines if the server_ca_file should also be configured for Foreman itself.
+#
 # $client_ssl_ca::                Defines the SSL CA used to communicate with Foreman Proxies
 #
 # $client_ssl_cert::              Defines the SSL certificate used to communicate with Foreman Proxies
@@ -225,6 +227,7 @@ class foreman (
   Variant[Enum[''], Stdlib::Absolutepath] $server_ssl_crl = $foreman::params::server_ssl_crl,
   Optional[String] $server_ssl_protocol = $foreman::params::server_ssl_protocol,
   Enum['none','optional','require','optional_no_ca'] $server_ssl_verify_client = $foreman::params::server_ssl_verify_client,
+  Boolean $server_ca_file_configure = $foreman::params::server_ca_file_configure,
   Stdlib::Absolutepath $client_ssl_ca = $foreman::params::client_ssl_ca,
   Stdlib::Absolutepath $client_ssl_cert = $foreman::params::client_ssl_cert,
   Stdlib::Absolutepath $client_ssl_key = $foreman::params::client_ssl_key,

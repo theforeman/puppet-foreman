@@ -24,6 +24,9 @@
 :ssl_certificate: <%= scope.lookupvar("foreman::client_ssl_cert") %>
 :ssl_ca_file: <%= scope.lookupvar("foreman::client_ssl_ca") %>
 :ssl_priv_key: <%= scope.lookupvar("foreman::client_ssl_key") %>
+<% if scope.lookupvar("foreman::server_ca_file_configure") -%>
+:server_ca_file: <%= scope.lookupvar("foreman::server_ssl_ca") %>
+<% end -%>
 
 # HSTS setting
 :hsts_enabled: <%= scope.lookupvar("foreman::hsts_enabled") %>
