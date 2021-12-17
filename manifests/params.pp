@@ -24,6 +24,7 @@ class foreman::params inherits foreman::globals {
   $plugin_version    = 'present'
 
   $cors_domains = []
+  $trusted_proxies = []
 
   # if enabled, will install and configure the database server on this host
   $db_manage   = true

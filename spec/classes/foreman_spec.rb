@@ -351,6 +351,14 @@ describe 'foreman' do
         end
       end
 
+      describe 'with trusted proxies' do
+        let(:params) { super().merge(trusted_proxies: ['10.0.0.0/8', '127.0.0.1/32', '::1']) }
+        it 'should set trusted proxies config' do
+          should contain_concat__fragment('foreman_settings+01-header.yaml').
+            with_content(/^:trusted_proxies:\n\s+- '10\.0\.0\.0\/8'\n\s+- '127\.0\.0\.1\/32'\n\s+- '::1'\n$/)
+        end
+      end
+
       context 'with email configured for SMTP' do
         let(:params) { super().merge(email_delivery_method: 'smtp') }
 
