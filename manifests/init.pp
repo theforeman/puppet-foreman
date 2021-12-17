@@ -160,6 +160,10 @@
 #
 # $cors_domains::                 List of domains that show be allowed for Cross-Origin Resource Sharing
 #
+# $trusted_proxies::              List of trusted IPs / networks. Default: IPv4 and IPV6 localhost addresses.
+#                                 If overwritten, localhost addresses (127.0.0.1/8, ::1) need to be in trusted_proxies IP list again.
+#                                 More details: https://api.rubyonrails.org/classes/ActionDispatch/RemoteIp.html
+#
 # $foreman_service_puma_threads_min::     Minimum number of threads for every Puma worker. If no value is specified, this defaults
 #                                         to setting min threads to maximum threads. Setting min threads equal to max threads has
 #                                         been shown to alleviate memory leaks and in some cases produce better performance.
@@ -278,6 +282,7 @@ class foreman (
   Optional[Redis::RedisUrl] $dynflow_redis_url = $foreman::params::dynflow_redis_url,
   Boolean $hsts_enabled = $foreman::params::hsts_enabled,
   Array[Stdlib::HTTPUrl] $cors_domains = $foreman::params::cors_domains,
+  Array[Stdlib::IP::Address] $trusted_proxies = $foreman::params::trusted_proxies,
   Optional[Integer[0]] $foreman_service_puma_threads_min = $foreman::params::foreman_service_puma_threads_min,
   Integer[0] $foreman_service_puma_threads_max = $foreman::params::foreman_service_puma_threads_max,
   Optional[Integer[0]] $foreman_service_puma_workers = $foreman::params::foreman_service_puma_workers,
