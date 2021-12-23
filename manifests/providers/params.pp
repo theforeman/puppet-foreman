@@ -1,4 +1,5 @@
-# foreman::providers default parameters
+# @summary foreman::providers default parameters
+# @api private
 class foreman::providers::params {
   # Dependency packages for different providers supplied in this module
   $oauth = true

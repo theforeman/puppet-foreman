@@ -1,4 +1,5 @@
-# Parameters for Foreman CLI class
+# @summary Parameters for Foreman CLI class
+# @api private
 class foreman::cli::params inherits foreman::cli::globals {
   $foreman_url = undef
   $version = 'installed'

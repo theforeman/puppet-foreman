@@ -1,4 +1,5 @@
-# The foreman default parameters
+# @summary The foreman default parameters
+# @api private
 class foreman::params inherits foreman::globals {
   $lower_fqdn = downcase($facts['networking']['fqdn'])
 
