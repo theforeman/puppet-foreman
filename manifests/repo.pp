@@ -38,7 +38,7 @@ class foreman::repo(
       package { 'ruby':
         ensure      => '2.7',
         enable_only => true,
-        provider    => 'dnfmodule'
+        provider    => 'dnfmodule',
       }
     }
   }
