@@ -282,7 +282,7 @@ class foreman (
   Optional[Redis::RedisUrl] $dynflow_redis_url = $foreman::params::dynflow_redis_url,
   Boolean $hsts_enabled = $foreman::params::hsts_enabled,
   Array[Stdlib::HTTPUrl] $cors_domains = $foreman::params::cors_domains,
-  Array[Stdlib::IP::Address] $trusted_proxies = $foreman::params::trusted_proxies,
+  Array[String[1]] $trusted_proxies = $foreman::params::trusted_proxies,
   Optional[Integer[0]] $foreman_service_puma_threads_min = $foreman::params::foreman_service_puma_threads_min,
   Integer[0] $foreman_service_puma_threads_max = $foreman::params::foreman_service_puma_threads_max,
   Optional[Integer[0]] $foreman_service_puma_workers = $foreman::params::foreman_service_puma_workers,
@@ -292,6 +292,8 @@ class foreman (
   String[1] $keycloak_realm = $foreman::params::keycloak_realm,
   Boolean $register_in_foreman = $foreman::params::register_in_foreman,
 ) inherits foreman::params {
+  assert_type(Array[Stdlib::IP::Address], $trusted_proxies)
+
   if $db_sslmode == 'UNSET' and $db_root_cert {
     $db_sslmode_real = 'verify-full'
   } else {
