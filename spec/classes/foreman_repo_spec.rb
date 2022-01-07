@@ -83,7 +83,7 @@ describe 'foreman::repo' do
 
         it do
           if facts[:operatingsystemmajrelease] == '8'
-            is_expected.to contain_package('ruby')
+            is_expected.to contain_package('ruby').with_ensure('2.7').with_provider('dnfmodule')
           else
             is_expected.not_to contain_package('ruby')
           end
