@@ -154,8 +154,7 @@ class foreman::config::apache(
   }
 
   # This sets the headers matching what $vhost_https_internal_options sets
-  concat::fragment { 'foreman_settings+03-reverse-proxy-headers.yaml':
-    target  => '/etc/foreman/settings.yaml',
+  foreman::settings_fragment { 'reverse-proxy-headers.yaml':
     content => file('foreman/settings-reverse-proxy-headers.yaml'),
     order   => '03',
   }
