@@ -24,8 +24,7 @@ class foreman::config {
   $websockets_ssl_cert = pick($foreman::websockets_ssl_cert, $foreman::server_ssl_cert)
   $websockets_ssl_key = pick($foreman::websockets_ssl_key, $foreman::server_ssl_key)
 
-  concat::fragment {'foreman_settings+01-header.yaml':
-    target  => '/etc/foreman/settings.yaml',
+  foreman::settings_fragment { 'header.yaml':
     content => template('foreman/settings.yaml.erb'),
     order   => '01',
   }
@@ -214,8 +213,7 @@ class foreman::config {
         }
       }
 
-      concat::fragment {'foreman_settings+02-authorize_login_delegation.yaml':
-        target  => '/etc/foreman/settings.yaml',
+      foreman::settings_fragment { 'authorize_login_delegation.yaml':
         content => template('foreman/settings-external-auth.yaml.erb'),
         order   => '02',
       }
