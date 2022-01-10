@@ -35,8 +35,8 @@ class foreman::repo(
     }
 
     if $facts['os']['release']['major'] == '8' and ($repo == 'nightly' or versioncmp($repo, '2.5') >= 0) {
-      package { 'ruby:2.7':
-        ensure      => installed,
+      package { 'ruby':
+        ensure      => '2.7',
         enable_only => true,
         provider    => 'dnfmodule',
       }
