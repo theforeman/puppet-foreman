@@ -46,7 +46,7 @@ class foreman::plugin::remote_execution::cockpit (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('foreman/remote_execution_cockpit_session.yml.erb'),
+    content => foreman::to_symbolized_yaml($cockpit_config),
     require => Foreman::Plugin['remote_execution-cockpit'],
     notify  => Service['foreman-cockpit'],
   }

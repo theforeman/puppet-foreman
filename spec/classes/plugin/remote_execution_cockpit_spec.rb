@@ -55,7 +55,7 @@ describe 'foreman::plugin::remote_execution::cockpit' do
             .with_ensure('file')
             .with_content([
               '---',
-              ':foreman_url: "https://foreman.example.com"',
+              ':foreman_url: https://foreman.example.com',
               ':ssl_ca_file: "/path/to/ca.pem"',
               ':ssl_certificate: "/path/to/cert.pem"',
               ':ssl_private_key: "/path/to/key.pem"',
@@ -105,7 +105,7 @@ describe 'foreman::plugin::remote_execution::cockpit' do
             .with_ensure('file')
             .with_content([
               '---',
-              ':foreman_url: "https://foreman.example.com"',
+              ':foreman_url: https://foreman.example.com',
               ':ssl_ca_file: "/path/to/ca.pem"',
               ':ssl_certificate: "/path/to/cert.pem"',
               ':ssl_private_key: "/path/to/key.pem"',
