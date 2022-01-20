@@ -58,6 +58,15 @@ describe 'foreman::cli' do
                 CONFIG
               )
           end
+
+          describe 'using Sensitive' do
+          let(:params) { super().merge(password: sensitive('secret')) }
+
+            it 'should contain settings' do
+              is_expected.to contain_file('/root/.hammer/cli.modules.d/foreman.yml')
+                .with_content(/:password: 'secret'/)
+            end
+          end
         end
 
         describe 'with manage_root_config=false' do

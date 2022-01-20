@@ -1,0 +1,9 @@
+lookup_options:
+  '^foreman::(db|email_smtp|initial_admin)_password$':
+    convert_to: "Sensitive"
+  '^foreman::oauth_consumer_(key|secret)$':
+    convert_to: "Sensitive"
+  foreman::cli::password:
+    convert_to: "Sensitive"
+  foreman::plugin::supervisory_authority::secret_token:
+    convert_to: "Sensitive"

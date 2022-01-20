@@ -1,6 +1,6 @@
 <%- |
   Optional[String] $username,
-  Optional[Variant[String, Sensitive[String]]] $password,
+  Variant[Optional[String], Sensitive[Optional[String]]] $password,
 | -%>
 :foreman:
   # Credentials. You'll be asked for the interactively if you leave them blank here
