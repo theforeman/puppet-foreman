@@ -28,6 +28,6 @@
   username: <%= username %>
 <% end -%>
 <% unless (password = scope.lookupvar("::foreman::db_password")) == 'UNSET' -%>
-  password: "<%= password %>"
+  password: "<%= password.respond_to?(:unwrap) ? password.unwrap : password %>"
 <% end -%>
   pool: <%= @db_pool %>

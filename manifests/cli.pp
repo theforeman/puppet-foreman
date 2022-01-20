@@ -30,7 +30,7 @@ class foreman::cli (
   String $version = $foreman::cli::params::version,
   Boolean $manage_root_config = $foreman::cli::params::manage_root_config,
   Optional[String] $username = $foreman::cli::params::username,
-  Optional[Variant[String, Sensitive[String]]] $password = $foreman::cli::params::password,
+  Variant[Optional[String], Sensitive[Optional[String]]] $password = $foreman::cli::params::password,
   Boolean $use_sessions = $foreman::cli::params::use_sessions,
   Boolean $refresh_cache = $foreman::cli::params::refresh_cache,
   Integer[-1] $request_timeout = $foreman::cli::params::request_timeout,
@@ -93,7 +93,7 @@ class foreman::cli (
         'foreman/hammer_root.yml.epp',
         {
           username => $username_real,
-          password => $password_real,
+          password => if $password_real =~ Sensitive { $password_real.unwrap } else { $password_real },
         }
       ),
     }
