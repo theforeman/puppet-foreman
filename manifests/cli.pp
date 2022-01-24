@@ -30,7 +30,7 @@ class foreman::cli (
   String $version = $foreman::cli::params::version,
   Boolean $manage_root_config = $foreman::cli::params::manage_root_config,
   Optional[String] $username = $foreman::cli::params::username,
-  Optional[Variant[String, Sensitive[String]]] $password = $foreman::cli::params::password,
+  Optional[String] $password = $foreman::cli::params::password,
   Boolean $use_sessions = $foreman::cli::params::use_sessions,
   Boolean $refresh_cache = $foreman::cli::params::refresh_cache,
   Integer[-1] $request_timeout = $foreman::cli::params::request_timeout,

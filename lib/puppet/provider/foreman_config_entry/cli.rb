@@ -65,8 +65,6 @@ Puppet::Type.type(:foreman_config_entry).provide(:cli) do
 
   def value=(value)
     return if resource[:dry]
-
-    value = value.unwrap if value.respond_to?(:unwrap)
     run_foreman_config("-k '#{name}' -v '#{value}'", :combine => true, :failonfail => true)
     @property_hash[:value] = value
   end
