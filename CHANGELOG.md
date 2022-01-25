@@ -1,5 +1,28 @@
 # Changelog
 
+## [19.1.0](https://github.com/theforeman/puppet-foreman/tree/19.1.0) (2022-01-25)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.0.0...19.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#34089](https://projects.theforeman.org/issues/34089) - Add trusted proxies setting [\#1011](https://github.com/theforeman/puppet-foreman/pull/1011) ([sbernhard](https://github.com/sbernhard))
+- puppetlabs/apache: Allow 7.x [\#1006](https://github.com/theforeman/puppet-foreman/pull/1006) ([bastelfreak](https://github.com/bastelfreak))
+- puppetlabs/stdlib: Allow 8.x [\#1004](https://github.com/theforeman/puppet-foreman/pull/1004) ([bastelfreak](https://github.com/bastelfreak))
+- Add basic `foreman_hostgroup` type [\#1002](https://github.com/theforeman/puppet-foreman/pull/1002) ([alexjfisher](https://github.com/alexjfisher))
+
+**Fixed bugs:**
+
+- Fixes [\#34308](https://projects.theforeman.org/issues/34308) - Explicitly notify db:seed from db:migrate [\#1020](https://github.com/theforeman/puppet-foreman/pull/1020) ([ekohl](https://github.com/ekohl))
+- foreman::repo: use the package resource 'ensure' parameter to specify the desired ruby stream [\#1015](https://github.com/theforeman/puppet-foreman/pull/1015) ([bastelfreak](https://github.com/bastelfreak))
+- Fixes [\#34161](https://projects.theforeman.org/issues/34161) - Run apipie:cache:index after db:migrate [\#1010](https://github.com/theforeman/puppet-foreman/pull/1010) ([ekohl](https://github.com/ekohl))
+- Fix lack of idempotency in foreman\_smartproxy\_host provider [\#1009](https://github.com/theforeman/puppet-foreman/pull/1009) ([ehelms](https://github.com/ehelms))
+- Fixes [\#33973](https://projects.theforeman.org/issues/33973) - Restart foreman.service when configuration changes [\#1008](https://github.com/theforeman/puppet-foreman/pull/1008) ([wbclark](https://github.com/wbclark))
+
+**Merged pull requests:**
+
+- Refs [\#34089](https://projects.theforeman.org/issues/34089) - Work around Kafo type parsing bug [\#1013](https://github.com/theforeman/puppet-foreman/pull/1013) ([ekohl](https://github.com/ekohl))
+
 ## [19.0.0](https://github.com/theforeman/puppet-foreman/tree/19.0.0) (2021-11-09)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/18.2.0...19.0.0)
@@ -7,6 +30,7 @@
 **Breaking changes:**
 
 - Drop server\_ssl\_certs\_dir parameter [\#1003](https://github.com/theforeman/puppet-foreman/pull/1003) ([ekohl](https://github.com/ekohl))
+- Add Ubuntu 20.04 support & drop Ubuntu 18.04 [\#981](https://github.com/theforeman/puppet-foreman/pull/981) ([ekohl](https://github.com/ekohl))
 - Fixes [\#33789](https://projects.theforeman.org/issues/33789) - Mark host where the installer is running as foreman [\#965](https://github.com/theforeman/puppet-foreman/pull/965) ([adamruzicka](https://github.com/adamruzicka))
 
 **Implemented enhancements:**
@@ -14,7 +38,6 @@
 - Refs [\#33760](https://projects.theforeman.org/issues/33760) - Add host\_reports plugin [\#1000](https://github.com/theforeman/puppet-foreman/pull/1000) ([ofedoren](https://github.com/ofedoren))
 - Switch to puppet/systemd [\#997](https://github.com/theforeman/puppet-foreman/pull/997) ([jovandeginste](https://github.com/jovandeginste))
 - Apply version restrictions to all packages [\#996](https://github.com/theforeman/puppet-foreman/pull/996) ([nbarrientos](https://github.com/nbarrientos))
-- Add Ubuntu 20.04 support & drop Ubuntu 18.04 [\#981](https://github.com/theforeman/puppet-foreman/pull/981) ([ekohl](https://github.com/ekohl))
 
 **Fixed bugs:**
 
