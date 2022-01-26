@@ -1,5 +1,13 @@
 # Changelog
 
+## [19.1.1](https://github.com/theforeman/puppet-foreman/tree/19.1.1) (2022-01-26)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.1.0...19.1.1)
+
+**Fixed bugs:**
+
+- Fixes [\#34317](https://projects.theforeman.org/issues/34317) - Use the correct certificate to register [\#1022](https://github.com/theforeman/puppet-foreman/pull/1022) ([ekohl](https://github.com/ekohl))
+
 ## [19.1.0](https://github.com/theforeman/puppet-foreman/tree/19.1.0) (2022-01-25)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.0.0...19.1.0)
