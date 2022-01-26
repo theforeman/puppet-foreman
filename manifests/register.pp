@@ -10,7 +10,7 @@ class foreman::register (
     consumer_key    => $foreman::oauth_consumer_key,
     consumer_secret => $foreman::oauth_consumer_secret,
     effective_user  => $foreman::oauth_effective_user,
-    ssl_ca          => $foreman::server_ssl_ca,
+    ssl_ca          => $foreman::server_ssl_chain,
     facts           => $facts,
   }
 
@@ -21,6 +21,6 @@ class foreman::register (
     consumer_key    => $foreman::oauth_consumer_key,
     consumer_secret => $foreman::oauth_consumer_secret,
     effective_user  => $foreman::oauth_effective_user,
-    ssl_ca          => $foreman::server_ssl_ca,
+    ssl_ca          => $foreman::server_ssl_chain,
   }
 }
