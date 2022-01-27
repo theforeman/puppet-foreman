@@ -34,7 +34,14 @@ class foreman::repo(
       Foreman::Repos['foreman'] -> Package['centos-release-scl-rh']
     }
 
-    if $facts['os']['release']['major'] == '8' and ($repo == 'nightly' or versioncmp($repo, '2.5') >= 0) {
+    if $facts['os']['release']['major'] == '8' and ($repo == 'nightly' or versioncmp($repo, '3.2') >= 0) {
+      package { 'foreman':
+        ensure      => "el${facts['os']['release']['major']}",
+        enable_only => true,
+        provider    => 'dnfmodule',
+        require     => Foreman::Repos['foreman'],
+      }
+    } elsif $facts['os']['release']['major'] == '8' and versioncmp($repo, '2.5') >= 0 {
       package { 'ruby':
         ensure      => '2.7',
         enable_only => true,
