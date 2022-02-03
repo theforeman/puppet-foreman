@@ -1,5 +1,16 @@
 # Changelog
 
+## [19.2.0](https://github.com/theforeman/puppet-foreman/tree/19.2.0) (2022-02-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.1.1...19.2.0)
+
+**Implemented enhancements:**
+
+- puppet/extlib: Allow 6.x [\#1027](https://github.com/theforeman/puppet-foreman/pull/1027) ([bastelfreak](https://github.com/bastelfreak))
+- Reflect Foreman 3.2+ support for Debian 11 [\#1025](https://github.com/theforeman/puppet-foreman/pull/1025) ([ekohl](https://github.com/ekohl))
+- Explicitly enable the foreman dnf module on Foreman 3.2+ [\#1023](https://github.com/theforeman/puppet-foreman/pull/1023) ([evgeni](https://github.com/evgeni))
+- Introduce foreman::settings\_fragment [\#1016](https://github.com/theforeman/puppet-foreman/pull/1016) ([ekohl](https://github.com/ekohl))
+
 ## [19.1.1](https://github.com/theforeman/puppet-foreman/tree/19.1.1) (2022-01-26)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.1.0...19.1.1)
