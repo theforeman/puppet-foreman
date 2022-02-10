@@ -138,6 +138,10 @@ describe 'foreman' do
             .with_concurrency(1)
             .with_queues(['dynflow_orchestrator'])
         }
+        it {
+          is_expected.to contain_service('postgresqld')
+            .that_notifies('Service[dynflow-sidekiq@orchestrator]')
+        }
         it { should contain_foreman__dynflow__worker('worker').with_ensure('absent') }
         it do
           should contain_foreman__dynflow__worker('worker-1')
