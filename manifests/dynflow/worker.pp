@@ -51,6 +51,8 @@ define foreman::dynflow::worker (
       enable    => true,
       subscribe => Class['foreman::database'],
     }
+
+    Service <| tag == 'postgresql::server::service' |> ~> Service[$service]
   } else {
     service { $service:
       ensure => stopped,
