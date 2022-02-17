@@ -1,5 +1,13 @@
 # Changelog
 
+## [19.2.1](https://github.com/theforeman/puppet-foreman/tree/19.2.1) (2022-02-21)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.2.0...19.2.1)
+
+**Fixed bugs:**
+
+- Refs [\#34394](https://projects.theforeman.org/issues/34394) - trigger dynflow restart when DB restarts [\#1028](https://github.com/theforeman/puppet-foreman/pull/1028) ([evgeni](https://github.com/evgeni))
+
 ## [19.2.0](https://github.com/theforeman/puppet-foreman/tree/19.2.0) (2022-02-04)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.1.1...19.2.0)
