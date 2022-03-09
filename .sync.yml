@@ -7,3 +7,5 @@ Gemfile:
 spec/spec_helper.rb:
   requires:
     - webmock/rspec
+spec/spec_helper_acceptance.rb:
+  locale_workaround: true
