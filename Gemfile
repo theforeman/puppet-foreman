@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'puppet', ENV.key?('PUPPET_VERSION') ? "~> #{ENV['PUPPET_VERSION']}" : '>= 5.5', groups: ['development', 'test']
+gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '>= 5.5', groups: ['development', 'test']
 gem 'rake'
 
 gem 'kafo_module_lint', {"groups"=>["test"]}
@@ -15,7 +15,7 @@ gem 'puppet-lint-strict_indent-check', {"groups"=>["test"]}
 gem 'puppet-lint-undef_in_function-check', {"groups"=>["test"]}
 gem 'voxpupuli-test', '~> 1.4', {"groups"=>["test"]}
 gem 'github_changelog_generator', '>= 1.15.0', {"groups"=>["development"]}
-gem 'puppet_metadata', '~> 0.3'
+gem 'puppet_metadata', '~> 1.3'
 gem 'puppet-blacksmith', '>= 6.0.0', {"groups"=>["development"]}
 gem 'voxpupuli-acceptance', '~> 1.0', {"groups"=>["system_tests"]}
 gem 'puppetlabs_spec_helper', {"groups"=>["system_tests"]}
