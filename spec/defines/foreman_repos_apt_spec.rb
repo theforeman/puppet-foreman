@@ -8,7 +8,7 @@ describe 'foreman::repos::apt' do
   end
 
   let(:apt_key) do
-    'AE0AF310E2EA96B6B6F4BD726F8600B9563278F6'
+    '5B7C3E5A735BCB4D615829DC0BDDA991FD7AAC8A'
   end
 
   let(:apt_key_title) do

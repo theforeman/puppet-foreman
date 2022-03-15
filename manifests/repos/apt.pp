@@ -2,7 +2,7 @@
 # @api private
 define foreman::repos::apt (
   Variant[Enum['nightly'], Pattern['^\d+\.\d+$']] $repo,
-  String $key = 'AE0AF310E2EA96B6B6F4BD726F8600B9563278F6',
+  String $key = '5B7C3E5A735BCB4D615829DC0BDDA991FD7AAC8A',
   Stdlib::HTTPUrl $key_location = 'https://deb.theforeman.org/foreman.asc',
   Stdlib::HTTPUrl $location = 'https://deb.theforeman.org/',
 ) {
