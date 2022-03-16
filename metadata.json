@@ -4,7 +4,7 @@
   "author": "theforeman",
   "summary": "Foreman server configuration",
   "license": "GPL-3.0+",
-  "source": "git://github.com/theforeman/puppet-foreman",
+  "source": "https://github.com/theforeman/puppet-foreman",
   "project_page": "https://github.com/theforeman/puppet-foreman",
   "issues_url": "https://github.com/theforeman/puppet-foreman/issues",
   "description": "Module for configuring Foreman",
