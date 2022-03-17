@@ -24,4 +24,11 @@ class foreman::database::postgresql {
     encoding => 'utf8',
     locale   => 'en_US.utf8',
   }
+
+  if $facts['os']['family'] == 'RedHat' and $facts['os']['release']['major'] == '7' {
+    file { '/etc/systemd/system/rh-postgresql12-postgresql.service.d':
+      ensure => link,
+      target => '/etc/systemd/system/postgresql.service.d',
+    }
+  }
 }
