@@ -1,4 +1,5 @@
 ---
+apache::default_mods: false
 foreman::initial_admin_password: changeme
 foreman::server_ssl_ca: /etc/foreman-certs/certificate.pem
 foreman::server_ssl_cert: /etc/foreman-certs/certificate.pem
