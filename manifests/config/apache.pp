@@ -150,6 +150,8 @@ class foreman::config::apache(
   if $suburi {
     $custom_fragment = undef
   } else {
+    # mod_env is required by configuration in _assets.conf.erb
+    include apache::mod::env
     $custom_fragment = file('foreman/_assets.conf.erb')
   }
 
