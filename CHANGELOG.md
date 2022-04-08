@@ -1,5 +1,23 @@
 # Changelog
 
+## [19.3.0](https://github.com/theforeman/puppet-foreman/tree/19.3.0) (2022-04-08)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.2.1...19.3.0)
+
+**Implemented enhancements:**
+
+- Include apache::mod::env [\#1038](https://github.com/theforeman/puppet-foreman/pull/1038) ([wbclark](https://github.com/wbclark))
+- Refs [\#34505](https://projects.theforeman.org/issues/34505) - Add hammer plugin for foreman\_host\_reports [\#1030](https://github.com/theforeman/puppet-foreman/pull/1030) ([ofedoren](https://github.com/ofedoren))
+
+**Fixed bugs:**
+
+- metadata.json: Use https URL to git repo [\#1036](https://github.com/theforeman/puppet-foreman/pull/1036) ([bastelfreak](https://github.com/bastelfreak))
+- Use the new GPG key for Debian packages [\#1034](https://github.com/theforeman/puppet-foreman/pull/1034) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- Allow puppetlabs/postgresql 8.x [\#1031](https://github.com/theforeman/puppet-foreman/pull/1031) ([ekohl](https://github.com/ekohl))
+
 ## [19.2.1](https://github.com/theforeman/puppet-foreman/tree/19.2.1) (2022-02-21)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.2.0...19.2.1)
