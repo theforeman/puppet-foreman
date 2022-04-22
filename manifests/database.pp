@@ -27,7 +27,7 @@ class foreman::database(
     foreman::rake { 'db:migrate':
       timeout => $timeout,
       unless  => '/usr/sbin/foreman-rake db:abort_if_pending_migrations',
-      notify  => Foreman::Rake['apipie:cache:index', 'apipie_dsl:cache', 'db:seed'],
+      notify  => Foreman::Rake['apipie_dsl:cache', 'db:seed'],
     }
     ~> foreman_config_entry { 'db_pending_seed':
       value => false,
@@ -35,7 +35,7 @@ class foreman::database(
     }
     ~> foreman::rake { 'db:seed':
       environment => delete_undef_values($seed_env),
-      notify      => Foreman::Rake['apipie:cache:index', 'apipie_dsl:cache'],
+      notify      => Foreman::Rake['apipie_dsl:cache'],
     }
   }
 }
