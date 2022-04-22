@@ -190,6 +190,8 @@
 #
 # $dynflow_redis_url::            If set, the redis server is not managed and we use the defined url to connect
 #
+# $selinux_ignore_defaults::      Do not lookup default security context for file resources in catalogue compilation and attempt to manage them; instead defer context lookups to the system itself when the files are actually created. Useful during initial installs, because Puppet can install packages which modify the security policy after the context lookups were performed, which breaks idempotence. This can be disabled after the initial install, to allow Puppet to remedy drift in security context.
+#
 # === Keycloak parameters:
 #
 # $keycloak::                     Enable Keycloak support. Note this is limited
@@ -291,6 +293,7 @@ class foreman (
   String[1] $keycloak_app_name = $foreman::params::keycloak_app_name,
   String[1] $keycloak_realm = $foreman::params::keycloak_realm,
   Boolean $register_in_foreman = $foreman::params::register_in_foreman,
+  Boolean $selinux_ignore_defaults = $foreman::params::selinux_ignore_defaults,
 ) inherits foreman::params {
   assert_type(Array[Stdlib::IP::Address], $trusted_proxies)
 
@@ -312,6 +315,12 @@ class foreman (
   include foreman::config
   include foreman::database
   contain foreman::service
+
+  if $facts['os']['selinux']['enabled'] {
+    File {
+      selinux_ignore_defaults => $foreman::selinux_ignore_defaults,
+    }
+  }
 
   Anchor <| title == 'foreman::repo' |> ~> Class['foreman::install']
   Class['foreman::install'] ~> Class['foreman::config', 'foreman::service']

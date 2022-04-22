@@ -24,6 +24,8 @@
 # @param vhost_priority
 #   Defines Apache vhost priority for the Foreman vhost conf file.
 #
+# @param selinux_ignore_defaults
+#   Do not lookup default security context for file resources in catalogue compilation and attempt to manage them; instead defer context lookups to the system itself when the files are actually created. Useful during initial installs, because Puppet can install packages which modify the security policy after the context lookups were performed, which breaks idempotence. This can be disabled after the initial install, to allow Puppet to remedy drift in security context.
 class foreman::globals (
   Optional[String] $plugin_prefix = undef,
   Boolean $manage_user = true,
@@ -33,5 +35,6 @@ class foreman::globals (
   Stdlib::Absolutepath $app_root = '/usr/share/foreman',
   String[1] $rails_env = 'production',
   String[1] $vhost_priority = '05',
+  Boolean $selinux_ignore_defaults = true,
 ) {
 }
