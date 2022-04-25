@@ -1,5 +1,21 @@
 # Changelog
 
+## [20.0.0](https://github.com/theforeman/puppet-foreman/tree/20.0.0) (2022-04-28)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.3.0...20.0.0)
+
+**Breaking changes:**
+
+- Fixes [\#34640](https://projects.theforeman.org/issues/34640) - Drop apipie:cache:index [\#1042](https://github.com/theforeman/puppet-foreman/pull/1042) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Add Foreman Google plugin [\#1040](https://github.com/theforeman/puppet-foreman/pull/1040) ([stejskalleos](https://github.com/stejskalleos))
+
+**Fixed bugs:**
+
+- Fixes [\#34824](https://projects.theforeman.org/issues/34824) - properly restart foreman when puma config changed [\#1045](https://github.com/theforeman/puppet-foreman/pull/1045) ([evgeni](https://github.com/evgeni))
+
 ## [19.3.0](https://github.com/theforeman/puppet-foreman/tree/19.3.0) (2022-04-08)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.2.1...19.3.0)
