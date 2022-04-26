@@ -23,7 +23,7 @@ describe 'foreman::service' do
 
     it { is_expected.to compile.with_all_deps }
     it { is_expected.to contain_service('foreman.socket').with_ensure('running').with_enable(true) }
-    it { is_expected.to contain_service('foreman').with_ensure('running').with_enable(true) }
+    it { is_expected.to contain_service('foreman').with_ensure('running').with_enable(true).that_comes_before('Service[foreman.socket]') }
   end
 
   context 'with apache' do
@@ -34,7 +34,7 @@ describe 'foreman::service' do
     it { is_expected.to compile.with_all_deps }
     it { is_expected.to contain_class('foreman::service').that_requires('Class[apache::service]') }
     it { is_expected.to contain_service('foreman.socket').with_ensure('running').with_enable(true) }
-    it { is_expected.to contain_service('foreman').with_ensure('running').with_enable(true) }
+    it { is_expected.to contain_service('foreman').with_ensure('running').with_enable(true).that_comes_before('Service[foreman.socket]') }
 
     context 'without ssl' do
       let(:params) { super().merge(ssl: false) }
