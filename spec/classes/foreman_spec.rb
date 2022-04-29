@@ -157,6 +157,9 @@ describe 'foreman' do
 
         # settings
         it { should contain_class('foreman::settings').that_requires('Class[foreman::database]') }
+
+        # restart service when new plugins are installed
+        it { should contain_file('/usr/share/foreman/tmp/restart_required_changed_plugins').that_requires('Class[foreman::install]').that_notifies('Class[foreman::service]') }
       end
 
       context 'without apache' do
