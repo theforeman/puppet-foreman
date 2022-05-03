@@ -152,4 +152,24 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
     res = search('organizations', 'name', name).first
     res.nil? ? nil : res['id']
   end
+
+  # Resolve a value to a Foreman ID. A value starting with "search=" is treated
+  # as a Foreman search query and resolved to the ID of the first match;
+  # anything else is returned unchanged.
+  def lookup_id(resource, value)
+    return value unless value.is_a?(String) && value.start_with?('search=')
+
+    query = value.sub(/\Asearch=/, '')
+    path = "api/v2/#{resource}"
+    req = request(:get, path, { search: query, per_page: 'all' })
+
+    unless success?(req)
+      raise Puppet::Error, "Error making GET request to Foreman at #{request_uri(path)}: #{error_message(req)}"
+    end
+
+    match = JSON.parse(req.body)['results'].first
+    raise Puppet::Error, "No #{resource} found matching '#{query}'" if match.nil?
+
+    match['id']
+  end
 end

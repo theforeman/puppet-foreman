@@ -182,6 +182,34 @@ describe provider_class do
     end
   end
 
+  describe '#lookup_id' do
+    it 'returns plain values unchanged without a request' do
+      expect(provider).not_to receive(:request)
+      expect(provider.lookup_id('smart_proxies', 5)).to eq(5)
+      expect(provider.lookup_id('smart_proxies', '5')).to eq('5')
+      expect(provider.lookup_id('smart_proxies', nil)).to be_nil
+    end
+
+    it 'resolves a search= value to the ID of the first match' do
+      expect(provider).to receive(:request).with(:get, 'api/v2/smart_proxies', { search: 'name=proxy.example.com', per_page: 'all' }).and_return(
+        double(:code => '200', :body => {:results => [{:id => 3}, {:id => 4}]}.to_json)
+      )
+      expect(provider.lookup_id('smart_proxies', 'search=name=proxy.example.com')).to eq(3)
+    end
+
+    it 'raises when nothing matches' do
+      expect(provider).to receive(:request).and_return(double(:code => '200', :body => {:results => []}.to_json))
+      expect { provider.lookup_id('domains', 'search=name=missing') }.to raise_error(Puppet::Error, /No domains found matching 'name=missing'/)
+    end
+
+    it 'raises when the API returns an error' do
+      expect(provider).to receive(:request).and_return(double(:code => '500', :message => 'Server Error', :body => '{}'))
+      expect(provider).to receive(:request_uri).with('api/v2/domains').and_return('https://foreman.example.com/api/v2/domains')
+      expect(provider).to receive(:error_message).and_return('boom')
+      expect { provider.lookup_id('domains', 'search=name=x') }.to raise_error(Puppet::Error, /GET request/)
+    end
+  end
+
   describe '#foreman_url' do
     it 'uses resource base_url' do
       expect(resource).to receive(:[]).twice.with(:base_url).and_return('https://foo.example.com')
