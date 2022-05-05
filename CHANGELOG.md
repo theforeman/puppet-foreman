@@ -1,5 +1,14 @@
 # Changelog
 
+## [19.2.2](https://github.com/theforeman/puppet-foreman/tree/19.2.2) (2022-05-05)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.2.1...19.2.2)
+
+**Fixed bugs:**
+
+- Fixes [\#34824](https://projects.theforeman.org/issues/34824) - properly restart foreman when puma config changed [\#1045](https://github.com/theforeman/puppet-foreman/pull/1045) ([evgeni](https://github.com/evgeni))
+- Use the new GPG key for Debian packages [\#1034](https://github.com/theforeman/puppet-foreman/pull/1034) ([ekohl](https://github.com/ekohl))
+
 ## [19.2.1](https://github.com/theforeman/puppet-foreman/tree/19.2.1) (2022-02-21)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.2.0...19.2.1)
