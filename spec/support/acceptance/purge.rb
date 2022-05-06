@@ -1,7 +1,7 @@
 def purge_foreman
   case fact('osfamily')
   when 'RedHat'
-    on default, 'yum -y remove foreman* tfm-*'
+    on default, 'rpm -qa | grep -P \'^tfm|^foreman(?!-selinux)\' | xargs yum -y remove'
   when 'Debian'
     on default, 'apt-get purge -y foreman*', { :acceptable_exit_codes => [0, 100] }
     on default, 'apt-get purge -y ruby-hammer-cli-*', { :acceptable_exit_codes => [0, 100] }

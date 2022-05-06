@@ -3,10 +3,17 @@ class { 'foreman::repo':
 }
 
 # Needed for idempotency when SELinux is enabled
-if $foreman::repo::configure_scl_repo {
-  package { 'rh-redis5-redis':
-    ensure  => installed,
+if $facts['os']['selinux']['enabled'] {
+  package { 'foreman-selinux':
+    ensure  => latest,
     require => Class['foreman::repo'],
+  }
+
+  if $foreman::repo::configure_scl_repo {
+    package { 'rh-redis5-redis':
+      ensure  => installed,
+      require => Class['foreman::repo'],
+    }
   }
 }
 
