@@ -40,9 +40,23 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
     end
   end
 
+  def foreman_url
+    @foreman_url ||= begin
+      if resource[:base_url]
+        resource[:base_url]
+      else
+        begin
+          YAML.load_file('/etc/foreman-proxy/settings.yml')[:foreman_url]
+        rescue
+          fail "Resource #{resource[:name]} cannot be managed: No base_url available"
+        end
+      end
+    end
+  end
+
   def oauth_consumer
     @consumer ||= OAuth::Consumer.new(oauth_consumer_key, oauth_consumer_secret, {
-      :site               => resource[:base_url],
+      :site               => foreman_url,
       :request_token_path => '',
       :authorize_path     => '',
       :access_token_path  => '',
@@ -56,7 +70,7 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
   end
 
   def request_uri(path)
-    base_url = resource[:base_url]
+    base_url = foreman_url
     base_url += '/' unless base_url.end_with?('/')
     URI.join(base_url, path)
   end
@@ -99,7 +113,7 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
   end
 
   def error_message(response)
-    fqdn = URI::parse(resource[:base_url]).host
+    fqdn = URI::parse(foreman_url).host
 
     explanations = {
       '400' => "Something is wrong with the data sent to Foreman at #{fqdn}",
