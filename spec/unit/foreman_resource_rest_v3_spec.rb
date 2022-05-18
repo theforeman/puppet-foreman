@@ -24,7 +24,7 @@ describe provider_class do
     it 'returns an OAuth::Consumer' do
       expect(provider).to receive(:oauth_consumer_key).and_return('oauth_key')
       expect(provider).to receive(:oauth_consumer_secret).and_return('oauth_secret')
-      expect(resource).to receive(:[]).with(:base_url).and_return('https://foreman.example.com')
+      expect(provider).to receive(:foreman_url).and_return('https://foreman.example.com')
       expect(resource).to receive(:[]).with(:ssl_ca).and_return('/etc/foreman/ssl/ca.pem')
       expect(resource).to receive(:[]).with(:timeout).and_return(500)
       consumer = provider.oauth_consumer
@@ -63,9 +63,9 @@ describe provider_class do
 
   describe '#request' do
     before do
-      expect(resource).to receive(:[]).with(:base_url).and_return(base_url)
-      expect(resource).to receive(:[]).with(:effective_user).and_return(effective_user)
+      expect(provider).to receive(:foreman_url).and_return(base_url)
       expect(provider).to receive(:oauth_consumer).at_least(1).and_return(consumer)
+      expect(resource).to receive(:[]).with(:effective_user).and_return(effective_user)
     end
 
     let(:base_url) { 'https://foreman.example.com' }
@@ -141,7 +141,7 @@ describe provider_class do
   end
 
   describe '#error_message(response)' do
-    before { expect(resource).to receive(:[]).with(:base_url).and_return(base_url) }
+    before { expect(provider).to receive(:foreman_url).and_return(base_url) }
 
     let(:base_url) { 'https://foreman.example.com' }
 
@@ -179,6 +179,19 @@ describe provider_class do
 
     it 'returns message for 504 response' do
       expect(provider.error_message(double(:body => '{}', :code => '504', :message => 'Gateway Timeout'))).to eq('Response: 504 Gateway Timeout: The webserver timed out waiting for a response from the backend service. Is Foreman at foreman.example.com under unusually heavy load?')
+    end
+  end
+
+  describe '#foreman_url' do
+    it 'uses resource base_url' do
+      expect(resource).to receive(:[]).twice.with(:base_url).and_return('https://foo.example.com')
+      expect(provider.foreman_url).to eq('https://foo.example.com')
+    end
+
+    it 'uses foreman-proxy/settings.yml if resource has no base_url' do
+      expect(resource).to receive(:[]).with(:base_url).and_return(nil)
+      expect(YAML).to receive(:load_file).with('/etc/foreman-proxy/settings.yml').and_return(:foreman_url => 'https://bar.example.com')
+      expect(provider.foreman_url).to eq('https://bar.example.com')
     end
   end
 end
