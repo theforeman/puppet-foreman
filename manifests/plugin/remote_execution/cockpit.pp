@@ -1,5 +1,15 @@
+# = Foreman Remote Execution Cockpit plugin
+#
 # Installs remote execution cockpit plugin
-class foreman::plugin::remote_execution::cockpit {
+#
+# === Parameters:
+#
+# $origins::             Specify additional Cockpit Origins to configure cockpit.conf.
+#                        The $foreman_url is included by default.
+#
+class foreman::plugin::remote_execution::cockpit (
+  Optional[Array[Stdlib::HTTPUrl]] $origins = [],
+) {
   require foreman::plugin::remote_execution
 
   $config_directory = '/etc/foreman/cockpit'
@@ -13,6 +23,7 @@ class foreman::plugin::remote_execution::cockpit {
     'ssl_certificate' => $foreman::client_ssl_cert,
     'ssl_private_key' => $foreman::client_ssl_key,
   }
+  $cockpit_origins = [$foreman_url] + $origins
 
   foreman::plugin { 'remote_execution-cockpit': }
   -> service { 'foreman-cockpit':
