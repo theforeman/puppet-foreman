@@ -16,7 +16,7 @@ Puppet::Type.type(:foreman_hostgroup).provide(
   end
 
   def create
-    Puppet.debug("Creating Foreman Hostgroup #{resource[:name]} with parent #{resource[:parent_hostgroup]}")
+    debug("Creating Foreman Hostgroup #{resource[:name]} with parent #{resource[:parent_hostgroup]}")
 
     if resource[:parent_hostgroup] && parent_hostgroup_id.nil?
       raise Puppet::Error,
@@ -44,7 +44,7 @@ Puppet::Type.type(:foreman_hostgroup).provide(
   end
 
   def destroy
-    Puppet.debug("Destroying Foreman Hostgroup #{resource[:name]} with parent #{resource[:parent_hostgroup]}")
+    debug("Destroying Foreman Hostgroup #{resource[:name]} with parent #{resource[:parent_hostgroup]}")
     path = "api/v2/hostgroups/#{id}"
     r = request(:delete, path)
 
@@ -59,7 +59,7 @@ Puppet::Type.type(:foreman_hostgroup).provide(
   def flush
     return if @property_flush.empty?
 
-    Puppet.debug "Calling API to update properties for #{resource[:name]}"
+    debug "Calling API to update properties for #{resource[:name]}"
 
     path = "api/v2/hostgroups/#{id}"
     r = request(:put, path, {}, { hostgroup: @property_flush }.to_json)
@@ -107,7 +107,7 @@ Puppet::Type.type(:foreman_hostgroup).provide(
                      else
                        search_name
                      end
-      Puppet.debug("Searching for hostgroup with name #{search_name} and title #{search_title}")
+      debug("Searching for hostgroup with name #{search_name} and title #{search_title}")
       r = request(:get, path, search: %(title="#{search_title}" and name="#{search_name}"))
 
       raise Puppet::Error, "Error making GET request to Foreman at #{request_uri(path)}: #{error_message(r)}" unless success?(r)
@@ -141,7 +141,7 @@ Puppet::Type.type(:foreman_hostgroup).provide(
       path = 'api/v2/hostgroups'
       search_title = resource[:parent_hostgroup]
       search_name = resource[:parent_hostgroup_name] || search_title.split('/').last
-      Puppet.debug("Searching for parent hostgroup with name #{search_name} and title #{search_title}")
+      debug("Searching for parent hostgroup with name #{search_name} and title #{search_title}")
       r = request(:get, path, search: %(title="#{search_title}" and name="#{search_name}"))
 
       raise Puppet::Error, "Error making GET request to Foreman at #{request_uri(path)}: #{error_message(r)}" unless success?(r)
