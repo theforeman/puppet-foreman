@@ -1,6 +1,16 @@
 # Changelog
 
-## [20.0.0](https://github.com/theforeman/puppet-foreman/tree/20.0.0) (2022-04-28)
+## [20.1.0](https://github.com/theforeman/puppet-foreman/tree/20.1.0) (2022-05-24)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/20.0.0...20.1.0)
+
+**Implemented enhancements:**
+
+- use instance debug instead of Puppet.debug [\#1052](https://github.com/theforeman/puppet-foreman/pull/1052) ([jhoblitt](https://github.com/jhoblitt))
+- Fixes [\#34943](https://projects.theforeman.org/issues/34943): Allow configuration of additional cockpit origins [\#1051](https://github.com/theforeman/puppet-foreman/pull/1051) ([ehelms](https://github.com/ehelms))
+- Fixes [\#34602](https://projects.theforeman.org/issues/34602) - restart services after plugin installation [\#1046](https://github.com/theforeman/puppet-foreman/pull/1046) ([evgeni](https://github.com/evgeni))
+
+## [20.0.0](https://github.com/theforeman/puppet-foreman/tree/20.0.0) (2022-04-29)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.3.0...20.0.0)
 
@@ -23,16 +33,13 @@
 **Implemented enhancements:**
 
 - Include apache::mod::env [\#1038](https://github.com/theforeman/puppet-foreman/pull/1038) ([wbclark](https://github.com/wbclark))
+- Allow puppetlabs/postgresql 8.x [\#1031](https://github.com/theforeman/puppet-foreman/pull/1031) ([ekohl](https://github.com/ekohl))
 - Refs [\#34505](https://projects.theforeman.org/issues/34505) - Add hammer plugin for foreman\_host\_reports [\#1030](https://github.com/theforeman/puppet-foreman/pull/1030) ([ofedoren](https://github.com/ofedoren))
 
 **Fixed bugs:**
 
 - metadata.json: Use https URL to git repo [\#1036](https://github.com/theforeman/puppet-foreman/pull/1036) ([bastelfreak](https://github.com/bastelfreak))
 - Use the new GPG key for Debian packages [\#1034](https://github.com/theforeman/puppet-foreman/pull/1034) ([ekohl](https://github.com/ekohl))
-
-**Merged pull requests:**
-
-- Allow puppetlabs/postgresql 8.x [\#1031](https://github.com/theforeman/puppet-foreman/pull/1031) ([ekohl](https://github.com/ekohl))
 
 ## [19.2.1](https://github.com/theforeman/puppet-foreman/tree/19.2.1) (2022-02-21)
 
