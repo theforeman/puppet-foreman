@@ -300,10 +300,6 @@ class foreman (
     $db_sslmode_real = $db_sslmode
   }
 
-  foreman::rake { 'apipie_dsl:cache':
-    timeout => 0,
-  }
-
   include foreman::install
   include foreman::config
   include foreman::database

@@ -41,7 +41,6 @@ define foreman::plugin(
   package { $real_package:
     ensure => $version,
   }
-  ~> Foreman::Rake['apipie_dsl:cache']
 
   if $config {
     file { $config_file:
