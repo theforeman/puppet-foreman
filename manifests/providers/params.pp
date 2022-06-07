@@ -26,20 +26,6 @@ class foreman::providers::params {
     'Archlinux': {
       $oauth_package = 'ruby-oauth'
     }
-    'Linux': {
-      case $facts['os']['name'] {
-        'Amazon': {
-          if $is_aio {
-            $oauth_package = 'puppet-agent-oauth'
-          } else {
-            $oauth_package = 'rubygem-oauth'
-          }
-        }
-        default: {
-          fail("${facts['networking']['hostname']}: This class does not support operatingsystem ${facts['os']['name']}")
-        }
-      }
-    }
     default: {
       fail("${facts['networking']['hostname']}: This class does not support osfamily ${facts['os']['family']}")
     }

@@ -3,8 +3,6 @@ require 'spec_helper_acceptance'
 describe 'Scenario: install foreman-cli + plugins without foreman' do
   before(:context) { purge_foreman }
 
-  package_prefix = fact('os.release.major') == '7' ? "tfm-" : ""
-
   context 'for standard plugins' do
 
     it_behaves_like 'an idempotent resource' do
@@ -36,7 +34,7 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
     ['discovery', 'host_reports', 'remote_execution', 'tasks', 'templates', 'webhooks', 'puppet'].each do |plugin|
       package_name = case fact('os.family')
                      when 'RedHat'
-                       "#{package_prefix}rubygem-hammer_cli_foreman_#{plugin}"
+                       "rubygem-hammer_cli_foreman_#{plugin}"
                      when 'Debian'
                        "ruby-hammer-cli-foreman-#{plugin.tr('_', '-')}"
                      else
@@ -59,15 +57,13 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
             gpgcheck => 0,
           }
 
-          if $facts['os']['release']['major'] == '8' {
-            package { 'katello':
-              ensure      => "el${facts['os']['release']['major']}",
-              enable_only => true,
-              provider    => 'dnfmodule',
-              require     => Yumrepo['katello'],
-            }
-            Package['katello'] -> Class['foreman::cli::katello']
+          package { 'katello':
+            ensure      => "el${facts['os']['release']['major']}",
+            enable_only => true,
+            provider    => 'dnfmodule',
+            require     => Yumrepo['katello'],
           }
+          Package['katello'] -> Class['foreman::cli::katello']
 
           class { 'foreman::cli':
             foreman_url => 'https://foreman.example.com',
@@ -84,7 +80,7 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
 
       it_behaves_like 'hammer'
 
-      package_name = "#{package_prefix}rubygem-hammer_cli_katello"
+      package_name = "rubygem-hammer_cli_katello"
       describe package(package_name) do
         it { is_expected.to be_installed }
       end

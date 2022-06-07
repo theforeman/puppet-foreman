@@ -10,13 +10,6 @@ class foreman::install {
     }
   }
 
-  # Foreman 2.5 dropped support for Passenger. On EL7 there was a native package built for SCL that should be absent.
-  if $foreman::passenger_ruby_package {
-    package { $foreman::passenger_ruby_package:
-      ensure => absent,
-    }
-  }
-
   package { 'foreman-service':
     ensure => $foreman::version,
   }

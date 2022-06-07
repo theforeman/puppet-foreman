@@ -5,7 +5,7 @@ describe 'foreman::rake' do
 
   context 'on RedHat' do
     let :facts do
-      on_supported_os['redhat-7-x86_64']
+      on_supported_os['redhat-8-x86_64']
     end
 
     # These parameters are inherited normally, but here we cheat for performance
