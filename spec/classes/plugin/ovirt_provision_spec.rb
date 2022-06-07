@@ -11,7 +11,7 @@ describe 'foreman::plugin::ovirt_provision' do
       let(:package_name) do
         case facts[:osfamily]
         when 'RedHat'
-          facts[:os]['release']['major'] == '7' ? 'tfm-rubygem-ovirt_provision_plugin' : 'rubygem-ovirt_provision_plugin'
+          'rubygem-ovirt_provision_plugin'
         when 'Debian'
           'ruby-ovirt_provision_plugin'
         end

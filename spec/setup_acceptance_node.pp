@@ -2,14 +2,6 @@ class { 'foreman::repo':
   repo => 'nightly',
 }
 
-# Needed for idempotency when SELinux is enabled
-if $foreman::repo::configure_scl_repo {
-  package { 'rh-redis5-redis':
-    ensure  => installed,
-    require => Class['foreman::repo'],
-  }
-}
-
 # Not /etc/foreman because purging removes that
 $directory = '/etc/foreman-certs'
 $certificate = "${directory}/certificate.pem"

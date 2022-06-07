@@ -75,7 +75,7 @@ previous stable release.
 ### Foreman version compatibility notes
 
 This module targets Foreman 3.1+.
-The module can be used with Foreman 2.4+ by setting `register_in_foreman => false`.
+The module can not be used to manage Foreman installations on EL7.
 
 ## Types and providers
 

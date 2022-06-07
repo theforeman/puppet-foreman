@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'foreman::service' do
   let :facts do
-    on_supported_os['redhat-7-x86_64']
+    on_supported_os['redhat-8-x86_64']
   end
 
   let :params do

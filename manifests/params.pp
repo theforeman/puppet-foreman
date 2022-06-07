@@ -21,37 +21,12 @@ class foreman::params inherits foreman::globals {
   # OS specific paths
   case $facts['os']['family'] {
     'RedHat': {
-      # We use system packages except on EL7
-      if versioncmp($facts['os']['release']['major'], '8') >= 0 {
-        $passenger_ruby_package = undef
-        $_plugin_prefix = 'rubygem-foreman_'
-        $configure_scl_repo = false
-      } else {
-        $passenger_ruby_package = 'tfm-rubygem-passenger-native'
-        $_plugin_prefix = 'tfm-rubygem-foreman_'
-        $configure_scl_repo = true
-      }
-
+      $_plugin_prefix = 'rubygem-foreman_'
       $user_shell = '/sbin/nologin'
     }
     'Debian': {
-      $passenger_ruby_package = undef
       $_plugin_prefix = 'ruby-foreman-'
-      $configure_scl_repo = false
       $user_shell = '/usr/sbin/nologin'
-    }
-    'Linux': {
-      case $facts['os']['name'] {
-        'Amazon': {
-          $passenger_ruby_package = 'tfm-rubygem-passenger-native'
-          $_plugin_prefix = 'tfm-rubygem-foreman_'
-          $configure_scl_repo = true
-          $user_shell = '/sbin/nologin'
-        }
-        default: {
-          fail("${facts['networking']['hostname']}: This module does not support operatingsystem ${facts['os']['name']}")
-        }
-      }
     }
     default: {
       fail("${facts['networking']['hostname']}: This module does not support osfamily ${facts['os']['family']}")

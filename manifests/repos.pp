@@ -6,16 +6,10 @@ define foreman::repos (
   Boolean $gpgcheck = true,
 ) {
   case $facts['os']['family'] {
-    'RedHat', 'Linux': {
-      $yumcode = $facts['os']['name'] ? {
-        'Amazon' => 'el7',
-        'Fedora' => "f${facts['os']['release']['major']}",
-        default  => "el${facts['os']['release']['major']}",
-      }
-
+    'RedHat': {
       foreman::repos::yum { $name:
         repo     => $repo,
-        yumcode  => $yumcode,
+        yumcode  => "el${facts['os']['release']['major']}",
         gpgcheck => $gpgcheck,
         baseurl  => $yum_repo_baseurl,
       }
