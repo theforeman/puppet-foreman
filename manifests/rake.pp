@@ -13,10 +13,10 @@
 #   exec is refreshonly.
 define foreman::rake (
   Hash[String, String] $environment = {},
-  $timeout  = undef,
-  $user     = $foreman::user,
-  $app_root = $foreman::app_root,
-  $unless   = undef,
+  Optional[Integer[0]] $timeout  = undef,
+  String[1] $user = $foreman::user,
+  Stdlib::Absolutepath $app_root = $foreman::app_root,
+  Variant[Undef, String[1], Array[String[1]]] $unless = undef,
 ) {
   # https://github.com/rodjek/puppet-lint/issues/327
   # lint:ignore:arrow_alignment
