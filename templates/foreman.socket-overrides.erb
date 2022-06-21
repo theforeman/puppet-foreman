@@ -1,5 +1,6 @@
 [Socket]
 ListenStream=
 ListenStream=<%= @listen_socket %>
+NoDelay=false
 SocketUser=<%= scope['apache::user'] %>
 SocketMode=0600
