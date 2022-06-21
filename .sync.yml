@@ -7,9 +7,5 @@ Gemfile:
 spec/spec_helper.rb:
   requires:
     - webmock/rspec
-  custom_facts:
-    - name: service_provider
-      value: systemd
-      source: puppetlabs-stdlib
 spec/spec_helper_acceptance.rb:
   locale_workaround: true
