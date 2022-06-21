@@ -13,8 +13,8 @@ define foreman::config::apache::fragment(
 
   $_priority = $foreman::config::apache::priority
 
-  $http_path = "${::apache::confd_dir}/${_priority}-foreman.d/${name}.conf"
-  $https_path = "${::apache::confd_dir}/${_priority}-foreman-ssl.d/${name}.conf"
+  $http_path = "${apache::confd_dir}/${_priority}-foreman.d/${name}.conf"
+  $https_path = "${apache::confd_dir}/${_priority}-foreman-ssl.d/${name}.conf"
 
   if $content {
     file { $http_path:
