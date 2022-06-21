@@ -86,7 +86,7 @@
 # @param request_headers_to_unset A list of HTTP headers coming from
 #   the client that will be unset and hence not passed to the
 #   application.
-class foreman::config::apache(
+class foreman::config::apache (
   Stdlib::Absolutepath $app_root = '/usr/share/foreman',
   String $priority = '05',
   Stdlib::Fqdn $servername = $facts['networking']['fqdn'],
@@ -95,7 +95,7 @@ class foreman::config::apache(
   Stdlib::Port $server_ssl_port = 443,
   Pattern['^(https?|unix)://'] $proxy_backend = 'unix:///run/foreman.sock',
   Boolean $proxy_add_headers = true,
-  Hash $proxy_params = {'retry' => '0'},
+  Hash $proxy_params = { 'retry' => '0' },
   Array[String] $proxy_no_proxy_uris = ['/pulp', '/pulp2', '/streamer', '/pub', '/icons'],
   Boolean $ssl = false,
   Optional[Stdlib::Absolutepath] $ssl_ca = undef,

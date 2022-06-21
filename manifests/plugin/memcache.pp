@@ -18,7 +18,7 @@ class foreman::plugin::memcache (
   String $namespace = 'foreman',
   Boolean $compress = true,
 ) {
-  foreman::plugin {'memcache':
+  foreman::plugin { 'memcache':
     config => template('foreman/foreman_memcache.yaml.erb'),
   }
 }

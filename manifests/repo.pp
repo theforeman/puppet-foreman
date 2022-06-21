@@ -15,7 +15,7 @@
 #
 # @param yum_repo_baseurl
 #   The base URL for Yum repositories
-class foreman::repo(
+class foreman::repo (
   Optional[Variant[Enum['nightly'], Pattern['^\d+\.\d+$']]] $repo = undef,
   Boolean $gpgcheck = true,
   Boolean $configure_scl_repo = $facts['os']['name'] == 'CentOS' and $facts['os']['release']['major'] == '7',
@@ -51,7 +51,7 @@ class foreman::repo(
   }
 
   if $configure_scl_repo {
-    package {'centos-release-scl-rh':
+    package { 'centos-release-scl-rh':
       ensure => $scl_repo_ensure,
       before => Anchor['foreman::repo'],
     }

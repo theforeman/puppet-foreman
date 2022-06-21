@@ -11,7 +11,7 @@
 # @param unless
 #   Don't execute the rake task if this command passes. If not passed in, the
 #   exec is refreshonly.
-define foreman::rake(
+define foreman::rake (
   Hash[String, String] $environment = {},
   $timeout  = undef,
   $user     = $foreman::user,
@@ -23,7 +23,7 @@ define foreman::rake(
   exec { "foreman-rake-${title}":
     command     => "/usr/sbin/foreman-rake ${title}",
     user        => $user,
-    environment => sort(join_keys_to_values(merge({'HOME' => $app_root}, $environment), '=')),
+    environment => sort(join_keys_to_values(merge( { 'HOME' => $app_root }, $environment), '=')),
     logoutput   => 'on_failure',
     refreshonly => $unless =~ Undef,
     timeout     => $timeout,

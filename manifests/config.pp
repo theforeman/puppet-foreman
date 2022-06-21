@@ -29,7 +29,7 @@ class foreman::config {
     order   => '01',
   }
 
-  concat {'/etc/foreman/settings.yaml':
+  concat { '/etc/foreman/settings.yaml':
     owner => 'root',
     group => $foreman::group,
     mode  => '0640',
@@ -191,7 +191,6 @@ class foreman::config {
       foreman::config::apache::fragment { 'auth_gssapi':
         ssl_content => template('foreman/auth_gssapi.conf.erb'),
       }
-
 
       if $foreman::ipa_manage_sssd {
         $sssd = pick(fact('foreman_sssd'), {})

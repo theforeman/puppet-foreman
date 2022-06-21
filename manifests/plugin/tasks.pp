@@ -9,7 +9,7 @@
 # @param backup
 #   Enable creating a backup of cleaned up tasks in CSV format when automatic_cleanup is enabled
 #
-class foreman::plugin::tasks(
+class foreman::plugin::tasks (
   Boolean $automatic_cleanup = false,
   String $cron_line = '45 19 * * *',
   Boolean $backup = false,

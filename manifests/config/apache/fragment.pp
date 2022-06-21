@@ -5,7 +5,7 @@
 #   Content of the non-ssl virtual host fragment
 # @param ssl_content
 #   Content of the ssl virtual host fragment
-define foreman::config::apache::fragment(
+define foreman::config::apache::fragment (
   Optional[String[1]] $content = undef,
   Optional[String[1]] $ssl_content = undef,
 ) {

@@ -14,7 +14,7 @@ class foreman::params inherits foreman::globals {
   # Server name of the VirtualHost
   $servername     = $facts['networking']['fqdn']
   # Server aliases of the VirtualHost
-  $serveraliases  = [ 'foreman' ]
+  $serveraliases  = ['foreman']
   # force SSL (note: requires apache)
   $ssl            = true
 

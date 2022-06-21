@@ -11,7 +11,7 @@
 #
 # $oauth_package::            Name of oauth package
 #
-class foreman::providers(
+class foreman::providers (
   Boolean $oauth = $foreman::providers::params::oauth,
   String $oauth_package = $foreman::providers::params::oauth_package,
 ) inherits foreman::providers::params {
