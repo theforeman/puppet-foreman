@@ -5,6 +5,8 @@ require 'webmock/rspec'
 
 require 'voxpupuli/test/spec_helper'
 
+add_custom_fact :service_provider, "systemd" # puppetlabs-stdlib
+
 def get_content(subject, title)
   is_expected.to contain_file(title)
   content = subject.resource('file', title).send(:parameters)[:content]
