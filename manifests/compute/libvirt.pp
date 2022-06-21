@@ -9,6 +9,6 @@
 class foreman::compute::libvirt (String $version = 'installed') {
   package { 'foreman-libvirt':
     ensure => $version,
-    tag    => ['foreman-compute',],
+    tag    => ['foreman-compute'],
   }
 }

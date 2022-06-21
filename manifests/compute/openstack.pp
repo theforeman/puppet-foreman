@@ -9,6 +9,6 @@
 class foreman::compute::openstack (String $version = 'installed') {
   package { 'foreman-openstack':
     ensure => $version,
-    tag    => ['foreman-compute',],
+    tag    => ['foreman-compute'],
   }
 }
