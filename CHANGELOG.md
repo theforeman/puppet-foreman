@@ -1,5 +1,14 @@
 # Changelog
 
+## [20.2.0](https://github.com/theforeman/puppet-foreman/tree/20.2.0) (2022-06-21)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/20.1.0...20.2.0)
+
+**Implemented enhancements:**
+
+- add foreman\_global\_parameter type [\#1054](https://github.com/theforeman/puppet-foreman/pull/1054) ([jhoblitt](https://github.com/jhoblitt))
+- derive base\_url from foreman-proxy/settings.yml by default [\#1053](https://github.com/theforeman/puppet-foreman/pull/1053) ([jhoblitt](https://github.com/jhoblitt))
+
 ## [20.1.0](https://github.com/theforeman/puppet-foreman/tree/20.1.0) (2022-05-24)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/20.0.0...20.1.0)
