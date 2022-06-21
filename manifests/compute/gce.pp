@@ -9,6 +9,6 @@
 class foreman::compute::gce (String $version = 'installed') {
   package { 'foreman-gce':
     ensure => $version,
-    tag    => ['foreman-compute',],
+    tag    => ['foreman-compute'],
   }
 }

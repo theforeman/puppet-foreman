@@ -9,6 +9,6 @@
 class foreman::compute::vmware (String $version = 'installed') {
   package { 'foreman-vmware':
     ensure => $version,
-    tag    => ['foreman-compute',],
+    tag    => ['foreman-compute'],
   }
 }
