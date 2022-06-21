@@ -8,7 +8,7 @@
 #                        The $foreman_url is included by default.
 #
 class foreman::plugin::remote_execution::cockpit (
-  Optional[Array[Stdlib::HTTPUrl]] $origins = [],
+  Array[Stdlib::HTTPUrl] $origins = [],
 ) {
   require foreman::plugin::remote_execution
 
