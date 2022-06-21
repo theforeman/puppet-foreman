@@ -5,7 +5,7 @@
 #
 class foreman::plugin::column_view (
   Hash[String, Hash] $columns = {},
-){
+) {
   # https://projects.theforeman.org/issues/21398
   assert_type(Hash[String, Foreman::Column_view_column], $columns)
 

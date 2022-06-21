@@ -1,6 +1,6 @@
 # @summary Configure the foreman service
 # @api private
-class foreman::service(
+class foreman::service (
   Boolean $apache = $foreman::apache,
   Boolean $ssl = $foreman::ssl,
   String $foreman_service = $foreman::foreman_service,

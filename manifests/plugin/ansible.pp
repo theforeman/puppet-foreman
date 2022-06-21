@@ -2,6 +2,6 @@
 class foreman::plugin::ansible {
   include foreman::plugin::tasks
 
-  foreman::plugin {'ansible':
+  foreman::plugin { 'ansible':
   }
 }

@@ -1,6 +1,6 @@
 # @summary Set up the foreman database
 # @api private
-class foreman::database(
+class foreman::database (
   Integer[0] $timeout = 3600,
 ) {
   if $foreman::db_manage {

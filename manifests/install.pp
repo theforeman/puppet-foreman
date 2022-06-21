@@ -1,6 +1,5 @@
 # Install the needed packages for foreman
 class foreman::install {
-
   package { 'foreman-postgresql':
     ensure => $foreman::version,
   }

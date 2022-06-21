@@ -1,6 +1,6 @@
 # @summary Set up a repository for foreman
 # @api private
-define foreman::repos(
+define foreman::repos (
   Stdlib::HTTPUrl $yum_repo_baseurl,
   Variant[Enum['nightly'], Pattern['^\d+\.\d+$']] $repo,
   Boolean $gpgcheck = true,
@@ -13,7 +13,7 @@ define foreman::repos(
         default  => "el${facts['os']['release']['major']}",
       }
 
-      foreman::repos::yum {$name:
+      foreman::repos::yum { $name:
         repo     => $repo,
         yumcode  => $yumcode,
         gpgcheck => $gpgcheck,
@@ -21,7 +21,7 @@ define foreman::repos(
       }
     }
     'Debian': {
-      foreman::repos::apt {$name:
+      foreman::repos::apt { $name:
         repo => $repo,
       }
     }
