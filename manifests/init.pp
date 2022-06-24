@@ -211,13 +211,13 @@ class foreman (
   String $version = $foreman::params::version,
   Enum['installed', 'present', 'latest'] $plugin_version = $foreman::params::plugin_version,
   Boolean $db_manage = $foreman::params::db_manage,
-  Stdlib::Host $db_host = 'UNSET',
-  Variant[Undef, Enum['UNSET'], Stdlib::Port] $db_port = 'UNSET',
-  String $db_database = 'UNSET',
-  String $db_username = $foreman::params::db_username,
-  String $db_password = $foreman::params::db_password,
-  String $db_sslmode = 'UNSET',
-  Optional[String] $db_root_cert = undef,
+  Optional[Stdlib::Host] $db_host = undef,
+  Optional[Stdlib::Port] $db_port = undef,
+  String[1] $db_database = 'foreman',
+  String[1]$db_username = $foreman::params::db_username,
+  String[1] $db_password = $foreman::params::db_password,
+  Optional[String[1]] $db_sslmode = undef,
+  Optional[String[1]] $db_root_cert = undef,
   Integer[0] $db_pool = $foreman::params::db_pool,
   Boolean $db_manage_rake = $foreman::params::db_manage_rake,
   Stdlib::Port $server_port = $foreman::params::server_port,
@@ -294,7 +294,7 @@ class foreman (
 ) inherits foreman::params {
   assert_type(Array[Stdlib::IP::Address], $trusted_proxies)
 
-  if $db_sslmode == 'UNSET' and $db_root_cert {
+  if !$db_sslmode and $db_root_cert {
     $db_sslmode_real = 'verify-full'
   } else {
     $db_sslmode_real = $db_sslmode

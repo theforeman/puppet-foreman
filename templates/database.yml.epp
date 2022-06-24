@@ -1,0 +1,36 @@
+<%- |
+  Boolean $managed,
+  String[1] $rails_env,
+  Optional[Stdlib::Host] $host,
+  Optional[Stdlib::Port] $port,
+  Optional[String[1]] $sslmode,
+  String[1] $database,
+  Optional[String[1]] $username,
+  Variant[Undef, String[1], Sensitive[String[1]]] $password,
+  Integer[0] $db_pool,
+| -%>
+---
+<%= template('foreman/_header.erb') %>
+
+<% if $managed { -%>
+# Database is managed by foreman::database::postgresql
+<% } -%>
+<%= $rails_env %>:
+  adapter: postgresql
+<% if $host { -%>
+  host: <%= $host %>
+<% } -%>
+<% if $port { -%>
+  port: <%= $port %>
+<% } -%>
+<% if $sslmode { -%>
+  sslmode: <%= $sslmode %>
+<% } -%>
+  database: <%= $database %>
+<% if $username { -%>
+  username: <%= $username %>
+<% } -%>
+<% if $password { -%>
+  password: "<%= $password %>"
+<% } -%>
+  pool: <%= $db_pool %>

@@ -35,13 +35,23 @@ class foreman::config {
     mode  => '0640',
   }
 
-  $db_pool = max($foreman::db_pool, $foreman::foreman_service_puma_threads_max)
+  $db_context = {
+    'managed'   => $foreman::db_manage,
+    'rails_env' => $foreman::rails_env,
+    'host'      => $foreman::db_host,
+    'port'      => $foreman::db_port,
+    'sslmode'   => $foreman::db_sslmode_real,
+    'database'  => $foreman::db_database,
+    'username'  => $foreman::db_username,
+    'password'  => $foreman::db_password,
+    'db_pool'   => max($foreman::db_pool, $foreman::foreman_service_puma_threads_max),
+  }
 
   file { '/etc/foreman/database.yml':
     owner   => 'root',
     group   => $foreman::group,
     mode    => '0640',
-    content => template('foreman/database.yml.erb'),
+    content => epp('foreman/database.yml.epp', $db_context),
   }
 
   # CPU based calculation is based on https://github.com/puma/puma/blob/master/docs/deployment.md#mri
