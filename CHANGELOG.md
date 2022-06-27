@@ -1,5 +1,15 @@
 # Changelog
 
+## [20.3.0](https://github.com/theforeman/puppet-foreman/tree/20.3.0) (2022-06-27)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/20.2.0...20.3.0)
+
+ **Implemented enhancements:**
+
+- Add foreman plugin for git\_templates [\#1059](https://github.com/theforeman/puppet-foreman/pull/1059) ([dgoetz](https://github.com/dgoetz))
+- Add foreman plugin for vault [\#1058](https://github.com/theforeman/puppet-foreman/pull/1058) ([dgoetz](https://github.com/dgoetz))
+- Add foreman plugin for scc\_manager [\#1057](https://github.com/theforeman/puppet-foreman/pull/1057) ([dgoetz](https://github.com/dgoetz))
+
 ## [20.2.0](https://github.com/theforeman/puppet-foreman/tree/20.2.0) (2022-06-21)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/20.1.0...20.2.0)
