@@ -1,0 +1,1 @@
+postgresql::globals::service_status: systemctl status postgresql
