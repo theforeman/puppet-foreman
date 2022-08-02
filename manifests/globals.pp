@@ -32,6 +32,6 @@ class foreman::globals (
   Array[String] $user_groups = [],
   Stdlib::Absolutepath $app_root = '/usr/share/foreman',
   String[1] $rails_env = 'production',
-  String[1] $vhost_priority = '05',
+  Integer $vhost_priority = 05,
 ) {
 }

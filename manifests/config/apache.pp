@@ -88,7 +88,7 @@
 #   application.
 class foreman::config::apache (
   Stdlib::Absolutepath $app_root = '/usr/share/foreman',
-  String $priority = '05',
+  Integer $priority = 05,
   Stdlib::Fqdn $servername = $facts['networking']['fqdn'],
   Array[Stdlib::Fqdn] $serveraliases = [],
   Stdlib::Port $server_port = 80,
