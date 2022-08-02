@@ -306,7 +306,7 @@ class foreman::config::apache (
       ssl_protocol          => $ssl_protocol,
       ssl_verify_client     => $ssl_verify_client,
       ssl_options           => '+StdEnvVars +ExportCertData',
-      ssl_verify_depth      => '3',
+      ssl_verify_depth      => 3,
       access_log_format     => $access_log_format,
       additional_includes   => ["${apache::confd_dir}/${priority}-foreman-ssl.d/*.conf"],
       use_optional_includes => true,
