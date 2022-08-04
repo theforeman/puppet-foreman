@@ -1,3 +1,74 @@
+# Changelog
+
+## [20.2.0](https://github.com/theforeman/puppet-foreman/tree/20.2.0) (2022-06-21)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/20.1.0...20.2.0)
+
+**Implemented enhancements:**
+
+- add foreman\_global\_parameter type [\#1054](https://github.com/theforeman/puppet-foreman/pull/1054) ([jhoblitt](https://github.com/jhoblitt))
+- derive base\_url from foreman-proxy/settings.yml by default [\#1053](https://github.com/theforeman/puppet-foreman/pull/1053) ([jhoblitt](https://github.com/jhoblitt))
+
+## [20.1.0](https://github.com/theforeman/puppet-foreman/tree/20.1.0) (2022-05-24)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/20.0.0...20.1.0)
+
+**Implemented enhancements:**
+
+- use instance debug instead of Puppet.debug [\#1052](https://github.com/theforeman/puppet-foreman/pull/1052) ([jhoblitt](https://github.com/jhoblitt))
+- Fixes [\#34943](https://projects.theforeman.org/issues/34943): Allow configuration of additional cockpit origins [\#1051](https://github.com/theforeman/puppet-foreman/pull/1051) ([ehelms](https://github.com/ehelms))
+- Fixes [\#34602](https://projects.theforeman.org/issues/34602) - restart services after plugin installation [\#1046](https://github.com/theforeman/puppet-foreman/pull/1046) ([evgeni](https://github.com/evgeni))
+
+## [20.0.0](https://github.com/theforeman/puppet-foreman/tree/20.0.0) (2022-04-29)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.3.0...20.0.0)
+
+**Breaking changes:**
+
+- Fixes [\#34640](https://projects.theforeman.org/issues/34640) - Drop apipie:cache:index [\#1042](https://github.com/theforeman/puppet-foreman/pull/1042) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Add Foreman Google plugin [\#1040](https://github.com/theforeman/puppet-foreman/pull/1040) ([stejskalleos](https://github.com/stejskalleos))
+
+**Fixed bugs:**
+
+- Fixes [\#34824](https://projects.theforeman.org/issues/34824) - properly restart foreman when puma config changed [\#1045](https://github.com/theforeman/puppet-foreman/pull/1045) ([evgeni](https://github.com/evgeni))
+
+## [19.3.0](https://github.com/theforeman/puppet-foreman/tree/19.3.0) (2022-04-08)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.2.1...19.3.0)
+
+**Implemented enhancements:**
+
+- Include apache::mod::env [\#1038](https://github.com/theforeman/puppet-foreman/pull/1038) ([wbclark](https://github.com/wbclark))
+- Allow puppetlabs/postgresql 8.x [\#1031](https://github.com/theforeman/puppet-foreman/pull/1031) ([ekohl](https://github.com/ekohl))
+- Refs [\#34505](https://projects.theforeman.org/issues/34505) - Add hammer plugin for foreman\_host\_reports [\#1030](https://github.com/theforeman/puppet-foreman/pull/1030) ([ofedoren](https://github.com/ofedoren))
+
+**Fixed bugs:**
+
+- metadata.json: Use https URL to git repo [\#1036](https://github.com/theforeman/puppet-foreman/pull/1036) ([bastelfreak](https://github.com/bastelfreak))
+- Use the new GPG key for Debian packages [\#1034](https://github.com/theforeman/puppet-foreman/pull/1034) ([ekohl](https://github.com/ekohl))
+
+## [19.2.1](https://github.com/theforeman/puppet-foreman/tree/19.2.1) (2022-02-21)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.2.0...19.2.1)
+
+**Fixed bugs:**
+
+- Refs [\#34394](https://projects.theforeman.org/issues/34394) - trigger dynflow restart when DB restarts [\#1028](https://github.com/theforeman/puppet-foreman/pull/1028) ([evgeni](https://github.com/evgeni))
+
+## [19.2.0](https://github.com/theforeman/puppet-foreman/tree/19.2.0) (2022-02-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.1.1...19.2.0)
+
+**Implemented enhancements:**
+
+- puppet/extlib: Allow 6.x [\#1027](https://github.com/theforeman/puppet-foreman/pull/1027) ([bastelfreak](https://github.com/bastelfreak))
+- Reflect Foreman 3.2+ support for Debian 11 [\#1025](https://github.com/theforeman/puppet-foreman/pull/1025) ([ekohl](https://github.com/ekohl))
+- Explicitly enable the foreman dnf module on Foreman 3.2+ [\#1023](https://github.com/theforeman/puppet-foreman/pull/1023) ([evgeni](https://github.com/evgeni))
+- Introduce foreman::settings\_fragment [\#1016](https://github.com/theforeman/puppet-foreman/pull/1016) ([ekohl](https://github.com/ekohl))
+
 ## [19.1.1](https://github.com/theforeman/puppet-foreman/tree/19.1.1) (2022-01-26)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/19.1.0...19.1.1)
