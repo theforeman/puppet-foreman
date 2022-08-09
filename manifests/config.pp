@@ -213,6 +213,7 @@ class foreman::config {
           context => '/files/etc/sssd/sssd.conf',
           changes => [
             "set target[.=~regexp('domain/.*')]/ldap_user_extra_attrs '${sssd_ldap_user_extra_attrs}'",
+            'set target[.=\'sssd\'] \'sssd\'',
             "set target[.='sssd']/services '${sssd_services}'",
             'set target[.=\'ifp\'] \'ifp\'',
             "set target[.='ifp']/allowed_uids '${sssd_allowed_uids}'",
