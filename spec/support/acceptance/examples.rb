@@ -1,4 +1,4 @@
-shared_examples 'the foreman application' do
+shared_examples 'the basic foreman application' do
   [
     ['debian', 'ubuntu'].include?(os[:family]) ? 'apache2' : 'httpd',
     'dynflow-sidekiq@orchestrator',
@@ -22,6 +22,10 @@ shared_examples 'the foreman application' do
   describe file('/run/foreman.sock') do
     it { should be_socket }
   end
+end
+
+shared_examples 'the foreman application' do
+  include_examples 'the basic foreman application'
 
   describe command("curl -s --cacert /etc/foreman-certs/certificate.pem https://#{host_inventory['fqdn']} -w '\%{redirect_url}' -o /dev/null") do
     its(:stdout) { is_expected.to eq("https://#{host_inventory['fqdn']}/users/login") }
