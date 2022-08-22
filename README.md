@@ -77,6 +77,14 @@ previous stable release.
 This module targets Foreman 3.1+.
 The module can not be used to manage Foreman installations on EL7.
 
+This module configures Apache to serve static assets from
+`/var/lib/foreman/public` directly. This requires an appropriate
+SELinux policy, like the one introduced in [`foreman-selinux`
+version 3.5](https://projects.theforeman.org/issues/35402).
+Additionally, some plugin packages might be incomplatible with such
+a deployment. To use the old style, set
+`foreman::config::apache::proxy_no_proxy_uris` to not include `/assets`.
+
 ## Types and providers
 
 `foreman_config_entry` can be used to manage settings in Foreman's database, as
