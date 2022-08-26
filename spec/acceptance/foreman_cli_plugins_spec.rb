@@ -19,7 +19,6 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
           include foreman::cli::azure
         }
         include foreman::cli::discovery
-        include foreman::cli::host_reports
         include foreman::cli::remote_execution
         include foreman::cli::ssh
         include foreman::cli::tasks
@@ -32,7 +31,7 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
 
     it_behaves_like 'hammer'
 
-    ['discovery', 'host_reports', 'remote_execution', 'ssh', 'tasks', 'templates', 'webhooks', 'puppet'].each do |plugin|
+    ['discovery', 'remote_execution', 'ssh', 'tasks', 'templates', 'webhooks', 'puppet'].each do |plugin|
       package_name = case fact('os.family')
                      when 'RedHat'
                        "rubygem-hammer_cli_foreman_#{plugin}"
