@@ -1,5 +1,31 @@
 # Changelog
 
+## [21.0.0](https://github.com/theforeman/puppet-foreman/tree/21.0.0) (2022-08-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/20.2.0...21.0.0)
+
+**Breaking changes:**
+
+- remove support for Debian 10 buster [\#1068](https://github.com/theforeman/puppet-foreman/pull/1068) ([evgeni](https://github.com/evgeni))
+- Stop accepting UNSET as a value and rewrite db.yml to EPP [\#1066](https://github.com/theforeman/puppet-foreman/pull/1066) ([ekohl](https://github.com/ekohl))
+- Drop EL7 support [\#1061](https://github.com/theforeman/puppet-foreman/pull/1061) ([ehelms](https://github.com/ehelms))
+- Fixes [\#34977](https://projects.theforeman.org/issues/34977): Drop apipie\_dsl:cache generation [\#1056](https://github.com/theforeman/puppet-foreman/pull/1056) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Use Integer type for vhost ssl\_verify\_depth [\#1071](https://github.com/theforeman/puppet-foreman/pull/1071) ([wbclark](https://github.com/wbclark))
+- Update to voxpupuli-test 5 [\#1063](https://github.com/theforeman/puppet-foreman/pull/1063) ([ekohl](https://github.com/ekohl))
+- Add foreman plugin for netbox [\#1060](https://github.com/theforeman/puppet-foreman/pull/1060) ([dgoetz](https://github.com/dgoetz))
+- Add foreman plugin for git\_templates [\#1059](https://github.com/theforeman/puppet-foreman/pull/1059) ([dgoetz](https://github.com/dgoetz))
+- Add foreman plugin for vault [\#1058](https://github.com/theforeman/puppet-foreman/pull/1058) ([dgoetz](https://github.com/dgoetz))
+- Add foreman plugin for scc\_manager [\#1057](https://github.com/theforeman/puppet-foreman/pull/1057) ([dgoetz](https://github.com/dgoetz))
+- Replace template with to\_symbolized\_yaml function [\#1017](https://github.com/theforeman/puppet-foreman/pull/1017) ([ekohl](https://github.com/ekohl))
+- Move static parameters to init.pp [\#978](https://github.com/theforeman/puppet-foreman/pull/978) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Fixes [\#35089](https://projects.theforeman.org/issues/35089) - set NoDelay=false when deploying a UNIX socket [\#1062](https://github.com/theforeman/puppet-foreman/pull/1062) ([evgeni](https://github.com/evgeni))
+
 ## [20.2.0](https://github.com/theforeman/puppet-foreman/tree/20.2.0) (2022-06-21)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/20.1.0...20.2.0)

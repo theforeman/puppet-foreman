@@ -1,5 +1,15 @@
 # Changelog
 
+## [21.1.0](https://github.com/theforeman/puppet-foreman/tree/21.1.0) (2022-08-26)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/21.0.0...21.1.0)
+
+**Implemented enhancements:**
+
+- Add hammer plugin for ssh [\#1076](https://github.com/theforeman/puppet-foreman/pull/1076) ([dgoetz](https://github.com/dgoetz))
+- Allow puppetlabs/apache 8.x [\#1075](https://github.com/theforeman/puppet-foreman/pull/1075) ([ekohl](https://github.com/ekohl))
+- Fixes [\#35356](https://projects.theforeman.org/issues/35356) - Don't proxy /server-status [\#1074](https://github.com/theforeman/puppet-foreman/pull/1074) ([ekohl](https://github.com/ekohl))
+
 ## [21.0.0](https://github.com/theforeman/puppet-foreman/tree/21.0.0) (2022-08-04)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/20.2.0...21.0.0)
