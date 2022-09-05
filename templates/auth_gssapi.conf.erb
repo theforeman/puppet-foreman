@@ -1,5 +1,5 @@
 
-<Location /users/extlogin>
+<LocationMatch ^(/api(/v2)?)?/users/extlogin/?$>
   SSLRequireSSL
   AuthType GSSAPI
   AuthName "GSSAPI Single Sign On Login"
@@ -11,5 +11,4 @@
   ErrorDocument 401 '<html><meta http-equiv="refresh" content="0; URL=/users/login"><body>Kerberos authentication did not pass.</body></html>'
   # The following is needed as a workaround for https://bugzilla.redhat.com/show_bug.cgi?id=1020087
   ErrorDocument 500 '<html><meta http-equiv="refresh" content="0; URL=/users/login"><body>Kerberos authentication did not pass.</body></html>'
-</Location>
-
+</LocationMatch>

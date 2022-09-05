@@ -1,5 +1,5 @@
 
-<LocationMatch ^/users/(ext)?login/?$>
+<LocationMatch ^(/api(/v2)?)?/users/(ext)?login/?$>
   LookupUserAttr email REMOTE_USER_EMAIL
   LookupUserAttr firstname REMOTE_USER_FIRSTNAME
   LookupUserAttr lastname REMOTE_USER_LASTNAME
@@ -13,4 +13,3 @@
   RequestHeader set REMOTE_USER_LASTNAME %{REMOTE_USER_LASTNAME}e
   RequestHeader set REMOTE_USER_GROUPS %{REMOTE_USER_GROUPS}e
 </LocationMatch>
-
