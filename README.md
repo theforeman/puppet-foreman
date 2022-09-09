@@ -82,8 +82,8 @@ This module configures Apache to serve static assets from
 SELinux policy, like the one introduced in [`foreman-selinux`
 version 3.5](https://projects.theforeman.org/issues/35402).
 Additionally, some plugin packages might be incomplatible with such
-a deployment. To use the old style, set
-`foreman::config::apache::proxy_no_proxy_uris` to not include `/assets`.
+a deployment. To serve assets via Rails again, set
+`foreman::config::apache::proxy_assets` to `true`.
 
 ## Types and providers
 
