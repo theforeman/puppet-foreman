@@ -105,6 +105,23 @@ describe 'foreman::config::apache' do
         }
       end
 
+      describe 'with asset proxying enabled' do
+        let(:params) do
+          super().merge(
+            proxy_assets: true
+          )
+        end
+
+        it { should contain_apache__vhost('foreman')
+            .with_proxy_pass(
+              "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/server-status'],
+              "path"          => '/',
+              "url"           => 'unix:///run/foreman.sock|http://foreman/',
+              "params"        => { "retry" => '0' },
+            )
+        }
+      end
+
       describe 'with ssl' do
         let(:params) do
           {

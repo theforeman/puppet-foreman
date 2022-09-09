@@ -58,6 +58,9 @@
 # @param proxy_no_proxy_uris
 #   URIs not to proxy
 #
+# @param proxy_assets
+#   Whether assets paths (/assets, /webpack) should be proxied or not.
+#
 # @param foreman_url
 #   The URL Foreman should be reachable under. Used for loading the application
 #   on startup rather than on demand.
@@ -96,7 +99,8 @@ class foreman::config::apache (
   Pattern['^(https?|unix)://'] $proxy_backend = 'unix:///run/foreman.sock',
   Boolean $proxy_add_headers = true,
   Hash $proxy_params = { 'retry' => '0' },
-  Array[String] $proxy_no_proxy_uris = ['/pulp', '/pub', '/icons', '/server-status', '/webpack', '/assets'],
+  Array[String] $proxy_no_proxy_uris = ['/pulp', '/pub', '/icons', '/server-status'],
+  Boolean $proxy_assets = false,
   Boolean $ssl = false,
   Optional[Stdlib::Absolutepath] $ssl_ca = undef,
   Optional[Stdlib::Absolutepath] $ssl_chain = undef,
@@ -174,12 +178,18 @@ class foreman::config::apache (
     "unset ${header}"
   }
 
+  if $proxy_assets {
+    $_proxy_no_proxy_uris = $proxy_no_proxy_uris
+  } else {
+    $_proxy_no_proxy_uris = $proxy_no_proxy_uris + ['/webpack', '/assets']
+  }
+
   $vhost_http_internal_options = {
     'proxy_preserve_host' => true,
     'proxy_add_headers'   => $proxy_add_headers,
     'request_headers'     => $vhost_http_request_headers,
     'proxy_pass'          => {
-      'no_proxy_uris' => $proxy_no_proxy_uris,
+      'no_proxy_uris' => $_proxy_no_proxy_uris,
       'path'          => pick($suburi, '/'),
       'url'           => $_proxy_backend,
       'params'        => $proxy_params,
