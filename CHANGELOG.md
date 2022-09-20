@@ -1,5 +1,13 @@
 # Changelog
 
+## [21.2.0](https://github.com/theforeman/puppet-foreman/tree/21.2.0) (2022-09-20)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/21.1.0...21.2.0)
+
+**Implemented enhancements:**
+
+- puppetlabs/apt: Allow 9.x [\#1082](https://github.com/theforeman/puppet-foreman/pull/1082) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [21.1.0](https://github.com/theforeman/puppet-foreman/tree/21.1.0) (2022-08-26)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/21.0.0...21.1.0)
