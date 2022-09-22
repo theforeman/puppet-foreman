@@ -1,25 +1,15 @@
 fixtures:
   repositories:
-    apache:           'https://github.com/puppetlabs/puppetlabs-apache'
-    apt:              'https://github.com/puppetlabs/puppetlabs-apt'
-    augeas_core:
-      repo: 'https://github.com/puppetlabs/puppetlabs-augeas_core'
-      puppet_version: '>= 6.0.0'
-    concat:           'https://github.com/puppetlabs/puppetlabs-concat'
-    cron_core:
-      repo: "https://github.com/puppetlabs/puppetlabs-cron_core"
-      puppet_version: ">= 6.0.0"
-    extlib:           'https://github.com/voxpupuli/puppet-extlib'
-    postgresql:       'https://github.com/puppetlabs/puppetlabs-postgresql'
-    puppet:           'https://github.com/theforeman/puppet-puppet'
-    redis:            'https://github.com/voxpupuli/puppet-redis'
-    systemd:
-      repo: 'https://github.com/camptocamp/puppet-systemd'
-      ref: '2.12.0'
-    selinux_core:
-      repo: "https://github.com/puppetlabs/puppetlabs-selinux_core"
-      puppet_version: ">= 6.0.0"
-    stdlib:           'https://github.com/puppetlabs/puppetlabs-stdlib'
-    yumrepo_core:
-      repo: "https://github.com/puppetlabs/puppetlabs-yumrepo_core"
-      puppet_version: ">= 6.0.0"
+    apache: 'https://github.com/puppetlabs/puppetlabs-apache'
+    apt: 'https://github.com/puppetlabs/puppetlabs-apt'
+    augeas_core: 'https://github.com/puppetlabs/puppetlabs-augeas_core'
+    concat: 'https://github.com/puppetlabs/puppetlabs-concat'
+    cron_core: 'https://github.com/puppetlabs/puppetlabs-cron_core'
+    extlib: 'https://github.com/voxpupuli/puppet-extlib'
+    postgresql: 'https://github.com/puppetlabs/puppetlabs-postgresql'
+    puppet: 'https://github.com/theforeman/puppet-puppet'
+    redis: 'https://github.com/voxpupuli/puppet-redis'
+    systemd: 'https://github.com/voxpupuli/puppet-systemd'
+    selinux_core: 'https://github.com/puppetlabs/puppetlabs-selinux_core'
+    stdlib: 'https://github.com/puppetlabs/puppetlabs-stdlib'
+    yumrepo_core: 'https://github.com/puppetlabs/puppetlabs-yumrepo_core'

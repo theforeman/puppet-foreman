@@ -24,9 +24,6 @@
 # @param ssl_cert
 #   Location of the SSL certificate file.
 #
-# @param ssl_certs_dir
-#   Location of additional certificates for SSL client authentication.
-#
 # @param ssl_key
 #   Location of the SSL key file.
 #
@@ -61,6 +58,9 @@
 # @param proxy_no_proxy_uris
 #   URIs not to proxy
 #
+# @param proxy_assets
+#   Whether assets paths (/assets, /webpack) should be proxied or not.
+#
 # @param foreman_url
 #   The URL Foreman should be reachable under. Used for loading the application
 #   on startup rather than on demand.
@@ -89,7 +89,7 @@
 # @param request_headers_to_unset A list of HTTP headers coming from
 #   the client that will be unset and hence not passed to the
 #   application.
-class foreman::config::apache(
+class foreman::config::apache (
   Stdlib::Absolutepath $app_root = '/usr/share/foreman',
   String $priority = '05',
   Stdlib::Fqdn $servername = $facts['networking']['fqdn'],
@@ -98,13 +98,13 @@ class foreman::config::apache(
   Stdlib::Port $server_ssl_port = 443,
   Pattern['^(https?|unix)://'] $proxy_backend = 'unix:///run/foreman.sock',
   Boolean $proxy_add_headers = true,
-  Hash $proxy_params = {'retry' => '0'},
-  Array[String] $proxy_no_proxy_uris = ['/pulp', '/pulp2', '/streamer', '/pub', '/icons'],
+  Hash $proxy_params = { 'retry' => '0' },
+  Array[String] $proxy_no_proxy_uris = ['/pulp', '/pub', '/icons', '/server-status'],
+  Boolean $proxy_assets = false,
   Boolean $ssl = false,
   Optional[Stdlib::Absolutepath] $ssl_ca = undef,
   Optional[Stdlib::Absolutepath] $ssl_chain = undef,
   Optional[Stdlib::Absolutepath] $ssl_cert = undef,
-  Variant[Undef, Enum[''], Stdlib::Absolutepath] $ssl_certs_dir = undef,
   Optional[Stdlib::Absolutepath] $ssl_key = undef,
   Variant[Undef, Enum[''], Stdlib::Absolutepath] $ssl_crl = undef,
   Optional[String] $ssl_protocol = undef,
@@ -154,12 +154,13 @@ class foreman::config::apache(
   if $suburi {
     $custom_fragment = undef
   } else {
+    # mod_env is required by configuration in _assets.conf.erb
+    include apache::mod::env
     $custom_fragment = file('foreman/_assets.conf.erb')
   }
 
   # This sets the headers matching what $vhost_https_internal_options sets
-  concat::fragment { 'foreman_settings+03-reverse-proxy-headers.yaml':
-    target  => '/etc/foreman/settings.yaml',
+  foreman::settings_fragment { 'reverse-proxy-headers.yaml':
     content => file('foreman/settings-reverse-proxy-headers.yaml'),
     order   => '03',
   }
@@ -177,12 +178,18 @@ class foreman::config::apache(
     "unset ${header}"
   }
 
+  if $proxy_assets {
+    $_proxy_no_proxy_uris = $proxy_no_proxy_uris
+  } else {
+    $_proxy_no_proxy_uris = $proxy_no_proxy_uris + ['/webpack', '/assets']
+  }
+
   $vhost_http_internal_options = {
     'proxy_preserve_host' => true,
     'proxy_add_headers'   => $proxy_add_headers,
     'request_headers'     => $vhost_http_request_headers,
     'proxy_pass'          => {
-      'no_proxy_uris' => $proxy_no_proxy_uris,
+      'no_proxy_uris' => $_proxy_no_proxy_uris,
       'path'          => pick($suburi, '/'),
       'url'           => $_proxy_backend,
       'params'        => $proxy_params,
@@ -225,7 +232,7 @@ class foreman::config::apache(
     include apache::mod::authnz_pam
     include apache::mod::intercept_form_submit
     include apache::mod::lookup_identity
-    include apache::mod::auth_kerb
+    include apache::mod::auth_gssapi
   } elsif $keycloak {
     include apache::mod::auth_openidc
 
@@ -266,7 +273,7 @@ class foreman::config::apache(
     servername            => $servername,
     serveraliases         => $serveraliases,
     access_log_format     => $access_log_format,
-    additional_includes   => ["${::apache::confd_dir}/${priority}-foreman.d/*.conf"],
+    additional_includes   => ["${apache::confd_dir}/${priority}-foreman.d/*.conf"],
     use_optional_includes => true,
     custom_fragment       => $custom_fragment,
     *                     => $vhost_http_internal_options + $http_vhost_options,
@@ -301,7 +308,6 @@ class foreman::config::apache(
       serveraliases         => $serveraliases,
       ssl                   => true,
       ssl_cert              => $ssl_cert,
-      ssl_certs_dir         => $ssl_certs_dir,
       ssl_key               => $ssl_key,
       ssl_chain             => $ssl_chain,
       ssl_ca                => $ssl_ca,
@@ -310,9 +316,9 @@ class foreman::config::apache(
       ssl_protocol          => $ssl_protocol,
       ssl_verify_client     => $ssl_verify_client,
       ssl_options           => '+StdEnvVars +ExportCertData',
-      ssl_verify_depth      => '3',
+      ssl_verify_depth      => 3,
       access_log_format     => $access_log_format,
-      additional_includes   => ["${::apache::confd_dir}/${priority}-foreman-ssl.d/*.conf"],
+      additional_includes   => ["${apache::confd_dir}/${priority}-foreman-ssl.d/*.conf"],
       use_optional_includes => true,
       custom_fragment       => $custom_fragment,
       *                     => $vhost_https_internal_options + $https_vhost_options,

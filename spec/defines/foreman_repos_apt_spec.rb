@@ -4,11 +4,11 @@ describe 'foreman::repos::apt' do
   let(:title) { 'foreman' }
 
   let :facts do
-    on_supported_os['debian-10-x86_64']
+    on_supported_os['debian-11-x86_64']
   end
 
   let(:apt_key) do
-    'AE0AF310E2EA96B6B6F4BD726F8600B9563278F6'
+    '5B7C3E5A735BCB4D615829DC0BDDA991FD7AAC8A'
   end
 
   let(:apt_key_title) do
@@ -26,7 +26,7 @@ describe 'foreman::repos::apt' do
         .with_repos('1.18')
 
       should contain_file('/etc/apt/sources.list.d/foreman.list')
-        .with_content(%r{deb https://deb\.theforeman\.org/ buster 1\.18})
+        .with_content(%r{deb https://deb\.theforeman\.org/ bullseye 1\.18})
 
       should contain_apt__source('foreman-plugins')
         .with_location('https://deb.theforeman.org/')
@@ -48,7 +48,7 @@ describe 'foreman::repos::apt' do
         .with_repos('nightly')
 
       should contain_file('/etc/apt/sources.list.d/foreman.list')
-        .with_content(%r{deb https://deb\.theforeman\.org/ buster nightly})
+        .with_content(%r{deb https://deb\.theforeman\.org/ bullseye nightly})
 
       should contain_apt__source('foreman-plugins')
         .with_location('https://deb.theforeman.org/')

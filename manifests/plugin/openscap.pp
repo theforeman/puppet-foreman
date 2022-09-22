@@ -5,5 +5,5 @@
 # === Parameters:
 #
 class foreman::plugin::openscap {
-  foreman::plugin {'openscap': }
+  foreman::plugin { 'openscap': }
 }

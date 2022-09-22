@@ -1,7 +1,7 @@
 [WebService]
 LoginTitle = Foreman Cockpit
 UrlRoot = <%= @cockpit_path %>/
-Origins = <%= @foreman_url %>
+Origins = <%= @cockpit_origins.join(' ') %>
 
 [Bearer]
 Action = remote-login-ssh

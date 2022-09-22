@@ -11,19 +11,19 @@
 # @param unless
 #   Don't execute the rake task if this command passes. If not passed in, the
 #   exec is refreshonly.
-define foreman::rake(
+define foreman::rake (
   Hash[String, String] $environment = {},
-  $timeout  = undef,
-  $user     = $foreman::user,
-  $app_root = $foreman::app_root,
-  $unless   = undef,
+  Optional[Integer[0]] $timeout  = undef,
+  String[1] $user = $foreman::user,
+  Stdlib::Absolutepath $app_root = $foreman::app_root,
+  Variant[Undef, String[1], Array[String[1]]] $unless = undef,
 ) {
   # https://github.com/rodjek/puppet-lint/issues/327
   # lint:ignore:arrow_alignment
   exec { "foreman-rake-${title}":
     command     => "/usr/sbin/foreman-rake ${title}",
     user        => $user,
-    environment => sort(join_keys_to_values(merge({'HOME' => $app_root}, $environment), '=')),
+    environment => sort(join_keys_to_values(merge( { 'HOME' => $app_root }, $environment), '=')),
     logoutput   => 'on_failure',
     refreshonly => $unless =~ Undef,
     timeout     => $timeout,

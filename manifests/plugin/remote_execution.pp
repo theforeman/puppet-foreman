@@ -2,6 +2,6 @@
 class foreman::plugin::remote_execution {
   include foreman::plugin::tasks
 
-  foreman::plugin {'remote_execution':
+  foreman::plugin { 'remote_execution':
   }
 }

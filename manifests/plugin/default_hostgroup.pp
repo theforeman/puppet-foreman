@@ -4,14 +4,14 @@
 #
 class foreman::plugin::default_hostgroup (
   Array[Hash[String, Hash]] $hostgroups = [],
-){
+) {
   if empty($hostgroups) {
     $config = undef
   } else {
     $config = template('foreman/default_hostgroup.yaml.erb')
   }
 
-  foreman::plugin {'default_hostgroup':
+  foreman::plugin { 'default_hostgroup':
     config      => $config,
     config_file => "${foreman::plugin_config_dir}/default_hostgroup.yaml",
   }

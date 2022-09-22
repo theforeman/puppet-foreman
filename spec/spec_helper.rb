@@ -5,6 +5,8 @@ require 'webmock/rspec'
 
 require 'voxpupuli/test/spec_helper'
 
+add_mocked_facts!
+
 def get_content(subject, title)
   is_expected.to contain_file(title)
   content = subject.resource('file', title).send(:parameters)[:content]

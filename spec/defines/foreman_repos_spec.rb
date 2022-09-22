@@ -31,25 +31,6 @@ describe 'foreman::repos' do
     end
   end
 
-  # TODO: on_supported_os?
-  context 'on Amazon' do
-    let :facts do
-      {
-        os: {
-          family: 'Linux',
-          name: 'Amazon',
-        },
-      }
-    end
-
-    it do
-      is_expected.to contain_foreman__repos__yum('foreman')
-        .with_repo(repo)
-        .with_yumcode('el7')
-        .with_gpgcheck(true)
-    end
-  end
-
   context 'on unsupported osfamily' do
     let :facts do
       {

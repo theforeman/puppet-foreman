@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'foreman' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let(:facts) { facts }
+      let(:facts) { override_facts(facts, processors: { count: 3 }, memory: { system: { total_bytes:  10_737_418_240}}) }
       let(:params) { {} }
       let(:apache_user) { facts[:osfamily] == 'Debian' ? 'www-data' : 'apache' }
 
@@ -62,7 +62,7 @@ describe 'foreman' do
         it {
           should contain_user('foreman').with(
             'ensure' => 'present',
-            'shell' => '/bin/false',
+            'shell' => %r{^(/usr)?/sbin/nologin$},
             'comment' => 'Foreman',
             'gid' => 'foreman',
             'groups' => ['puppet'],
@@ -92,7 +92,18 @@ describe 'foreman' do
             .with_content(/^SocketUser=#{apache_user}$/)
         end
 
-        it { should contain_systemd__dropin_file('foreman-service').with_filename('installer.conf').with_unit('foreman.service') }
+        it 'overrides foreman.service systemd service' do
+          should contain_systemd__dropin_file('foreman-service')
+            .with_ensure('present')
+            .with_filename('installer.conf')
+            .with_unit('foreman.service')
+            .with_content(%r{^User=foreman$})
+            .with_content(%r{^Environment=FOREMAN_ENV=production$})
+            .with_content(%r{^Environment=FOREMAN_HOME=/usr/share/foreman$})
+            .with_content(%r{^Environment=FOREMAN_PUMA_THREADS_MIN=5$})
+            .with_content(%r{^Environment=FOREMAN_PUMA_THREADS_MAX=5$})
+            .with_content(%r{^Environment=FOREMAN_PUMA_WORKERS=4$})
+        end
 
         it { should contain_apache__vhost('foreman').without_custom_fragment(/Alias/) }
 
@@ -114,8 +125,6 @@ describe 'foreman' do
         it { should contain_foreman__rake('db:migrate') }
         it { should contain_foreman_config_entry('db_pending_seed') }
         it { should contain_foreman__rake('db:seed') }
-        it { should contain_foreman__rake('apipie:cache:index') }
-        it { should contain_foreman__rake('apipie_dsl:cache') }
 
         # jobs
         it { should contain_class('redis') }
@@ -126,6 +135,10 @@ describe 'foreman' do
             .with_ensure('present')
             .with_concurrency(1)
             .with_queues(['dynflow_orchestrator'])
+        }
+        it {
+          is_expected.to contain_service('postgresqld')
+            .that_notifies('Service[dynflow-sidekiq@orchestrator]')
         }
         it { should contain_foreman__dynflow__worker('worker').with_ensure('absent') }
         it do
@@ -138,11 +151,14 @@ describe 'foreman' do
         # service
         it { should contain_class('foreman::service') }
         it { should contain_service('foreman') }
-        it { is_expected.to contain_service('dynflow-sidekiq@orchestrator').with_ensure('running').with_enable(true) }
-        it { is_expected.to contain_service('dynflow-sidekiq@worker-1').with_ensure('running').with_enable(true) }
+        it { is_expected.to contain_service('dynflow-sidekiq@orchestrator').with_ensure('running').with_enable(true).that_requires('Class[redis]') }
+        it { is_expected.to contain_service('dynflow-sidekiq@worker-1').with_ensure('running').with_enable(true).that_requires('Class[redis]') }
 
         # settings
         it { should contain_class('foreman::settings').that_requires('Class[foreman::database]') }
+
+        # restart service when new plugins are installed
+        it { should contain_file('/usr/share/foreman/tmp/restart_required_changed_plugins').that_requires('Class[foreman::install]').that_notifies('Class[foreman::service]') }
       end
 
       context 'without apache' do
@@ -151,7 +167,7 @@ describe 'foreman' do
         it { should compile.with_all_deps }
         it { should_not contain_class('foreman::config::apache') }
         it { should_not contain_concat__fragment('foreman_settings+03-reverse-proxy-headers.yaml') }
-        it { should contain_package('foreman-service').with_ensure('installed') }
+        it { should contain_package('foreman-service').with_ensure('present') }
         it 'removes foreman.socket systemd override' do
           should contain_systemd__dropin_file('foreman-socket')
             .with_ensure('absent')
@@ -168,34 +184,25 @@ describe 'foreman' do
           {
             foreman_url: 'http://localhost',
             unattended: true,
-            plugin_prefix: 'ruby-foreman',
             servername: 'localhost',
             serveraliases: ['foreman'],
             ssl: true,
             version: '1.12',
             plugin_version: 'installed',
             db_manage: true,
-            db_host: 'UNSET',
-            db_port: 'UNSET',
-            db_database: 'UNSET',
+            db_host: 'db.example.com',
+            db_port: 5432,
+            db_database: 'somedb',
             db_username: 'foreman',
             db_password: 'secret',
-            db_sslmode: 'UNSET',
+            db_sslmode: 'prefer',
             db_pool: 5,
             db_manage_rake: true,
-            app_root: '/usr/share/foreman',
-            manage_user: false,
-            user: 'foreman',
-            group: 'foreman',
-            user_groups: %w[adm wheel],
-            rails_env: 'production',
-            vhost_priority: '5',
             server_port: 80,
             server_ssl_port: 443,
             server_ssl_ca: '/etc/ssl/certs/ca.pem',
             server_ssl_chain: '/etc/ssl/certs/ca.pem',
             server_ssl_cert: '/etc/ssl/certs/snakeoil.pem',
-            server_ssl_certs_dir: '/etc/ssl/certs/',
             server_ssl_key: '/etc/ssl/private/snakeoil.pem',
             server_ssl_crl: '/etc/ssl/certs/ca/crl.pem',
             server_ssl_protocol: '-all +TLSv1.2',
@@ -233,6 +240,8 @@ describe 'foreman' do
             email_smtp_authentication: 'none',
             email_smtp_user_name: 'root',
             email_smtp_password: 'secret',
+            email_reply_address: 'noreply@foreman.domain',
+            email_subject_prefix: '[prefix]',
             keycloak: true,
             keycloak_app_name: 'cloak-app',
             keycloak_realm: 'myrealm',
@@ -240,6 +249,9 @@ describe 'foreman' do
         end
 
         it { is_expected.to compile.with_all_deps }
+        it { should contain_package('foreman-postgresql').with_ensure('1.12') }
+        it { should contain_package('foreman-service').with_ensure('1.12') }
+        it { should contain_package('foreman-dynflow-sidekiq').with_ensure('1.12') }
         it do
           is_expected.to contain_class('foreman::config::apache')
             .with_keycloak(true)
@@ -344,6 +356,14 @@ describe 'foreman' do
         end
       end
 
+      describe 'with trusted proxies' do
+        let(:params) { super().merge(trusted_proxies: ['10.0.0.0/8', '127.0.0.1/32', '::1']) }
+        it 'should set trusted proxies config' do
+          should contain_concat__fragment('foreman_settings+01-header.yaml').
+            with_content(/^:trusted_proxies:\n\s+- '10\.0\.0\.0\/8'\n\s+- '127\.0\.0\.1\/32'\n\s+- '::1'\n$/)
+        end
+      end
+
       context 'with email configured for SMTP' do
         let(:params) { super().merge(email_delivery_method: 'smtp') }
 
@@ -368,7 +388,9 @@ describe 'foreman' do
               email_smtp_domain: 'example.com',
               email_smtp_authentication: 'none',
               email_smtp_user_name: 'smtp-username',
-              email_smtp_password: 'smtp-password'
+              email_smtp_password: 'smtp-password',
+              email_reply_address: 'noreply@foreman.domain',
+              email_subject_prefix: '[prefix]'
             )
           end
 
@@ -379,6 +401,8 @@ describe 'foreman' do
           it { should contain_foreman_config_entry('smtp_authentication').with_value('') }
           it { should contain_foreman_config_entry('smtp_user_name').with_value('smtp-username') }
           it { should contain_foreman_config_entry('smtp_password').with_value('smtp-password') }
+          it { should contain_foreman_config_entry('email_reply_address').with_value('noreply@foreman.domain') }
+          it { should contain_foreman_config_entry('email_subject_prefix').with_value('[prefix]') }
         end
 
         context 'with email_smtp_authentication=cram-md5' do
@@ -408,6 +432,19 @@ describe 'foreman' do
           it { should_not contain_class('redis') }
           it { should_not contain_class('redis::instance') }
         end
+      end
+
+      describe 'with non-Puppet SSL certificates' do
+        let(:params) do
+          super().merge(
+            server_ssl_key: '/etc/pki/localhost.key',
+            server_ssl_cert: '/etc/pki/localhost.crt',
+            client_ssl_key: '/etc/pki/localhost.key',
+            client_ssl_cert: '/etc/pki/localhost.crt',
+          )
+        end
+
+        it { should contain_user('foreman').with('groups' => []) }
       end
     end
   end

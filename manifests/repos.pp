@@ -1,27 +1,21 @@
 # @summary Set up a repository for foreman
 # @api private
-define foreman::repos(
+define foreman::repos (
   Stdlib::HTTPUrl $yum_repo_baseurl,
   Variant[Enum['nightly'], Pattern['^\d+\.\d+$']] $repo,
   Boolean $gpgcheck = true,
 ) {
   case $facts['os']['family'] {
-    'RedHat', 'Linux': {
-      $yumcode = $facts['os']['name'] ? {
-        'Amazon' => 'el7',
-        'Fedora' => "f${facts['os']['release']['major']}",
-        default  => "el${facts['os']['release']['major']}",
-      }
-
-      foreman::repos::yum {$name:
+    'RedHat': {
+      foreman::repos::yum { $name:
         repo     => $repo,
-        yumcode  => $yumcode,
+        yumcode  => "el${facts['os']['release']['major']}",
         gpgcheck => $gpgcheck,
         baseurl  => $yum_repo_baseurl,
       }
     }
     'Debian': {
-      foreman::repos::apt {$name:
+      foreman::repos::apt { $name:
         repo => $repo,
       }
     }

@@ -22,22 +22,19 @@
 #
 # $ssl_ca_file::          Path to SSL certificate authority
 #
-# $hammer_plugin_prefix:: Hammer plugin package prefix based normally on platform
-#
 # $version::              foreman-cli package version, it's passed to ensure parameter of package resource
 #                         can be set to specific version number, 'latest', 'present' etc.
 #
 class foreman::cli (
-  Optional[Stdlib::HTTPUrl] $foreman_url = $foreman::cli::params::foreman_url,
-  String $version = $foreman::cli::params::version,
-  Boolean $manage_root_config = $foreman::cli::params::manage_root_config,
-  Optional[String] $username = $foreman::cli::params::username,
-  Optional[String] $password = $foreman::cli::params::password,
-  Boolean $use_sessions = $foreman::cli::params::use_sessions,
-  Boolean $refresh_cache = $foreman::cli::params::refresh_cache,
-  Integer[-1] $request_timeout = $foreman::cli::params::request_timeout,
-  Optional[Stdlib::Absolutepath] $ssl_ca_file = $foreman::cli::params::ssl_ca_file,
-  String $hammer_plugin_prefix = $foreman::cli::params::hammer_plugin_prefix,
+  Optional[Stdlib::HTTPUrl] $foreman_url = undef,
+  String $version = 'installed',
+  Boolean $manage_root_config = true,
+  Optional[String] $username = undef,
+  Optional[String] $password = undef,
+  Boolean $use_sessions = false,
+  Boolean $refresh_cache = false,
+  Integer[-1] $request_timeout = 120,
+  Optional[Stdlib::Absolutepath] $ssl_ca_file = undef,
 ) inherits foreman::cli::params {
   # Inherit URL & auth parameters from foreman class if possible
   if defined('$foreman::foreman_url') {
@@ -60,7 +57,16 @@ class foreman::cli (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('foreman/hammer_etc.yml.erb'),
+    content => epp(
+      'foreman/hammer_etc.yml.epp',
+      {
+        host            => $foreman_url_real,
+        use_sessions    => $use_sessions,
+        refresh_cache   => $refresh_cache,
+        request_timeout => $request_timeout,
+        ssl_ca_file     => $ssl_ca_file_real,
+      }
+    ),
   }
 
   # Separate configuration for admin username/password
@@ -83,7 +89,13 @@ class foreman::cli (
       group   => 'root',
       mode    => '0600',
       replace => false,
-      content => template('foreman/hammer_root.yml.erb'),
+      content => epp(
+        'foreman/hammer_root.yml.epp',
+        {
+          username => $username_real,
+          password => $password_real,
+        }
+      ),
     }
   }
 

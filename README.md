@@ -74,25 +74,28 @@ previous stable release.
 
 ### Foreman version compatibility notes
 
-This module targets Foreman 2.4+.
+This module targets Foreman 3.1+.
+The module can not be used to manage Foreman installations on EL7.
+
+This module configures Apache to serve static assets from
+`/var/lib/foreman/public` directly. This requires an appropriate
+SELinux policy, like the one introduced in [`foreman-selinux`
+version 3.5](https://projects.theforeman.org/issues/35402).
+Additionally, some plugin packages might be incomplatible with such
+a deployment. To serve assets via Rails again, set
+`foreman::config::apache::proxy_assets` to `true`.
 
 ## Types and providers
 
 `foreman_config_entry` can be used to manage settings in Foreman's database, as
-seen in _Administer > Settings_. Provides:
-
-* `cli` provider uses `foreman-rake` to change settings (default)
-
-`foreman_hostgroup` can create and manage host group in Foreman's database.
-Providers:
-
-* `rest_v2` provider uses API v2 with apipie-bindings and OAuth (default)
+seen in _Administer > Settings_. The `cli` provider uses `foreman-rake` to change settings.
 
 `foreman_smartproxy` can create and manage registered smart proxies in
-Foreman's database. Providers:
+Foreman's database. The `rest_v3` provider uses the API with Ruby's HTTP library, OAuth and JSON.
 
-* `rest_v3` provider uses API v2 with Ruby HTTP library, OAuth and JSON (default)
-* `rest_v2` provider uses API v2 with apipie-bindings and OAuth
+`foreman_hostgroup` can be used to create and destroy hostgroups. Nested hostgroups are supported
+and hostgroups can be assigned to locations/organizations.
+The type currently doesn't support other properties such as `environment`, `puppet classes` etc.
 
 ## Foreman ENC via hiera
 

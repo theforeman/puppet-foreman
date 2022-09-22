@@ -61,7 +61,7 @@ describe 'foreman::config::apache' do
             'unset REMOTE_USER_GROUPS'
           ])
           .with_proxy_pass(
-            "no_proxy_uris" => ['/pulp', '/pulp2', '/streamer', '/pub', '/icons'],
+            "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/server-status', '/webpack', '/assets'],
             "path"          => '/',
             "url"           => 'unix:///run/foreman.sock|http://foreman/',
             "params"        => { "retry" => '0' },
@@ -105,6 +105,23 @@ describe 'foreman::config::apache' do
         }
       end
 
+      describe 'with asset proxying enabled' do
+        let(:params) do
+          super().merge(
+            proxy_assets: true
+          )
+        end
+
+        it { should contain_apache__vhost('foreman')
+            .with_proxy_pass(
+              "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/server-status'],
+              "path"          => '/',
+              "url"           => 'unix:///run/foreman.sock|http://foreman/',
+              "params"        => { "retry" => '0' },
+            )
+        }
+      end
+
       describe 'with ssl' do
         let(:params) do
           {
@@ -114,7 +131,6 @@ describe 'foreman::config::apache' do
             ssl_crl: '/crl.pem',
             ssl_chain: '/chain.pem',
             ssl_ca: '/ca.pem',
-            ssl_certs_dir: '',
             ssl_protocol: '-all +TLSv1.2',
             ssl_verify_client: 'require',
           }
@@ -136,7 +152,7 @@ describe 'foreman::config::apache' do
             .with_port(443)
             .with_ssl(true)
             .with_ssl_cert('/cert.pem')
-            .with_ssl_certs_dir('')
+            .with_ssl_certs_dir(nil)
             .with_ssl_key('/key.pem')
             .with_ssl_chain('/chain.pem')
             .with_ssl_ca('/ca.pem')
@@ -162,7 +178,7 @@ describe 'foreman::config::apache' do
             ])
             .with_ssl_proxyengine(true)
             .with_proxy_pass(
-              "no_proxy_uris" => ['/pulp', '/pulp2', '/streamer', '/pub', '/icons'],
+              "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/server-status', '/webpack', '/assets'],
               "path"          => '/',
               "url"           => 'unix:///run/foreman.sock|http://foreman/',
               "params"        => { "retry" => '0' },
@@ -179,7 +195,6 @@ describe 'foreman::config::apache' do
         describe 'with vhost and ssl, no CRL explicitly' do
           let(:params) do
             super().merge(
-              ssl_certs_dir: '',
               ssl_crl: '',
             )
           end

@@ -12,7 +12,7 @@ describe 'foreman::plugin::tasks' do
       let(:package_name) do
         case facts[:osfamily]
         when 'RedHat'
-          facts[:os]['release']['major'] == '7' ? 'tfm-rubygem-foreman-tasks' : 'rubygem-foreman-tasks'
+          'rubygem-foreman-tasks'
         when 'Debian'
           'ruby-foreman-tasks'
         end

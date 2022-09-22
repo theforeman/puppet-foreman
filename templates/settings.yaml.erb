@@ -44,6 +44,16 @@
 <% end -%>
 
 <% end -%>
+<% unless scope.lookupvar('foreman::trusted_proxies').empty? -%>
+# List of trusted IPs / networks. Default: IPv4 and IPV6 localhost addresses.
+# If overwritten, localhost addresses (127.0.0.1/8, ::1) need to be in trusted_proxies IP list.
+# More details: https://api.rubyonrails.org/classes/ActionDispatch/RemoteIp.html
+:trusted_proxies:
+<% scope.lookupvar('foreman::trusted_proxies').each do |proxy| -%>
+ - '<%= proxy %>'
+<% end -%>
+
+<% end -%>
 # Individual logging types can be toggled on/off here
 :loggers:
 <% scope.lookupvar("foreman::loggers").each do |logger,enabled| -%>

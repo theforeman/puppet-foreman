@@ -24,7 +24,7 @@ describe provider_class do
     it 'returns an OAuth::Consumer' do
       expect(provider).to receive(:oauth_consumer_key).and_return('oauth_key')
       expect(provider).to receive(:oauth_consumer_secret).and_return('oauth_secret')
-      expect(resource).to receive(:[]).with(:base_url).and_return('https://foreman.example.com')
+      expect(provider).to receive(:foreman_url).and_return('https://foreman.example.com')
       expect(resource).to receive(:[]).with(:ssl_ca).and_return('/etc/foreman/ssl/ca.pem')
       expect(resource).to receive(:[]).with(:timeout).and_return(500)
       consumer = provider.oauth_consumer
@@ -63,9 +63,9 @@ describe provider_class do
 
   describe '#request' do
     before do
-      expect(resource).to receive(:[]).with(:base_url).and_return(base_url)
-      expect(resource).to receive(:[]).with(:effective_user).and_return(effective_user)
+      expect(provider).to receive(:foreman_url).and_return(base_url)
       expect(provider).to receive(:oauth_consumer).at_least(1).and_return(consumer)
+      expect(resource).to receive(:[]).with(:effective_user).and_return(effective_user)
     end
 
     let(:base_url) { 'https://foreman.example.com' }
@@ -141,6 +141,10 @@ describe provider_class do
   end
 
   describe '#error_message(response)' do
+    before { expect(provider).to receive(:foreman_url).and_return(base_url) }
+
+    let(:base_url) { 'https://foreman.example.com' }
+
     it 'returns array of errors from JSON' do
       expect(provider.error_message(double(:body => '{"error":{"full_messages":["error1","error2"]}}', :code => 'dummycode'))).to eq('error1 error2')
     end
@@ -150,31 +154,44 @@ describe provider_class do
     end
 
     it 'returns message for 400 response' do
-      expect(provider.error_message(double(:body => '{}', :code => '400', :message => 'Bad Request'))).to eq('Response: 400 Bad Request: Something is wrong with the data sent to Foreman server')
+      expect(provider.error_message(double(:body => '{}', :code => '400', :message => 'Bad Request'))).to eq('Response: 400 Bad Request: Something is wrong with the data sent to Foreman at foreman.example.com')
     end
 
     it 'returns message for 401 response' do
-      expect(provider.error_message(double(:body => '{}', :code => '401', :message => 'Unauthorized Request'))).to eq('Response: 401 Unauthorized Request: Often this is caused by invalid Oauth credentials')
+      expect(provider.error_message(double(:body => '{}', :code => '401', :message => 'Unauthorized Request'))).to eq('Response: 401 Unauthorized Request: Often this is caused by invalid Oauth credentials sent to Foreman at foreman.example.com')
     end
 
     it 'returns message for 404 response' do
-      expect(provider.error_message(double(:body => '{}', :code => '404', :message => 'Not Found'))).to eq('Response: 404 Not Found: The requested resource was not found')
+      expect(provider.error_message(double(:body => '{}', :code => '404', :message => 'Not Found'))).to eq('Response: 404 Not Found: The requested resource was not found in Foreman at foreman.example.com')
     end
 
     it 'returns message for 500 response' do
-      expect(provider.error_message(double(:body => '{}', :code => '500', :message => 'Internal Server Error'))).to eq('Response: 500 Internal Server Error: Check /var/log/foreman/production.log on Foreman server for detailed information')
+      expect(provider.error_message(double(:body => '{}', :code => '500', :message => 'Internal Server Error'))).to eq('Response: 500 Internal Server Error: Check /var/log/foreman/production.log on foreman.example.com for detailed information')
     end
 
     it 'returns message for 502 response' do
-      expect(provider.error_message(double(:body => '{}', :code => '502', :message => 'Bad Gateway'))).to eq('Response: 502 Bad Gateway: The webserver received an invalid response from the backend service. Was Foreman unable to handle the request?')
+      expect(provider.error_message(double(:body => '{}', :code => '502', :message => 'Bad Gateway'))).to eq('Response: 502 Bad Gateway: The webserver received an invalid response from the backend service. Was Foreman at foreman.example.com unable to handle the request?')
     end
 
     it 'returns message for 503 response' do
-      expect(provider.error_message(double(:body => '{}', :code => '503', :message => 'Service Unavailable'))).to eq('Response: 503 Service Unavailable: The webserver was unable to reach the backend service. Is foreman.service running?')
+      expect(provider.error_message(double(:body => '{}', :code => '503', :message => 'Service Unavailable'))).to eq('Response: 503 Service Unavailable: The webserver was unable to reach the backend service. Is Foreman running at foreman.example.com?')
     end
 
     it 'returns message for 504 response' do
-      expect(provider.error_message(double(:body => '{}', :code => '504', :message => 'Gateway Timeout'))).to eq('Response: 504 Gateway Timeout: The webserver timed out waiting for a response from the backend service. Is Foreman under unusually heavy load?')
+      expect(provider.error_message(double(:body => '{}', :code => '504', :message => 'Gateway Timeout'))).to eq('Response: 504 Gateway Timeout: The webserver timed out waiting for a response from the backend service. Is Foreman at foreman.example.com under unusually heavy load?')
+    end
+  end
+
+  describe '#foreman_url' do
+    it 'uses resource base_url' do
+      expect(resource).to receive(:[]).twice.with(:base_url).and_return('https://foo.example.com')
+      expect(provider.foreman_url).to eq('https://foo.example.com')
+    end
+
+    it 'uses foreman-proxy/settings.yml if resource has no base_url' do
+      expect(resource).to receive(:[]).with(:base_url).and_return(nil)
+      expect(YAML).to receive(:load_file).with('/etc/foreman-proxy/settings.yml').and_return(:foreman_url => 'https://bar.example.com')
+      expect(provider.foreman_url).to eq('https://bar.example.com')
     end
   end
 end

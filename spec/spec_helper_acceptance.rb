@@ -1,6 +1,6 @@
 require 'voxpupuli/acceptance/spec_helper_acceptance'
 
-ENV['BEAKER_setfile'] ||= 'centos7-64{hostname=centos7-64.example.com}'
+ENV['BEAKER_setfile'] ||= 'centos8-64{hostname=centos8-64.example.com}'
 
 configure_beaker(modules: :fixtures) do |host|
   if fact_on(host, 'os.family') == 'RedHat'

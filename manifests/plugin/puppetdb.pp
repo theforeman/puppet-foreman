@@ -23,7 +23,7 @@ class foreman::plugin::puppetdb (
   Enum['1', '3', '4'] $api_version = '4',
 ) inherits foreman::params {
   foreman::plugin { 'puppetdb':
-    package => $foreman::plugin_prefix.regsubst(/foreman[_-]/, 'puppetdb_foreman'),
+    package => $foreman::params::plugin_prefix.regsubst(/foreman[_-]/, 'puppetdb_foreman'),
   }
 
   $config = {

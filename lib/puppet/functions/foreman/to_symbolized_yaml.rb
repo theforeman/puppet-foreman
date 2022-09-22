@@ -6,6 +6,8 @@ require 'yaml'
 #
 # In Foreman often YAML files have symbols as keys. Since it's hard to do that
 # from Puppet, this function does it for you.
+# If the Input contains any sensitive Data, the returned YAML-String
+# will be also of Datatype Sensitive.
 #
 # @example How to output YAML
 #   # output yaml to a file
@@ -22,17 +24,32 @@ Puppet::Functions.create_function(:'foreman::to_symbolized_yaml') do
   # @param data
   # @param options
   #
-  # @return [String]
+  # @return [Variant[String, Sensitive[String]]]
   dispatch :to_symbolized_yaml do
     param 'Any', :data
     optional_param 'Hash', :options
   end
 
   def to_symbolized_yaml(data, options = {})
+    return_sensitive = false
+    if data.respond_to?(:unwrap)
+      data = data.unwrap
+      return_sensitive = true
+    end
     if data.is_a?(Hash)
-      data = Hash[data.map { |k, v| [k.to_sym, v] }]
+      data = data.map do |k, v|
+        if v.respond_to?(:unwrap)
+          v = v.unwrap
+          return_sensitive = true
+        end
+        [k.to_sym, v]
+      end.to_h
     end
 
-    data.to_yaml(options)
+    if return_sensitive
+      Puppet::Pops::Types::PSensitiveType::Sensitive.new(data.to_yaml(options))
+    else
+      data.to_yaml(options)
+    end
   end
 end

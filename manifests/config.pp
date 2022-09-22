@@ -12,6 +12,7 @@ class foreman::config {
     } else {
       include redis
       $dynflow_redis_url = "redis://localhost:${redis::port}/6"
+      Class['redis'] -> Service <| tag == 'foreman::dynflow::worker' |>
     }
 
     file { '/etc/foreman/dynflow':
@@ -23,35 +24,59 @@ class foreman::config {
   $websockets_ssl_cert = pick($foreman::websockets_ssl_cert, $foreman::server_ssl_cert)
   $websockets_ssl_key = pick($foreman::websockets_ssl_key, $foreman::server_ssl_key)
 
-  concat::fragment {'foreman_settings+01-header.yaml':
-    target  => '/etc/foreman/settings.yaml',
+  foreman::settings_fragment { 'header.yaml':
     content => template('foreman/settings.yaml.erb'),
     order   => '01',
   }
 
-  concat {'/etc/foreman/settings.yaml':
+  concat { '/etc/foreman/settings.yaml':
     owner => 'root',
     group => $foreman::group,
     mode  => '0640',
   }
 
-  $db_pool = max($foreman::db_pool, $foreman::foreman_service_puma_threads_max)
+  $db_context = {
+    'managed'   => $foreman::db_manage,
+    'rails_env' => $foreman::rails_env,
+    'host'      => $foreman::db_host,
+    'port'      => $foreman::db_port,
+    'sslmode'   => $foreman::db_sslmode_real,
+    'database'  => $foreman::db_database,
+    'username'  => $foreman::db_username,
+    'password'  => $foreman::db_password,
+    'db_pool'   => max($foreman::db_pool, $foreman::foreman_service_puma_threads_max),
+  }
 
   file { '/etc/foreman/database.yml':
     owner   => 'root',
     group   => $foreman::group,
     mode    => '0640',
-    content => template('foreman/database.yml.erb'),
+    content => epp('foreman/database.yml.epp', $db_context),
   }
 
+  # CPU based calculation is based on https://github.com/puma/puma/blob/master/docs/deployment.md#mri
+  # Memory based calculation is based on https://docs.gitlab.com/ee/install/requirements.html#puma-settings
+  $puma_workers = pick(
+    $foreman::foreman_service_puma_workers,
+    floor(
+      min(
+        $facts['processors']['count'] * 1.5,
+        ($facts['memory']['system']['total_bytes']/(1024 * 1024 * 1024)) - 1.5
+      )
+    )
+  )
+  $min_puma_threads = pick($foreman::foreman_service_puma_threads_min, $foreman::foreman_service_puma_threads_max)
   systemd::dropin_file { 'foreman-service':
-    filename => 'installer.conf',
-    unit     => "${foreman::foreman_service}.service",
-    content  => template('foreman/foreman.service-overrides.erb'),
+    filename       => 'installer.conf',
+    unit           => "${foreman::foreman_service}.service",
+    content        => template('foreman/foreman.service-overrides.erb'),
+    notify_service => true,
   }
 
-  file { $foreman::app_root:
-    ensure  => directory,
+  if ! defined(File[$foreman::app_root]) {
+    file { $foreman::app_root:
+      ensure  => directory,
+    }
   }
 
   if $foreman::db_root_cert {
@@ -74,16 +99,24 @@ class foreman::config {
   }
 
   if $foreman::manage_user {
+    if $foreman::puppet_ssldir in $foreman::server_ssl_key or $foreman::puppet_ssldir in $foreman::client_ssl_key {
+      $_user_groups = $foreman::user_groups + ['puppet']
+    } else {
+      $_user_groups = $foreman::user_groups
+    }
+
     group { $foreman::group:
       ensure => 'present',
+      system => true,
     }
     user { $foreman::user:
       ensure  => 'present',
-      shell   => '/bin/false',
+      shell   => $foreman::user_shell,
       comment => 'Foreman',
       home    => $foreman::app_root,
       gid     => $foreman::group,
-      groups  => $foreman::user_groups,
+      groups  => unique($_user_groups),
+      system  => true,
     }
   }
 
@@ -102,7 +135,6 @@ class foreman::config {
       ssl_ca             => $foreman::server_ssl_ca,
       ssl_chain          => $foreman::server_ssl_chain,
       ssl_cert           => $foreman::server_ssl_cert,
-      ssl_certs_dir      => $foreman::server_ssl_certs_dir,
       ssl_key            => $foreman::server_ssl_key,
       ssl_crl            => $foreman::server_ssl_crl,
       ssl_protocol       => $foreman::server_ssl_protocol,
@@ -120,10 +152,6 @@ class foreman::config {
     $foreman_socket_override = template('foreman/foreman.socket-overrides.erb')
 
     if $foreman::ipa_authentication {
-      unless fact('foreman_ipa.default_server') and fact('foreman_ipa.default_realm') {
-        fail("${facts['networking']['hostname']}: The system does not seem to be IPA-enrolled")
-      }
-
       if $facts['os']['selinux']['enabled'] {
         selboolean { ['allow_httpd_mod_auth_pam', 'httpd_dbus_sssd']:
           persistent => true,
@@ -147,14 +175,16 @@ class foreman::config {
         content => template('foreman/pam_service.erb'),
       }
 
+      $http_keytab = pick($foreman::http_keytab, "${apache::conf_dir}/http.keytab")
+
       exec { 'ipa-getkeytab':
         command => "/bin/echo Get keytab \
           && KRB5CCNAME=KEYRING:session:get-http-service-keytab kinit -k \
-          && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -s ${facts['foreman_ipa']['default_server']} -k ${foreman::http_keytab} -p HTTP/${facts['networking']['fqdn']} \
+          && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -k ${http_keytab} -p HTTP/${facts['networking']['fqdn']} \
           && kdestroy -c KEYRING:session:get-http-service-keytab",
-        creates => $foreman::http_keytab,
+        creates => $http_keytab,
       }
-      -> file { $foreman::http_keytab:
+      -> file { $http_keytab:
         ensure => file,
         owner  => $apache::user,
         mode   => '0600',
@@ -168,16 +198,15 @@ class foreman::config {
         ssl_content => template('foreman/lookup_identity.conf.erb'),
       }
 
-      foreman::config::apache::fragment { 'auth_kerb':
-        ssl_content => template('foreman/auth_kerb.conf.erb'),
+      foreman::config::apache::fragment { 'auth_gssapi':
+        ssl_content => template('foreman/auth_gssapi.conf.erb'),
       }
 
-
       if $foreman::ipa_manage_sssd {
-        $sssd = $facts['foreman_sssd']
+        $sssd = pick(fact('foreman_sssd'), {})
         $sssd_services = join(unique(pick($sssd['services'], []) + ['ifp']), ', ')
         $sssd_ldap_user_extra_attrs = join(unique(pick($sssd['ldap_user_extra_attrs'], []) + ['email:mail', 'lastname:sn', 'firstname:givenname']), ', ')
-        $sssd_allowed_uids = join(unique(pick($sssd['allowed_uids'], []) + ['apache', 'root']), ', ')
+        $sssd_allowed_uids = join(unique(pick($sssd['allowed_uids'], []) + [$apache::user, 'root']), ', ')
         $sssd_user_attributes = join(unique(pick($sssd['user_attributes'], []) + ['+email', '+firstname', '+lastname']), ', ')
 
         augeas { 'sssd-ifp-extra-attributes':
@@ -193,8 +222,7 @@ class foreman::config {
         }
       }
 
-      concat::fragment {'foreman_settings+02-authorize_login_delegation.yaml':
-        target  => '/etc/foreman/settings.yaml',
+      foreman::settings_fragment { 'authorize_login_delegation.yaml':
         content => template('foreman/settings-external-auth.yaml.erb'),
         order   => '02',
       }
@@ -204,9 +232,10 @@ class foreman::config {
   }
 
   systemd::dropin_file { 'foreman-socket':
-    ensure   => bool2str($foreman_socket_override =~ Undef, 'absent', 'present'),
-    filename => 'installer.conf',
-    unit     => "${foreman::foreman_service}.socket",
-    content  => $foreman_socket_override,
+    ensure         => bool2str($foreman_socket_override =~ Undef, 'absent', 'present'),
+    filename       => 'installer.conf',
+    unit           => "${foreman::foreman_service}.socket",
+    content        => $foreman_socket_override,
+    notify_service => true,
   }
 }

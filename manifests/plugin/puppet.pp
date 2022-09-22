@@ -3,6 +3,6 @@
 # This class installs puppet plugin
 #
 class foreman::plugin::puppet {
-  foreman::plugin {'puppet':
+  foreman::plugin { 'puppet':
   }
 }

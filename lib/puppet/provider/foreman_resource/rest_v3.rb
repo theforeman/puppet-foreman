@@ -40,9 +40,23 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
     end
   end
 
+  def foreman_url
+    @foreman_url ||= begin
+      if resource[:base_url]
+        resource[:base_url]
+      else
+        begin
+          YAML.load_file('/etc/foreman-proxy/settings.yml')[:foreman_url]
+        rescue
+          fail "Resource #{resource[:name]} cannot be managed: No base_url available"
+        end
+      end
+    end
+  end
+
   def oauth_consumer
     @consumer ||= OAuth::Consumer.new(oauth_consumer_key, oauth_consumer_secret, {
-      :site               => resource[:base_url],
+      :site               => foreman_url,
       :request_token_path => '',
       :authorize_path     => '',
       :access_token_path  => '',
@@ -56,7 +70,7 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
   end
 
   def request_uri(path)
-    base_url = resource[:base_url]
+    base_url = foreman_url
     base_url += '/' unless base_url.end_with?('/')
     URI.join(base_url, path)
   end
@@ -99,14 +113,16 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
   end
 
   def error_message(response)
+    fqdn = URI::parse(foreman_url).host
+
     explanations = {
-      '400' => 'Something is wrong with the data sent to Foreman server',
-      '401' => 'Often this is caused by invalid Oauth credentials',
-      '404' => 'The requested resource was not found',
-      '500' => 'Check /var/log/foreman/production.log on Foreman server for detailed information',
-      '502' => 'The webserver received an invalid response from the backend service. Was Foreman unable to handle the request?',
-      '503' => 'The webserver was unable to reach the backend service. Is foreman.service running?',
-      '504' => 'The webserver timed out waiting for a response from the backend service. Is Foreman under unusually heavy load?'
+      '400' => "Something is wrong with the data sent to Foreman at #{fqdn}",
+      '401' => "Often this is caused by invalid Oauth credentials sent to Foreman at #{fqdn}",
+      '404' => "The requested resource was not found in Foreman at #{fqdn}",
+      '500' => "Check /var/log/foreman/production.log on #{fqdn} for detailed information",
+      '502' => "The webserver received an invalid response from the backend service. Was Foreman at #{fqdn} unable to handle the request?",
+      '503' => "The webserver was unable to reach the backend service. Is Foreman running at #{fqdn}?",
+      '504' => "The webserver timed out waiting for a response from the backend service. Is Foreman at #{fqdn} under unusually heavy load?"
     }
 
     if (explanation = explanations[response.code.to_str])

@@ -5,9 +5,9 @@
 # === Parameters:
 #
 # $server_url::            The URL for your APM Server. The URL must be fully qualified, including protocol (http or https) and port.
-# 
+#
 # $secret_token::          This string is used to ensure that only your agents can send data to your APM server.
-# 
+#
 # $service_name::          The name of your service. This is used to keep all the errors and transactions of your service together.
 #
 # === Advanced Parameters:
@@ -17,7 +17,7 @@
 # $pool_size::             Size of Elastic APM thread pool to send its data to APM Server.
 #
 # $api_buffer_size::       Maximum amount of objects kept in queue, before sending to APM Server.
-# 
+#
 # $api_request_size::      Maximum amount of bytes sent over one request to APM Server.
 #
 # $api_request_time::      Maximum duration of a single streaming request to APM Server before opening a new one.
@@ -41,7 +41,23 @@ class foreman::plugin::supervisory_authority (
   Boolean                      $http_compression      = false,
   String                       $metrics_interval      = '30s',
 ) {
+  $config = {
+    foreman_supervisory_authority => {
+      server_url            => $server_url,
+      secret_token          => $secret_token,
+      service_name          => $service_name,
+      log_level             => $log_level,
+      pool_size             => $pool_size,
+      api_buffer_size       => $api_buffer_size,
+      api_request_size      => $api_request_size,
+      api_request_time      => $api_request_time,
+      transaction_max_spans => $transaction_max_spans,
+      http_compression      => $http_compression,
+      metrics_interval      => $metrics_interval,
+    },
+  }
+
   foreman::plugin { 'supervisory_authority':
-    config => template('foreman/foreman_supervisory_authority.yaml.erb'),
+    config => foreman::to_symbolized_yaml($config),
   }
 }
