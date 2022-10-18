@@ -62,7 +62,7 @@ Puppet::Functions.create_function(:'foreman::foreman') do
     raise Puppet::ParseError, "Foreman: Invalid filter_result: #{filter_result}, must not be boolean true" if filter_result == true
 
     begin
-      path = "/api/#{CGI.escape(item)}?search=#{CGI.escape(search)}&per_page=#{CGI.escape(per_page)}"
+      path = "/api/#{CGI.escape(item)}?search=#{CGI.escape(search)}&per_page=#{CGI.escape(per_page.to_s)}"
 
       req = Net::HTTP::Get.new(path)
       req['Content-Type'] = 'application/json'
