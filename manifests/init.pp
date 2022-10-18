@@ -176,6 +176,10 @@
 #                                         If not set, the value is dynamically calculated based on available number of
 #                                         CPUs and memory.
 #
+# $foreman_service_puma_worker_timeout::         Puma worker timeout in seconds.
+#                                                This is the time within which each worker must check in before considered lost
+#                                                and automatically restarted. This is not a request timeout.
+#
 # $rails_cache_store::            Set rails cache store
 #
 # $register_in_foreman::          Register host in Foreman
@@ -289,6 +293,7 @@ class foreman (
   Optional[Integer[0]] $foreman_service_puma_threads_min = undef,
   Integer[0] $foreman_service_puma_threads_max = 5,
   Optional[Integer[0]] $foreman_service_puma_workers = undef,
+  Optional[Integer[6]] $foreman_service_puma_worker_timeout = undef,
   Hash[String, Any] $rails_cache_store = { 'type' => 'file' },
   Boolean $keycloak = false,
   String[1] $keycloak_app_name = 'foreman-openidc',
