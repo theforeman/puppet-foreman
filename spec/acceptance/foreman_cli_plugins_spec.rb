@@ -25,6 +25,7 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
         include foreman::cli::templates
         include foreman::cli::webhooks
         include foreman::cli::puppet
+        include foreman::cli::google
         PUPPET
       end
     end
