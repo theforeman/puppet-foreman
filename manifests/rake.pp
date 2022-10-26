@@ -18,8 +18,6 @@ define foreman::rake (
   Stdlib::Absolutepath $app_root = $foreman::app_root,
   Variant[Undef, String[1], Array[String[1]]] $unless = undef,
 ) {
-  # https://github.com/rodjek/puppet-lint/issues/327
-  # lint:ignore:arrow_alignment
   exec { "foreman-rake-${title}":
     command     => "/usr/sbin/foreman-rake ${title}",
     user        => $user,
@@ -29,5 +27,4 @@ define foreman::rake (
     timeout     => $timeout,
     unless      => $unless,
   }
-  # lint:endignore
 }
