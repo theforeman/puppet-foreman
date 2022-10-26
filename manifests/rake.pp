@@ -21,7 +21,7 @@ define foreman::rake (
   exec { "foreman-rake-${title}":
     command     => "/usr/sbin/foreman-rake ${title}",
     user        => $user,
-    environment => sort(join_keys_to_values(merge( { 'HOME' => $app_root }, $environment), '=')),
+    environment => sort(join_keys_to_values({ 'HOME' => $app_root } + $environment, '=')),
     logoutput   => 'on_failure',
     refreshonly => $unless =~ Undef,
     timeout     => $timeout,
