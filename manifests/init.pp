@@ -123,6 +123,8 @@
 #
 # $http_keytab::                  Path to keytab to be used for Kerberos authentication on the WebUI. If left empty, it will be automatically determined.
 #
+# $gssapi_local_name::            Whether to enable GssapiLocalName when using mod_auth_gssapi
+#
 # $pam_service::                  PAM service used for host-based access control in IPA
 #
 # $ipa_manage_sssd::              If ipa_authentication is true, should the installer manage SSSD? You can disable it
@@ -248,6 +250,7 @@ class foreman (
   Optional[String] $initial_location = undef,
   Boolean $ipa_authentication = false,
   Optional[Stdlib::Absolutepath] $http_keytab = undef,
+  Boolean $gssapi_local_name = true,
   String $pam_service = 'foreman',
   Boolean $ipa_manage_sssd = true,
   Boolean $websockets_encrypt = true,

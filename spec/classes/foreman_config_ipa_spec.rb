@@ -39,7 +39,17 @@ describe 'foreman' do
 
             should contain_foreman__config__apache__fragment('auth_gssapi')
               .with_ssl_content(%r{^\s*GssapiCredStore keytab:#{keytab_path}$})
+              .with_ssl_content(/^\s*GssapiLocalName On$/)
               .with_ssl_content(/^\s*require pam-account foreman$/)
+          end
+
+          context 'with gssapi_local_name=false' do
+            let(:params) { super().merge(gssapi_local_name: false) }
+
+            it 'should contain Apache fragments' do
+              should contain_foreman__config__apache__fragment('auth_gssapi')
+                .with_ssl_content(/^\s*GssapiLocalName Off$/)
+            end
           end
 
           context 'with SELinux' do
