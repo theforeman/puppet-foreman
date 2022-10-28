@@ -190,6 +190,8 @@ class foreman::config {
         mode   => '0600',
       }
 
+      $gssapi_local_name = bool2str($foreman::gssapi_local_name, 'On', 'Off')
+
       foreman::config::apache::fragment { 'intercept_form_submit':
         ssl_content => template('foreman/intercept_form_submit.conf.erb'),
       }
