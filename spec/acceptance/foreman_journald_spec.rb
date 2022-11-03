@@ -24,6 +24,6 @@ describe 'Scenario: install foreman with journald' do
   end
 
   describe command('journalctl -u dynflow-sidekiq@orchestrator') do
-    its(:stdout) { is_expected.to match(%r{Everything ready for world: }) }
+    its(:stdout) { is_expected.to match(%r{orchestrator in passive mode}) }
   end
 end
