@@ -1,5 +1,42 @@
 # Changelog
 
+## [22.0.0](https://github.com/theforeman/puppet-foreman/tree/22.0.0) (2022-11-03)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/21.2.0...22.0.0)
+
+**Breaking changes:**
+
+- drop abrt and chef plugins [\#1094](https://github.com/theforeman/puppet-foreman/pull/1094) ([evgeni](https://github.com/evgeni))
+- drop support for host\_reports, the plugin was dropped [\#1081](https://github.com/theforeman/puppet-foreman/pull/1081) ([evgeni](https://github.com/evgeni))
+- Drop /pulp2 and /streamer from no\_proxy\_uris [\#1080](https://github.com/theforeman/puppet-foreman/pull/1080) ([evgeni](https://github.com/evgeni))
+- Fixes [\#33956](https://projects.theforeman.org/issues/33956) - serve static assets directly via Apache [\#1078](https://github.com/theforeman/puppet-foreman/pull/1078) ([evgeni](https://github.com/evgeni))
+
+**Implemented enhancements:**
+
+- Refs [\#35414](https://projects.theforeman.org/issues/35414) - Expect a different message in journal [\#1096](https://github.com/theforeman/puppet-foreman/pull/1096) ([ekohl](https://github.com/ekohl))
+- Fixes [\#35685](https://projects.theforeman.org/issues/35685) - allow setting GssapiLocalName to Off [\#1093](https://github.com/theforeman/puppet-foreman/pull/1093) ([evgeni](https://github.com/evgeni))
+- Refs [\#35675](https://projects.theforeman.org/issues/35675) - Add hammer-cli-foreman-google plugin [\#1090](https://github.com/theforeman/puppet-foreman/pull/1090) ([ofedoren](https://github.com/ofedoren))
+- Allow sensitive type for plugin configuration [\#1088](https://github.com/theforeman/puppet-foreman/pull/1088) ([kobybr](https://github.com/kobybr))
+- Fixes [\#35524](https://projects.theforeman.org/issues/35524) - Require puppetlabs-apache 8.x [\#1086](https://github.com/theforeman/puppet-foreman/pull/1086) ([ekohl](https://github.com/ekohl))
+- Refs [\#33956](https://projects.theforeman.org/issues/33956) - make it easier to toggle asset proxying [\#1085](https://github.com/theforeman/puppet-foreman/pull/1085) ([evgeni](https://github.com/evgeni))
+- Refs [\#35473](https://projects.theforeman.org/issues/35473) - Configure Apache for API extlogin [\#1083](https://github.com/theforeman/puppet-foreman/pull/1083) ([ofedoren](https://github.com/ofedoren))
+
+**Fixed bugs:**
+
+- Convert per\_page in foreman::foreman to string [\#1089](https://github.com/theforeman/puppet-foreman/pull/1089) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- Puppet-lint fixes [\#1092](https://github.com/theforeman/puppet-foreman/pull/1092) ([ekohl](https://github.com/ekohl))
+
+## [21.2.0](https://github.com/theforeman/puppet-foreman/tree/21.2.0) (2022-09-20)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/21.1.0...21.2.0)
+
+**Implemented enhancements:**
+
+- puppetlabs/apt: Allow 9.x [\#1082](https://github.com/theforeman/puppet-foreman/pull/1082) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [21.1.0](https://github.com/theforeman/puppet-foreman/tree/21.1.0) (2022-08-26)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/21.0.0...21.1.0)
