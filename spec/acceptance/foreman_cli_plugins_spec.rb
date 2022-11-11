@@ -16,6 +16,8 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
 
         if $facts['os']['family'] == 'RedHat' {
           include foreman::cli::azure
+          include foreman::cli::kubevirt
+          include foreman::cli::openscap
         }
         include foreman::cli::ansible
         include foreman::cli::discovery
@@ -46,6 +48,14 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
         it { is_expected.to be_installed }
       end
     end
+
+    if fact('os.family') == 'RedHat'
+      ['azure_rm', 'kubevirt', 'openscap'].each do |plugin|
+        describe package("rubygem-hammer_cli_foreman_#{plugin}") do
+          it { is_expected.to be_installed }
+        end
+      end
+    end
   end
 
   if fact('os.family') == 'RedHat'
@@ -73,6 +83,7 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
           }
 
           include foreman::cli::katello
+          include foreman::cli::virt_who_configure
 
           Yumrepo['katello'] -> Class['foreman::cli::katello']
           PUPPET
@@ -81,9 +92,10 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
 
       it_behaves_like 'hammer'
 
-      package_name = "rubygem-hammer_cli_katello"
-      describe package(package_name) do
-        it { is_expected.to be_installed }
+      ['katello', 'foreman_virt_who_configure'].each do |plugin|
+        describe package("rubygem-hammer_cli_#{plugin}") do
+          it { is_expected.to be_installed }
+        end
       end
     end
   end
