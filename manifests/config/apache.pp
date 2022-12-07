@@ -154,8 +154,12 @@ class foreman::config::apache (
   if $suburi {
     $custom_fragment = undef
   } else {
-    # mod_env is required by configuration in _assets.conf.erb
+    # mod_env and mod_expires are required by configuration in _assets.conf.erb
     include apache::mod::env
+    # apache::mod::expires pulls in a config file we don't want, like apache::default_mods
+    # It uses ensure_resource to be compatible with both $apache::default_mods set to true and false
+    include apache
+    ensure_resource('apache::mod', 'expires')
     $custom_fragment = file('foreman/_assets.conf.erb')
   }
 

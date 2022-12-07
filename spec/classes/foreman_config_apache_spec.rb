@@ -18,6 +18,8 @@ describe 'foreman::config::apache' do
       it { should compile.with_all_deps }
 
       it 'should include apache with modules' do
+        should contain_class('apache::mod::env')
+        should contain_apache__mod('expires')
         should contain_class('apache::mod::proxy')
         should contain_class('apache::mod::proxy_http')
         should contain_class('apache::mod::proxy_wstunnel')
@@ -77,6 +79,26 @@ describe 'foreman::config::apache' do
 
       it 'does not configure the HTTPS vhost' do
         should_not contain_apache__vhost('foreman-ssl')
+      end
+
+      describe 'with $apache::default_mods set to false' do
+        let(:pre_condition) do
+          <<~PUPPET
+          class { 'apache':
+            default_mods => false,
+          }
+          PUPPET
+        end
+
+        it { should compile.with_all_deps }
+        it 'includes apache modules' do
+          should contain_class('apache::mod::env')
+          should contain_apache__mod('expires')
+          should contain_class('apache::mod::proxy')
+          should contain_class('apache::mod::proxy_http')
+          should contain_class('apache::mod::proxy_wstunnel')
+          should contain_class('apache::mod::rewrite')
+        end
       end
 
       describe 'with keycloak' do
