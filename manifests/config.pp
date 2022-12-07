@@ -206,6 +206,7 @@ class foreman::config {
 
       if $foreman::ipa_manage_sssd {
         $sssd = pick(fact('foreman_sssd'), {})
+        $sssd_default_domain_suffix = $facts['networking']['domain']
         $sssd_services = join(unique(pick($sssd['services'], []) + ['ifp']), ', ')
         $sssd_ldap_user_extra_attrs = join(unique(pick($sssd['ldap_user_extra_attrs'], []) + ['email:mail', 'lastname:sn', 'firstname:givenname']), ', ')
         $sssd_allowed_uids = join(unique(pick($sssd['allowed_uids'], []) + [$apache::user, 'root']), ', ')
@@ -215,6 +216,7 @@ class foreman::config {
           context => '/files/etc/sssd/sssd.conf',
           changes => [
             "set target[.=~regexp('domain/.*')]/ldap_user_extra_attrs '${sssd_ldap_user_extra_attrs}'",
+            "set target[.='sssd']/default_domain_suffix '${sssd_default_domain_suffix}'",
             "set target[.='sssd']/services '${sssd_services}'",
             'set target[.=\'ifp\'] \'ifp\'',
             "set target[.='ifp']/allowed_uids '${sssd_allowed_uids}'",
