@@ -1,5 +1,13 @@
 # Changelog
 
+## [22.1.0](https://github.com/theforeman/puppet-foreman/tree/22.1.0) (2022-12-14)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/22.0.0...22.1.0)
+
+**Implemented enhancements:**
+
+- Refs [\#35800](https://projects.theforeman.org/issues/35800) - Add foreman\_kernel\_care plugin support [\#1099](https://github.com/theforeman/puppet-foreman/pull/1099) ([ekohl](https://github.com/ekohl))
+
 ## [22.0.0](https://github.com/theforeman/puppet-foreman/tree/22.0.0) (2022-11-03)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/21.2.0...22.0.0)
