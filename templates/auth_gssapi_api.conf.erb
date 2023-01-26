@@ -1,5 +1,5 @@
 
-<LocationMatch ^/users/extlogin/?$>
+<LocationMatch ^/api(/v2)?/users/extlogin/?$>
   SSLRequireSSL
   <If "%{HTTP:Authorization} =~ /^Basic/">
     AuthType Basic
@@ -14,9 +14,8 @@
     GssapiSSLonly On
     GssapiLocalName <%= @gssapi_local_name %>
   </Else>
-  # require valid-user
   require pam-account <%= scope.lookupvar('foreman::pam_service') %>
-  ErrorDocument 401 '<html><meta http-equiv="refresh" content="0; URL=/users/login"><body>Kerberos authentication did not pass.</body></html>'
+  ErrorDocument 401 '{ "error": "Kerberos authentication did not pass." }'
   # The following is needed as a workaround for https://bugzilla.redhat.com/show_bug.cgi?id=1020087
-  ErrorDocument 500 '<html><meta http-equiv="refresh" content="0; URL=/users/login"><body>Kerberos authentication did not pass.</body></html>'
+  ErrorDocument 500 '{ "error": "Kerberos authentication did not pass." }'
 </LocationMatch>

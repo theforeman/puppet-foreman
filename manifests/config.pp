@@ -238,9 +238,15 @@ class foreman::config {
         content => template('foreman/auth_basic.load'),
       }
 
-      if $foreman::ipa_authentication_api { 'authorize_login_delegation_api.yaml':
-        content => template('foreman/settings-external-auth-api.yaml.erb'),
-        order   => '03',
+      if $foreman::ipa_authentication_api {
+        foreman::settings_fragment { 'authorize_login_delegation_api.yaml':
+          content => template('foreman/settings-external-auth-api.yaml.erb'),
+          order   => '03',
+        }
+
+        foreman::config::apache::fragment { 'auth_gssapi_api':
+          ssl_content => template('foreman/auth_gssapi_api.conf.erb'),
+        }
       }
     }
   } else {
