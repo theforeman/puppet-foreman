@@ -1,5 +1,13 @@
 # Changelog
 
+## [22.1.1](https://github.com/theforeman/puppet-foreman/tree/22.1.1) (2023-01-26)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/22.1.0...22.1.1)
+
+**Fixed bugs:**
+
+- Fixes [\#35870](https://projects.theforeman.org/issues/35870) - Ensure mod\_expires is loaded [\#1101](https://github.com/theforeman/puppet-foreman/pull/1101) ([ekohl](https://github.com/ekohl))
+
 ## [22.1.0](https://github.com/theforeman/puppet-foreman/tree/22.1.0) (2022-12-14)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/22.0.0...22.1.0)
