@@ -142,6 +142,7 @@ class foreman::config {
       user               => $foreman::user,
       foreman_url        => $foreman::foreman_url,
       ipa_authentication => $foreman::ipa_authentication,
+      ipa_authentication_api => $foreman::ipa_authentication_api,
       keycloak           => $foreman::keycloak,
       keycloak_app_name  => $foreman::keycloak_app_name,
       keycloak_realm     => $foreman::keycloak_realm,
@@ -235,6 +236,11 @@ class foreman::config {
         group   => root,
         mode    => '0644',
         content => template('foreman/auth_basic.load'),
+      }
+
+      if $foreman::ipa_authentication_api { 'authorize_login_delegation_api.yaml':
+        content => template('foreman/settings-external-auth-api.yaml.erb'),
+        order   => '03',
       }
     }
   } else {

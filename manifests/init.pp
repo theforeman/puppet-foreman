@@ -46,6 +46,8 @@
 #
 # $ipa_authentication::           Enable configuration for external authentication via IPA
 #
+# $ipa_authentication_api::       Enable configuration for external authentication via IPA for API
+#
 # === Advanced parameters:
 #
 # $foreman_url::                  URL on which foreman is going to run
@@ -249,6 +251,7 @@ class foreman (
   Optional[String] $initial_organization = undef,
   Optional[String] $initial_location = undef,
   Boolean $ipa_authentication = false,
+  Boolean $ipa_authentication_api = false,
   Optional[Stdlib::Absolutepath] $http_keytab = undef,
   Boolean $gssapi_local_name = true,
   String $pam_service = 'foreman',
@@ -320,6 +323,9 @@ class foreman (
     Class['foreman::database'] -> Class['apache::service']
     if $ipa_authentication and $keycloak {
       fail("${facts['networking']['hostname']}: External authentication via IPA and Keycloak are mutually exclusive.")
+    }
+    if !$ipa_authentication and $ipa_autnentication_api {
+      fail("${facts['networking']['hostname']}: External authentication for API via IPA requires general external authentication to be enabled.")
     }
   } elsif $ipa_authentication {
     fail("${facts['networking']['hostname']}: External authentication via IPA can only be enabled when Apache is used.")
