@@ -124,28 +124,27 @@ class foreman::config {
     $listen_socket = '/run/foreman.sock'
 
     class { 'foreman::config::apache':
-      app_root               => $foreman::app_root,
-      priority               => $foreman::vhost_priority,
-      servername             => $foreman::servername,
-      serveraliases          => $foreman::serveraliases,
-      server_port            => $foreman::server_port,
-      server_ssl_port        => $foreman::server_ssl_port,
-      proxy_backend          => "unix://${listen_socket}",
-      ssl                    => $foreman::ssl,
-      ssl_ca                 => $foreman::server_ssl_ca,
-      ssl_chain              => $foreman::server_ssl_chain,
-      ssl_cert               => $foreman::server_ssl_cert,
-      ssl_key                => $foreman::server_ssl_key,
-      ssl_crl                => $foreman::server_ssl_crl,
-      ssl_protocol           => $foreman::server_ssl_protocol,
-      ssl_verify_client      => $foreman::server_ssl_verify_client,
-      user                   => $foreman::user,
-      foreman_url            => $foreman::foreman_url,
-      ipa_authentication     => $foreman::ipa_authentication,
-      ipa_authentication_api => $foreman::ipa_authentication_api,
-      keycloak               => $foreman::keycloak,
-      keycloak_app_name      => $foreman::keycloak_app_name,
-      keycloak_realm         => $foreman::keycloak_realm,
+      app_root           => $foreman::app_root,
+      priority           => $foreman::vhost_priority,
+      servername         => $foreman::servername,
+      serveraliases      => $foreman::serveraliases,
+      server_port        => $foreman::server_port,
+      server_ssl_port    => $foreman::server_ssl_port,
+      proxy_backend      => "unix://${listen_socket}",
+      ssl                => $foreman::ssl,
+      ssl_ca             => $foreman::server_ssl_ca,
+      ssl_chain          => $foreman::server_ssl_chain,
+      ssl_cert           => $foreman::server_ssl_cert,
+      ssl_key            => $foreman::server_ssl_key,
+      ssl_crl            => $foreman::server_ssl_crl,
+      ssl_protocol       => $foreman::server_ssl_protocol,
+      ssl_verify_client  => $foreman::server_ssl_verify_client,
+      user               => $foreman::user,
+      foreman_url        => $foreman::foreman_url,
+      ipa_authentication => $foreman::ipa_authentication,
+      keycloak           => $foreman::keycloak,
+      keycloak_app_name  => $foreman::keycloak_app_name,
+      keycloak_realm     => $foreman::keycloak_realm,
     }
 
     contain foreman::config::apache
@@ -232,14 +231,14 @@ class foreman::config {
 
       include apache::mod__auth_basic
 
-      if $foreman::ipa_authentication_api {
+      if $foreman::ipa_authentication {
         foreman::settings_fragment { 'authorize_login_delegation_api.yaml':
           content => template('foreman/settings-external-auth-api.yaml.erb'),
           order   => '03',
         }
 
-        foreman::config::apache::fragment { 'auth_gssapi_api':
-          ssl_content => template('foreman/auth_gssapi_api.conf.erb'),
+        foreman::config::apache::fragment { 'external_auth_api':
+          ssl_content => template('foreman/external_auth_api.conf.erb'),
         }
       }
     }
