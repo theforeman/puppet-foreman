@@ -228,6 +228,14 @@ class foreman::config {
         content => template('foreman/settings-external-auth.yaml.erb'),
         order   => '02',
       }
+
+      file { "/etc/httpd/conf.modules.d/auth_basic.load":
+        ensure  => file,
+        owner   => root,
+        group   => root,
+        mode    => '0644',
+        content => template('foreman/auth_basic.load'),
+      }
     }
   } else {
     $foreman_socket_override = undef

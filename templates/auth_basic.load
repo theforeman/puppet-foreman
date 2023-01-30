@@ -1,0 +1,1 @@
+LoadModule auth_basic_module modules/mod_auth_basic.so

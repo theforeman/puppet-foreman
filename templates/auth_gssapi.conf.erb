@@ -1,11 +1,19 @@
 
 <LocationMatch ^(/api(/v2)?)?/users/extlogin/?$>
   SSLRequireSSL
-  AuthType GSSAPI
-  AuthName "GSSAPI Single Sign On Login"
-  GssapiCredStore keytab:<%= @http_keytab %>
-  GssapiSSLonly On
-  GssapiLocalName <%= @gssapi_local_name %>
+  <If "%{HTTP:Authorization} =~ /^Basic/">
+    AuthType Basic
+    AuthName "PAM Authentication"
+    AuthBasicProvider PAM
+    AuthPAMService foreman
+  </If>
+  <Else>
+    AuthType GSSAPI
+    AuthName "GSSAPI Single Sign On Login"
+    GssapiCredStore keytab:<%= @http_keytab %>
+    GssapiSSLonly On
+    GssapiLocalName <%= @gssapi_local_name %>
+  </Else>
   # require valid-user
   require pam-account <%= scope.lookupvar('foreman::pam_service') %>
   ErrorDocument 401 '<html><meta http-equiv="refresh" content="0; URL=/users/login"><body>Kerberos authentication did not pass.</body></html>'
