@@ -324,7 +324,7 @@ class foreman (
     if $ipa_authentication and $keycloak {
       fail("${facts['networking']['hostname']}: External authentication via IPA and Keycloak are mutually exclusive.")
     }
-    if !$ipa_authentication and $ipa_autnentication_api {
+    if !$ipa_authentication and $ipa_authentication_api {
       fail("${facts['networking']['hostname']}: External authentication for API via IPA requires general external authentication to be enabled.")
     }
   } elsif $ipa_authentication {
