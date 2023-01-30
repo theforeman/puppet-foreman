@@ -230,13 +230,7 @@ class foreman::config {
         order   => '02',
       }
 
-      file { "/etc/httpd/conf.modules.d/auth_basic.load":
-        ensure  => file,
-        owner   => root,
-        group   => root,
-        mode    => '0644',
-        content => template('foreman/auth_basic.load'),
-      }
+      include apache::mod__auth_basic
 
       if $foreman::ipa_authentication_api {
         foreman::settings_fragment { 'authorize_login_delegation_api.yaml':
