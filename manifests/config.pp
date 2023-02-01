@@ -229,7 +229,7 @@ class foreman::config {
         order   => '02',
       }
 
-      include apache::mod__auth_basic
+      include apache::mod::auth_basic
 
       if $foreman::ipa_authentication {
         foreman::settings_fragment { 'authorize_login_delegation_api.yaml':
