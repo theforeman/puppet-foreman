@@ -1,5 +1,13 @@
 # Changelog
 
+## [22.1.2](https://github.com/theforeman/puppet-foreman/tree/22.1.2) (2023-02-01)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/22.1.1...22.1.2)
+
+**Fixed bugs:**
+
+- Fixes [\#36028](https://projects.theforeman.org/issues/36028) - ensure compressed assets are returned if available [\#1106](https://github.com/theforeman/puppet-foreman/pull/1106) ([evgeni](https://github.com/evgeni))
+
 ## [22.1.1](https://github.com/theforeman/puppet-foreman/tree/22.1.1) (2023-01-26)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/22.1.0...22.1.1)
