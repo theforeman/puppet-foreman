@@ -2,16 +2,24 @@
 <LocationMatch ^/api(/v2)?/users/extlogin/?$>
   SSLRequireSSL
   <% if scope.lookupvar('$foreman::ipa_authentication_api') %>
-  AuthType GSSAPI
-  AuthName "GSSAPI Single Sign On Login"
-  GssapiCredStore keytab:<%= @http_keytab %>
-  GssapiSSLonly On
-  GssapiLocalName <%= @gssapi_local_name %>
+  <If "%{HTTP:Authorization} =~ /^Basic/">
+    AuthType Basic
+    AuthName "PAM Authentication"
+    AuthBasicProvider PAM
+    AuthPAMService <%= scope.lookupvar('foreman::pam_service') %>
+  </If>
+  <Else>
+    AuthType GSSAPI
+    AuthName "GSSAPI Single Sign On Login"
+    GssapiCredStore keytab:<%= @http_keytab %>
+    GssapiSSLonly On
+    GssapiLocalName <%= @gssapi_local_name %>
+  </Else>
   <% else %>
   AuthType Basic
   AuthName "PAM Authentication"
   AuthBasicProvider PAM
-  AuthPAMService foreman
+  AuthPAMService <%= scope.lookupvar('foreman::pam_service') %>
   <% end %>
   require pam-account <%= scope.lookupvar('foreman::pam_service') %>
   ErrorDocument 401 '{ "error": "External authentication did not pass." }'
