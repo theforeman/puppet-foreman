@@ -20,6 +20,17 @@ class foreman::config {
     }
   }
 
+  if $foreman::rails_cache_store['type'] == 'redis' {
+    if $foreman::rails_cache_store['urls'] {
+      $redis_cache_urls = prefix($foreman::rails_cache_store['urls'], 'redis://')
+    } else {
+      include redis
+      $redis_cache_urls = ["redis://localhost:${redis::port}/0"]
+    }
+  } else {
+    $redis_cache_urls =  undef
+  }
+
   # Used in the settings template
   $websockets_ssl_cert = pick($foreman::websockets_ssl_cert, $foreman::server_ssl_cert)
   $websockets_ssl_key = pick($foreman::websockets_ssl_key, $foreman::server_ssl_key)

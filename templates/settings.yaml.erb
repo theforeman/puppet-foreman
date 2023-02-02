@@ -101,12 +101,8 @@
   :type: <%= scope["foreman::rails_cache_store"]["type"] %>
 <% if scope["foreman::rails_cache_store"]["type"] == "redis" -%>
   :urls:
-<%   if scope["foreman::rails_cache_store"].key?("urls") -%>
-<%     scope["foreman::rails_cache_store"]["urls"].each do |url| -%>
-    - redis://<%= url %>
-<%     end -%>
-<%   else -%>
-    - redis://localhost:8479/0
+<%   @redis_cache_urls.each do |url| -%>
+    - <%= url %>
 <%   end -%>
   :options:
 <%   if scope["foreman::rails_cache_store"].key?("options") -%>

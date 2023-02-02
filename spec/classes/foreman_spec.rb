@@ -331,12 +331,33 @@ describe 'foreman' do
       end
 
       describe 'with rails_cache_store redis' do
+        let(:params) { super().merge(rails_cache_store: { type: "redis" }) }
+        it 'should set rails_cache_store config' do
+          should contain_concat__fragment('foreman_settings+01-header.yaml')
+            .with_content(%r{^:rails_cache_store:\n\s+:type:\s*redis\n\s+:urls:\n\s*- redis://localhost:6379/0\n\s+:options:\n\s+:compress:\s*true\n\s+:namespace:\s*foreman$})
+        end
+        it { is_expected.to contain_package('foreman-redis') }
+
+        describe 'without dynflow managing redis' do
+          let(:params) { super().merge(dynflow_manage_services: false) }
+
+          it { is_expected.to contain_class('redis') }
+        end
+      end
+
+      describe 'with rails_cache_store redis with explicit URL' do
         let(:params) { super().merge(rails_cache_store: { type: "redis", urls: [ "redis.example.com/0" ]}) }
         it 'should set rails_cache_store config' do
           should contain_concat__fragment('foreman_settings+01-header.yaml')
             .with_content(/^:rails_cache_store:\n\s+:type:\s*redis\n\s+:urls:\n\s*- redis:\/\/redis.example.com\/0\n\s+:options:\n\s+:compress:\s*true\n\s+:namespace:\s*foreman$/)
         end
         it { is_expected.to contain_package('foreman-redis') }
+
+        describe 'without dynflow managing redis' do
+          let(:params) { super().merge(dynflow_manage_services: false) }
+
+          it { is_expected.not_to contain_class('redis') }
+        end
       end
 
       describe 'with rails_cache_store redis with options' do
