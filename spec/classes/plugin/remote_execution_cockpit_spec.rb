@@ -114,6 +114,22 @@ describe 'foreman::plugin::remote_execution::cockpit' do
             .that_notifies('Service[foreman-cockpit]')
         end
       end
+
+      describe 'ensure absent' do
+        let(:params) do
+          {
+            ensure: 'absent',
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.not_to contain_class('foreman::plugin::remote_execution') }
+        it { is_expected.to contain_foreman__plugin('remote_execution-cockpit').with_version('absent') }
+        it { is_expected.not_to contain_service('foreman-cockpit') }
+        it { is_expected.to contain_file('/etc/foreman/cockpit/cockpit.conf').with_ensure('absent') }
+        it { is_expected.to contain_file('/etc/foreman/cockpit/foreman-cockpit-session.yml').with_ensure('absent') }
+        it { is_expected.to contain_foreman_config_entry('remote_execution_cockpit_url').with_value('') }
+      end
     end
   end
 end
