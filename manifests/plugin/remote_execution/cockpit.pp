@@ -7,10 +7,17 @@
 # $origins::             Specify additional Cockpit Origins to configure cockpit.conf.
 #                        The $foreman_url is included by default.
 #
+# === Advanced parameters:
+#
+# $ensure::              Specify the package state, or absent to remove it
+#
 class foreman::plugin::remote_execution::cockpit (
+  Optional[String[1]] $ensure = undef,
   Array[Stdlib::HTTPUrl] $origins = [],
 ) {
-  require foreman::plugin::remote_execution
+  if $ensure != 'absent' {
+    require foreman::plugin::remote_execution
+  }
 
   $config_directory = '/etc/foreman/cockpit'
   $foreman_url = $foreman::foreman_url
@@ -25,41 +32,56 @@ class foreman::plugin::remote_execution::cockpit (
   }
   $cockpit_origins = [$foreman_url] + $origins
 
-  foreman::plugin { 'remote_execution-cockpit': }
-  -> service { 'foreman-cockpit':
-    ensure => running,
-    enable => true,
+  foreman::plugin { 'remote_execution-cockpit':
+    version => $ensure,
   }
 
+  if $ensure != 'absent' {
+    service { 'foreman-cockpit':
+      ensure    => running,
+      enable    => true,
+      require   => Foreman::Plugin['remote_execution-cockpit'],
+      subscribe => File["${config_directory}/cockpit.conf", "${config_directory}/foreman-cockpit-session.yml"],
+    }
+  }
+
+  $file_ensure = bool2str($ensure == 'absent', 'absent', 'file')
+
   file { "${config_directory}/cockpit.conf":
-    ensure  => file,
+    ensure  => $file_ensure,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     content => template('foreman/remote_execution_cockpit.conf.erb'),
     require => Foreman::Plugin['remote_execution-cockpit'],
-    notify  => Service['foreman-cockpit'],
   }
 
   file { "${config_directory}/foreman-cockpit-session.yml":
-    ensure  => file,
+    ensure  => $file_ensure,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     content => foreman::to_symbolized_yaml($cockpit_config),
     require => Foreman::Plugin['remote_execution-cockpit'],
-    notify  => Service['foreman-cockpit'],
   }
 
-  include apache::mod::rewrite
-  include apache::mod::proxy_wstunnel
-  include apache::mod::proxy_http
-  foreman::config::apache::fragment { 'cockpit':
-    ssl_content => template('foreman/cockpit-apache-ssl.conf.erb'),
-  }
+  if $ensure == 'absent' {
+    foreman_config_entry { 'remote_execution_cockpit_url':
+      value          => '',
+      ignore_missing => true,
+      require        => Class['foreman::database'],
+    }
+  } else {
+    include apache::mod::rewrite
+    include apache::mod::proxy_wstunnel
+    include apache::mod::proxy_http
+    foreman::config::apache::fragment { 'cockpit':
+      ssl_content => template('foreman/cockpit-apache-ssl.conf.erb'),
+    }
 
-  foreman_config_entry { 'remote_execution_cockpit_url':
-    value   => "${cockpit_path}/=%{host}",
-    require => Class['foreman::database'],
+    foreman_config_entry { 'remote_execution_cockpit_url':
+      value   => "${cockpit_path}/=%{host}",
+      require => Class['foreman::database'],
+    }
   }
 }
