@@ -44,7 +44,7 @@ define foreman::plugin (
 
   if $config {
     file { $config_file:
-      ensure  => file,
+      ensure  => bool2str($version == 'absent', 'absent', 'file'),
       owner   => $config_file_owner,
       group   => $config_file_group,
       mode    => $config_file_mode,

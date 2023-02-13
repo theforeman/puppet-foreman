@@ -77,6 +77,20 @@ describe 'foreman::plugin' do
             .that_requires('Package[myplugin]')
         end
       end
+
+      context 'ensure absent' do
+        let(:params) do
+          {
+            package: 'myplugin', # fixed to make testing easier
+            version: 'absent',
+            config: 'the config content',
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_package('myplugin').with_ensure('absent') }
+        it { is_expected.to contain_file('/etc/foreman/plugins/foreman_myplugin.yaml').with_ensure('absent') }
+      end
     end
   end
 end
