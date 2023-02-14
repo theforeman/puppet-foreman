@@ -16,4 +16,17 @@ describe 'Scenario: install foreman' do
   describe package('foreman-telemetry') do
     it { is_expected.not_to be_installed }
   end
+
+  context 'GSSAPI auth enabled' do
+    it_behaves_like 'the foreman application' do
+      let(:manifest) do
+        <<-PUPPET
+        class { 'foreman':
+          ipa_authentication => true,
+          ipa_authentication_api => true,
+        }
+        PUPPET
+      end
+    end
+  end
 end
