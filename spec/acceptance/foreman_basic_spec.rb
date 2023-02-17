@@ -18,21 +18,22 @@ describe 'Scenario: install foreman' do
   end
 
   context 'GSSAPI auth enabled' do
+    before { on default, 'mkdir -p /etc/httpd && touch /etc/httpd/conf.keytab' }
+
     it_behaves_like 'an idempotent resource' do
       let(:manifest) do
         <<-PUPPET
         class { 'foreman':
-          apache => true,
-          dynflow_orchestrator_ensure => 'present',
-          dynflow_worker_instances => 1,
-          dynflow_worker_concurrency => 5,
-          ipa_authentication => true,
+          ipa_authentication     => true,
           ipa_authentication_api => true,
+          # Stub out ipa enrollment
+          http_keytab            => '/etc/httpd/conf.keytab',
+          ipa_manage_sssd        => false,
         }
         PUPPET
       end
     end
 
-    it_behaves_like 'the foreman application'
+    it_behaves_like 'the foreman application', { login_url: '/users/extlogin' }
   end
 end
