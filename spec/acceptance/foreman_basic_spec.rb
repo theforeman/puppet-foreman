@@ -22,6 +22,10 @@ describe 'Scenario: install foreman' do
       let(:manifest) do
         <<-PUPPET
         class { 'foreman':
+          apache => true,
+          dynflow_orchestrator_ensure => 'present',
+          dynflow_worker_instances => 1,
+          dynflow_worker_concurrency => 5,
           ipa_authentication => true,
           ipa_authentication_api => true,
         }
