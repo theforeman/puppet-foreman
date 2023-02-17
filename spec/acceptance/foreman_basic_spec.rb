@@ -18,7 +18,7 @@ describe 'Scenario: install foreman' do
   end
 
   context 'GSSAPI auth enabled' do
-    it_behaves_like 'the foreman application' do
+    it_behaves_like 'an idempotent resource' do
       let(:manifest) do
         <<-PUPPET
         class { 'foreman':
@@ -28,5 +28,7 @@ describe 'Scenario: install foreman' do
         PUPPET
       end
     end
+
+    it_behaves_like 'the foreman application'
   end
 end
