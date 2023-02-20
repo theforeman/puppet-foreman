@@ -34,6 +34,6 @@ describe 'Scenario: install foreman' do
       end
     end
 
-    it_behaves_like 'the foreman application', { login_url: '/users/extlogin' }
+    it_behaves_like 'the foreman application', { expected_login_url_path: '/users/extlogin' }
   end
 end
