@@ -1,5 +1,15 @@
 # Changelog
 
+## [22.2.0](https://github.com/theforeman/puppet-foreman/tree/22.2.0) (2023-02-21)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/22.1.2...22.2.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#36037](https://projects.theforeman.org/issues/36037) - Manage Redis service for Redis cache [\#1109](https://github.com/theforeman/puppet-foreman/pull/1109) ([ekohl](https://github.com/ekohl))
+- Add basic external auth for API [\#1108](https://github.com/theforeman/puppet-foreman/pull/1108) ([ofedoren](https://github.com/ofedoren))
+- bump puppet/systemd to \< 5.0.0 [\#1104](https://github.com/theforeman/puppet-foreman/pull/1104) ([jhoblitt](https://github.com/jhoblitt))
+
 ## [22.1.2](https://github.com/theforeman/puppet-foreman/tree/22.1.2) (2023-02-01)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/22.1.1...22.1.2)
