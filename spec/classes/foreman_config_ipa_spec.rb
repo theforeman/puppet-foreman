@@ -30,6 +30,7 @@ describe 'foreman' do
           it { should contain_class('apache::mod::intercept_form_submit') }
           it { should contain_class('apache::mod::lookup_identity') }
           it { should contain_class('apache::mod::auth_gssapi') }
+          it { should contain_class('apache::mod::auth_basic') }
 
           it 'should contain Apache fragments' do
             should contain_foreman__config__apache__fragment('intercept_form_submit')
@@ -41,6 +42,13 @@ describe 'foreman' do
               .with_ssl_content(%r{^\s*GssapiCredStore keytab:#{keytab_path}$})
               .with_ssl_content(/^\s*GssapiLocalName On$/)
               .with_ssl_content(/^\s*require pam-account foreman$/)
+
+            should contain_foreman__config__apache__fragment('external_auth_api')
+              .with_ssl_content(/^\s*AuthType Basic$/)
+              .with_ssl_content(/^\s*AuthBasicProvider PAM$/)
+              .with_ssl_content(/^\s*AuthPAMService foreman$/)
+              .with_ssl_content(/^\s*require pam-account foreman$/)
+              .without_ssl_content(/^\s*AuthType GSSAPI/)
           end
 
           context 'with gssapi_local_name=false' do
@@ -49,6 +57,22 @@ describe 'foreman' do
             it 'should contain Apache fragments' do
               should contain_foreman__config__apache__fragment('auth_gssapi')
                 .with_ssl_content(/^\s*GssapiLocalName Off$/)
+            end
+          end
+
+          context 'with GSSAPI auth for API' do
+            let(:params) { super().merge(ipa_authentication_api: true) }
+
+            it 'should contain GSSAPI and Basic coniguration in API fragment' do
+              should contain_foreman__config__apache__fragment('external_auth_api')
+                .with_ssl_content(/^\s*AuthType Basic$/)
+                .with_ssl_content(/^\s*AuthBasicProvider PAM$/)
+                .with_ssl_content(/^\s*AuthPAMService foreman$/)
+                .with_ssl_content(/^\s*require pam-account foreman$/)
+                .with_ssl_content(/^\s*AuthType GSSAPI/)
+                .with_ssl_content(/^\s*GssapiCredStore keytab:#{keytab_path}$/)
+                .with_ssl_content(/^\s*GssapiLocalName On$/)
+                .with_ssl_content(/^\s*require pam-account foreman$/)
             end
           end
 

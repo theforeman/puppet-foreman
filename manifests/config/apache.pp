@@ -234,6 +234,7 @@ class foreman::config::apache (
 
   if $ipa_authentication {
     include apache::mod::authnz_pam
+    include apache::mod::auth_basic
     include apache::mod::intercept_form_submit
     include apache::mod::lookup_identity
     include apache::mod::auth_gssapi
