@@ -89,6 +89,9 @@
 # @param request_headers_to_unset A list of HTTP headers coming from
 #   the client that will be unset and hence not passed to the
 #   application.
+#
+# @param mod_status
+#   Whether to configure mod_status
 class foreman::config::apache (
   Stdlib::Absolutepath $app_root = '/usr/share/foreman',
   String $priority = '05',
@@ -125,6 +128,7 @@ class foreman::config::apache (
     'REMOTE_USER_LASTNAME',
     'REMOTE_USER_GROUPS',
   ],
+  Boolean $mod_status = false,
 ) {
   $docroot = "${app_root}/public"
 
@@ -231,6 +235,10 @@ class foreman::config::apache (
 
   include apache
   include apache::mod::headers
+
+  if $mod_status {
+    include apache::mod::status
+  }
 
   if $ipa_authentication {
     include apache::mod::authnz_pam

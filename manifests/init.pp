@@ -178,6 +178,8 @@
 #                                         If not set, the value is dynamically calculated based on available number of
 #                                         CPUs and memory.
 #
+# $mod_status::                   Should mod_status be enabled in Apache
+#
 # $rails_cache_store::            Set rails cache store
 #
 # $register_in_foreman::          Register host in Foreman
@@ -297,6 +299,7 @@ class foreman (
   String[1] $keycloak_app_name = 'foreman-openidc',
   String[1] $keycloak_realm = 'ssl-realm',
   Boolean $register_in_foreman = true,
+  Boolean $mod_status = false,
 ) inherits foreman::params {
   assert_type(Array[Stdlib::IP::Address], $trusted_proxies)
 

@@ -109,6 +109,13 @@ describe 'foreman::config::apache' do
         it { should contain_file("#{http_dir}/conf.d/foreman-openidc_oidc_keycloak_ssl-realm.conf") }
       end
 
+      describe 'with mod_status' do
+        let(:params) { super().merge(mod_status: true) }
+
+        it { should compile.with_all_deps }
+        it { should contain_class('apache::mod::status') }
+      end
+
       describe 'with custom HTTP headers to unset' do
         let(:params) do
           super().merge(

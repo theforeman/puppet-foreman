@@ -156,6 +156,7 @@ class foreman::config {
       keycloak           => $foreman::keycloak,
       keycloak_app_name  => $foreman::keycloak_app_name,
       keycloak_realm     => $foreman::keycloak_realm,
+      mod_status         => $foreman::mod_status,
     }
 
     contain foreman::config::apache
