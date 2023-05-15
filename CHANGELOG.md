@@ -1,5 +1,22 @@
 # Changelog
 
+## [23.0.0](https://github.com/theforeman/puppet-foreman/tree/23.0.0) (2023-05-16)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/22.2.0...23.0.0)
+
+**Breaking changes:**
+
+- Sunsetting foreman\_column\_view because functionality being integrated in Foreman itself [\#1119](https://github.com/theforeman/puppet-foreman/pull/1119) ([dgoetz](https://github.com/dgoetz))
+- Refs [\#36345](https://projects.theforeman.org/issues/36345) - Raise minimum Puppet version to 7.0.0 [\#1118](https://github.com/theforeman/puppet-foreman/pull/1118) ([ekohl](https://github.com/ekohl))
+- drop memcache plugin support [\#1114](https://github.com/theforeman/puppet-foreman/pull/1114) ([evgeni](https://github.com/evgeni))
+- Remove Docker, Spacewalk & DigitalOcean plugins [\#1097](https://github.com/theforeman/puppet-foreman/pull/1097) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Mark compatible with puppetlabs/concat 8.x & puppetlabs/apache 10.x & puppetlabs/postgresql 9.x [\#1117](https://github.com/theforeman/puppet-foreman/pull/1117) ([ekohl](https://github.com/ekohl))
+- Refs [\#36319](https://projects.theforeman.org/issues/36319) - Add fog\_proxmox plugin support [\#1115](https://github.com/theforeman/puppet-foreman/pull/1115) ([maximiliankolb](https://github.com/maximiliankolb))
+- Bump puppetlabs/apache to \< 10.0.0 [\#1110](https://github.com/theforeman/puppet-foreman/pull/1110) ([gcoxmoz](https://github.com/gcoxmoz))
+
 ## [22.2.0](https://github.com/theforeman/puppet-foreman/tree/22.2.0) (2023-02-21)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/22.1.2...22.2.0)
