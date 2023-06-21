@@ -25,7 +25,7 @@ class foreman::config {
       $redis_cache_urls = prefix($foreman::rails_cache_store['urls'], 'redis://')
     } else {
       include redis
-      $redis_cache_urls = ["redis://localhost:${redis::port}/0"]
+      $redis_cache_urls = ["redis://localhost:${redis::port}/4"]
     }
   } else {
     $redis_cache_urls =  undef
