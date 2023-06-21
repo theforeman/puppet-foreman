@@ -40,7 +40,7 @@ module using the parameter `rails_cache_store`. The parameter takes a hash
 containing the type and options specfic to the backend.
 
 The default is the file backend, configured via `{'type' => 'file'}`. To
-setup for redis use a hash similar to `{'type' => 'redis', 'urls' => ['localhost:8479/0'], 'options' => {'compress' => 'true', 'namespace' => 'foreman'}}`
+setup for redis use a hash similar to `{'type' => 'redis', 'urls' => ['localhost:8479/4'], 'options' => {'compress' => 'true', 'namespace' => 'foreman'}}`
 where `urls` takes an array of redis urls which get prepended with `redis://`
 and `options` using a hash with options from [rails](https://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-store)
 falling back to `{'compress' => 'true', 'namespace' => 'foreman'}` if no
@@ -53,7 +53,7 @@ could look like this:
 class { 'foreman':
   rails_cache_store => {
     'type' => 'redis',
-    'urls' => ['localhost:8479/0'],
+    'urls' => ['localhost:8479/4'],
     'options' => {
       'compress' => 'true',
       'namespace' => 'foreman'
