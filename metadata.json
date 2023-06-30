@@ -26,7 +26,7 @@
     },
     {
       "name": "puppetlabs/concat",
-      "version_requirement": ">= 1.0.0 < 10.0.0"
+      "version_requirement": ">= 9.0.0 < 10.0.0"
     },
     {
       "name": "puppetlabs/postgresql",
@@ -34,7 +34,7 @@
     },
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.25.0 < 10.0.0"
+      "version_requirement": ">= 9.0.0 < 10.0.0"
     },
     {
       "name": "puppet/extlib",
