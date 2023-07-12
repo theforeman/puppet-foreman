@@ -38,6 +38,7 @@ describe 'foreman' do
             .with_content(%r{^:ssl_ca_file:\s*/etc/puppetlabs/puppet/ssl/certs/ca.pem$})
             .with_content(%r{^:ssl_priv_key:\s*/etc/puppetlabs/puppet/ssl/private_keys/foo\.example\.com\.pem$})
             .with_content(/^:logging:\n\s*:level:\s*info$/)
+            .with_content(/^\s+:layout:\s+multiline_request_pattern$/)
             .with_content(/^:hsts_enabled:\s*true$/)
 
           should contain_concat('/etc/foreman/settings.yaml')
@@ -278,7 +279,7 @@ describe 'foreman' do
                                             '  :level: info',
                                             '  :production:',
                                             '    :type: journald',
-                                            '    :layout: multiline_request_pattern'
+                                            '    :layout: pattern'
                                           ])
         end
       end

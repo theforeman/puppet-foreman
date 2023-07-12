@@ -35,6 +35,14 @@ class foreman::config {
   $websockets_ssl_cert = pick($foreman::websockets_ssl_cert, $foreman::server_ssl_cert)
   $websockets_ssl_key = pick($foreman::websockets_ssl_key, $foreman::server_ssl_key)
 
+  if $foreman::logging_layout {
+    $logging_layout = $foreman::logging_layout
+  } elsif $foreman::logging_type == 'journald' {
+    $logging_layout = 'pattern'
+  } else {
+    $logging_layout = 'multiline_request_pattern'
+  }
+
   foreman::settings_fragment { 'header.yaml':
     content => template('foreman/settings.yaml.erb'),
     order   => '01',
