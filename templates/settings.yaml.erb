@@ -34,7 +34,7 @@
   :level: <%= scope.lookupvar("foreman::logging_level") %>
   :production:
     :type: <%= scope.lookupvar("foreman::logging_type") %>
-    :layout: <%= scope.lookupvar("foreman::logging_layout") %>
+    :layout: <%= @logging_layout %>
 
 <% unless scope.lookupvar('foreman::cors_domains').empty? -%>
 # List of domains allowed for Cross-Origin Resource Sharing
