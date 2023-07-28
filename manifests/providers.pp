@@ -16,7 +16,7 @@ class foreman::providers (
   String $oauth_package = $foreman::providers::params::oauth_package,
 ) inherits foreman::providers::params {
   if $oauth {
-    ensure_packages([$oauth_package])
+    stdlib::ensure_packages([$oauth_package])
     anchor { 'foreman::providers::oauth': } # lint:ignore:anchor_resource
     Anchor <| title == 'foreman::repo' |> -> Package[$oauth_package] -> Anchor['foreman::providers::oauth']
   }
