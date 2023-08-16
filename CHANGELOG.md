@@ -1,5 +1,15 @@
 # Changelog
 
+## [23.1.0](https://github.com/theforeman/puppet-foreman/tree/23.1.0) (2023-08-16)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/23.0.0...23.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#36582](https://projects.theforeman.org/issues/36582) - Detect logging layout based on type [\#1124](https://github.com/theforeman/puppet-foreman/pull/1124) ([ekohl](https://github.com/ekohl))
+- Fixes [\#36645](https://projects.theforeman.org/issues/36645) - Change the default Redis cache DB to 4 [\#1122](https://github.com/theforeman/puppet-foreman/pull/1122) ([ekohl](https://github.com/ekohl))
+- allow puppet/redis 9.x [\#1121](https://github.com/theforeman/puppet-foreman/pull/1121) ([evgeni](https://github.com/evgeni))
+
 ## [23.0.0](https://github.com/theforeman/puppet-foreman/tree/23.0.0) (2023-05-16)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/22.2.0...23.0.0)
