@@ -85,10 +85,10 @@
 
 # Email settings
 <% if scope.lookupvar("foreman::email_sendmail_location") -%>
-:email_sendmail_location: "<%= scope.lookupvar("foreman::email_sendmail_location") %>"
+:sendmail_location: "<%= scope.lookupvar("foreman::email_sendmail_location") %>"
 <% end -%>
 <% if scope.lookupvar("foreman::email_sendmail_arguments") -%>
-:email_sendmail_arguments: "<%= scope.lookupvar("foreman::email_sendmail_arguments") %>"
+:sendmail_arguments: "<%= scope.lookupvar("foreman::email_sendmail_arguments") %>"
 <% end -%>
 <% end -%>
 
