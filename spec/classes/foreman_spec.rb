@@ -138,7 +138,7 @@ describe 'foreman' do
             .with_queues(['dynflow_orchestrator'])
         }
         it {
-          is_expected.to contain_service('postgresqld')
+          is_expected.to contain_service('postgresqld_instance_main')
             .that_notifies('Service[dynflow-sidekiq@orchestrator]')
         }
         it { should contain_foreman__dynflow__worker('worker').with_ensure('absent') }
