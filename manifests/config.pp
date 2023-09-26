@@ -165,6 +165,12 @@ class foreman::config {
           enable  => true,
           require => Package['sssd-dbus'],
         }
+
+        $ipa_config = '/etc/ipa/default.conf'
+        if find_file($ipa_config) {
+          $realm_entry = file($ipa_config).match('^realm\s*=\s*(.*)$')
+          $default_realm = downcase($realm_entry[1])
+        }
       }
 
       file { "/etc/pam.d/${foreman::pam_service}":
@@ -206,7 +212,7 @@ class foreman::config {
 
       if $foreman::ipa_manage_sssd {
         $sssd = pick(fact('foreman_sssd'), {})
-        $sssd_default_domain_suffix = $facts['networking']['domain']
+        $sssd_default_domain_suffix = $default_realm
         $sssd_services = join(unique(pick($sssd['services'], []) + ['ifp']), ', ')
         $sssd_ldap_user_extra_attrs = join(unique(pick($sssd['ldap_user_extra_attrs'], []) + ['email:mail', 'lastname:sn', 'firstname:givenname']), ', ')
         $sssd_allowed_uids = join(unique(pick($sssd['allowed_uids'], []) + [$apache::user, 'root']), ', ')
