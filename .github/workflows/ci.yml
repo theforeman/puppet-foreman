@@ -3,8 +3,6 @@ name: CI
 
 on:
   pull_request:
-  schedule:
-    - cron: '4 4 * * *'
 
 
 concurrency:
@@ -14,7 +12,7 @@ concurrency:
 jobs:
   puppet:
     name: Puppet
-    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v1
+    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v2
     with:
       pidfile_workaround: 'false'
       rubocop: false
