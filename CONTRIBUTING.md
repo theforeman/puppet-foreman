@@ -194,7 +194,7 @@ More filter info available [here](https://relishapp.com/rspec/rspec-core/v/3-9/d
 To run OS specific tests:
 
 ```shell
-SPEC_FACTS_OS=redhat-7-x86_64 bundle exec rspec spec/classes/foreman_spec.rb
+SPEC_FACTS_OS=redhat-8-x86_64 bundle exec rspec spec/classes/foreman_spec.rb
 ```
 
 If you have more than one version of `redhat` OS specified in metadata.json,
