@@ -296,7 +296,7 @@ class foreman (
   Optional[Integer[0]] $foreman_service_puma_threads_min = undef,
   Integer[0] $foreman_service_puma_threads_max = 5,
   Optional[Integer[0]] $foreman_service_puma_workers = undef,
-  Hash[String, Any] $rails_cache_store = { 'type' => 'file' },
+  Hash[String, Any] $rails_cache_store = { 'type' => 'redis' },
   Boolean $keycloak = false,
   String[1] $keycloak_app_name = 'foreman-openidc',
   String[1] $keycloak_realm = 'ssl-realm',
