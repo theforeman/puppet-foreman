@@ -458,7 +458,13 @@ describe 'foreman' do
 
       describe 'with custom redis' do
         context 'with redis_url' do
-          let(:params) { super().merge(dynflow_redis_url: 'redis://127.0.0.1:4333/') }
+          let(:params) do
+            super().merge(
+              dynflow_redis_url: 'redis://127.0.0.1:4333/',
+              rails_cache_store: {type: 'redis', 'urls': ['127.0.0.1:4334']}
+            )
+          end
+
           it { should_not contain_class('redis') }
           it { should_not contain_class('redis::instance') }
         end
