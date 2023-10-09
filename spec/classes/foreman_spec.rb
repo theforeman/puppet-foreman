@@ -246,6 +246,8 @@ describe 'foreman' do
             keycloak: true,
             keycloak_app_name: 'cloak-app',
             keycloak_realm: 'myrealm',
+            provisioning_ct_location: '/usr/bin/myct',
+            provisioning_fcct_location: '/usr/bin/myfcct',
           }
         end
 
@@ -266,6 +268,12 @@ describe 'foreman' do
             .with_content(%r{^:sendmail_arguments: "--myargument"$})
             .with_content(%r{^:websockets_ssl_key: /etc/ssl/private/snakeoil-ws\.pem$})
             .with_content(%r{^:websockets_ssl_cert: /etc/ssl/certs/snakeoil-ws\.pem$})
+        end
+
+        it 'should configure ct and fcct commands in settings.yaml' do
+          is_expected.to contain_concat__fragment('foreman_settings+01-header.yaml')
+            .with_content(%r{^:ct_location: "/usr/bin/myct"$})
+            .with_content(%r{^:fcct_location: "/usr/bin/myfcct"$})
         end
       end
 

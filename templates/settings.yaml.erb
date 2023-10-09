@@ -114,3 +114,11 @@
     :namespace: foreman
 <%   end -%>
 <% end -%>
+<% if scope.lookupvar("foreman::provisioning_ct_location") -%>
+
+:ct_location: "<%= scope.lookupvar("foreman::provisioning_ct_location") %>"
+<% end -%>
+<% if scope.lookupvar("foreman::provisioning_fcct_location") -%>
+
+:fcct_location: "<%= scope.lookupvar("foreman::provisioning_fcct_location") %>"
+<% end -%>
