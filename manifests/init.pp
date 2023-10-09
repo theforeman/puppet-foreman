@@ -182,6 +182,10 @@
 #
 # $register_in_foreman::          Register host in Foreman
 #
+# $provisioning_ct_location::     The location of the binary to call when transpiling CoreOS templates.
+#
+# $provisioning_fcct_location::   The location of the binary to call when transpiling Fedora CoreOS templates.
+#
 # === Dynflow parameters:
 #
 # $dynflow_manage_services::      Whether to manage the dynflow services
@@ -297,6 +301,8 @@ class foreman (
   String[1] $keycloak_app_name = 'foreman-openidc',
   String[1] $keycloak_realm = 'ssl-realm',
   Boolean $register_in_foreman = true,
+  Optional[Stdlib::Absolutepath] $provisioning_ct_location = undef,
+  Optional[Stdlib::Absolutepath] $provisioning_fcct_location = undef,
 ) inherits foreman::params {
   assert_type(Array[Stdlib::IP::Address], $trusted_proxies)
 
