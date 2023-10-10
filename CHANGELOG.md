@@ -1,5 +1,19 @@
 # Changelog
 
+## [23.2.0](https://github.com/theforeman/puppet-foreman/tree/23.2.0) (2023-10-10)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/23.1.0...23.2.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#36812](https://projects.theforeman.org/issues/36812) - allow setting \(fc\)ct\_location [\#1135](https://github.com/theforeman/puppet-foreman/pull/1135) ([evgeni](https://github.com/evgeni))
+- Mark compatible with puppetlabs/apache 11.x [\#1131](https://github.com/theforeman/puppet-foreman/pull/1131) ([ekohl](https://github.com/ekohl))
+- Allow puppet/systemd 5.x and 6.x [\#1129](https://github.com/theforeman/puppet-foreman/pull/1129) ([evgeni](https://github.com/evgeni))
+
+**Fixed bugs:**
+
+- correct sendmail configuration [\#1130](https://github.com/theforeman/puppet-foreman/pull/1130) ([evgeni](https://github.com/evgeni))
+
 ## [23.1.0](https://github.com/theforeman/puppet-foreman/tree/23.1.0) (2023-08-16)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/23.0.0...23.1.0)
