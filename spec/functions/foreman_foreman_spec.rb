@@ -10,6 +10,10 @@ describe 'foreman::foreman' do
     is_expected.to run.with_params().and_raise_error(ArgumentError)
   end
 
+  it 'should throw an error with filter_result=true' do
+    is_expected.to run.with_params('hosts', 'hostgroup=Grid', '20', 'https://foreman.example.com', 'my_api_foreman_user', 'my_api_foreman_pass', 10, true).and_raise_error(Puppet::ParseError, /Foreman: Invalid filter_result/)
+  end
+
   it 'should succeed with no timeout specified' do
     stub_request(:get, "https://foreman.example.com/api/hosts?per_page=20&search=hostgroup=Grid").
       with(basic_auth: ['my_api_foreman_user', 'my_api_foreman_pass']).
