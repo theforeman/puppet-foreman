@@ -44,6 +44,11 @@ class foreman::config {
   }
 
   foreman::settings_fragment { 'header.yaml':
+    content => template('foreman/_header.erb'),
+    order   => '00',
+  }
+
+  foreman::settings_fragment { 'base.yaml':
     content => template('foreman/settings.yaml.erb'),
     order   => '01',
   }

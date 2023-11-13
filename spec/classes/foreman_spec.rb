@@ -23,7 +23,9 @@ describe 'foreman' do
         end
 
         it 'should set up the config' do
-          should contain_concat__fragment('foreman_settings+01-header.yaml')
+          should contain_concat__fragment('foreman_settings+00-header.yaml').with_content(/^## Module:\s+'foreman'$/)
+
+          should contain_concat__fragment('foreman_settings+01-base.yaml')
             .with_content(/^:unattended:\s*true$/)
             .without_content(/^:unattended_url:/)
             .with_content(/^:require_ssl:\s*true$/)
@@ -263,7 +265,7 @@ describe 'foreman' do
         end
 
         it 'should configure certificates in settings.yaml' do
-          is_expected.to contain_concat__fragment('foreman_settings+01-header.yaml')
+          is_expected.to contain_concat__fragment('foreman_settings+01-base.yaml')
             .with_content(%r{^:sendmail_location: "/usr/bin/mysendmail"$})
             .with_content(%r{^:sendmail_arguments: "--myargument"$})
             .with_content(%r{^:websockets_ssl_key: /etc/ssl/private/snakeoil-ws\.pem$})
@@ -271,7 +273,7 @@ describe 'foreman' do
         end
 
         it 'should configure ct and fcct commands in settings.yaml' do
-          is_expected.to contain_concat__fragment('foreman_settings+01-header.yaml')
+          is_expected.to contain_concat__fragment('foreman_settings+01-base.yaml')
             .with_content(%r{^:ct_location: "/usr/bin/myct"$})
             .with_content(%r{^:fcct_location: "/usr/bin/myfcct"$})
         end
@@ -282,7 +284,7 @@ describe 'foreman' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_package('foreman-journald') }
         it 'should configure logging in settings.yaml' do
-          verify_concat_fragment_contents(catalogue, 'foreman_settings+01-header.yaml', [
+          verify_concat_fragment_contents(catalogue, 'foreman_settings+01-base.yaml', [
                                             ':logging:',
                                             '  :level: info',
                                             '  :production:',
@@ -305,7 +307,7 @@ describe 'foreman' do
         end
 
         it 'should have changed parameters' do
-          should contain_concat__fragment('foreman_settings+01-header.yaml')
+          should contain_concat__fragment('foreman_settings+01-base.yaml')
             .with_content(/^:unattended:\s*false$/)
             .with_content(/^:require_ssl:\s*false$/)
             .with_content(/^:oauth_active:\s*false$/)
@@ -318,7 +320,7 @@ describe 'foreman' do
       describe 'with unattended_url' do
         let(:params) { super().merge(unattended_url: 'http://example.com') }
         it {
-          should contain_concat__fragment('foreman_settings+01-header.yaml')
+          should contain_concat__fragment('foreman_settings+01-base.yaml')
             .with_content(%r{^:unattended_url:\s*http://example.com$})
         }
       end
@@ -326,7 +328,7 @@ describe 'foreman' do
       describe 'with loggers' do
         let(:params) { super().merge(loggers: { ldap: true }) }
         it 'should set loggers config' do
-          should contain_concat__fragment('foreman_settings+01-header.yaml')
+          should contain_concat__fragment('foreman_settings+01-base.yaml')
             .with_content(/^:loggers:\n\s+:ldap:\n\s+:enabled:\s*true$/)
         end
       end
@@ -334,7 +336,7 @@ describe 'foreman' do
       describe 'with rails_cache_store file' do
         let(:params) { super().merge(rails_cache_store: { type: "file" }) }
         it 'should set rails_cache_store config' do
-          should contain_concat__fragment('foreman_settings+01-header.yaml')
+          should contain_concat__fragment('foreman_settings+01-base.yaml')
             .with_content(/^:rails_cache_store:\n\s+:type:\s*file$/)
         end
       end
@@ -342,7 +344,7 @@ describe 'foreman' do
       describe 'with rails_cache_store redis' do
         let(:params) { super().merge(rails_cache_store: { type: "redis" }) }
         it 'should set rails_cache_store config' do
-          should contain_concat__fragment('foreman_settings+01-header.yaml')
+          should contain_concat__fragment('foreman_settings+01-base.yaml')
             .with_content(%r{^:rails_cache_store:\n\s+:type:\s*redis\n\s+:urls:\n\s*- redis://localhost:6379/4\n\s+:options:\n\s+:compress:\s*true\n\s+:namespace:\s*foreman$})
         end
         it { is_expected.to contain_package('foreman-redis') }
@@ -357,7 +359,7 @@ describe 'foreman' do
       describe 'with rails_cache_store redis with explicit URL' do
         let(:params) { super().merge(rails_cache_store: { type: "redis", urls: [ "redis.example.com/0" ]}) }
         it 'should set rails_cache_store config' do
-          should contain_concat__fragment('foreman_settings+01-header.yaml')
+          should contain_concat__fragment('foreman_settings+01-base.yaml')
             .with_content(/^:rails_cache_store:\n\s+:type:\s*redis\n\s+:urls:\n\s*- redis:\/\/redis.example.com\/0\n\s+:options:\n\s+:compress:\s*true\n\s+:namespace:\s*foreman$/)
         end
         it { is_expected.to contain_package('foreman-redis') }
@@ -372,7 +374,7 @@ describe 'foreman' do
       describe 'with rails_cache_store redis with options' do
         let(:params) { super().merge(rails_cache_store: { type: "redis", urls: [ "redis.example.com/0", "redis2.example.com/0" ], options: {compress: "false", namespace: "katello"}}) }
         it 'should set rails_cache_store config' do
-          should contain_concat__fragment('foreman_settings+01-header.yaml')
+          should contain_concat__fragment('foreman_settings+01-base.yaml')
             .with_content(/^:rails_cache_store:\n\s+:type:\s*redis\n\s+:urls:\n\s*- redis:\/\/redis.example.com\/0\n\s*- redis:\/\/redis2.example.com\/0\n\s+:options:\n\s+:compress:\s*false\n\s+:namespace:\s*katello$/)
         end
         it { is_expected.to contain_package('foreman-redis') }
@@ -381,7 +383,7 @@ describe 'foreman' do
       describe 'with cors domains' do
         let(:params) { super().merge(cors_domains: ['https://example.com']) }
         it 'should set cors config' do
-          should contain_concat__fragment('foreman_settings+01-header.yaml').
+          should contain_concat__fragment('foreman_settings+01-base.yaml').
             with_content(/^:cors_domains:\n\s+- 'https:\/\/example\.com'\n$/)
         end
       end
@@ -389,7 +391,7 @@ describe 'foreman' do
       describe 'with trusted proxies' do
         let(:params) { super().merge(trusted_proxies: ['10.0.0.0/8', '127.0.0.1/32', '::1']) }
         it 'should set trusted proxies config' do
-          should contain_concat__fragment('foreman_settings+01-header.yaml').
+          should contain_concat__fragment('foreman_settings+01-base.yaml').
             with_content(/^:trusted_proxies:\n\s+- '10\.0\.0\.0\/8'\n\s+- '127\.0\.0\.1\/32'\n\s+- '::1'\n$/)
         end
       end
