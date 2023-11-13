@@ -31,7 +31,7 @@ Puppet::Functions.create_function(:'foreman::smartvar') do
     req['Accept'] = 'application/json'
 
     begin
-      Timeout::timeout(5) { PSON.parse(http.request(req).body)["value"] }
+      Timeout::timeout(5) { JSON.parse(http.request(req).body)["value"] }
     rescue Exception => e
       raise Puppet::ParseError, "Failed to contact Foreman #{e}"
     end
