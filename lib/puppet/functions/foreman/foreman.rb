@@ -87,7 +87,7 @@ Puppet::Functions.create_function(:'foreman::foreman') do
         http.use_ssl = true if uri.scheme == 'https'
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
       end
-      results = Timeout::timeout(timeout) { PSON.parse http.request(req).body }
+      results = Timeout::timeout(timeout) { JSON.parse http.request(req).body }
     rescue Exception => e
       raise Puppet::ParseError, "Failed to contact Foreman at #{foreman_url}: #{e}"
     end
