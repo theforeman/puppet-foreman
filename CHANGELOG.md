@@ -1,5 +1,24 @@
 # Changelog
 
+## [24.0.0](https://github.com/theforeman/puppet-foreman/tree/24.0.0) (2023-11-14)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/23.2.0...24.0.0)
+
+**Breaking changes:**
+
+- Drop deprecated non-namespaced functions [\#1141](https://github.com/theforeman/puppet-foreman/pull/1141) ([ekohl](https://github.com/ekohl))
+- Fixes [\#36801](https://projects.theforeman.org/issues/36801): Make Redis the default cache type [\#1134](https://github.com/theforeman/puppet-foreman/pull/1134) ([ehelms](https://github.com/ehelms))
+- require puppetlabs/stdlib 9.x  [\#1125](https://github.com/theforeman/puppet-foreman/pull/1125) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Mark compatible with puppetlabs/postgresql 10.x [\#1143](https://github.com/theforeman/puppet-foreman/pull/1143) ([ekohl](https://github.com/ekohl))
+- Use JSON to parse Foreman API responses [\#1142](https://github.com/theforeman/puppet-foreman/pull/1142) ([ekohl](https://github.com/ekohl))
+- Include settings header via concat [\#1140](https://github.com/theforeman/puppet-foreman/pull/1140) ([ekohl](https://github.com/ekohl))
+- Add Puppet 8 support [\#1139](https://github.com/theforeman/puppet-foreman/pull/1139) ([ekohl](https://github.com/ekohl))
+- Mark compatible with puppet-extlib 7.x [\#1138](https://github.com/theforeman/puppet-foreman/pull/1138) ([ekohl](https://github.com/ekohl))
+- Fixes [\#36090](https://projects.theforeman.org/issues/36090) - Support REX cockpit removal [\#1111](https://github.com/theforeman/puppet-foreman/pull/1111) ([ekohl](https://github.com/ekohl))
+
 ## [23.2.0](https://github.com/theforeman/puppet-foreman/tree/23.2.0) (2023-10-10)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/23.1.0...23.2.0)
