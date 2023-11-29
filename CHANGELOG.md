@@ -1,5 +1,13 @@
 # Changelog
 
+## [24.1.0](https://github.com/theforeman/puppet-foreman/tree/24.1.0) (2023-11-29)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/24.0.0...24.1.0)
+
+**Implemented enhancements:**
+
+- Add hammer-cli-foreman-rh-cloud package [\#1145](https://github.com/theforeman/puppet-foreman/pull/1145) ([ShimShtein](https://github.com/ShimShtein))
+
 ## [24.0.0](https://github.com/theforeman/puppet-foreman/tree/24.0.0) (2023-11-14)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/23.2.0...24.0.0)
