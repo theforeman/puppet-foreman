@@ -21,7 +21,7 @@ class foreman::repo (
       before           => Anchor['foreman::repo'],
     }
 
-    if $facts['os']['family'] == 'RedHat' {
+    if $facts['os']['family'] == 'RedHat' and $facts['os']['release']['major'] == '8' {
       package { 'foreman':
         ensure      => "el${facts['os']['release']['major']}",
         enable_only => true,
