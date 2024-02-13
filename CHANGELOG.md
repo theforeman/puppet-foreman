@@ -1,5 +1,16 @@
 # Changelog
 
+## [24.2.0](https://github.com/theforeman/puppet-foreman/tree/24.2.0) (2024-02-19)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/24.1.0...24.2.0)
+
+**Implemented enhancements:**
+
+- Mark compatible with puppet/redis 10.x [\#1153](https://github.com/theforeman/puppet-foreman/pull/1153) ([ekohl](https://github.com/ekohl))
+- Support EL9 [\#1152](https://github.com/theforeman/puppet-foreman/pull/1152) ([ekohl](https://github.com/ekohl))
+- Add hiera data manager \(HDM\) plugin [\#1149](https://github.com/theforeman/puppet-foreman/pull/1149) ([tuxmea](https://github.com/tuxmea))
+- Only install dnf module on EL8 [\#1147](https://github.com/theforeman/puppet-foreman/pull/1147) ([ekohl](https://github.com/ekohl))
+
 ## [24.1.0](https://github.com/theforeman/puppet-foreman/tree/24.1.0) (2023-11-29)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/24.0.0...24.1.0)
