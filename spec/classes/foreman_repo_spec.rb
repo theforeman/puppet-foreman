@@ -25,7 +25,7 @@ describe 'foreman::repo' do
           if facts[:osfamily] == 'RedHat'
             is_expected.to contain_package('foreman').with_ensure('el8').with_provider('dnfmodule')
           else
-            is_expected.not_to contain_package('ruby')
+            is_expected.not_to contain_package('foreman')
           end
         end
       end
