@@ -22,7 +22,7 @@ describe 'foreman::repo' do
         }
 
         it do
-          if facts[:osfamily] == 'RedHat'
+          if facts[:osfamily] == 'RedHat' && facts[:os]['release']['major'] == '8'
             is_expected.to contain_package('foreman').with_ensure('el8').with_provider('dnfmodule')
           else
             is_expected.not_to contain_package('foreman')
