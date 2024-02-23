@@ -99,7 +99,7 @@ class foreman::config::apache (
   Pattern['^(https?|unix)://'] $proxy_backend = 'unix:///run/foreman.sock',
   Boolean $proxy_add_headers = true,
   Hash $proxy_params = { 'retry' => '0' },
-  Array[String] $proxy_no_proxy_uris = ['/pulp', '/pub', '/icons', '/server-status'],
+  Array[String] $proxy_no_proxy_uris = ['/pulp', '/pub', '/icons', '/images', '/server-status'],
   Boolean $proxy_assets = false,
   Boolean $ssl = false,
   Optional[Stdlib::Absolutepath] $ssl_ca = undef,

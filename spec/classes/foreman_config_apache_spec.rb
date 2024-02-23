@@ -63,7 +63,7 @@ describe 'foreman::config::apache' do
             'unset REMOTE_USER_GROUPS'
           ])
           .with_proxy_pass(
-            "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/server-status', '/webpack', '/assets'],
+            "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/images', '/server-status', '/webpack', '/assets'],
             "path"          => '/',
             "url"           => 'unix:///run/foreman.sock|http://foreman/',
             "params"        => { "retry" => '0' },
@@ -136,7 +136,7 @@ describe 'foreman::config::apache' do
 
         it { should contain_apache__vhost('foreman')
             .with_proxy_pass(
-              "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/server-status'],
+              "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/images', '/server-status'],
               "path"          => '/',
               "url"           => 'unix:///run/foreman.sock|http://foreman/',
               "params"        => { "retry" => '0' },
@@ -200,7 +200,7 @@ describe 'foreman::config::apache' do
             ])
             .with_ssl_proxyengine(true)
             .with_proxy_pass(
-              "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/server-status', '/webpack', '/assets'],
+              "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/images', '/server-status', '/webpack', '/assets'],
               "path"          => '/',
               "url"           => 'unix:///run/foreman.sock|http://foreman/',
               "params"        => { "retry" => '0' },
