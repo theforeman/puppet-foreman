@@ -132,6 +132,9 @@
 # $ipa_manage_sssd::              If ipa_authentication is true, should the installer manage SSSD? You can disable it
 #                                 if you use another module for SSSD configuration
 #
+# $ipa_sssd_default_realm::       If ipa_manage_sssd is true, set default_domain_suffix option in sssd configuration to this value
+#                                 to allow logging in without having to provide the domain name.
+#
 # $websockets_encrypt::           Whether to encrypt websocket connections
 #
 # $websockets_ssl_key::           SSL key file to use when encrypting websocket connections
@@ -260,6 +263,7 @@ class foreman (
   Boolean $gssapi_local_name = true,
   String $pam_service = 'foreman',
   Boolean $ipa_manage_sssd = true,
+  Optional[String] $ipa_sssd_default_realm = undef,
   Boolean $websockets_encrypt = true,
   Optional[Stdlib::Absolutepath] $websockets_ssl_key = undef,
   Optional[Stdlib::Absolutepath] $websockets_ssl_cert = undef,

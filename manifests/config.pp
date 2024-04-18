@@ -238,16 +238,22 @@ class foreman::config {
         $sssd_ldap_user_extra_attrs = join(unique(pick($sssd['ldap_user_extra_attrs'], []) + ['email:mail', 'lastname:sn', 'firstname:givenname']), ', ')
         $sssd_allowed_uids = join(unique(pick($sssd['allowed_uids'], []) + [$apache::user, 'root']), ', ')
         $sssd_user_attributes = join(unique(pick($sssd['user_attributes'], []) + ['+email', '+firstname', '+lastname']), ', ')
+        $sssd_ifp_extra_attributes = [
+          "set target[.=~regexp('domain/.*')]/ldap_user_extra_attrs '${sssd_ldap_user_extra_attrs}'",
+          "set target[.='sssd']/services '${sssd_services}'",
+          'set target[.=\'ifp\'] \'ifp\'',
+          "set target[.='ifp']/allowed_uids '${sssd_allowed_uids}'",
+          "set target[.='ifp']/user_attributes '${sssd_user_attributes}'",
+        ]
+
+        $sssd_changes = $sssd_ifp_extra_attributes + ($foreman::ipa_sssd_default_realm ? {
+            undef => [],
+            default => ["set target[.='sssd']/default_domain_suffix '${$foreman::ipa_sssd_default_realm}'"],
+        })
 
         augeas { 'sssd-ifp-extra-attributes':
           context => '/files/etc/sssd/sssd.conf',
-          changes => [
-            "set target[.=~regexp('domain/.*')]/ldap_user_extra_attrs '${sssd_ldap_user_extra_attrs}'",
-            "set target[.='sssd']/services '${sssd_services}'",
-            'set target[.=\'ifp\'] \'ifp\'',
-            "set target[.='ifp']/allowed_uids '${sssd_allowed_uids}'",
-            "set target[.='ifp']/user_attributes '${sssd_user_attributes}'",
-          ],
+          changes => $sssd_changes,
           notify  => Service['sssd'],
         }
       }
