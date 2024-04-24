@@ -84,8 +84,8 @@
 #
 # $db_root_cert::                 Root cert used to verify SSL connection to postgres
 #
-# $db_pool::                      Database 'production' size of connection pool. When running as a reverse proxy,
-#                                 the value of `$foreman_service_puma_threads_max` is used if it's higher than `$db_pool`.
+# $db_pool::                      Database 'production' size of connection pool. If the value is not set, it will be
+#                                 set by default to the amount of puma threads + 4 (for internal system threads)
 #
 # $db_manage_rake::               if enabled, will run rake jobs, which depend on the database
 #
@@ -226,7 +226,7 @@ class foreman (
   String[1] $db_password = $foreman::params::db_password,
   Optional[String[1]] $db_sslmode = undef,
   Optional[String[1]] $db_root_cert = undef,
-  Integer[0] $db_pool = 5,
+  Optional[Integer[0]] $db_pool = undef,
   Boolean $db_manage_rake = true,
   Stdlib::Port $server_port = 80,
   Stdlib::Port $server_ssl_port = 443,
