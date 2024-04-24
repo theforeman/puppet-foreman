@@ -199,7 +199,7 @@ describe 'foreman' do
             db_username: 'foreman',
             db_password: 'secret',
             db_sslmode: 'prefer',
-            db_pool: 5,
+            db_pool: 9,
             db_manage_rake: true,
             server_port: 80,
             server_ssl_port: 443,
