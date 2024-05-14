@@ -98,11 +98,13 @@ class foreman::config {
     )
   )
   $min_puma_threads = pick($foreman::foreman_service_puma_threads_min, $foreman::foreman_service_puma_threads_max)
-  systemd::dropin_file { 'foreman-service':
-    filename       => 'installer.conf',
-    unit           => "${foreman::foreman_service}.service",
-    content        => template('foreman/foreman.service-overrides.erb'),
-    notify_service => true,
+  if $foreman::deployment_mode == 'package' {
+    systemd::dropin_file { 'foreman-service':
+      filename       => 'installer.conf',
+      unit           => "${foreman::foreman_service}.service",
+      content        => template('foreman/foreman.service-overrides.erb'),
+      notify_service => true,
+    }
   }
 
   if ! defined(File[$foreman::app_root]) {
@@ -153,7 +155,13 @@ class foreman::config {
   }
 
   if $foreman::apache {
-    $listen_socket = '/run/foreman.sock'
+    if $foreman::deployment_mode == 'container' {
+      $listen_socket = 'localhost:3000/'
+      $backend_protocol = 'http'
+    } else {
+      $listen_socket = '/run/foreman.sock'
+      $backend_protocol = 'unix'
+    }
 
     class { 'foreman::config::apache':
       app_root           => $foreman::app_root,
@@ -162,7 +170,7 @@ class foreman::config {
       serveraliases      => $foreman::serveraliases,
       server_port        => $foreman::server_port,
       server_ssl_port    => $foreman::server_ssl_port,
-      proxy_backend      => "unix://${listen_socket}",
+      proxy_backend      => "${backend_protocol}://${listen_socket}",
       ssl                => $foreman::ssl,
       ssl_ca             => $foreman::server_ssl_ca,
       ssl_chain          => $foreman::server_ssl_chain,
@@ -280,11 +288,13 @@ class foreman::config {
     $foreman_socket_override = undef
   }
 
-  systemd::dropin_file { 'foreman-socket':
-    ensure         => bool2str($foreman_socket_override =~ Undef, 'absent', 'present'),
-    filename       => 'installer.conf',
-    unit           => "${foreman::foreman_service}.socket",
-    content        => $foreman_socket_override,
-    notify_service => true,
+  if $foreman::deployment_mode == 'package' {
+    systemd::dropin_file { 'foreman-socket':
+      ensure         => bool2str($foreman_socket_override =~ Undef, 'absent', 'present'),
+      filename       => 'installer.conf',
+      unit           => "${foreman::foreman_service}.socket",
+      content        => $foreman_socket_override,
+      notify_service => true,
+    }
   }
 }

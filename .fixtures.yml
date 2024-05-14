@@ -6,6 +6,9 @@ fixtures:
     concat: 'https://github.com/puppetlabs/puppetlabs-concat'
     cron_core: 'https://github.com/puppetlabs/puppetlabs-cron_core'
     extlib: 'https://github.com/voxpupuli/puppet-extlib'
+    podman:
+      repo: 'https://github.com/evgeni/puppet-podman'
+      branch: 'quadlet'
     postgresql: 'https://github.com/puppetlabs/puppetlabs-postgresql'
     puppet: 'https://github.com/theforeman/puppet-puppet'
     redis: 'https://github.com/voxpupuli/puppet-redis'
