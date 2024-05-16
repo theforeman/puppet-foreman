@@ -1,5 +1,28 @@
 # Changelog
 
+## [25.0.0](https://github.com/theforeman/puppet-foreman/tree/25.0.0) (2024-05-16)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/24.2.0...25.0.0)
+
+**Breaking changes:**
+
+- Fixes [\#33974](https://projects.theforeman.org/issues/33974) - Change the pool size to threads + 4 [\#1161](https://github.com/theforeman/puppet-foreman/pull/1161) ([ShimShtein](https://github.com/ShimShtein))
+- Refs [\#37296](https://projects.theforeman.org/issues/37296) - Drop foreman-hooks [\#1159](https://github.com/theforeman/puppet-foreman/pull/1159) ([adamruzicka](https://github.com/adamruzicka))
+- Refs [\#37212](https://projects.theforeman.org/issues/37212) - Drop foreman\_setup plugin support [\#1155](https://github.com/theforeman/puppet-foreman/pull/1155) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Allow puppet/redis 11.x [\#1163](https://github.com/theforeman/puppet-foreman/pull/1163) ([evgeni](https://github.com/evgeni))
+- Allow puppet/systemd 7.x [\#1162](https://github.com/theforeman/puppet-foreman/pull/1162) ([gcoxmoz](https://github.com/gcoxmoz))
+- Fixes [\#35832](https://projects.theforeman.org/issues/35832) - set default\_domain\_suffix in sssd.conf [\#1160](https://github.com/theforeman/puppet-foreman/pull/1160) ([adamruzicka](https://github.com/adamruzicka))
+- Add support for Debian 12 [\#1158](https://github.com/theforeman/puppet-foreman/pull/1158) ([evgeni](https://github.com/evgeni))
+- Allow puppetlabs/apache 12.x [\#1157](https://github.com/theforeman/puppet-foreman/pull/1157) ([evgeni](https://github.com/evgeni))
+- Add support for Ubuntu 22.04 [\#1156](https://github.com/theforeman/puppet-foreman/pull/1156) ([evgeni](https://github.com/evgeni))
+
+**Fixed bugs:**
+
+- Fixes [\#37211](https://projects.theforeman.org/issues/37211) - Add ProxyPass for /images to support avatars [\#1154](https://github.com/theforeman/puppet-foreman/pull/1154) ([dgoetz](https://github.com/dgoetz))
+
 ## [24.2.0](https://github.com/theforeman/puppet-foreman/tree/24.2.0) (2024-02-19)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/24.1.0...24.2.0)
