@@ -39,7 +39,7 @@ class foreman::service (
 
   service { "${foreman_service}.socket":
     ensure => bool2str($deployment_mode == 'package', $foreman_service_ensure, 'stopped'),
-    enable => bool2str($deployment_mode == 'package', $foreman_service_enable, 'false'),
+    enable => $foreman_service_enable and $deployment_mode == 'package',
   }
 
   service { $foreman_service:
