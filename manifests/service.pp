@@ -37,41 +37,47 @@ class foreman::service (
     }
   }
 
-  if $deployment_mode == 'package' {
-    service { "${foreman_service}.socket":
-      ensure => $foreman_service_ensure,
-      enable => $foreman_service_enable,
-    }
+  service { "${foreman_service}.socket":
+    ensure => bool2str($deployment_mode == 'package', $foreman_service_ensure, 'stopped'),
+    enable => bool2str($deployment_mode == 'package', $foreman_service_enable, 'false'),
+  }
 
-    service { $foreman_service:
+  if $deployment_mode == 'package' {
+    # podman::quadlet already creates a service with the same name
+    service { "${foreman_service}.service":
       ensure => $foreman_service_ensure,
       enable => $foreman_service_enable,
       before => Service["${foreman_service}.socket"],
     }
-  } else {
+  }
+
+  if $deployment_mode == 'container' {
     file { '/etc/containers/systemd':
       ensure => directory,
     }
-    podman::quadlet { 'foreman.container':
-      ensure          => present,
-      unit_entry      => {
-        'Description' => 'Foreman',
-      },
-      service_entry   => {
-        'TimeoutStartSec' => '900',
-      },
-      container_entry => {
-        'Image'         => $container_image,
-        'Volume'        => ['/etc/foreman/:/etc/foreman/'],
-        'AddCapability' => ['CAP_DAC_OVERRIDE', 'CAP_IPC_OWNER'],
-        'Network'       => 'host',
-        'HostName'      => $foreman::servername,
-        'Notify'        => true,
-      },
-      install_entry   => {
-        'WantedBy' => 'default.target',
-      },
-      active          => true,
-    }
+  }
+
+  $quadlet_active = $deployment_mode ? { 'container' => true, default => undef }
+
+  podman::quadlet { 'foreman.container':
+    ensure          => bool2str($deployment_mode == 'container', 'present', 'absent'),
+    unit_entry      => {
+      'Description' => 'Foreman',
+    },
+    service_entry   => {
+      'TimeoutStartSec' => '900',
+    },
+    container_entry => {
+      'Image'         => $container_image,
+      'Volume'        => ['/etc/foreman/:/etc/foreman/'],
+      'AddCapability' => ['CAP_DAC_OVERRIDE', 'CAP_IPC_OWNER'],
+      'Network'       => 'host',
+      'HostName'      => $foreman::servername,
+      'Notify'        => true,
+    },
+    install_entry   => {
+      'WantedBy' => 'default.target',
+    },
+    active          => $quadlet_active,
   }
 }

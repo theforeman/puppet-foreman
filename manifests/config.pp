@@ -98,13 +98,12 @@ class foreman::config {
     )
   )
   $min_puma_threads = pick($foreman::foreman_service_puma_threads_min, $foreman::foreman_service_puma_threads_max)
-  if $foreman::deployment_mode == 'package' {
-    systemd::dropin_file { 'foreman-service':
-      filename       => 'installer.conf',
-      unit           => "${foreman::foreman_service}.service",
-      content        => template('foreman/foreman.service-overrides.erb'),
-      notify_service => true,
-    }
+  systemd::dropin_file { 'foreman-service':
+    ensure         => bool2str($foreman::deployment_mode == 'package', 'present', 'absent'),
+    filename       => 'installer.conf',
+    unit           => "${foreman::foreman_service}.service",
+    content        => template('foreman/foreman.service-overrides.erb'),
+    notify_service => true,
   }
 
   if ! defined(File[$foreman::app_root]) {
@@ -288,13 +287,11 @@ class foreman::config {
     $foreman_socket_override = undef
   }
 
-  if $foreman::deployment_mode == 'package' {
-    systemd::dropin_file { 'foreman-socket':
-      ensure         => bool2str($foreman_socket_override =~ Undef, 'absent', 'present'),
-      filename       => 'installer.conf',
-      unit           => "${foreman::foreman_service}.socket",
-      content        => $foreman_socket_override,
-      notify_service => true,
-    }
+  systemd::dropin_file { 'foreman-socket':
+    ensure         => bool2str($foreman_socket_override =~ Undef or $foreman::deployment_mode != 'package', 'absent', 'present'),
+    filename       => 'installer.conf',
+    unit           => "${foreman::foreman_service}.socket",
+    content        => $foreman_socket_override,
+    notify_service => true,
   }
 }
