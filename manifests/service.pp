@@ -42,22 +42,19 @@ class foreman::service (
     enable => bool2str($deployment_mode == 'package', $foreman_service_enable, 'false'),
   }
 
-  if $deployment_mode == 'package' {
-    # podman::quadlet already creates a service with the same name
-    service { "${foreman_service}.service":
-      ensure => $foreman_service_ensure,
-      enable => $foreman_service_enable,
-      before => Service["${foreman_service}.socket"],
-    }
+  service { $foreman_service:
+    ensure => $foreman_service_ensure,
+    enable => $foreman_service_enable,
+    before => Service["${foreman_service}.socket"],
   }
 
   if $deployment_mode == 'container' {
     file { '/etc/containers/systemd':
       ensure => directory,
     }
+    File['/etc/containers/systemd/foreman.container'] ~> Service[$foreman_service]
+    Systemd::Daemon_reload['foreman.container'] ~> Service[$foreman_service]
   }
-
-  $quadlet_active = $deployment_mode ? { 'container' => true, default => undef }
 
   podman::quadlet { 'foreman.container':
     ensure          => bool2str($deployment_mode == 'container', 'present', 'absent'),
@@ -78,6 +75,6 @@ class foreman::service (
     install_entry   => {
       'WantedBy' => 'default.target',
     },
-    active          => $quadlet_active,
+    # don't set active true here, it makes podman::quadlet create a service that clashes with ours
   }
 }
