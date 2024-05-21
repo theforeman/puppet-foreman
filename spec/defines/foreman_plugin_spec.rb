@@ -14,7 +14,7 @@ describe 'foreman::plugin' do
       context 'no parameters' do
         package_name = case facts[:osfamily]
                        when 'RedHat'
-                         facts[:os]['release']['major'] == '7' ? 'tfm-rubygem-foreman_myplugin' : 'rubygem-foreman_myplugin'
+                         'rubygem-foreman_myplugin'
                        when 'Debian'
                          'ruby-foreman-myplugin'
                        end
