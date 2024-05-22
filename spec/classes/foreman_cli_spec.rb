@@ -115,7 +115,7 @@ describe 'foreman::cli' do
           class { 'foreman':
             initial_admin_username => 'jane',
             initial_admin_password => 'supersecret',
-            foreman_url            => 'https://foreman.example.com',
+            servername             => 'foreman.example.com',
             server_ssl_chain       => '/etc/puppetlabs/puppet/ssl/certs/ca.pub',
           }
           PUPPET

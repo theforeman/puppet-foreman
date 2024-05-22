@@ -3,8 +3,6 @@
 class foreman::params inherits foreman::globals {
   $lower_fqdn = downcase($facts['networking']['fqdn'])
 
-  # Basic configurations
-  $foreman_url      = "https://${lower_fqdn}"
   # Server name of the VirtualHost
   $servername     = $facts['networking']['fqdn']
 
