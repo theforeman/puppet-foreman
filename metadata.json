@@ -77,6 +77,13 @@
       "operatingsystemrelease": [
         "20.04"
       ]
+    },
+    {
+      "operatingsystem": "AlmaLinux",
+      "operatingsystemrelease": [
+        "8",
+        "9"
+      ]
     }
   ]
 }
