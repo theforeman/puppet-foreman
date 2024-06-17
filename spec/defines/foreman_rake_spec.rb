@@ -22,7 +22,7 @@ describe 'foreman::rake' do
           .with_command('/usr/sbin/foreman-rake db:migrate')
           .with_user('foreman')
           .with_environment(['HOME=/usr/share/foreman'])
-          .with_logoutput('on_failure')
+          .with_logoutput(true)
           .with_refreshonly(true)
           .with_timeout(nil)
           .with_unless(nil)
@@ -37,7 +37,7 @@ describe 'foreman::rake' do
           .with_command('/usr/sbin/foreman-rake db:migrate')
           .with_user('foreman')
           .with_environment(['HOME=/usr/share/foreman', 'SEED_USER=admin'])
-          .with_logoutput('on_failure')
+          .with_logoutput(true)
           .with_refreshonly(true)
       end
     end
@@ -51,7 +51,7 @@ describe 'foreman::rake' do
           .with_user('foreman')
           .with_environment(['HOME=/usr/share/foreman'])
           .with_timeout(60)
-          .with_logoutput('on_failure')
+          .with_logoutput(true)
           .with_refreshonly(true)
       end
     end
@@ -64,7 +64,7 @@ describe 'foreman::rake' do
           .with_command('/usr/sbin/foreman-rake db:migrate')
           .with_user('foreman')
           .with_environment(['HOME=/usr/share/foreman'])
-          .with_logoutput('on_failure')
+          .with_logoutput(true)
           .with_refreshonly(false)
           .with_unless('/usr/bin/true')
       end
