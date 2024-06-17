@@ -22,7 +22,7 @@ define foreman::rake (
     command     => "/usr/sbin/foreman-rake ${title}",
     user        => $user,
     environment => sort(join_keys_to_values({ 'HOME' => $app_root } + $environment, '=')),
-    logoutput   => 'on_failure',
+    logoutput   => true,
     refreshonly => $unless =~ Undef,
     timeout     => $timeout,
     unless      => $unless,
