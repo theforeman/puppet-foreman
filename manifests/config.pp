@@ -191,14 +191,6 @@ class foreman::config {
         }
       }
 
-      if $foreman::ipa_manage_sssd {
-        service { 'sssd':
-          ensure  => running,
-          enable  => true,
-          require => Package['sssd-dbus'],
-        }
-      }
-
       file { "/etc/pam.d/${foreman::pam_service}":
         ensure  => file,
         owner   => root,
@@ -245,6 +237,12 @@ class foreman::config {
           context => '/files/etc/sssd/sssd.conf',
           changes => $sssd_changes,
           notify  => Service['sssd'],
+        }
+
+        service { 'sssd':
+          ensure  => running,
+          enable  => true,
+          require => Package['sssd-dbus'],
         }
       }
 

@@ -3,7 +3,7 @@
   Stdlib::Absolutepath $keytab,
   Boolean $gssapi_local_name,
   Boolean $ipa_authentication_api,
--%>
+|-%>
 
 <Location /users/login>
   InterceptFormPAMService <%= $pam_service %>
@@ -42,7 +42,7 @@
 
 <LocationMatch ^/api(/v2)?/users/extlogin/?$>
   SSLRequireSSL
-  <% if $ipa_authentication_api -%>
+  <% if $ipa_authentication_api { -%>
   <If "%{HTTP:Authorization} =~ /^Basic/">
     AuthType Basic
     AuthName "PAM Authentication"
@@ -56,12 +56,12 @@
     GssapiSSLonly On
     GssapiLocalName <%= apache::bool2httpd($gssapi_local_name) %>
   </Else>
-  <% else -%>
+  <% } else { -%>
   AuthType Basic
   AuthName "PAM Authentication"
   AuthBasicProvider PAM
   AuthPAMService <%= $pam_service %>
-  <% end -%>
+  <% } -%>
   require pam-account <%= $pam_service %>
   ErrorDocument 401 '{ "error": "External authentication did not pass." }'
   # The following is needed as a workaround for https://bugzilla.redhat.com/show_bug.cgi?id=1020087
