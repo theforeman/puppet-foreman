@@ -52,7 +52,7 @@ describe 'foreman::cli' do
               .with_content(
                 <<~CONFIG
                   :foreman:
-                    # Credentials. You'll be asked for the interactively if you leave them blank here
+                    # Credentials. You'll be asked for them interactively if you leave them blank here
                     :username: 'joe'
                     :password: 'secret'
                 CONFIG
@@ -161,7 +161,7 @@ describe 'foreman::cli' do
             .with_content(
               <<~CONFIG
                 :foreman:
-                  # Credentials. You'll be asked for the interactively if you leave them blank here
+                  # Credentials. You'll be asked for them interactively if you leave them blank here
                   :username: 'jane'
                   :password: 'supersecret'
               CONFIG

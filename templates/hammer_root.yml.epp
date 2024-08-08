@@ -3,6 +3,6 @@
   Optional[String] $password,
 | -%>
 :foreman:
-  # Credentials. You'll be asked for the interactively if you leave them blank here
+  # Credentials. You'll be asked for them interactively if you leave them blank here
   :username: '<%= $username %>'
   :password: '<%= $password %>'
