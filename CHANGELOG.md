@@ -1,5 +1,15 @@
 # Changelog
 
+## [25.1.0](https://github.com/theforeman/puppet-foreman/tree/25.1.0) (2024-08-12)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/25.0.0...25.1.0)
+
+**Implemented enhancements:**
+
+- always log foreman-rake output [\#1170](https://github.com/theforeman/puppet-foreman/pull/1170) ([evgeni](https://github.com/evgeni))
+- Update puppet\_metadata to ~\> 4.0 and voxpupuli-acceptance to ~\> 3.0 [\#1169](https://github.com/theforeman/puppet-foreman/pull/1169) ([archanaserver](https://github.com/archanaserver))
+- Add AlmaLinux 8 & 9 support [\#1168](https://github.com/theforeman/puppet-foreman/pull/1168) ([archanaserver](https://github.com/archanaserver))
+
 ## [25.0.0](https://github.com/theforeman/puppet-foreman/tree/25.0.0) (2024-05-16)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/24.2.0...25.0.0)
