@@ -1,5 +1,17 @@
 # Changelog
 
+## [25.2.0](https://github.com/theforeman/puppet-foreman/tree/25.2.0) (2024-08-14)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/25.1.0...25.2.0)
+
+**Implemented enhancements:**
+
+- Allow forcing fact upload when host already exists [\#1175](https://github.com/theforeman/puppet-foreman/pull/1175) ([evgeni](https://github.com/evgeni))
+
+**Fixed bugs:**
+
+- Fix a typo in hammer\_root.yml.epp [\#1173](https://github.com/theforeman/puppet-foreman/pull/1173) ([asteflova](https://github.com/asteflova))
+
 ## [25.1.0](https://github.com/theforeman/puppet-foreman/tree/25.1.0) (2024-08-12)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/25.0.0...25.1.0)
