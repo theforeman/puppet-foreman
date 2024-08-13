@@ -11,4 +11,8 @@ Puppet::Type.newtype(:foreman_host) do
 
     defaultto { $facts }
   end
+
+  newparam(:force_fact_upload) do
+    desc 'Force fact upload when host already exists'
+  end
 end
