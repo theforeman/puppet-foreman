@@ -2,7 +2,7 @@ Puppet::Type.type(:foreman_host).provide(:rest_v3, :parent => Puppet::Type.type(
   confine :feature => [:json, :oauth]
 
   def exists?
-    !id.nil?
+    !resource[:force_fact_upload] && !id.nil?
   end
 
   def create
