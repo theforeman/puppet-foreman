@@ -70,8 +70,8 @@ describe 'foreman::plugin::remote_execution::cockpit' do
           is_expected.to contain_foreman__config__apache__fragment('cockpit')
             .without_content
             .with_ssl_content(%r{^<Location /webcon>$})
-            .with_ssl_content(%r{^  RewriteRule /webcon/\(\.\*\)           ws://127\.0\.0\.1:19090/webcon/\$1 \[P\]$})
-            .with_ssl_content(%r{^  RewriteRule /webcon/\(\.\*\)           http://127\.0\.0\.1:19090/webcon/\$1 \[P\]$})
+            .with_ssl_content(%r{^  RewriteRule /webcon/\(\.\*\)           ws://127\.0\.0\.1:19090/webcon/\$1 \[P,UnsafeAllow3F\]$})
+            .with_ssl_content(%r{^  RewriteRule /webcon/\(\.\*\)           http://127\.0\.0\.1:19090/webcon/\$1 \[P,UnsafeAllow3F\]$})
         end
       end
 
