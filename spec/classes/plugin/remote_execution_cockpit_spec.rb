@@ -71,7 +71,7 @@ describe 'foreman::plugin::remote_execution::cockpit' do
             .without_content
             .with_ssl_content(%r{^<Location /webcon>$})
             .with_ssl_content(%r{^  RewriteRule /webcon/\(\.\*\)           ws://127\.0\.0\.1:19090/webcon/\$1 \[P\]$})
-            .with_ssl_content(%r{^  RewriteRule /webcon/\(\.\*\)           http://127\.0\.0\.1:19090/webcon/\$1 \[P\]$})
+            .with_ssl_content(%r{^  ProxyPass http://127\.0\.0\.1:19090/webcon$})
         end
       end
 

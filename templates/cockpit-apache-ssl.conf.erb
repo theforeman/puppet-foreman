@@ -6,6 +6,6 @@
   RewriteEngine On
   RewriteCond %{HTTP:Upgrade} =websocket [NC]
   RewriteRule <%= @cockpit_path %>/(.*)           ws://<%= @cockpit_host %>:<%= @cockpit_port %><%= @cockpit_path %>/$1 [P]
-  RewriteCond %{HTTP:Upgrade} !=websocket [NC]
-  RewriteRule <%= @cockpit_path %>/(.*)           http://<%= @cockpit_host %>:<%= @cockpit_port %><%= @cockpit_path %>/$1 [P]
+
+  ProxyPass http://<%= @cockpit_host %>:<%= @cockpit_port %><%= @cockpit_path %>
 </Location>
