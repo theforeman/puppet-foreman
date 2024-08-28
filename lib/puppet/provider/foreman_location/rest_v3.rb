@@ -48,9 +48,9 @@ Puppet::Type.type(:foreman_location).provide( # rubocop:disable Metrics/BlockLen
         name: resource[:name],
         parent_id: resource[:parent] ? location_id(resource[:parent]) : nil,
         description: resource[:description],
+        ignore_types: resource[:select_all_types],
         domain_ids: domain_ids(resource[:domains]),
-        organization_ids: organization_ids(resource[:organizations]),
-        ignore_types: resource[:select_all_types]
+        organization_ids: organization_ids(resource[:organizations])
       }
     }
     req = request(:post, path, {}, payload.to_json)
@@ -95,10 +95,8 @@ Puppet::Type.type(:foreman_location).provide( # rubocop:disable Metrics/BlockLen
       @property_flush[:parent_id] = nil
     else
       parent_id = location_id(value)
-      if parent_id.nil?
-        raise Puppet::Error,
-              "Could not find Foreman Location with name #{value} as parent for Location with name #{resource[:name]}"
-      end
+
+      raise Puppet::Error, "Could not find Foreman Location with name #{value} as parent." if parent_id.nil?
 
       @property_flush[:parent_id] = parent_id
     end
