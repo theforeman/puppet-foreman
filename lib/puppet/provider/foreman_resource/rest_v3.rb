@@ -131,4 +131,15 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
       JSON.parse(response.body)['error']['full_messages'].join(' ') rescue "Response: #{response.code} #{response.message}"
     end
   end
+
+  def search(resource, key, value)
+    path = "api/v2/#{resource}"
+    req = request(:get, path, search: %(#{key}="#{value}"))
+
+    unless success?(req)
+      raise Puppet::Error, "Error making GET request to Foreman at #{request_uri(path)}: #{error_message(req)}"
+    end
+
+    JSON.parse(req.body)['results']
+  end
 end
