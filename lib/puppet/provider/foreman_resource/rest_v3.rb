@@ -134,7 +134,7 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
 
   def search(resource, key, value)
     path = "api/v2/#{resource}"
-    req = request(:get, path, search: %(#{key}="#{value}"))
+    req = request(:get, path, { search: %(#{key}="#{value}"), per_page: 'all' })
 
     unless success?(req)
       raise Puppet::Error, "Error making GET request to Foreman at #{request_uri(path)}: #{error_message(req)}"
