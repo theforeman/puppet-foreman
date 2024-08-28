@@ -150,7 +150,7 @@ Puppet::Type.type(:foreman_organization).provide( # rubocop:disable Metrics/Bloc
 
       raise Puppet::Error, "Could not find Foreman Location with name '#{location}'" if location_id.nil?
 
-      lococation_id
+      location_id
     end
   end
 
