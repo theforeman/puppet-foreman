@@ -142,4 +142,14 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
 
     JSON.parse(req.body)['results']
   end
+
+  def location_id(name)
+    res = search('locations', 'name', name).first
+    res.nil? ? nil : res['id']
+  end
+
+  def organization_id(name)
+    res = search('organizations', 'name', name).first
+    res.nil? ? nil : res['id']
+  end
 end
