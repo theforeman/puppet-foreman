@@ -32,9 +32,9 @@ describe Puppet::Type.type(:foreman_location).provider(:rest_v3) do # rubocop:di
           'name' => 'example_location',
           'parent_id' => nil,
           'description' => nil,
+          'ignore_types' => nil,
           'domain_ids' => nil,
-          'organization_ids' => nil,
-          'ignore_types' => nil
+          'organization_ids' => nil
         }
       }.to_json
     end
@@ -58,9 +58,9 @@ describe Puppet::Type.type(:foreman_location).provider(:rest_v3) do # rubocop:di
             'name' => 'example_location',
             'parent_id' => 101,
             'description' => nil,
+            'ignore_types' => nil,
             'domain_ids' => nil,
-            'organization_ids' => nil,
-            'ignore_types' => nil
+            'organization_ids' => nil
           }
         }.to_json
       end
@@ -86,9 +86,9 @@ describe Puppet::Type.type(:foreman_location).provider(:rest_v3) do # rubocop:di
             'name' => 'example_location',
             'parent_id' => nil,
             'description' => 'example description',
+            'ignore_types' => nil,
             'domain_ids' => nil,
-            'organization_ids' => nil,
-            'ignore_types' => nil
+            'organization_ids' => nil
           }
         }.to_json
       end
@@ -113,9 +113,9 @@ describe Puppet::Type.type(:foreman_location).provider(:rest_v3) do # rubocop:di
             'name' => 'example_location',
             'parent_id' => nil,
             'description' => nil,
+            'ignore_types' => nil,
             'domain_ids' => [301, 302],
-            'organization_ids' => nil,
-            'ignore_types' => nil
+            'organization_ids' => nil
           }
         }.to_json
       end
@@ -141,9 +141,9 @@ describe Puppet::Type.type(:foreman_location).provider(:rest_v3) do # rubocop:di
             'name' => 'example_location',
             'parent_id' => nil,
             'description' => nil,
+            'ignore_types' => nil,
             'domain_ids' => nil,
-            'organization_ids' => [201, 202],
-            'ignore_types' => nil
+            'organization_ids' => [201, 202]
           }
         }.to_json
       end
@@ -170,9 +170,9 @@ describe Puppet::Type.type(:foreman_location).provider(:rest_v3) do # rubocop:di
             'name' => 'example_location',
             'parent_id' => nil,
             'description' => nil,
+            'ignore_types' => %w[SmartProxies],
             'domain_ids' => nil,
-            'organization_ids' => nil,
-            'ignore_types' => %w[SmartProxies]
+            'organization_ids' => nil
           }
         }.to_json
       end
