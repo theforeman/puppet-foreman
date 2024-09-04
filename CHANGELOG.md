@@ -1,5 +1,13 @@
 # Changelog
 
+## [25.2.1](https://github.com/theforeman/puppet-foreman/tree/25.2.1) (2024-09-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/25.2.0...25.2.1)
+
+**Fixed bugs:**
+
+- Unset all possible dash/underscore combinations of REMOTE\_USER [\#1181](https://github.com/theforeman/puppet-foreman/pull/1181) ([evgeni](https://github.com/evgeni))
+
 ## [25.2.0](https://github.com/theforeman/puppet-foreman/tree/25.2.0) (2024-08-14)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/25.1.0...25.2.0)
