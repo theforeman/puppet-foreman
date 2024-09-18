@@ -1,5 +1,13 @@
 # Changelog
 
+## [25.2.2](https://github.com/theforeman/puppet-foreman/tree/25.2.2) (2024-09-18)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/24.2.1...25.2.2)
+
+**Fixed bugs:**
+
+- Fixes [\#37761](https://projects.theforeman.org/issues/37761) - use ProxyPass and upgrade=websocket where possible [\#1185](https://github.com/theforeman/puppet-foreman/pull/1185) ([evgeni](https://github.com/evgeni))
+
 ## [25.2.1](https://github.com/theforeman/puppet-foreman/tree/25.2.1) (2024-09-04)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/25.2.0...25.2.1)
