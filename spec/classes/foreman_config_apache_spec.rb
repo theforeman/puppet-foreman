@@ -15,6 +15,16 @@ describe 'foreman::config::apache' do
         end
       end
 
+      let(:proxy_pass_params) do
+        if (facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '8') ||
+          (facts[:os]['name'] == 'Ubuntu' && facts[:os]['release']['major'] == '20.04')
+          { 'retry' => '0' }
+        else
+          { 'retry' => '0', 'upgrade' => 'websocket' }
+        end
+      end
+
+
       it { should compile.with_all_deps }
 
       it 'should include apache with modules' do
@@ -22,8 +32,11 @@ describe 'foreman::config::apache' do
         should contain_apache__mod('expires')
         should contain_class('apache::mod::proxy')
         should contain_class('apache::mod::proxy_http')
-        should contain_class('apache::mod::proxy_wstunnel')
         should contain_class('apache::mod::rewrite')
+        if (facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '8') ||
+            (facts[:os]['name'] == 'Ubuntu' && facts[:os]['release']['major'] == '20.04')
+          should contain_class('apache::mod::proxy_wstunnel')
+        end
       end
 
       it 'does not manage the docroot' do
@@ -79,15 +92,19 @@ describe 'foreman::config::apache' do
             "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/images', '/server-status', '/webpack', '/assets'],
             "path"          => '/',
             "url"           => 'unix:///run/foreman.sock|http://foreman/',
-            "params"        => { "retry" => '0' },
+            "params"        => proxy_pass_params,
           )
-          .with_rewrites([
-            {
-              'comment'      => 'Upgrade Websocket connections',
-              'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
-              'rewrite_rule' => '/(.*) unix:///run/foreman.sock|ws://foreman/$1 [P,L]',
-            },
-          ])
+        if (facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '8') ||
+            (facts[:os]['name'] == 'Ubuntu' && facts[:os]['release']['major'] == '20.04')
+          should contain_apache__vhost('foreman')
+            .with_rewrites([
+              {
+                'comment'      => 'Upgrade Websocket connections',
+                'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
+                'rewrite_rule' => '/(.*) unix:///run/foreman.sock|ws://foreman/$1 [P,L]',
+              },
+            ])
+        end
       end
 
       it 'does not configure the HTTPS vhost' do
@@ -109,8 +126,11 @@ describe 'foreman::config::apache' do
           should contain_apache__mod('expires')
           should contain_class('apache::mod::proxy')
           should contain_class('apache::mod::proxy_http')
-          should contain_class('apache::mod::proxy_wstunnel')
           should contain_class('apache::mod::rewrite')
+          if (facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '8') ||
+              (facts[:os]['name'] == 'Ubuntu' && facts[:os]['release']['major'] == '20.04')
+            should contain_class('apache::mod::proxy_wstunnel')
+          end
         end
       end
 
@@ -152,7 +172,7 @@ describe 'foreman::config::apache' do
               "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/images', '/server-status'],
               "path"          => '/',
               "url"           => 'unix:///run/foreman.sock|http://foreman/',
-              "params"        => { "retry" => '0' },
+              "params"        => proxy_pass_params,
             )
         }
       end
@@ -229,15 +249,19 @@ describe 'foreman::config::apache' do
               "no_proxy_uris" => ['/pulp', '/pub', '/icons', '/images', '/server-status', '/webpack', '/assets'],
               "path"          => '/',
               "url"           => 'unix:///run/foreman.sock|http://foreman/',
-              "params"        => { "retry" => '0' },
+              "params"        => proxy_pass_params,
             )
-            .with_rewrites([
-              {
-                'comment'      => 'Upgrade Websocket connections',
-                'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
-                'rewrite_rule' => '/(.*) unix:///run/foreman.sock|ws://foreman/$1 [P,L]',
-              },
-            ])
+          if (facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '8') ||
+              (facts[:os]['name'] == 'Ubuntu' && facts[:os]['release']['major'] == '20.04')
+            should contain_apache__vhost('foreman-ssl')
+              .with_rewrites([
+                {
+                  'comment'      => 'Upgrade Websocket connections',
+                  'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
+                  'rewrite_rule' => '/(.*) unix:///run/foreman.sock|ws://foreman/$1 [P,L]',
+                },
+              ])
+          end
         end
 
         describe 'with vhost and ssl, no CRL explicitly' do
