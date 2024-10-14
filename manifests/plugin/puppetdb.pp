@@ -15,7 +15,11 @@
 # @param api_version
 #   PuppetDB API version.
 #
+# @param ensure
+#    Specify the package state, or absent/purged to remove it
+#
 class foreman::plugin::puppetdb (
+  Optional[String[1]] $ensure = undef,
   Stdlib::HTTPUrl $address = 'https://localhost:8081/pdb/cmd/v1',
   String $ssl_ca_file = $foreman::params::client_ssl_ca,
   String $ssl_certificate = $foreman::params::client_ssl_cert,
@@ -23,6 +27,7 @@ class foreman::plugin::puppetdb (
   Enum['1', '3', '4'] $api_version = '4',
 ) inherits foreman::params {
   foreman::plugin { 'puppetdb':
+    version => $ensure,
     package => $foreman::params::plugin_prefix.regsubst(/foreman[_-]/, 'puppetdb_foreman'),
   }
 

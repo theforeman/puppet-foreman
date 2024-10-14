@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe 'foreman::plugin::default_hostgroup' do
+  let(:params) { {} }
   include_examples 'basic foreman plugin tests', 'default_hostgroup'
 
   context 'with user provided config hash' do
