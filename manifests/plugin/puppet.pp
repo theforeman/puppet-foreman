@@ -2,7 +2,15 @@
 #
 # This class installs puppet plugin
 #
-class foreman::plugin::puppet {
+#
+# === Advanced parameters:
+#
+# $ensure::              Specify the package state, or absent/purged to remove it
+#
+class foreman::plugin::puppet (
+  Optional[String[1]] $ensure = undef,
+) {
   foreman::plugin { 'puppet':
+    version => $ensure,
   }
 }

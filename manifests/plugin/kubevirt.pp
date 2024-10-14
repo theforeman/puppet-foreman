@@ -1,5 +1,13 @@
 # Installs foreman_kubevirt plugin
-class foreman::plugin::kubevirt {
+#
+# === Advanced parameters:
+#
+# $ensure::              Specify the package state, or absent/purged to remove it
+#
+class foreman::plugin::kubevirt (
+  Optional[String[1]] $ensure = undef,
+) {
   foreman::plugin { 'kubevirt':
+    version => $ensure,
   }
 }

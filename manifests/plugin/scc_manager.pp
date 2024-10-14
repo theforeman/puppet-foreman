@@ -2,7 +2,15 @@
 #
 # This class installs scc_manager plugin
 #
-class foreman::plugin::scc_manager {
+#
+# === Advanced parameters:
+#
+# $ensure::              Specify the package state, or absent/purged to remove it
+#
+class foreman::plugin::scc_manager (
+  Optional[String[1]] $ensure = undef,
+) {
   foreman::plugin { 'scc_manager':
+    version => $ensure,
   }
 }
