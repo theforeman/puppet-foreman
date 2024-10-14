@@ -1,7 +1,7 @@
 # @summary Manages a plugin installation and optionally its configuration
 #
 # @param version
-#   The version to ensure
+#   The version to ensure, or absent/purged to remove it
 #
 # @param package
 #   The package to manage
@@ -43,8 +43,10 @@ define foreman::plugin (
   }
 
   if $config {
+    $config_file_absent = $version in ['absent', 'purged']
+
     file { $config_file:
-      ensure  => bool2str($version == 'absent', 'absent', 'file'),
+      ensure  => bool2str($config_file_absent, 'absent', 'file'),
       owner   => $config_file_owner,
       group   => $config_file_group,
       mode    => $config_file_mode,
