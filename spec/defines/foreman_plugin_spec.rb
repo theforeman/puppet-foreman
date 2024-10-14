@@ -91,6 +91,20 @@ describe 'foreman::plugin' do
         it { is_expected.to contain_package('myplugin').with_ensure('absent') }
         it { is_expected.to contain_file('/etc/foreman/plugins/foreman_myplugin.yaml').with_ensure('absent') }
       end
+
+      context 'ensure purged' do
+        let(:params) do
+          {
+            package: 'myplugin', # fixed to make testing easier
+            version: 'purged',
+            config: 'the config content',
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_package('myplugin').with_ensure('purged') }
+        it { is_expected.to contain_file('/etc/foreman/plugins/foreman_myplugin.yaml').with_ensure('absent') }
+      end
     end
   end
 end
