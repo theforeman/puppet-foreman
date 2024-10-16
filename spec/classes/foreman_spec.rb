@@ -492,7 +492,7 @@ describe 'foreman' do
 
         it 'should configure the database' do
           should contain_file('/etc/foreman/database.yml')
-            .with_content(/password: "secret"/)
+            .with_content(sensitive(/password: "secret"/))
         end
       end
     end
