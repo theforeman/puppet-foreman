@@ -30,6 +30,6 @@
   username: <%= $username %>
 <% } -%>
 <% if $password { -%>
-  password: "<%= $password %>"
+  password: <%= stdlib::to_ruby($password) %>
 <% } -%>
   pool: <%= $db_pool %>
