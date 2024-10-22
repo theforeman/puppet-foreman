@@ -7,12 +7,23 @@ class foreman::config {
   }
 
   if $foreman::dynflow_manage_services {
+    $dynflow_service_filename = '/usr/lib/systemd/system/dynflow-sidekiq@.service'
     if $foreman::dynflow_redis_url != undef {
       $dynflow_redis_url = $foreman::dynflow_redis_url
     } else {
       include redis
       $dynflow_redis_url = "redis://localhost:${redis::port}/6"
       Class['redis'] -> Service <| tag == 'foreman::dynflow::worker' |>
+    }
+
+    file { $dynflow_service_filename:
+      ensure  => file,
+      mode    => '0644',
+      owner   => root,
+      group   => root,
+      content => epp("${module_name}/dynflow-sidekiq@.service.epp", {
+          redis_host => $foreman::dynflow_redis_url,
+      }),
     }
 
     file { '/etc/foreman/dynflow':
