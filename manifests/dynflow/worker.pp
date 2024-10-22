@@ -39,6 +39,15 @@ define foreman::dynflow::worker (
       'queues'      => $queues,
     }
 
+    systemd::dropin_file { "${service}-service":
+      filename       => 'dependencies.conf',
+      unit           => "${service}.service",
+      content        => epp("${module_name}/dynflow-sidekiq-overrides.conf.epp", {
+          redis_host => $foreman::dynflow_redis_url,
+      }),
+      notify_service => true,
+    }
+
     file { $filename:
       ensure  => file,
       owner   => $config_owner,
