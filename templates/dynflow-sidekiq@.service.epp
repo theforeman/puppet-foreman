@@ -1,0 +1,41 @@
+<%- |
+Optional[Redis::RedisUrl]	$redis_host,
+| -%>
+
+# This file is managed by Puppet
+
+[Unit]
+Description=Foreman jobs daemon - %i on sidekiq
+Documentation=https://theforeman.org
+After=network.target remote-fs.target nss-lookup.target
+PartOf=foreman.service
+
+[Service]
+Type=notify
+User=foreman
+TimeoutSec=300
+PrivateTmp=true
+Environment=RAILS_ENV=production
+Environment=DYNFLOW_SIDEKIQ_SCRIPT=/usr/share/foreman/extras/dynflow-sidekiq.rb
+<% if $redis_host { -%>
+Environment=DYNFLOW_REDIS_URL=<%= $redis_host %>
+<% } -%>
+<% else { -%>
+Environment=DYNFLOW_REDIS_URL=redis://localhost:6379/6
+<% } -%>
+Environment=REDIS_PROVIDER=DYNFLOW_REDIS_URL
+# Greatly reduce Ruby memory fragmentation and heap usage
+# https://www.mikeperham.com/2018/04/25/taming-rails-memory-bloat/
+Environment=MALLOC_ARENA_MAX=2
+WorkingDirectory=/usr/share/foreman
+ExecStart=/usr/libexec/foreman/sidekiq-selinux -e ${RAILS_ENV} -r ${DYNFLOW_SIDEKIQ_SCRIPT} -C /etc/foreman/dynflow/%i.yml
+ExecReload=/usr/bin/kill -TSTP $MAINPID
+
+SyslogIdentifier=dynflow-sidekiq@%i
+
+# if we crash, restart
+RestartSec=1
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
