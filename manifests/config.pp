@@ -60,14 +60,14 @@ class foreman::config {
   }
 
   $db_context = {
-    'managed'   => $foreman::db_manage,
-    'rails_env' => $foreman::rails_env,
-    'host'      => $foreman::db_host,
-    'port'      => $foreman::db_port,
-    'sslmode'   => $foreman::db_sslmode_real,
-    'database'  => $foreman::db_database,
-    'username'  => $foreman::db_username,
-    'password'  => $foreman::db_password,
+    'managed'       => $foreman::db_manage,
+    'rails_env'     => $foreman::rails_env,
+    'host'          => $foreman::db_host,
+    'port'          => $foreman::db_port,
+    'sslmode'       => $foreman::db_sslmode_real,
+    'database'      => $foreman::db_database,
+    'username'      => $foreman::db_username,
+    'password'      => $foreman::db_password,
     # Set the pool size to at least the amount of puma threads + 4 threads that are spawned automatically by the process.
     # db_pool is optional, and undef means "use default" and the second part of the max statement will be set.
     # The number 4 is for 4 threads that are spawned internally during the execution:
@@ -76,7 +76,8 @@ class foreman::config {
     # 3. Stomp listener (required by Katello)
     # 4. Puma server listener thread
     # This means for systems without Katello we can reduce the amount of the pool to puma_threads_max + 1
-    'db_pool'   => pick($foreman::db_pool, $foreman::foreman_service_puma_threads_max + 4),
+    'db_pool'       => pick($foreman::db_pool, $foreman::foreman_service_puma_threads_max + 4),
+    'extra_options' => $foreman::db_extra_options,
   }
 
   file { '/etc/foreman/database.yml':
