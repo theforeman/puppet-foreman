@@ -83,7 +83,7 @@ Puppet::Type.type(:foreman_location).provide( # rubocop:disable Metrics/BlockLen
 
     return if success?(req)
 
-    raise Puppet::Error, "Error making PUT request to Foreman at #{request_uri(path)}: #{error_message(r)}"
+    raise Puppet::Error, "Error making PUT request to Foreman at #{request_uri(path)}: #{error_message(req)}"
   end
 
   def parent

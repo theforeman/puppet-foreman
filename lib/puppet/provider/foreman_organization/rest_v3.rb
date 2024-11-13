@@ -83,7 +83,7 @@ Puppet::Type.type(:foreman_organization).provide( # rubocop:disable Metrics/Bloc
 
     return if success?(req)
 
-    raise Puppet::Error, "Error making PUT request to Foreman at #{request_uri(path)}: #{error_message(r)}"
+    raise Puppet::Error, "Error making PUT request to Foreman at #{request_uri(path)}: #{error_message(req)}"
   end
 
   def parent
