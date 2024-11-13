@@ -201,6 +201,7 @@ describe 'foreman' do
             db_password: 'secret',
             db_sslmode: 'prefer',
             db_pool: 9,
+            db_extra_options: { 'target_session_attrs': 'read-write' },
             db_manage_rake: true,
             server_port: 80,
             server_ssl_port: 443,
@@ -484,6 +485,30 @@ describe 'foreman' do
         end
 
         it { should contain_user('foreman').with('groups' => []) }
+      end
+
+      # used to establish an encrypted connection to postgresl with a client certificate
+      describe 'with db_sslmode & db_extra_options'do
+        let :params do
+          {
+            db_sslmode: 'verify-full',
+            db_extra_options: {
+              sslrootcert: '/etc/pki/root.crt',
+              sslcert: '/etc/pki/localhost.crt',
+              sslkey: '/etc/pki/localhost.key'
+            }
+          }
+        end
+        it 'should configure the database' do
+          should contain_file('/etc/foreman/database.yml')
+            .with_owner('root')
+            .with_group('foreman')
+            .with_mode('0640')
+            .with_content(/sslmode: verify-full/)
+            .with_content(/sslrootcert: "\/etc\/pki\/root\.crt"/)
+            .with_content(/sslcert: "\/etc\/pki\/localhost\.crt"/)
+            .with_content(/sslkey: "\/etc\/pki\/localhost\.key"/)
+        end
       end
     end
   end

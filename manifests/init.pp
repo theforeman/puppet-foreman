@@ -87,6 +87,9 @@
 # $db_pool::                      Database 'production' size of connection pool. If the value is not set, it will be
 #                                 set by default to the amount of puma threads + 4 (for internal system threads)
 #
+# $db_extra_options::             Database 'production' extra options. Can be used for extra options, not made
+#                                 available by the above db_* parameters.
+#
 # $db_manage_rake::               if enabled, will run rake jobs, which depend on the database
 #
 # $server_port::                  Defines Apache port for HTTP requests
@@ -230,6 +233,7 @@ class foreman (
   Optional[String[1]] $db_sslmode = undef,
   Optional[String[1]] $db_root_cert = undef,
   Optional[Integer[0]] $db_pool = undef,
+  Hash[String[1], Variant[String, Integer]] $db_extra_options = {},
   Boolean $db_manage_rake = true,
   Stdlib::Port $server_port = 80,
   Stdlib::Port $server_ssl_port = 443,
