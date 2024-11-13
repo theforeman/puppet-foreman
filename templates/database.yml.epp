@@ -8,6 +8,7 @@
   Optional[String[1]] $username,
   Variant[Undef, String[1], Sensitive[String[1]]] $password,
   Integer[0] $db_pool,
+  Hash[String[1], Variant[String, Integer]] $extra_options,
 | -%>
 ---
 <%= template('foreman/_header.erb') %>
@@ -33,3 +34,6 @@
   password: <%= stdlib::to_ruby($password) %>
 <% } -%>
   pool: <%= $db_pool %>
+<% $extra_options.each |$k, $v| { -%>
+  <%= $k %>: <%= stdlib::to_ruby($v) %>
+<% } -%>
