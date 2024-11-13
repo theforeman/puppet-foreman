@@ -1,5 +1,33 @@
 # Changelog
 
+## [25.3.0](https://github.com/theforeman/puppet-foreman/tree/25.3.0) (2024-11-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/25.2.2...25.3.0)
+
+**Implemented enhancements:**
+
+- add support for plugin `ensure` stage \*purged\* [\#1187](https://github.com/theforeman/puppet-foreman/pull/1187) ([UiP9AV6Y](https://github.com/UiP9AV6Y))
+
+**Fixed bugs:**
+
+- properly escape quotes in passwords by calling to\_ruby [\#1189](https://github.com/theforeman/puppet-foreman/pull/1189) ([evgeni](https://github.com/evgeni))
+
+## [25.2.2](https://github.com/theforeman/puppet-foreman/tree/25.2.2) (2024-09-18)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/24.2.1...25.2.2)
+
+**Fixed bugs:**
+
+- Fixes [\#37761](https://projects.theforeman.org/issues/37761) - use ProxyPass and upgrade=websocket where possible [\#1185](https://github.com/theforeman/puppet-foreman/pull/1185) ([evgeni](https://github.com/evgeni))
+
+## [25.2.1](https://github.com/theforeman/puppet-foreman/tree/25.2.1) (2024-09-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/25.2.0...25.2.1)
+
+**Fixed bugs:**
+
+- Unset all possible dash/underscore combinations of REMOTE\_USER [\#1181](https://github.com/theforeman/puppet-foreman/pull/1181) ([evgeni](https://github.com/evgeni))
+
 ## [25.2.0](https://github.com/theforeman/puppet-foreman/tree/25.2.0) (2024-08-14)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/25.1.0...25.2.0)

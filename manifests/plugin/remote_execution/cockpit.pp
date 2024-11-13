@@ -9,13 +9,15 @@
 #
 # === Advanced parameters:
 #
-# $ensure::              Specify the package state, or absent to remove it
+# $ensure::              Specify the package state, or absent/purged to remove it
 #
 class foreman::plugin::remote_execution::cockpit (
   Optional[String[1]] $ensure = undef,
   Array[Stdlib::HTTPUrl] $origins = [],
 ) {
-  if $ensure != 'absent' {
+  $ensure_absent = $ensure in ['absent', 'purged']
+
+  unless $ensure_absent {
     require foreman::plugin::remote_execution
   }
 
@@ -36,7 +38,7 @@ class foreman::plugin::remote_execution::cockpit (
     version => $ensure,
   }
 
-  if $ensure != 'absent' {
+  unless $ensure_absent {
     service { 'foreman-cockpit':
       ensure    => running,
       enable    => true,
@@ -45,7 +47,7 @@ class foreman::plugin::remote_execution::cockpit (
     }
   }
 
-  $file_ensure = bool2str($ensure == 'absent', 'absent', 'file')
+  $file_ensure = bool2str($ensure_absent, 'absent', 'file')
 
   file { "${config_directory}/cockpit.conf":
     ensure  => $file_ensure,
@@ -65,18 +67,23 @@ class foreman::plugin::remote_execution::cockpit (
     require => Foreman::Plugin['remote_execution-cockpit'],
   }
 
-  if $ensure == 'absent' {
+  if $ensure_absent {
     foreman_config_entry { 'remote_execution_cockpit_url':
       value          => '',
       ignore_missing => true,
       require        => Class['foreman::database'],
     }
   } else {
-    include apache::mod::rewrite
-    include apache::mod::proxy_wstunnel
     include apache::mod::proxy_http
+    if $foreman::config::apache::proxy_upgrade_websocket {
+      $_apache_template = 'cockpit-apache-ssl.conf.erb'
+    } else {
+      include apache::mod::rewrite
+      include apache::mod::proxy_wstunnel
+      $_apache_template = 'cockpit-apache-ssl-rewrite.conf.erb'
+    }
     foreman::config::apache::fragment { 'cockpit':
-      ssl_content => template('foreman/cockpit-apache-ssl.conf.erb'),
+      ssl_content => template("foreman/${_apache_template}"),
     }
 
     foreman_config_entry { 'remote_execution_cockpit_url':

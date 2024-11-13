@@ -119,10 +119,23 @@ class foreman::config::apache (
   String[1] $keycloak_app_name = 'foreman-openidc',
   String[1] $keycloak_realm = 'ssl-realm',
   Array[String[1]] $request_headers_to_unset = [
+    'REMOTE-USER',
     'REMOTE_USER',
+    'REMOTE-USER-EMAIL',
+    'REMOTE-USER_EMAIL',
+    'REMOTE_USER-EMAIL',
     'REMOTE_USER_EMAIL',
+    'REMOTE-USER-FIRSTNAME',
+    'REMOTE-USER_FIRSTNAME',
+    'REMOTE_USER-FIRSTNAME',
     'REMOTE_USER_FIRSTNAME',
+    'REMOTE-USER-LASTNAME',
+    'REMOTE-USER_LASTNAME',
+    'REMOTE_USER-LASTNAME',
     'REMOTE_USER_LASTNAME',
+    'REMOTE-USER-GROUPS',
+    'REMOTE-USER_GROUPS',
+    'REMOTE_USER-GROUPS',
     'REMOTE_USER_GROUPS',
   ],
 ) {
@@ -154,8 +167,9 @@ class foreman::config::apache (
   if $suburi {
     $custom_fragment = undef
   } else {
-    # mod_env and mod_expires are required by configuration in _assets.conf.erb
+    # mod_env, mod_expires and mod_rewrite are required by configuration in _assets.conf.erb
     include apache::mod::env
+    include apache::mod::rewrite
     # apache::mod::expires pulls in a config file we don't want, like apache::default_mods
     # It uses ensure_resource to be compatible with both $apache::default_mods set to true and false
     include apache
@@ -169,8 +183,23 @@ class foreman::config::apache (
     order   => '03',
   }
 
-  include apache::mod::proxy_wstunnel
-  $websockets_backend = regsubst($_proxy_backend, 'http://', 'ws://')
+  # mod_proxy supports "ProxyPass ... upgrade=websocket" since 2.4.47
+  # EL8: 2.4.37 / EL9: 2.4.62 / Debian11: 2.4.62 / Ubuntu20.04: 2.4.41 / Ubuntu22.04: 2.4.52
+  $proxy_upgrade_websocket = !($facts['os']['family'] == 'RedHat' and $facts['os']['release']['major'] == '8') and !($facts['os']['name'] == 'Ubuntu' and $facts['os']['release']['major'] == '20.04')
+  if $proxy_upgrade_websocket {
+    $vhost_rewrites = []
+    $_proxy_params = $proxy_params + { 'upgrade' => 'websocket' }
+  } else {
+    include apache::mod::proxy_wstunnel
+    $websockets_backend = regsubst($_proxy_backend, 'http://', 'ws://')
+    $websockets_rewrite = {
+      'comment'      => 'Upgrade Websocket connections',
+      'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
+      'rewrite_rule' => "/(.*) ${websockets_backend}\$1 [P,L]",
+    }
+    $vhost_rewrites = [$websockets_rewrite]
+    $_proxy_params = $proxy_params
+  }
 
   $vhost_http_request_headers = [
     'set X_FORWARDED_PROTO "http"',
@@ -196,15 +225,9 @@ class foreman::config::apache (
       'no_proxy_uris' => $_proxy_no_proxy_uris,
       'path'          => pick($suburi, '/'),
       'url'           => $_proxy_backend,
-      'params'        => $proxy_params,
+      'params'        => $_proxy_params,
     },
-    'rewrites'            => [
-      {
-        'comment'      => 'Upgrade Websocket connections',
-        'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
-        'rewrite_rule' => "/(.*) ${websockets_backend}\$1 [P,L]",
-      },
-    ],
+    'rewrites'            => $vhost_rewrites,
   }
 
   $vhost_https_request_headers = [

@@ -65,13 +65,22 @@ describe 'foreman::plugin::remote_execution::cockpit' do
         end
 
         it 'configures apache' do
-          is_expected.to contain_class('apache::mod::proxy_wstunnel')
           is_expected.to contain_class('apache::mod::proxy_http')
           is_expected.to contain_foreman__config__apache__fragment('cockpit')
             .without_content
             .with_ssl_content(%r{^<Location /webcon>$})
-            .with_ssl_content(%r{^  RewriteRule /webcon/\(\.\*\)           ws://127\.0\.0\.1:19090/webcon/\$1 \[P\]$})
-            .with_ssl_content(%r{^  RewriteRule /webcon/\(\.\*\)           http://127\.0\.0\.1:19090/webcon/\$1 \[P\]$})
+          if (facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '8') ||
+              (facts[:os]['name'] == 'Ubuntu' && facts[:os]['release']['major'] == '20.04')
+            is_expected.to contain_class('apache::mod::rewrite')
+            is_expected.to contain_class('apache::mod::proxy_wstunnel')
+            is_expected.to contain_foreman__config__apache__fragment('cockpit')
+              .with_ssl_content(%r{^  RewriteRule /webcon/\(\.\*\)           ws://127\.0\.0\.1:19090/webcon/\$1 \[P\]$})
+              .with_ssl_content(%r{^  ProxyPass http://127\.0\.0\.1:19090/webcon$})
+          else
+            is_expected.to contain_foreman__config__apache__fragment('cockpit')
+              .without_ssl_content(%r{RewriteRule})
+              .with_ssl_content(%r{^  ProxyPass http://127\.0\.0\.1:19090/webcon upgrade=websocket$})
+          end
         end
       end
 
@@ -125,6 +134,22 @@ describe 'foreman::plugin::remote_execution::cockpit' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.not_to contain_class('foreman::plugin::remote_execution') }
         it { is_expected.to contain_foreman__plugin('remote_execution-cockpit').with_version('absent') }
+        it { is_expected.not_to contain_service('foreman-cockpit') }
+        it { is_expected.to contain_file('/etc/foreman/cockpit/cockpit.conf').with_ensure('absent') }
+        it { is_expected.to contain_file('/etc/foreman/cockpit/foreman-cockpit-session.yml').with_ensure('absent') }
+        it { is_expected.to contain_foreman_config_entry('remote_execution_cockpit_url').with_value('') }
+      end
+
+      describe 'ensure purged' do
+        let(:params) do
+          {
+            ensure: 'purged',
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.not_to contain_class('foreman::plugin::remote_execution') }
+        it { is_expected.to contain_foreman__plugin('remote_execution-cockpit').with_version('purged') }
         it { is_expected.not_to contain_service('foreman-cockpit') }
         it { is_expected.to contain_file('/etc/foreman/cockpit/cockpit.conf').with_ensure('absent') }
         it { is_expected.to contain_file('/etc/foreman/cockpit/foreman-cockpit-session.yml').with_ensure('absent') }
