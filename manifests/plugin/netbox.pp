@@ -2,7 +2,15 @@
 #
 # This class installs netbox plugin
 #
-class foreman::plugin::netbox {
+#
+# === Advanced parameters:
+#
+# $ensure::              Specify the package state, or absent/purged to remove it
+#
+class foreman::plugin::netbox (
+  Optional[String[1]] $ensure = undef,
+) {
   foreman::plugin { 'netbox':
+    version => $ensure,
   }
 }
