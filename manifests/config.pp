@@ -88,12 +88,15 @@ class foreman::config {
 
   # CPU based calculation is based on https://github.com/puma/puma/blob/master/docs/deployment.md#mri
   # Memory based calculation is based on https://docs.gitlab.com/ee/install/requirements.html#puma-settings
+  # Capped at 100 because worst case that's 100 * (5 + 4) = 900 PostgreSQL connections for Katello or 100 * 5 = 500 for vanilla Foreman
   $puma_workers = pick(
     $foreman::foreman_service_puma_workers,
-    floor(
-      min(
-        $facts['processors']['count'] * 1.5,
-        ($facts['memory']['system']['total_bytes']/(1024 * 1024 * 1024)) - 1.5
+    ceiling(100,
+      floor(
+        min(
+          $facts['processors']['count'] * 1.5,
+          ($facts['memory']['system']['total_bytes']/(1024 * 1024 * 1024)) - 1.5
+        )
       )
     )
   )
