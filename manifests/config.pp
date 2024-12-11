@@ -86,12 +86,14 @@ class foreman::config {
     content => epp('foreman/database.yml.epp', $db_context),
   }
 
+  # Capped at 100 because worst case that's 100 * (5 + 4) = 900 PostgreSQL connections for Katello or 100 * 5 = 500 for vanilla Foreman
   # CPU based calculation is based on https://github.com/puma/puma/blob/master/docs/deployment.md#mri
   # Memory based calculation is based on https://docs.gitlab.com/ee/install/requirements.html#puma-settings
   $puma_workers = pick(
     $foreman::foreman_service_puma_workers,
     floor(
       min(
+        100,
         $facts['processors']['count'] * 1.5,
         ($facts['memory']['system']['total_bytes']/(1024 * 1024 * 1024)) - 1.5
       )
