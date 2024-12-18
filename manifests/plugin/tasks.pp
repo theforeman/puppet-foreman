@@ -9,12 +9,17 @@
 # @param backup
 #   Enable creating a backup of cleaned up tasks in CSV format when automatic_cleanup is enabled
 #
+# @param ensure
+#   Specify the package state, or absent/purged to remove it
+#
 class foreman::plugin::tasks (
+  Optional[String[1]] $ensure = undef,
   Boolean $automatic_cleanup = false,
   String $cron_line = '45 19 * * *',
   Boolean $backup = false,
 ) {
   foreman::plugin { 'tasks':
+    version => $ensure,
     package => $foreman::params::plugin_prefix.regsubst(/foreman[_-]/, 'foreman-tasks'),
   }
   $cron_state = $automatic_cleanup ? {
