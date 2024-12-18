@@ -68,16 +68,6 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
             gpgcheck => 0,
           }
 
-          if $facts['os']['release']['major'] == '8' {
-            package { 'katello':
-              ensure      => "el${facts['os']['release']['major']}",
-              enable_only => true,
-              provider    => 'dnfmodule',
-              require     => Yumrepo['katello'],
-            }
-            Package['katello'] -> Class['foreman::cli::katello']
-          }
-
           class { 'foreman::cli':
             foreman_url => 'https://foreman.example.com',
             username    => 'admin',

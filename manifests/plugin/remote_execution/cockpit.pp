@@ -75,15 +75,8 @@ class foreman::plugin::remote_execution::cockpit (
     }
   } else {
     include apache::mod::proxy_http
-    if $foreman::config::apache::proxy_upgrade_websocket {
-      $_apache_template = 'cockpit-apache-ssl.conf.erb'
-    } else {
-      include apache::mod::rewrite
-      include apache::mod::proxy_wstunnel
-      $_apache_template = 'cockpit-apache-ssl-rewrite.conf.erb'
-    }
     foreman::config::apache::fragment { 'cockpit':
-      ssl_content => template("foreman/${_apache_template}"),
+      ssl_content => template('foreman/cockpit-apache-ssl.conf.erb'),
     }
 
     foreman_config_entry { 'remote_execution_cockpit_url':

@@ -4,7 +4,7 @@ describe 'foreman::repos::apt' do
   let(:title) { 'foreman' }
 
   let :facts do
-    on_supported_os['debian-11-x86_64']
+    on_supported_os['debian-12-x86_64']
   end
 
   let(:apt_key) do
@@ -15,23 +15,23 @@ describe 'foreman::repos::apt' do
     "foreman"
   end
 
-  context 'with repo => 1.18' do
-    let(:params) { { repo: '1.18' } }
+  context 'with repo => 3.13' do
+    let(:params) { { repo: '3.13' } }
 
     it { should contain_class('apt') }
 
-    it 'should add the 1.18 repo' do
+    it 'should add the 3.13 repo' do
       should contain_apt__source('foreman')
         .with_location('https://deb.theforeman.org/')
-        .with_repos('1.18')
+        .with_repos('3.13')
 
       should contain_file('/etc/apt/sources.list.d/foreman.list')
-        .with_content(%r{deb https://deb\.theforeman\.org/ bullseye 1\.18})
+        .with_content(%r{deb https://deb\.theforeman\.org/ bookworm 3\.13})
 
       should contain_apt__source('foreman-plugins')
         .with_location('https://deb.theforeman.org/')
         .with_release('plugins')
-        .with_repos('1.18')
+        .with_repos('3.13')
     end
 
     it { should contain_apt_key(apt_key_title).with_id(apt_key) }
@@ -48,7 +48,7 @@ describe 'foreman::repos::apt' do
         .with_repos('nightly')
 
       should contain_file('/etc/apt/sources.list.d/foreman.list')
-        .with_content(%r{deb https://deb\.theforeman\.org/ bullseye nightly})
+        .with_content(%r{deb https://deb\.theforeman\.org/ bookworm nightly})
 
       should contain_apt__source('foreman-plugins')
         .with_location('https://deb.theforeman.org/')

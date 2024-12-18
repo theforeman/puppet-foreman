@@ -183,24 +183,6 @@ class foreman::config::apache (
     order   => '03',
   }
 
-  # mod_proxy supports "ProxyPass ... upgrade=websocket" since 2.4.47
-  # EL8: 2.4.37 / EL9: 2.4.62 / Debian11: 2.4.62 / Ubuntu20.04: 2.4.41 / Ubuntu22.04: 2.4.52
-  $proxy_upgrade_websocket = !($facts['os']['family'] == 'RedHat' and $facts['os']['release']['major'] == '8') and !($facts['os']['name'] == 'Ubuntu' and $facts['os']['release']['major'] == '20.04')
-  if $proxy_upgrade_websocket {
-    $vhost_rewrites = []
-    $_proxy_params = $proxy_params + { 'upgrade' => 'websocket' }
-  } else {
-    include apache::mod::proxy_wstunnel
-    $websockets_backend = regsubst($_proxy_backend, 'http://', 'ws://')
-    $websockets_rewrite = {
-      'comment'      => 'Upgrade Websocket connections',
-      'rewrite_cond' => '%{HTTP:Upgrade} =websocket [NC]',
-      'rewrite_rule' => "/(.*) ${websockets_backend}\$1 [P,L]",
-    }
-    $vhost_rewrites = [$websockets_rewrite]
-    $_proxy_params = $proxy_params
-  }
-
   $vhost_http_request_headers = [
     'set X_FORWARDED_PROTO "http"',
     'set SSL_CLIENT_S_DN ""',
@@ -225,9 +207,8 @@ class foreman::config::apache (
       'no_proxy_uris' => $_proxy_no_proxy_uris,
       'path'          => pick($suburi, '/'),
       'url'           => $_proxy_backend,
-      'params'        => $_proxy_params,
+      'params'        => $proxy_params + { 'upgrade' => 'websocket' },
     },
-    'rewrites'            => $vhost_rewrites,
   }
 
   $vhost_https_request_headers = [

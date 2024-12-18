@@ -20,15 +20,6 @@ class foreman::repo (
       yum_repo_baseurl => $yum_repo_baseurl,
       before           => Anchor['foreman::repo'],
     }
-
-    if $facts['os']['family'] == 'RedHat' and $facts['os']['release']['major'] == '8' {
-      package { 'foreman':
-        ensure      => "el${facts['os']['release']['major']}",
-        enable_only => true,
-        provider    => 'dnfmodule',
-        require     => Foreman::Repos['foreman'],
-      }
-    }
   }
 
   # An anchor is used because it can be collected
