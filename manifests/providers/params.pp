@@ -7,17 +7,17 @@ class foreman::providers::params {
   # OS specific package names
   case $facts['os']['family'] {
     'RedHat': {
-      if $is_aio {
-        $oauth_package = 'puppet-agent-oauth'
+      $oauth_package = if $is_aio {
+        'puppet-agent-oauth'
       } else {
-        $oauth_package = 'rubygem-oauth'
+        'rubygem-oauth'
       }
     }
     'Debian': {
-      if $is_aio {
-        $oauth_package = 'puppet-agent-oauth'
+      $oauth_package = if $is_aio {
+        'puppet-agent-oauth'
       } else {
-        $oauth_package = 'ruby-oauth'
+        'ruby-oauth'
       }
     }
     'FreeBSD': {
