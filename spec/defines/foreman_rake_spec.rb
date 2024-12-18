@@ -3,10 +3,9 @@ require 'spec_helper'
 describe 'foreman::rake' do
   let(:title) { 'db:migrate' }
 
-  context 'on RedHat' do
-    let :facts do
-      on_supported_os['redhat-8-x86_64']
-    end
+  os, os_facts = on_supported_os.first
+  context "on #{os}" do
+    let(:facts) { os_facts }
 
     # These parameters are inherited normally, but here we cheat for performance
     let :params do

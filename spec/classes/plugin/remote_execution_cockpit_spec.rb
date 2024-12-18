@@ -69,18 +69,7 @@ describe 'foreman::plugin::remote_execution::cockpit' do
           is_expected.to contain_foreman__config__apache__fragment('cockpit')
             .without_content
             .with_ssl_content(%r{^<Location /webcon>$})
-          if (facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '8') ||
-              (facts[:os]['name'] == 'Ubuntu' && facts[:os]['release']['major'] == '20.04')
-            is_expected.to contain_class('apache::mod::rewrite')
-            is_expected.to contain_class('apache::mod::proxy_wstunnel')
-            is_expected.to contain_foreman__config__apache__fragment('cockpit')
-              .with_ssl_content(%r{^  RewriteRule /webcon/\(\.\*\)           ws://127\.0\.0\.1:19090/webcon/\$1 \[P\]$})
-              .with_ssl_content(%r{^  ProxyPass http://127\.0\.0\.1:19090/webcon$})
-          else
-            is_expected.to contain_foreman__config__apache__fragment('cockpit')
-              .without_ssl_content(%r{RewriteRule})
-              .with_ssl_content(%r{^  ProxyPass http://127\.0\.0\.1:19090/webcon upgrade=websocket$})
-          end
+            .with_ssl_content(%r{^  ProxyPass http://127\.0\.0\.1:19090/webcon upgrade=websocket$})
         end
       end
 

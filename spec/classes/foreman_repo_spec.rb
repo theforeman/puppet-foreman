@@ -20,14 +20,6 @@ describe 'foreman::repo' do
           .with_gpgcheck(true)
           .with_yum_repo_baseurl('https://yum.theforeman.org')
         }
-
-        it do
-          if facts[:osfamily] == 'RedHat' && facts[:os]['release']['major'] == '8'
-            is_expected.to contain_package('foreman').with_ensure('el8').with_provider('dnfmodule')
-          else
-            is_expected.not_to contain_package('foreman')
-          end
-        end
       end
 
       describe 'with explicit parameters' do

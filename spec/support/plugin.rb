@@ -1,4 +1,4 @@
-DEFAULT_OS_FACTS = on_supported_os['redhat-8-x86_64']
+DEFAULT_OS_FACTS = on_supported_os['redhat-9-x86_64']
 
 shared_examples 'basic foreman plugin tests' do |name|
   let(:facts) { DEFAULT_OS_FACTS }
