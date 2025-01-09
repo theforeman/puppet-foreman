@@ -329,7 +329,7 @@ class foreman (
   Boolean $register_in_foreman = true,
   Optional[Stdlib::Absolutepath] $provisioning_ct_location = undef,
   Optional[Stdlib::Absolutepath] $provisioning_fcct_location = undef,
-  Boolean $authorize_login_delegation = $keycloak,
+  Boolean $authorize_login_delegation = false,
   String[1] $authorize_login_delegation_auth_source_user_autocreate = 'External',
   Optional[String[1]] $login_delegation_logout_url = undef,
   Optional[String[1]] $oidc_jwks_url = undef,
