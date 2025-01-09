@@ -235,6 +235,8 @@
 #
 # $oidc_algorithm::               The algorithm used to encode the JWT in the OpenID provider.
 #
+# $outofsync_interval   Duration in minutes after servers are classed as out of sync.
+#
 #
 class foreman (
   Stdlib::HTTPUrl $foreman_url = $foreman::params::foreman_url,
@@ -340,6 +342,7 @@ class foreman (
   Array[String[1]] $oidc_audience = [],
   Optional[String[1]] $oidc_issuer = undef,
   String[1] $oidc_algorithm = 'RS256',
+  Integer $outofsync_interval = 30,
 ) inherits foreman::params {
   assert_type(Array[Stdlib::IP::Address], $trusted_proxies)
 
