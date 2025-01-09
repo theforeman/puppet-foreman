@@ -214,6 +214,28 @@
 #
 # $keycloak_realm::               The realm as passed to keycloak-httpd-client-install
 #
+# === OIDC parameters:
+#
+# $authorize_login_delegation::   Authorize login delegation with REMOTE_USER HTTP header (true/false)
+#
+# $authorize_login_delegation_auth_source_user_autocreate::   Name of the external auth source where unknown externally authentication
+#                                                             users (see authorize_login_delegation) should be created. Empty means no autocreation.
+#
+# $login_delegation_logout_url::  Redirect your users to this url on logout (authorize_login_delegation should also be enabled)
+#
+# $oidc_jwks_url::                OpenID Connect JSON Web Key Set(JWKS) URL.
+#                                 Typically https://keycloak.example.com/auth/realms/<realm name>/protocol/openid-connect/certs when using
+#                                 Keycloak as an OpenID provider
+#
+# $oidc_audience::                Name of the OpenID Connect Audience that is being used for Authentication. In case of Keycloak this is the Client ID.
+#                                 ['oidc_app_name']
+#
+# $oidc_issuer::                  The iss (issuer) claim identifies the principal that issued the JWT, which exists at a
+#                                 `/.well-known/openid-configuration` in case of most of the OpenID providers.
+#
+# $oidc_algorithm::               The algorithm used to encode the JWT in the OpenID provider.
+#
+#
 class foreman (
   Stdlib::HTTPUrl $foreman_url = $foreman::params::foreman_url,
   Boolean $unattended = true,
@@ -311,6 +333,13 @@ class foreman (
   Boolean $register_in_foreman = true,
   Optional[Stdlib::Absolutepath] $provisioning_ct_location = undef,
   Optional[Stdlib::Absolutepath] $provisioning_fcct_location = undef,
+  Boolean $authorize_login_delegation = $keycloak,
+  String[1] $authorize_login_delegation_auth_source_user_autocreate = 'External',
+  Optional[String[1]] $login_delegation_logout_url,
+  Optional[String[1]] $oidc_jwks_url,
+  Optional[Array[String[1]]] $oidc_audience = [],
+  Optional[String[1]] $oidc_issuer,
+  String[1] $oidc_algorithm = 'RS256',
 ) inherits foreman::params {
   assert_type(Array[Stdlib::IP::Address], $trusted_proxies)
 
