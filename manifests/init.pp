@@ -331,10 +331,10 @@ class foreman (
   Optional[Stdlib::Absolutepath] $provisioning_fcct_location = undef,
   Boolean $authorize_login_delegation = $keycloak,
   String[1] $authorize_login_delegation_auth_source_user_autocreate = 'External',
-  Optional[String[1]] $login_delegation_logout_url,
-  Optional[String[1]] $oidc_jwks_url,
-  Optional[Array[String[1]]] $oidc_audience = [],
-  Optional[String[1]] $oidc_issuer,
+  Optional[String[1]] $login_delegation_logout_url = undef,
+  Optional[String[1]] $oidc_jwks_url = undef,
+  Array[String[1]] $oidc_audience = [],
+  Optional[String[1]] $oidc_issuer = undef,
   String[1] $oidc_algorithm = 'RS256',
 ) inherits foreman::params {
   assert_type(Array[Stdlib::IP::Address], $trusted_proxies)
