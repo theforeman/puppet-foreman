@@ -257,6 +257,7 @@ describe 'foreman' do
             oidc_audience: ['cloack-app'],
             oidc_issuer: 'https://keycloak.top.com/realms/myrealm',
             oidc_algorithm: 'RS256',
+            outofsync_interval: 30,
           }
         end
 

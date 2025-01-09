@@ -57,7 +57,10 @@
 :trusted_proxies:
 <% scope.lookupvar('foreman::trusted_proxies').each do |proxy| -%>
  - '<%= proxy %>'
-<% end -%>
+ <% end -%>
+
+# Configure out of sync interval
+:outofsync_interval: <%= scope.lookupvar("foreman::outofsync_interval") %>
 
 <% end -%>
 # Individual logging types can be toggled on/off here
