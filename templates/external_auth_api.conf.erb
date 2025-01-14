@@ -1,7 +1,7 @@
 
 <LocationMatch ^/api(/v2)?/users/extlogin/?$>
   SSLRequireSSL
-  <% if scope.lookupvar('foreman::ipa_authentication_api') %>
+  <% if scope.lookupvar('foreman::external_authentication') == 'ipa_with_api' %>
   <If "%{HTTP:Authorization} =~ /^Basic/">
     AuthType Basic
     AuthName "PAM Authentication"
