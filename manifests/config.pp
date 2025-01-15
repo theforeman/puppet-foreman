@@ -279,6 +279,36 @@ class foreman::config {
           order   => '03',
         }
       }
+      'keycloak': {
+        $foreman_socket_override = undef
+
+        unless $foreman::ssl {
+          fail('Keycloak requires HTTPS')
+        }
+
+        foreman::settings_fragment { 'authorize_login_delegation.yaml':
+          content => template('foreman/settings-external-auth.yaml.erb'),
+          order   => '02',
+        }
+
+        # TODO: parameter
+        $keycloak_url = 'https://keycloak.example.com'
+        $oidc_issuer = "${keycloak_url}/auth/realms/${foreman::keycloak_realm}"
+        $keycloak_settings = {
+          ':login_delegation_logout_url' => "${foreman::foreman_url}/users/extlogout",
+          # TODO: parameters or obtain from ${oidc_issuer}/.well-known/openid-configuration
+          ':oidc_algorithm'              => 'RS256',
+          ':oidc_audience'               => ["${foreman::servername}-foreman-openidc"],
+          ':oidc_issuer'                 => $oidc_issuer,
+          ':oidc_jwks_url'               => "${oidc_issuer}/protocol/openid-connect/certs",
+        }
+
+        foreman::settings_fragment { 'authorize_login_delegation-keycloak.yaml':
+          # TODO: does this include the document marker?
+          content => stdlib::to_yaml($keycloak_settings),
+          order   => '04',
+        }
+      }
       default: {
         $foreman_socket_override = undef
       }
