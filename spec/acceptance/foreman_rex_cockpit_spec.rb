@@ -1,11 +1,10 @@
 require 'spec_helper_acceptance'
 
-describe 'Scenario: install foreman with rex cockpit', if: os[:family] == 'centos' do
+describe 'Scenario: install foreman with rex cockpit', if: os[:family] == 'redhat' do
   before(:context) { purge_foreman }
 
-
   it_behaves_like 'an idempotent resource' do
-    let(:pp) do
+    let(:manifest) do
       <<-PUPPET
       include foreman
       include foreman::plugin::remote_execution::cockpit
