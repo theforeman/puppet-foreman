@@ -63,11 +63,6 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
       it_behaves_like 'an idempotent resource' do
         let(:manifest) do
           <<-PUPPET
-          yumrepo { 'katello':
-            baseurl  => "http://yum.theforeman.org/katello/nightly/katello/el${facts['os']['release']['major']}/x86_64/",
-            gpgcheck => 0,
-          }
-
           class { 'foreman::cli':
             foreman_url => 'https://foreman.example.com',
             username    => 'admin',
@@ -77,8 +72,6 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
           include foreman::cli::katello
           include foreman::cli::virt_who_configure
           include foreman::cli::rh_cloud
-
-          Yumrepo['katello'] -> Class['foreman::cli::katello']
           PUPPET
         end
       end

@@ -2,6 +2,17 @@ class { 'foreman::repo':
   repo => 'nightly',
 }
 
+if $facts['os']['family'] == 'RedHat' {
+  yumrepo { 'katello':
+    baseurl  => "http://yum.theforeman.org/katello/nightly/katello/el${facts['os']['release']['major']}/x86_64/",
+    gpgcheck => 0,
+  }
+  yumrepo { 'candlepin':
+    baseurl  => "https://yum.theforeman.org/candlepin/4.4/el${facts['os']['release']['major']}/x86_64/",
+    gpgcheck => 0,
+  }
+}
+
 # Not /etc/foreman because purging removes that
 $directory = '/etc/foreman-certs'
 $certificate = "${directory}/certificate.pem"
