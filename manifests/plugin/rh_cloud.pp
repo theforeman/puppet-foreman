@@ -7,6 +7,7 @@ class foreman::plugin::rh_cloud (
   Boolean $enable_iop_advisor_engine = false,
 ) {
   foreman::plugin { 'rh_cloud':
+    config => epp('foreman/rh_cloud.yaml.epp', { 'enable_iop_advisor_engine' => $enable_iop_advisor_engine }),
   }
 
   class { 'iop_advisor_engine':
