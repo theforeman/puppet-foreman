@@ -1,6 +1,7 @@
 def purge_foreman
   case fact('osfamily')
   when 'RedHat'
+    on default, 'rm -f /etc/dnf/protected.d/grub2-tools-minimal.conf'
     on default, 'yum -y remove foreman*'
   when 'Debian'
     on default, 'apt-get purge -y foreman*', { :acceptable_exit_codes => [0, 100] }
