@@ -1,5 +1,13 @@
 # Installs rh_cloud plugin
-class foreman::plugin::rh_cloud {
+#
+# === Advanced parameters:
+#
+# $ensure::              Specify the package state, or absent/purged to remove it
+#
+class foreman::plugin::rh_cloud (
+  Optional[String[1]] $ensure = undef,
+) {
   foreman::plugin { 'rh_cloud':
+    version => $ensure,
   }
 }

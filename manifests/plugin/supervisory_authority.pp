@@ -28,6 +28,8 @@
 #
 # $metrics_interval::      Specify the interval for reporting metrics to APM Server.
 #
+# $ensure::                Specify the package state, or absent/purged to remove it
+#
 class foreman::plugin::supervisory_authority (
   Stdlib::HTTPUrl              $server_url,
   String                       $secret_token,
@@ -40,6 +42,7 @@ class foreman::plugin::supervisory_authority (
   Integer[0]                   $transaction_max_spans = 500,
   Boolean                      $http_compression      = false,
   String                       $metrics_interval      = '30s',
+  Optional[String[1]]          $ensure                = undef,
 ) {
   $config = {
     foreman_supervisory_authority => {
@@ -58,6 +61,7 @@ class foreman::plugin::supervisory_authority (
   }
 
   foreman::plugin { 'supervisory_authority':
-    config => foreman::to_symbolized_yaml($config),
+    version => $ensure,
+    config  => foreman::to_symbolized_yaml($config),
   }
 }
