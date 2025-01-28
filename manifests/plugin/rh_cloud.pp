@@ -11,6 +11,7 @@ class foreman::plugin::rh_cloud (
   }
 
   class { 'iop_advisor_engine':
-    ensure => bool2str($enable_iop_advisor_engine, 'present', 'absent'),
+    ensure      => bool2str($enable_iop_advisor_engine, 'present', 'absent'),
+    foreman_url => $foreman::foreman_url,
   }
 }
