@@ -4,13 +4,13 @@ describe 'foreman' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts.merge(interfaces: '') }
-      let(:params) { { ipa_authentication: true } }
+      let(:params) { { external_authentication: 'ipa' } }
 
       keytab_path = facts[:osfamily] == 'RedHat' ? '/etc/httpd/conf/http.keytab' : '/etc/apache2/http.keytab'
 
       describe 'without apache' do
         let(:params) { super().merge(apache: false) }
-        it { should raise_error(Puppet::Error, /External authentication via IPA can only be enabled when Apache is used/) }
+        it { should compile.and_raise_error(/External authentication can only be enabled when Apache is used/) }
       end
 
       context 'with apache' do
@@ -61,7 +61,7 @@ describe 'foreman' do
           end
 
           context 'with GSSAPI auth for API' do
-            let(:params) { super().merge(ipa_authentication_api: true) }
+            let(:params) { super().merge(external_authentication: 'ipa_with_api') }
 
             it 'should contain GSSAPI and Basic coniguration in API fragment' do
               should contain_foreman__config__apache__fragment('external_auth_api')
