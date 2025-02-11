@@ -1,5 +1,26 @@
 # Changelog
 
+## [26.0.0](https://github.com/theforeman/puppet-foreman/tree/26.0.0) (2025-02-11)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/25.3.0...26.0.0)
+
+**Breaking changes:**
+
+- Drop EoL EL8 / Ubuntu 20.04 / Debian 11 Support [\#1198](https://github.com/theforeman/puppet-foreman/pull/1198) ([bastelfreak](https://github.com/bastelfreak))
+- Drop foreman::compute::gce [\#1171](https://github.com/theforeman/puppet-foreman/pull/1171) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Add parameter to enable iop-advisor-engine to rh\_cloud plugin [\#1204](https://github.com/theforeman/puppet-foreman/pull/1204) ([ehelms](https://github.com/ehelms))
+- puppetlabs/apt: allow 10.x [\#1200](https://github.com/theforeman/puppet-foreman/pull/1200) ([evgeni](https://github.com/evgeni))
+- puppet/systemd: allow 8.x [\#1199](https://github.com/theforeman/puppet-foreman/pull/1199) ([evgeni](https://github.com/evgeni))
+- Fixes [\#38085](https://projects.theforeman.org/issues/38085) - Cap the number of Puma workers at 100 [\#1197](https://github.com/theforeman/puppet-foreman/pull/1197) ([ekohl](https://github.com/ekohl))
+- Add resource\_quota plugin [\#1196](https://github.com/theforeman/puppet-foreman/pull/1196) ([nadjaheitmann](https://github.com/nadjaheitmann))
+
+**Fixed bugs:**
+
+- pass the correct foreman url to iop advisor engine [\#1207](https://github.com/theforeman/puppet-foreman/pull/1207) ([evgeni](https://github.com/evgeni))
+
 ## [25.3.0](https://github.com/theforeman/puppet-foreman/tree/25.3.0) (2024-11-04)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/25.2.2...25.3.0)
