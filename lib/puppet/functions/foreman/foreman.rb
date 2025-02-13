@@ -11,8 +11,9 @@
 #        foreman_user => 'my_api_foreman_user'
 #        foreman_pass => 'my_api_foreman_pass'
 #
-# 'item' may be: environments, fact_values, hosts, hostgroups, puppetclasses, smart_proxies, subnets
+# 'item' may be: environments, fact_values, hosts, hostgroups, puppetclasses, smart_proxies, subnets, settings
 # 'search' is your actual search query.
+#          if item is 'settings' search is the setting name and will be a PUT Request
 # 'per_page' specifies the maximum number of results you'd like to receive.
 #            This defaults to '20' which is consistent with what you'd get from
 #            Foreman if you didn't specify anything.
@@ -46,7 +47,7 @@ require "timeout"
 
 Puppet::Functions.create_function(:'foreman::foreman') do
   dispatch :foreman do
-    required_param 'Enum["environments", "fact_values", "hosts", "hostgroups", "puppetclasses", "smart_proxies", "subnets"]', :item
+    required_param 'Enum["environments", "fact_values", "hosts", "hostgroups", "puppetclasses", "smart_proxies", "subnets", "settings"]', :item
     required_param 'String', :search
     optional_param 'Variant[Integer[0], Pattern[/\d+/]]', :per_page
     optional_param 'Stdlib::HTTPUrl', :foreman_url
@@ -62,9 +63,19 @@ Puppet::Functions.create_function(:'foreman::foreman') do
     raise Puppet::ParseError, "Foreman: Invalid filter_result: #{filter_result}, must not be boolean true" if filter_result == true
 
     begin
-      path = "/api/#{CGI.escape(item)}?search=#{CGI.escape(search)}&per_page=#{CGI.escape(per_page.to_s)}"
+      if item == 'settings'
+        path = "/api/#{CGI.escape(item)}/#{CGI.escape(search)}"
+      else
+        path = "/api/#{CGI.escape(item)}?search=#{CGI.escape(search)}&per_page=#{CGI.escape(per_page.to_s)}"
+      end
 
-      req = Net::HTTP::Get.new(path)
+      if item == 'settings' && filter_result.is_a?(Hash)
+        req = Net::HTTP::Put.new(path)
+        req.body = filter_result.to_json
+      else
+        req = Net::HTTP::Get.new(path)
+      end
+
       req['Content-Type'] = 'application/json'
       req['Accept'] = 'application/json'
 
