@@ -1,6 +1,14 @@
 # Changelog
 
-## [26.0.0](https://github.com/theforeman/puppet-foreman/tree/26.0.0) (2025-02-11)
+## [26.1.0](https://github.com/theforeman/puppet-foreman/tree/26.1.0) (2025-02-17)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/26.0.0...26.1.0)
+
+**Implemented enhancements:**
+
+- Add hammer-cli-foreman-resource-quota package [\#1209](https://github.com/theforeman/puppet-foreman/pull/1209) ([bastian-src](https://github.com/bastian-src))
+
+## [26.0.0](https://github.com/theforeman/puppet-foreman/tree/26.0.0) (2025-02-12)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/25.3.0...26.0.0)
 
