@@ -2,7 +2,7 @@ require 'spec_helper'
 
 supported = on_supported_os
 
-['ansible', 'azure', 'discovery', 'katello', 'kubevirt', 'openscap', 'remote_execution', 'resource_quota',
+['ansible', 'azure', 'bootdisk', 'discovery', 'katello', 'kubevirt', 'openscap', 'remote_execution', 'resource_quota',
  'ssh', 'tasks', 'templates', 'virt_who_configure', 'webhooks', 'puppet', 'google', 'rh_cloud'].each do |plugin|
   describe "foreman::cli::#{plugin}" do
     supported.each do |os, os_facts|
