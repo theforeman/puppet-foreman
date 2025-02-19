@@ -56,10 +56,10 @@ describe 'foreman::config::apache' do
           .with_proxy_preserve_host(true)
           .with_proxy_add_headers(true)
           .with_request_headers([
-            'set X_FORWARDED_PROTO "http"',
-            'set SSL_CLIENT_S_DN ""',
-            'set SSL_CLIENT_CERT ""',
-            'set SSL_CLIENT_VERIFY ""',
+            'set X-FORWARDED-PROTO "http"',
+            'set SSL-CLIENT-S-DN ""',
+            'set SSL-CLIENT-CERT ""',
+            'set SSL-CLIENT-VERIFY ""',
             'unset REMOTE-USER',
             'unset REMOTE_USER',
             'unset REMOTE-USER-EMAIL',
@@ -127,10 +127,10 @@ describe 'foreman::config::apache' do
 
         it { should contain_apache__vhost('foreman')
             .with_request_headers([
-              'set X_FORWARDED_PROTO "http"',
-              'set SSL_CLIENT_S_DN ""',
-              'set SSL_CLIENT_CERT ""',
-              'set SSL_CLIENT_VERIFY ""',
+              'set X-FORWARDED-PROTO "http"',
+              'set SSL-CLIENT-S-DN ""',
+              'set SSL-CLIENT-CERT ""',
+              'set SSL-CLIENT-VERIFY ""',
               'unset OIDC_FOO',
             ])
         }
@@ -197,10 +197,10 @@ describe 'foreman::config::apache' do
             .with_proxy_preserve_host(true)
             .with_proxy_add_headers(true)
             .with_request_headers([
-              'set X_FORWARDED_PROTO "https"',
-              'set SSL_CLIENT_S_DN "%{SSL_CLIENT_S_DN}s"',
-              'set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"',
-              'set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"',
+              'set X-FORWARDED-PROTO "https"',
+              'set SSL-CLIENT-S-DN "%{SSL_CLIENT_S_DN}s"',
+              'set SSL-CLIENT-CERT "%{SSL_CLIENT_CERT}s"',
+              'set SSL-CLIENT-VERIFY "%{SSL_CLIENT_VERIFY}s"',
               'unset REMOTE-USER',
               'unset REMOTE_USER',
               'unset REMOTE-USER-EMAIL',
@@ -289,10 +289,10 @@ describe 'foreman::config::apache' do
 
           it { should contain_apache__vhost('foreman-ssl')
               .with_request_headers([
-                'set X_FORWARDED_PROTO "https"',
-                'set SSL_CLIENT_S_DN "%{SSL_CLIENT_S_DN}s"',
-                'set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"',
-                'set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"',
+                'set X-FORWARDED-PROTO "https"',
+                'set SSL-CLIENT-S-DN "%{SSL_CLIENT_S_DN}s"',
+                'set SSL-CLIENT-CERT "%{SSL_CLIENT_CERT}s"',
+                'set SSL-CLIENT-VERIFY "%{SSL_CLIENT_VERIFY}s"',
                 'unset OIDC_FOO',
               ])
           }
