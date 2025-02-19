@@ -184,10 +184,10 @@ class foreman::config::apache (
   }
 
   $vhost_http_request_headers = [
-    'set X_FORWARDED_PROTO "http"',
-    'set SSL_CLIENT_S_DN ""',
-    'set SSL_CLIENT_CERT ""',
-    'set SSL_CLIENT_VERIFY ""',
+    'set X-FORWARDED-PROTO "http"',
+    'set SSL-CLIENT-S-DN ""',
+    'set SSL-CLIENT-CERT ""',
+    'set SSL-CLIENT-VERIFY ""',
   ] +
   $request_headers_to_unset.map |$header| {
     "unset ${header}"
@@ -212,10 +212,10 @@ class foreman::config::apache (
   }
 
   $vhost_https_request_headers = [
-    'set X_FORWARDED_PROTO "https"',
-    'set SSL_CLIENT_S_DN "%{SSL_CLIENT_S_DN}s"',
-    'set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"',
-    'set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"',
+    'set X-FORWARDED-PROTO "https"',
+    'set SSL-CLIENT-S-DN "%{SSL_CLIENT_S_DN}s"',
+    'set SSL-CLIENT-CERT "%{SSL_CLIENT_CERT}s"',
+    'set SSL-CLIENT-VERIFY "%{SSL_CLIENT_VERIFY}s"',
   ] +
   $request_headers_to_unset.map |$header| {
     "unset ${header}"
