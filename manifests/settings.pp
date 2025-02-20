@@ -10,6 +10,7 @@ class foreman::settings (
   Optional[String] $email_smtp_password = $foreman::email_smtp_password,
   Optional[String] $email_reply_address = $foreman::email_reply_address,
   Optional[String] $email_subject_prefix = $foreman::email_subject_prefix,
+  Optional[Integer] $outofsync_interval = $foreman::outofsync_interval,
 ) {
   unless empty($email_delivery_method) {
     foreman_config_entry { 'delivery_method':
@@ -50,6 +51,11 @@ class foreman::settings (
 
     foreman_config_entry { 'email_subject_prefix':
       value => $email_subject_prefix,
+    }
+  }
+  unless empty($outofsync_interval) {
+    foreman_config_entry { 'outofsync_interval':
+      value => $outofsync_interval,
     }
   }
 }
