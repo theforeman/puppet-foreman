@@ -19,6 +19,7 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
           include foreman::cli::kubevirt
           include foreman::cli::openscap
           include foreman::cli::resource_quota
+          include foreman::cli::scc_manager
         }
         include foreman::cli::ansible
         include foreman::cli::bootdisk
@@ -53,7 +54,7 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
     end
 
     if fact('os.family') == 'RedHat'
-      ['azure_rm', 'kubevirt', 'openscap', 'resource_quota'].each do |plugin|
+      ['azure_rm', 'kubevirt', 'openscap', 'resource_quota', 'scc_manager'].each do |plugin|
         describe package("rubygem-hammer_cli_foreman_#{plugin}") do
           it { is_expected.to be_installed }
         end
