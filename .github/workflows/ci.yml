@@ -17,8 +17,7 @@ concurrency:
 jobs:
   puppet:
     name: Puppet
-    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v2
+    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v3
     with:
       pidfile_workaround: 'false'
       rubocop: false
-      cache-version: '1'
