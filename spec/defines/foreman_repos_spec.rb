@@ -9,13 +9,13 @@ describe 'foreman::repos' do
     context "on #{os}" do
       let(:facts) { facts }
 
-      case facts[:osfamily]
+      case facts[:os]['family']
       when 'RedHat'
         yumcode = case os
                   when /^fedora-/
-                    "f#{facts[:operatingsystemmajrelease]}"
+                    "f#{facts[:os]['release']['major']}"
                   else
-                    "el#{facts[:operatingsystemmajrelease]}"
+                    "el#{facts[:os]['release']['major']}"
                   end
 
         it do
@@ -44,7 +44,7 @@ describe 'foreman::repos' do
     end
 
     it 'should fail' do
-      is_expected.to compile.and_raise_error(/#{facts[:hostname]}: This module does not support osfamily #{facts[:osfamily]}/)
+      is_expected.to compile.and_raise_error(/#{facts[:networking]['hostname']}: This module does not support osfamily #{facts[:os]['family']}/)
     end
   end
 end

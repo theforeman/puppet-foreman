@@ -6,7 +6,7 @@ describe 'foreman' do
       let(:facts) { facts.merge(interfaces: '') }
       let(:params) { { ipa_authentication: true } }
 
-      keytab_path = facts[:osfamily] == 'RedHat' ? '/etc/httpd/conf/http.keytab' : '/etc/apache2/http.keytab'
+      keytab_path = facts[:os]['family'] == 'RedHat' ? '/etc/httpd/conf/http.keytab' : '/etc/apache2/http.keytab'
 
       describe 'without apache' do
         let(:params) { super().merge(apache: false) }

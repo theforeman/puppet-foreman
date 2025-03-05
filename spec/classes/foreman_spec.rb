@@ -5,7 +5,7 @@ describe 'foreman' do
     context "on #{os}" do
       let(:facts) { override_facts(facts, processors: { count: 3 }, memory: { system: { total_bytes:  10_737_418_240}}) }
       let(:params) { {} }
-      let(:apache_user) { facts[:osfamily] == 'Debian' ? 'www-data' : 'apache' }
+      let(:apache_user) { facts[:os]['family'] == 'Debian' ? 'www-data' : 'apache' }
 
       context 'with default parameters' do
         it { is_expected.to compile.with_all_deps }

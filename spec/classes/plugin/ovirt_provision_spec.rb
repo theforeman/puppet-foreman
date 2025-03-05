@@ -9,7 +9,7 @@ describe 'foreman::plugin::ovirt_provision' do
 
       let(:pre_condition) { 'include foreman' }
       let(:package_name) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'RedHat'
           'rubygem-ovirt_provision_plugin'
         when 'Debian'
