@@ -9,7 +9,7 @@ describe 'foreman::plugin::puppetdb' do
 
       let(:pre_condition) { 'include foreman' }
       let(:package_name) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'RedHat'
           'rubygem-puppetdb_foreman'
         when 'Debian'

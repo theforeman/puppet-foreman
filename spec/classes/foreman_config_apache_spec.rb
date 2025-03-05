@@ -7,7 +7,7 @@ describe 'foreman::config::apache' do
       let(:params) { {} }
 
       let(:http_dir) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'RedHat'
           '/etc/httpd'
         when 'Debian'
@@ -45,7 +45,7 @@ describe 'foreman::config::apache' do
       it 'configures the HTTP vhost' do
         should contain_apache__vhost('foreman')
           .with_ip(nil)
-          .with_servername(facts[:fqdn])
+          .with_servername(facts[:networking]['fqdn'])
           .with_serveraliases([])
           .with_add_default_charset('UTF-8')
           .with_docroot('/usr/share/foreman/public')
@@ -174,7 +174,7 @@ describe 'foreman::config::apache' do
         it 'should include a https vhost' do
           should contain_apache__vhost('foreman-ssl')
             .with_ip(nil)
-            .with_servername(facts[:fqdn])
+            .with_servername(facts[:networking]['fqdn'])
             .with_serveraliases([])
             .with_add_default_charset('UTF-8')
             .with_docroot('/usr/share/foreman/public')

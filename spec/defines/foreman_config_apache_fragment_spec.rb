@@ -7,7 +7,7 @@ describe 'foreman::config::apache::fragment' do
     context "on #{os}" do
       let(:facts) { facts }
 
-      confd_dir = case facts[:osfamily]
+      confd_dir = case facts[:os]['family']
                   when 'RedHat'
                     '/etc/httpd/conf.d'
                   when 'Debian'

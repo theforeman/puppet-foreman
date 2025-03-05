@@ -10,7 +10,7 @@ describe 'foreman::plugin::tasks' do
       let(:pre_condition) { 'include foreman' }
 
       let(:package_name) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'RedHat'
           'rubygem-foreman-tasks'
         when 'Debian'

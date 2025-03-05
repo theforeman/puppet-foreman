@@ -12,7 +12,7 @@ describe 'foreman::plugin' do
       end
 
       context 'no parameters' do
-        package_name = case facts[:osfamily]
+        package_name = case facts[:os]['family']
                        when 'RedHat'
                          'rubygem-foreman_myplugin'
                        when 'Debian'
@@ -47,7 +47,7 @@ describe 'foreman::plugin' do
           }
         end
 
-        package_name = case facts[:osfamily]
+        package_name = case facts[:os]['family']
                        when 'RedHat'
                          'my_fun_plugin'
                        when 'Debian'
