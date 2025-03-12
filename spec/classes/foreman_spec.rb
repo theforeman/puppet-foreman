@@ -200,6 +200,7 @@ describe 'foreman' do
             db_password: 'secret',
             db_sslmode: 'prefer',
             db_pool: 9,
+            db_extra_options: { 'target_session_attrs': 'read-write' },
             db_manage_rake: true,
             server_port: 80,
             server_ssl_port: 443,
