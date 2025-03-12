@@ -109,7 +109,7 @@ class foreman::config {
 
   if ! defined(File[$foreman::app_root]) {
     file { $foreman::app_root:
-      ensure  => directory,
+      ensure => directory,
     }
   }
 
