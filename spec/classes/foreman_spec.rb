@@ -26,6 +26,7 @@ describe 'foreman' do
           should contain_concat__fragment('foreman_settings+00-header.yaml').with_content(/^## Module:\s+'foreman'$/)
 
           should contain_concat__fragment('foreman_settings+01-base.yaml')
+            .with_content(%r{^:foreman_url:\s*https://foo\.example\.com$})
             .with_content(/^:unattended:\s*true$/)
             .without_content(/^:unattended_url:/)
             .with_content(/^:require_ssl:\s*true$/)

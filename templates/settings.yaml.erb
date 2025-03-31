@@ -1,3 +1,4 @@
+:foreman_url: <%= scope.lookupvar("foreman::foreman_url") %>
 :unattended: <%= scope.lookupvar("foreman::unattended") %>
 <% unless [nil, :undefined, :undef].include?(scope.lookupvar("foreman::unattended_url")) -%>
 :unattended_url: <%= scope.lookupvar("foreman::unattended_url") %>
