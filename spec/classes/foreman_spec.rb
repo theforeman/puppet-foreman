@@ -201,6 +201,7 @@ describe 'foreman' do
             db_password: 'secret',
             db_sslmode: 'prefer',
             db_pool: 9,
+            db_extra_options: { 'target_session_attrs': 'read-write' },
             db_manage_rake: true,
             server_port: 80,
             server_ssl_port: 443,
@@ -251,6 +252,14 @@ describe 'foreman' do
             keycloak_realm: 'myrealm',
             provisioning_ct_location: '/usr/bin/myct',
             provisioning_fcct_location: '/usr/bin/myfcct',
+            authorize_login_delegation: true,
+            authorize_login_delegation_auth_source_user_autocreate: 'External',
+            login_delegation_logout_url: 'https://foreman.top.com/users/extlogout',
+            oidc_jwks_url: 'https://keycloak.top.com/realms/myrealm/protocol/openid-connect/certs',
+            oidc_audience: ['cloack-app'],
+            oidc_issuer: 'https://keycloak.top.com/realms/myrealm',
+            oidc_algorithm: 'RS256',
+            outofsync_interval: 30,
           }
         end
 
