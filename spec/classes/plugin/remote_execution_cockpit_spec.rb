@@ -7,7 +7,7 @@ describe 'foreman::plugin::remote_execution::cockpit' do
       let(:pre_condition) do
         <<-PUPPET
         class {'foreman':
-          foreman_url      => 'https://foreman.example.com',
+          servername       => 'foreman.example.com',
           server_ssl_chain => '/path/to/ca.pem',
           client_ssl_cert  => '/path/to/cert.pem',
           client_ssl_key   => '/path/to/key.pem',

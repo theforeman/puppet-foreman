@@ -186,7 +186,6 @@ describe 'foreman' do
       describe 'with all parameters' do
         let :params do
           {
-            foreman_url: 'http://localhost',
             unattended: true,
             servername: 'localhost',
             serveraliases: ['foreman'],
