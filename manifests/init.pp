@@ -226,7 +226,7 @@ class foreman (
   Optional[Stdlib::Port] $db_port = undef,
   String[1] $db_database = 'foreman',
   String[1] $db_username = 'foreman',
-  String[1] $db_password = $foreman::params::db_password,
+  Variant[String[1], Sensitive[String[1]]] $db_password = $foreman::params::db_password,
   Optional[String[1]] $db_sslmode = undef,
   Optional[String[1]] $db_root_cert = undef,
   Optional[Integer[0]] $db_pool = undef,
