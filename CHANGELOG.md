@@ -1,5 +1,20 @@
 # Changelog
 
+## [26.2.0](https://github.com/theforeman/puppet-foreman/tree/26.2.0) (2025-05-08)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/26.1.0...26.2.0)
+
+**Implemented enhancements:**
+
+- Ensure glibc-langpack-en is always installed on EL [\#1221](https://github.com/theforeman/puppet-foreman/pull/1221) ([evgeni](https://github.com/evgeni))
+- Fixes [\#38330](https://projects.theforeman.org/issues/38330) - Set foreman\_url in settings.yaml [\#1220](https://github.com/theforeman/puppet-foreman/pull/1220) ([ekohl](https://github.com/ekohl))
+- Fixes [\#38228](https://projects.theforeman.org/issues/38228) - Add Hammer CLI for foreman\_bootdisk [\#1213](https://github.com/theforeman/puppet-foreman/pull/1213) ([maximiliankolb](https://github.com/maximiliankolb))
+
+**Fixed bugs:**
+
+- Fix linting error [\#1219](https://github.com/theforeman/puppet-foreman/pull/1219) ([dosas](https://github.com/dosas))
+- use dashes, not underscores when settings HTTP headers [\#1214](https://github.com/theforeman/puppet-foreman/pull/1214) ([evgeni](https://github.com/evgeni))
+
 ## [26.1.0](https://github.com/theforeman/puppet-foreman/tree/26.1.0) (2025-02-17)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/26.0.0...26.1.0)
