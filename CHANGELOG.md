@@ -1,5 +1,13 @@
 # Changelog
 
+## [26.2.1](https://github.com/theforeman/puppet-foreman/tree/26.2.1) (2025-05-09)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/26.2.0...26.2.1)
+
+**Fixed bugs:**
+
+- Avoid dependency cycles with glibc-langpack-en [\#1224](https://github.com/theforeman/puppet-foreman/pull/1224) ([ekohl](https://github.com/ekohl))
+
 ## [26.2.0](https://github.com/theforeman/puppet-foreman/tree/26.2.0) (2025-05-08)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/26.1.0...26.2.0)
