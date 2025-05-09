@@ -1,10 +1,16 @@
 require 'spec_helper'
 
 describe 'foreman' do
-  on_supported_os.each do |os, facts|
+  on_supported_os.each do |os, os_facts|
     context "on #{os}" do
-      let(:facts) { facts }
+      let(:facts) { os_facts }
       let(:params) { {} }
+
+      if os_facts[:os]['family'] == 'RedHat'
+        it { should contain_package('glibc-langpack-en').that_comes_before('Postgresql::Server::Db[foreman]') }
+      else
+        it { should_not contain_package('glibc-langpack-en') }
+      end
 
       describe 'with db_manage set to false' do
         let(:params) { super().merge(db_manage: false) }

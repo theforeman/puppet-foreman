@@ -6,11 +6,7 @@ class foreman::database::postgresql {
   }
 
   include postgresql::client, postgresql::server
-
-  if $facts['os']['family'] == 'RedHat' {
-    stdlib::ensure_packages(['glibc-langpack-en'])
-    Package['glibc-langpack-en'] -> Postgresql::Server::Db[$foreman::db_database]
-  }
+  include foreman::database::postgresql::encoding
 
   postgresql::server::db { $foreman::db_database:
     user     => $foreman::db_username,
@@ -18,5 +14,6 @@ class foreman::database::postgresql {
     owner    => $foreman::db_username,
     encoding => 'utf8',
     locale   => 'en_US.utf8',
+    require  => Class['foreman::database::postgresql::encoding'],
   }
 }
