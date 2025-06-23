@@ -13,6 +13,7 @@ class foreman::config {
       include redis
       $dynflow_redis_url = "redis://localhost:${redis::port}/6"
       Class['redis'] -> Service <| tag == 'foreman::dynflow::worker' |>
+      Class['redis'] -> Foreman::Rake <| tag == 'db:migrate' |>
     }
 
     file { '/etc/foreman/dynflow':

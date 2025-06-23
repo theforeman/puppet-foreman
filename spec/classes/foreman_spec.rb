@@ -131,7 +131,7 @@ describe 'foreman' do
         it { should contain_foreman__rake('db:seed') }
 
         # jobs
-        it { should contain_class('redis') }
+        it { should contain_class('redis').that_comes_before('Foreman::Rake[db:migrate]') }
         it { should contain_redis__instance('default') }
         it { should contain_file('/etc/foreman/dynflow').with_ensure('directory') }
         it {
