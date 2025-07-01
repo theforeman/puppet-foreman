@@ -138,7 +138,7 @@ contributing to this module.
 
 # More info
 
-See https://theforeman.org or #theforeman on matrix.org
+See https://theforeman.org/support.html for additional information or help
 
 Copyright (c) 2010-2013 Ohad Levy and their respective owners
 
