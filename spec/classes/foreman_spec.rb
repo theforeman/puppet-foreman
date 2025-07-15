@@ -485,6 +485,17 @@ describe 'foreman' do
 
         it { should contain_user('foreman').with('groups' => []) }
       end
+
+      describe 'with sensitive passwords' do
+        let(:params) do
+          super().merge(db_password: sensitive('secret'))
+        end
+
+        it 'should configure the database' do
+          should contain_file('/etc/foreman/database.yml')
+            .with_content(sensitive(/password: "secret"/))
+        end
+      end
     end
   end
 end
