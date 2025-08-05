@@ -1,7 +1,9 @@
 fixtures:
   repositories:
     apache: 'https://github.com/puppetlabs/puppetlabs-apache'
-    apt: 'https://github.com/puppetlabs/puppetlabs-apt'
+    apt:
+      repo: 'https://github.com/puppetlabs/puppetlabs-apt'
+      ref: 'v10.0.1'
     augeas_core: 'https://github.com/puppetlabs/puppetlabs-augeas_core'
     certs: 'https://github.com/theforeman/puppet-certs'
     concat: 'https://github.com/puppetlabs/puppetlabs-concat'
