@@ -1,6 +1,0 @@
-<%- |
-  Boolean $enable_iop_advisor_engine,
-| -%>
----
-:foreman_rh_cloud:
-  :use_local_advisor_engine: <%= $enable_iop_advisor_engine %>
