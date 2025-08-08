@@ -1,5 +1,18 @@
 # Changelog
 
+## [27.0.0](https://github.com/theforeman/puppet-foreman/tree/27.0.0) (2025-08-08)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/26.2.1...27.0.0)
+
+**Breaking changes:**
+
+- Remove puppet-iop\_advisor\_engine from rh\_cloud [\#1229](https://github.com/theforeman/puppet-foreman/pull/1229) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- Pin puppet-apt since it dropped Puppet 7 [\#1230](https://github.com/theforeman/puppet-foreman/pull/1230) ([ehelms](https://github.com/ehelms))
+- Fixes [\#38517](https://projects.theforeman.org/issues/38517) - Ensure Redis is running before db:migrate [\#1226](https://github.com/theforeman/puppet-foreman/pull/1226) ([ekohl](https://github.com/ekohl))
+
 ## [26.2.1](https://github.com/theforeman/puppet-foreman/tree/26.2.1) (2025-05-09)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/26.2.0...26.2.1)
