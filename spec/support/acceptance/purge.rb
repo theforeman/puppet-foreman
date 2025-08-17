@@ -7,6 +7,7 @@ def purge_foreman
     on default, 'apt-get purge -y foreman*', { :acceptable_exit_codes => [0, 100] }
     on default, 'apt-get purge -y ruby-hammer-cli-*', { :acceptable_exit_codes => [0, 100] }
   end
+  on default, 'rm -rf /etc/systemd/system/foreman* /etc/containers/systemd/foreman*'
 
   apache_service_name = ['debian', 'ubuntu'].include?(os[:family]) ? 'apache2' : 'httpd'
   on default, "systemctl stop #{apache_service_name}", { :acceptable_exit_codes => [0, 5] }
