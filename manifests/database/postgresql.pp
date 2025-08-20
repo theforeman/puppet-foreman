@@ -5,7 +5,7 @@ class foreman::database::postgresql {
     cwd => '/',
   }
 
-  include postgresql::client, postgresql::server
+  include postgresql::client, postgresql::server, postgresql::server::contrib
   include foreman::database::postgresql::encoding
 
   postgresql::server::db { $foreman::db_database:
@@ -15,5 +15,11 @@ class foreman::database::postgresql {
     encoding => 'utf8',
     locale   => 'en_US.utf8',
     require  => Class['foreman::database::postgresql::encoding'],
+  }
+
+  postgresql::server::extension { "amcheck for ${foreman::db_database}":
+    database  => $foreman::db_database,
+    extension => 'amcheck',
+    require   => Class['postgresql::server::contrib'],
   }
 }
