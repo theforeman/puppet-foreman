@@ -1,5 +1,15 @@
 # Changelog
 
+## [27.1.0](https://github.com/theforeman/puppet-foreman/tree/27.1.0) (2025-09-09)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/27.0.0...27.1.0)
+
+**Implemented enhancements:**
+
+- install amcheck extension for PostgreSQL [\#1232](https://github.com/theforeman/puppet-foreman/pull/1232) ([evgeni](https://github.com/evgeni))
+- Add support for hammer-cli-foreman-salt [\#1216](https://github.com/theforeman/puppet-foreman/pull/1216) ([bastian-src](https://github.com/bastian-src))
+- Add hammer-cli-foreman-scc-manager package [\#1215](https://github.com/theforeman/puppet-foreman/pull/1215) ([bastian-src](https://github.com/bastian-src))
+
 ## [27.0.0](https://github.com/theforeman/puppet-foreman/tree/27.0.0) (2025-08-08)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/26.2.1...27.0.0)
