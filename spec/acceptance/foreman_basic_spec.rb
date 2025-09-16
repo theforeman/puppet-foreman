@@ -55,4 +55,24 @@ describe 'Foreman' do
 
     it_behaves_like 'the foreman application', { expected_login_url_path: '/users/extlogin' }
   end
+
+  # needs to happen after GSSAPI, something is wrong with its cleanup
+  context 'in a Container' do
+    before(:context) { purge_foreman }
+    describe 'in a Container' do
+      it_behaves_like 'an idempotent resource' do
+        let(:manifest) do
+          <<~PUPPET
+          class { 'foreman':
+            deployment_mode => 'container',
+            db_host => 'localhost',
+            db_manage_rake => false,
+          }
+          PUPPET
+        end
+      end
+
+      it_behaves_like 'the foreman application', { deployment_mode: 'container' }
+    end
+  end
 end

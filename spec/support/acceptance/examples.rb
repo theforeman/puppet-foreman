@@ -19,8 +19,10 @@ shared_examples 'the foreman application' do |params = {}|
     it { is_expected.to be_listening }
   end
 
-  describe file('/run/foreman.sock') do
-    it { should be_socket }
+  if params.fetch(:deployment_mode, 'package') == 'package'
+    describe file('/run/foreman.sock') do
+      it { should be_socket }
+    end
   end
 
   describe command("curl -s --cacert /etc/foreman-certs/certificate.pem https://#{host_inventory['fqdn']} -w '\%{redirect_url}' -o /dev/null") do

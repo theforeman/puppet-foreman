@@ -189,6 +189,8 @@
 #
 # $provisioning_fcct_location::   The location of the binary to call when transpiling Fedora CoreOS templates.
 #
+# $deployment_mode::              The way foreman is deployed: packages or container
+#
 # === Dynflow parameters:
 #
 # $dynflow_manage_services::      Whether to manage the dynflow services
@@ -307,6 +309,7 @@ class foreman (
   Boolean $register_in_foreman = true,
   Optional[Stdlib::Absolutepath] $provisioning_ct_location = undef,
   Optional[Stdlib::Absolutepath] $provisioning_fcct_location = undef,
+  Enum['package', 'container'] $deployment_mode = 'package',
 ) inherits foreman::params {
   assert_type(Array[Stdlib::IP::Address], $trusted_proxies)
 
