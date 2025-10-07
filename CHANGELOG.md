@@ -1,5 +1,16 @@
 # Changelog
 
+## [27.2.0](https://github.com/theforeman/puppet-foreman/tree/27.2.0) (2025-10-08)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/27.1.0...27.2.0)
+
+**Implemented enhancements:**
+
+- puppetlabs/apt: Allow 11.x [\#1238](https://github.com/theforeman/puppet-foreman/pull/1238) ([bastelfreak](https://github.com/bastelfreak))
+- Allow puppetlabs/apache 13.x [\#1236](https://github.com/theforeman/puppet-foreman/pull/1236) ([shubhamsg199](https://github.com/shubhamsg199))
+- Allow puppet/systemd 9.x [\#1235](https://github.com/theforeman/puppet-foreman/pull/1235) ([evgeni](https://github.com/evgeni))
+- Allow puppet/redis 12.x [\#1234](https://github.com/theforeman/puppet-foreman/pull/1234) ([evgeni](https://github.com/evgeni))
+
 ## [27.1.0](https://github.com/theforeman/puppet-foreman/tree/27.1.0) (2025-09-09)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/27.0.0...27.1.0)
