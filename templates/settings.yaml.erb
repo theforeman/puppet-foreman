@@ -11,6 +11,17 @@
 :oauth_consumer_key: <%= scope.lookupvar("foreman::oauth_consumer_key") %>
 :oauth_consumer_secret: <%= scope.lookupvar("foreman::oauth_consumer_secret") %>
 
+<% if scope.lookupvar('foreman::authorize_login_delegation') -%>
+# The following values are used for oidc authentication
+:authorize_login_delegation: <%= scope.lookupvar("foreman::authorize_login_delegation") %>
+:authorize_login_delegation_auth_source_user_autocreate: <%= scope.lookupvar("foreman::authorize_login_delegation_auth_source_user_autocreate") %>
+:login_delegation_logout_url: <%= scope.lookupvar("foreman::login_delegation_logout_url") %>
+:oidc_jwks_url: <%= scope.lookupvar("foreman::oidc_jwks_url") %>
+:oidc_audience: <%= scope.lookupvar("foreman::oidc_audience") %>
+:oidc_issuer: <%= scope.lookupvar("foreman::oidc_issuer") %>
+:oidc_algorithm: <%= scope.lookupvar("foreman::oidc_algorithm") %>
+
+<% end -%>
 # Websockets
 :websockets_encrypt: <%= scope.lookupvar("foreman::websockets_encrypt") %>
 :websockets_ssl_key: <%= @websockets_ssl_key %>
@@ -47,7 +58,7 @@
 :trusted_proxies:
 <% scope.lookupvar('foreman::trusted_proxies').each do |proxy| -%>
  - '<%= proxy %>'
-<% end -%>
+ <% end -%>
 
 <% end -%>
 # Individual logging types can be toggled on/off here
