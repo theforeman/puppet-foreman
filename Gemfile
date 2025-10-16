@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'puppet', ENV.fetch('PUPPET_GEM_VERSION', '>= 7'), groups: ['development', 'test']
+gem 'puppet', ENV.fetch('PUPPET_GEM_VERSION', '>= 8'), groups: ['development', 'test']
 gem 'rake'
 
 gem 'kafo_module_lint', {"groups"=>["test"]}
