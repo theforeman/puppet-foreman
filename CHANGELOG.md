@@ -1,5 +1,17 @@
 # Changelog
 
+## [28.0.0](https://github.com/theforeman/puppet-foreman/tree/28.0.0) (2025-10-17)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/27.2.0...28.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 7 support [\#1240](https://github.com/theforeman/puppet-foreman/pull/1240) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- add db\_extra\_options parameter [\#1239](https://github.com/theforeman/puppet-foreman/pull/1239) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [27.2.0](https://github.com/theforeman/puppet-foreman/tree/27.2.0) (2025-10-08)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/27.1.0...27.2.0)
