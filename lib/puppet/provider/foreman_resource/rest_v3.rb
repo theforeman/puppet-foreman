@@ -131,4 +131,19 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
       JSON.parse(response.body)['error']['full_messages'].join(' ') rescue "Response: #{response.code} #{response.message}"
     end
   end
+
+  def search(id_name, value)
+    if !value.nil? and value.start_with?("search=") then
+      lookup_uri = "api/v2/" + id_name + "?" + value
+      lookup = request(:get, lookup_uri)
+      unless success?(lookup)
+        error_string = "Error making GET request to Foreman at #{lookup_uri}: #{error_message(lookup)}"
+        raise Puppet::Error.new(error_string)
+      end
+
+      JSON.load(lookup.body)['results'][0]['id']
+    else
+      value
+    end
+  end
 end
