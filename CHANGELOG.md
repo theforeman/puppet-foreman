@@ -1,5 +1,13 @@
 # Changelog
 
+## [27.3.0](https://github.com/theforeman/puppet-foreman/tree/27.3.0) (2025-11-06)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/27.2.0...27.3.0)
+
+**Implemented enhancements:**
+
+- Add foreman\_ovirt plugin to installer [\#1243](https://github.com/theforeman/puppet-foreman/pull/1243) ([nadjaheitmann](https://github.com/nadjaheitmann))
+
 ## [27.2.0](https://github.com/theforeman/puppet-foreman/tree/27.2.0) (2025-10-08)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/27.1.0...27.2.0)
