@@ -1,14 +1,14 @@
 class { 'foreman::repo':
-  repo => 'nightly',
+  repo => '3.16',
 }
 
 if $facts['os']['family'] == 'RedHat' {
   yumrepo { 'katello':
-    baseurl  => "http://yum.theforeman.org/katello/nightly/katello/el${facts['os']['release']['major']}/x86_64/",
+    baseurl  => "http://yum.theforeman.org/katello/4.19/katello/el${facts['os']['release']['major']}/x86_64/",
     gpgcheck => 0,
   }
   yumrepo { 'candlepin':
-    baseurl  => "https://yum.theforeman.org/candlepin/4.4/el${facts['os']['release']['major']}/x86_64/",
+    baseurl  => "https://yum.theforeman.org/candlepin/4.6/el${facts['os']['release']['major']}/x86_64/",
     gpgcheck => 0,
   }
 }
