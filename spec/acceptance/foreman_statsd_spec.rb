@@ -18,6 +18,9 @@ describe 'Scenario: install foreman with statsd' do
   describe package('foreman-telemetry') do
     it { is_expected.to be_installed }
   end
-
+  describe command("journalctl --boot --no-pager") do
+    its(:stdout) { should match /#{service_name}/ }
+    its(:exit_status) { should eq 0 }
+  end
   # TODO: actually verify statsd functionality
 end
