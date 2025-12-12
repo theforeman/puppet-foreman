@@ -9,6 +9,10 @@ shared_examples 'the foreman application' do |params = {}|
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end
+    describe command("journalctl --boot --catalog --no-pager --unit #{service_name}") do
+      its(:stdout) { should match /#{service_name}/ }
+      its(:exit_status) { should eq 0 }
+    end
   end
 
   describe port(80) do
