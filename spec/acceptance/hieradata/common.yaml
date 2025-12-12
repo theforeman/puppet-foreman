@@ -9,3 +9,4 @@ foreman::server_ssl_key: /etc/foreman-certs/key.pem
 foreman::client_ssl_ca: /etc/foreman-certs/certificate.pem
 foreman::client_ssl_cert: /etc/foreman-certs/certificate.pem
 foreman::client_ssl_key: /etc/foreman-certs/key.pem
+foreman::foreman_service_puma_threads_max: 1
