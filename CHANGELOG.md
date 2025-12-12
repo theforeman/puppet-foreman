@@ -1,6 +1,15 @@
 # Changelog
 
-## [28.0.0](https://github.com/theforeman/puppet-foreman/tree/28.0.0) (2025-11-05)
+## [28.1.0](https://github.com/theforeman/puppet-foreman/tree/28.1.0) (2025-12-12)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/27.3.0...28.0.0)
+
+**Implemented enhancements:**
+
+- Add Rocky/OracleLinux 9 support [\#1250](https://github.com/theforeman/puppet-foreman/pull/1250) ([bastelfreak](https://github.com/bastelfreak))
+- Add openbolt plugin support [\#1249](https://github.com/theforeman/puppet-foreman/pull/1249) ([bastelfreak](https://github.com/bastelfreak))
+
+## [28.0.0](https://github.com/theforeman/puppet-foreman/tree/28.0.0) (2025-11-06)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/27.2.0...28.0.0)
 
