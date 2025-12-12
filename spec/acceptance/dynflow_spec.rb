@@ -2,7 +2,7 @@ require 'spec_helper_acceptance'
 
 describe 'Scenario: install foreman', order: :defined do
   context '2 workers' do
-    it_behaves_like 'an idempotent resource' do
+    it_behaves_like 'an idempotent resource with debug' do
       let(:manifest) do
         <<-PUPPET
         class { 'foreman':
@@ -10,6 +10,16 @@ describe 'Scenario: install foreman', order: :defined do
         }
         PUPPET
       end
+    end
+
+    describe command('env') do
+      its(:stdout) { should match /PWD=/ }
+      its(:exit_status) { should eq 0 }
+    end
+
+    describe command('localectl status') do
+      its(:stdout) { should match /Locale/ }
+      its(:exit_status) { should eq 0 }
     end
 
     it_behaves_like 'the foreman application'
