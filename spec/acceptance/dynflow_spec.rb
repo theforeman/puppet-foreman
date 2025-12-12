@@ -22,6 +22,10 @@ describe 'Scenario: install foreman', order: :defined do
       its(:exit_status) { should eq 0 }
     end
 
+    describe file('/tmp/postgresql.txt') do
+      its(:content) { should match /postgresql/ }
+    end
+
     it_behaves_like 'the foreman application'
 
     describe file('/etc/foreman/dynflow/worker.yml') do
