@@ -12,6 +12,20 @@ describe 'Scenario: install foreman', order: :defined do
       end
     end
 
+    describe command('env') do
+      its(:stdout) { should match /PWD=/ }
+      its(:exit_status) { should eq 0 }
+    end
+
+    describe command('localectl status') do
+      its(:stdout) { should match /Locale/ }
+      its(:exit_status) { should eq 0 }
+    end
+
+    describe file('/tmp/postgresql.txt') do
+      its(:content) { should match /postgresql/ }
+    end
+
     it_behaves_like 'the foreman application'
 
     describe file('/etc/foreman/dynflow/worker.yml') do
