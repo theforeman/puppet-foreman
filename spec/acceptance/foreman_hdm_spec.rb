@@ -13,7 +13,7 @@ describe 'Scenario: install foreman with hdm' do
   end
 
   it_behaves_like 'the foreman application'
-  describe curl_command("https://#{host_inventory['fqdn']}/api/plugins", cacert: '/etc/foreman-certs/certificate.pem', user: 'admin:changeme') do
+    describe curl_command("https://admin:changeme@#{host_inventory['fqdn']}/api/plugins", cacert: '/etc/foreman-certs/certificate.pem') do
     its(:stdout) { should include('foreman_hdm') }
     its(:exit_status) { should eq 0 }
   end
