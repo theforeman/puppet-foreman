@@ -42,7 +42,10 @@ class foreman::plugin::remote_execution::cockpit (
     service { 'foreman-cockpit':
       ensure    => running,
       enable    => true,
-      require   => Foreman::Plugin['remote_execution-cockpit'],
+      require   => [
+        Foreman::Plugin['remote_execution-cockpit'],
+        Foreman::Config::Apache::Fragment['cockpit'],
+      ],
       subscribe => File["${config_directory}/cockpit.conf", "${config_directory}/foreman-cockpit-session.yml"],
     }
   }
@@ -75,13 +78,14 @@ class foreman::plugin::remote_execution::cockpit (
     }
   } else {
     include apache::mod::proxy_http
-    foreman::config::apache::fragment { 'cockpit':
-      ssl_content => template('foreman/cockpit-apache-ssl.conf.erb'),
-    }
-
     foreman_config_entry { 'remote_execution_cockpit_url':
       value   => "${cockpit_path}/=%{host}",
       require => Class['foreman::database'],
+      notify  => Class['foreman::service'],
     }
+  }
+
+  foreman::config::apache::fragment { 'cockpit':
+    ssl_content => bool2str($ensure_absent, undef, template('foreman/cockpit-apache-ssl.conf.erb')),
   }
 }
