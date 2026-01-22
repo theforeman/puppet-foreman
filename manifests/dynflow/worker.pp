@@ -47,7 +47,7 @@ define foreman::dynflow::worker (
       content => foreman::to_symbolized_yaml($config),
     }
     ~> service { $service:
-      ensure    => running,
+      ensure    => true,
       enable    => true,
       subscribe => Class['foreman::database'],
     }
