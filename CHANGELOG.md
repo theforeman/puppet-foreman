@@ -1,8 +1,20 @@
 # Changelog
 
-## [28.1.0](https://github.com/theforeman/puppet-foreman/tree/28.1.0) (2025-12-12)
+## [29.0.0](https://github.com/theforeman/puppet-foreman/tree/29.0.0) (2026-01-28)
 
-[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/27.3.0...28.0.0)
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/28.1.0...29.0.0)
+
+**Breaking changes:**
+
+- Remove foreman\_acd [\#1247](https://github.com/theforeman/puppet-foreman/pull/1247) ([maximiliankolb](https://github.com/maximiliankolb))
+
+**Implemented enhancements:**
+
+- Add support for OpenVox [\#1272](https://github.com/theforeman/puppet-foreman/pull/1272) ([evgeni](https://github.com/evgeni))
+
+## [28.1.0](https://github.com/theforeman/puppet-foreman/tree/28.1.0) (2025-12-16)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/27.3.0...28.1.0)
 
 **Implemented enhancements:**
 
