@@ -17,7 +17,7 @@ Checklist (and a short version for the impatient)
       description (50 characters is the soft limit, excluding ticket
       number(s)), and should skip the full stop.
 
-    - If you have a [https://projects.theforeman.org/projects/puppet-foreman/issues](Redmine issue)
+    - If you have a [Redmine issue](https://projects.theforeman.org/projects/puppet-foreman/issues)
       number, associate the issue in the message.  The first line should start
       with the issue number in the form "fixes #XXXX - rest of message".
       [More information on the Redmine style](https://projects.theforeman.org/projects/foreman/wiki/Reviewing_patches-commit_message_format).
@@ -205,6 +205,30 @@ SPEC_FACTS_OS=redhat bundle exec rspec spec/classes/foreman_spec.rb
 ```
 For more information on running the tests, see [rspec-puppet-facts](https://github.com/mcanevet/rspec-puppet-facts)
 and specifically the [section for running tests](https://github.com/mcanevet/rspec-puppet-facts#running-your-tests).
+
+**Running acceptance tests locally**
+
+1. Make sure you've met Prerequisites.
+
+2. Acceptance tests are running within a VM, so make sure you have installed:
+  - `docker` **or**
+  - `vagrant` with `VirtualBox` as the provider **or**
+  - `vagrant` and `vagrant-libvirt` with `libvirt` as the provider
+
+For more dependencies please see related information for picked variant.
+Additonal info can be found at [voxpupuli-acceptance](https://github.com/voxpupuli/voxpupuli-acceptance/#running-tests) which is used to run the tests.
+
+3. Run the tests:
+ - `BEAKER_HYPERVISOR=vagrant_libvirt bundle exec rake beaker`
+   - Use `bundle exec rspec spec/acceptance/my_test.rb -e "test"` to run a specific test as you'd usually do with `rspec`.
+
+ This will use `vagrant` and `libvirt` as the provider to create a VM and will run all tests there.
+
+4. You can additionally specify:
+ - `BEAKER_PUPPET_DEBUG=yes` to make Puppet more verbose.
+ - `BEAKER_destroy=no` to leave the machine for further inspection in case of an error.
+   - Use `cd .vagrant/beaker_vagrant_files/beaker_centos8* && vagrant ssh` to SSH into VM.
+ - `BEAKER_provision=no` to re-use the VM again to re-run tests (e.g. small changes or new ones).
 
 Writing Tests
 -------------
