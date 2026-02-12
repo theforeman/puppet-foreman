@@ -195,14 +195,6 @@ class foreman::config {
         }
       }
 
-      if $foreman::ipa_manage_sssd {
-        service { 'sssd':
-          ensure  => running,
-          enable  => true,
-          require => Package['sssd-dbus'],
-        }
-      }
-
       file { "/etc/pam.d/${foreman::pam_service}":
         ensure  => file,
         owner   => root,
@@ -211,7 +203,7 @@ class foreman::config {
         content => template('foreman/pam_service.erb'),
       }
 
-      $http_keytab = pick($foreman::http_keytab, "${apache::conf_dir}/http.keytab")
+      $http_keytab = $foreman::config::apache::http_keytab
 
       exec { 'ipa-getkeytab':
         command => "/bin/echo Get keytab \
@@ -224,24 +216,6 @@ class foreman::config {
         ensure => file,
         owner  => $apache::user,
         mode   => '0600',
-      }
-
-      $gssapi_local_name = bool2str($foreman::gssapi_local_name, 'On', 'Off')
-
-      foreman::config::apache::fragment { 'intercept_form_submit':
-        ssl_content => template('foreman/intercept_form_submit.conf.erb'),
-      }
-
-      foreman::config::apache::fragment { 'lookup_identity':
-        ssl_content => template('foreman/lookup_identity.conf.erb'),
-      }
-
-      foreman::config::apache::fragment { 'auth_gssapi':
-        ssl_content => template('foreman/auth_gssapi.conf.erb'),
-      }
-
-      foreman::config::apache::fragment { 'external_auth_api':
-        ssl_content => template('foreman/external_auth_api.conf.erb'),
       }
 
       if $foreman::ipa_manage_sssd {
@@ -267,6 +241,12 @@ class foreman::config {
           context => '/files/etc/sssd/sssd.conf',
           changes => $sssd_changes,
           notify  => Service['sssd'],
+        }
+
+        service { 'sssd':
+          ensure  => running,
+          enable  => true,
+          require => Package['sssd-dbus'],
         }
       }
 

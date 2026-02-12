@@ -242,6 +242,20 @@ class foreman::config::apache (
     include apache::mod::intercept_form_submit
     include apache::mod::lookup_identity
     include apache::mod::auth_gssapi
+
+    # This is also used in manifests::config
+    $http_keytab = pick($foreman::http_keytab, "${apache::conf_dir}/http.keytab")
+
+    $external_auth_context = {
+      'pam_service'            => $foreman::pam_service,
+      'keytab'                 => $foreman::http_keytab,
+      'gssapi_local_name'      => $foreman::gssapi_local_name,
+      'ipa_authentication_api' => $foreman::ipa_authentication_api,
+    }
+
+    foreman::config::apache::fragment { 'intercept_form_submit':
+      ssl_content => epp('foreman/apache_ipa_authentication.epp', $external_auth_context),
+    }
   } elsif $keycloak {
     include apache::mod::auth_openidc
 
