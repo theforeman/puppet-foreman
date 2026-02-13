@@ -25,4 +25,9 @@ class foreman::register (
     effective_user  => $foreman::oauth_effective_user,
     ssl_ca          => $foreman::server_ssl_chain,
   }
+
+  # Ensure Foreman proxy is started before registering the Foreman host
+  # as some plugins want to talk to the proxy when modifying the host object
+  # By using collectors, we don't have to test if the collected resource actually exists
+  Service <| title == 'foreman-proxy' |> -> Foreman_host["foreman-${$foreman_host_name}"]
 }
