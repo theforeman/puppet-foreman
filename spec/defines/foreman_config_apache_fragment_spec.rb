@@ -33,7 +33,11 @@ describe 'foreman::config::apache::fragment' do
             { content: '# config' }
           end
 
-          it { should contain_file("#{confd_dir}/05-foreman.d/test.conf").with_content('# config') }
+          it do
+            should contain_file("#{confd_dir}/05-foreman.d/test.conf")
+              .with_content('# config')
+              .that_notifies('Class[apache::service]')
+          end
           it { should contain_file("#{confd_dir}/05-foreman-ssl.d/test.conf").with_ensure(:absent) }
         end
 
@@ -62,7 +66,11 @@ describe 'foreman::config::apache::fragment' do
           end
 
           it { should contain_file("#{confd_dir}/05-foreman.d/test.conf").with_ensure(:absent) }
-          it { should contain_file("#{confd_dir}/05-foreman-ssl.d/test.conf").with_content('# config') }
+          it do
+            should contain_file("#{confd_dir}/05-foreman-ssl.d/test.conf")
+              .with_content('# config')
+              .that_notifies('Class[apache::service]')
+          end
         end
       end
     end
