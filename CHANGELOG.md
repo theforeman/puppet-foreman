@@ -1,5 +1,13 @@
 # Changelog
 
+## [29.0.1](https://github.com/theforeman/puppet-foreman/tree/29.0.1) (2026-02-19)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/29.0.0...29.0.1)
+
+**Fixed bugs:**
+
+- Ensure Foreman proxy is started before registering the Foreman host [\#1273](https://github.com/theforeman/puppet-foreman/pull/1273) ([evgeni](https://github.com/evgeni))
+
 ## [29.0.0](https://github.com/theforeman/puppet-foreman/tree/29.0.0) (2026-01-28)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/28.1.0...29.0.0)
