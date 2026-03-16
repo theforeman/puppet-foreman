@@ -20,7 +20,7 @@ class foreman::install {
     }
   }
 
-  if $foreman::ipa_authentication and $foreman::ipa_manage_sssd {
+  if $foreman::external_authentication =~ /ipa/ and $foreman::ipa_manage_sssd {
     package { 'sssd-dbus':
       ensure => installed,
     }

@@ -43,11 +43,10 @@ describe 'Foreman' do
       let(:manifest) do
         <<-PUPPET
         class { 'foreman':
-          ipa_authentication     => true,
-          ipa_authentication_api => true,
+          external_authentication => 'ipa_with_api',
           # Stub out ipa enrollment
-          http_keytab            => '/etc/httpd/conf.keytab',
-          ipa_manage_sssd        => false,
+          http_keytab             => '/etc/httpd/conf.keytab',
+          ipa_manage_sssd         => false,
         }
         PUPPET
       end
