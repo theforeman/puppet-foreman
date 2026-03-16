@@ -23,11 +23,17 @@ describe 'foreman::plugin::remote_execution::cockpit' do
           is_expected.to contain_foreman__plugin('tasks')
         end
 
-        it { is_expected.to contain_service('foreman-cockpit').with_ensure('running').with_enable('true') }
+        it do
+          is_expected.to contain_service('foreman-cockpit')
+            .with_ensure('running')
+            .with_enable('true')
+            .that_requires(['Foreman::Plugin[remote_execution-cockpit]', 'Foreman::Config::Apache::Fragment[cockpit]'])
+        end
 
         it do
           is_expected.to contain_foreman_config_entry('remote_execution_cockpit_url')
             .that_requires(['Class[foreman::database]', 'Foreman::Plugin[remote_execution-cockpit]'])
+            .that_notifies('Class[foreman::service]')
         end
 
         it 'creates configs' do
@@ -127,6 +133,7 @@ describe 'foreman::plugin::remote_execution::cockpit' do
         it { is_expected.to contain_file('/etc/foreman/cockpit/cockpit.conf').with_ensure('absent') }
         it { is_expected.to contain_file('/etc/foreman/cockpit/foreman-cockpit-session.yml').with_ensure('absent') }
         it { is_expected.to contain_foreman_config_entry('remote_execution_cockpit_url').with_value('') }
+        it { is_expected.to contain_foreman__config__apache__fragment('cockpit').without_ssl_content }
       end
 
       describe 'ensure purged' do
@@ -143,6 +150,7 @@ describe 'foreman::plugin::remote_execution::cockpit' do
         it { is_expected.to contain_file('/etc/foreman/cockpit/cockpit.conf').with_ensure('absent') }
         it { is_expected.to contain_file('/etc/foreman/cockpit/foreman-cockpit-session.yml').with_ensure('absent') }
         it { is_expected.to contain_foreman_config_entry('remote_execution_cockpit_url').with_value('') }
+        it { is_expected.to contain_foreman__config__apache__fragment('cockpit').without_ssl_content }
       end
     end
   end
