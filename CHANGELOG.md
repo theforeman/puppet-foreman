@@ -1,5 +1,13 @@
 # Changelog
 
+## [29.1.0](https://github.com/theforeman/puppet-foreman/tree/29.1.0) (2026-04-29)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/29.0.1...29.1.0)
+
+**Implemented enhancements:**
+
+- Add foreman\_opentofu plugin [\#1275](https://github.com/theforeman/puppet-foreman/pull/1275) ([nadjaheitmann](https://github.com/nadjaheitmann))
+
 ## [29.0.1](https://github.com/theforeman/puppet-foreman/tree/29.0.1) (2026-02-19)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/29.0.0...29.0.1)
