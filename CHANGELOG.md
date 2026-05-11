@@ -1,5 +1,13 @@
 # Changelog
 
+## [29.2.0](https://github.com/theforeman/puppet-foreman/tree/29.2.0) (2026-05-11)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/29.1.0...29.2.0)
+
+**Implemented enhancements:**
+
+- puppet/extlib: Allow 8.x [\#1278](https://github.com/theforeman/puppet-foreman/pull/1278) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [29.1.0](https://github.com/theforeman/puppet-foreman/tree/29.1.0) (2026-04-29)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/29.0.1...29.1.0)
