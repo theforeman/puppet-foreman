@@ -1,0 +1,15 @@
+<%- |
+Optional[Redis::RedisUrl]	$redis_host,
+| -%>
+
+# This file is managed by Puppet
+
+[Service]
+User=<%= $foreman::user %>
+Environment=RAILS_ENV=<%= $foreman::rails_env %>
+<% if $redis_host { -%>
+Environment=DYNFLOW_REDIS_URL=<%= $redis_host %>
+<% } -%>
+<% else { -%>
+Environment=DYNFLOW_REDIS_URL=redis://localhost:6379/6
+<% } -%>

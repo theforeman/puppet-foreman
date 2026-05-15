@@ -474,6 +474,28 @@ describe 'foreman' do
         end
       end
 
+      describe 'with custom redis for dynflow' do
+        context 'with redis_url for dynflow' do
+          let(:params) do
+            super().merge(
+              dynflow_redis_url: 'redis://127.0.0.1:6379/7',
+              rails_cache_store: {type: 'file'}
+            )
+          end
+
+          it { should_not contain_class('redis') }
+          it { should_not contain_class('redis::instance') }
+          it do
+            is_expected.to contain_file('/etc/systemd/system/dynflow-sidekiq@orchestrator.service.d/dependencies.conf')
+              .with_content(/^.*redis:\/\/127\.0\.0\.1:6379\/7.*$/)
+          end
+          it do
+            is_expected.to contain_file('/etc/systemd/system/dynflow-sidekiq@worker-1.service.d/dependencies.conf')
+              .with_content(/^.*redis:\/\/127\.0\.0\.1:6379\/7.*$/)
+          end
+        end
+      end
+
       describe 'with non-Puppet SSL certificates' do
         let(:params) do
           super().merge(
