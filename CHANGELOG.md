@@ -1,5 +1,13 @@
 # Changelog
 
+## [29.3.0](https://github.com/theforeman/puppet-foreman/tree/29.3.0) (2026-06-08)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/29.2.0...29.3.0)
+
+**Implemented enhancements:**
+
+- puppetlabs/concat: Allow 10.x [\#1281](https://github.com/theforeman/puppet-foreman/pull/1281) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [29.2.0](https://github.com/theforeman/puppet-foreman/tree/29.2.0) (2026-05-11)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/29.1.0...29.2.0)
