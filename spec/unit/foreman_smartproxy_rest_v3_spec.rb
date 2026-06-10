@@ -1,5 +1,43 @@
 require 'spec_helper'
 
+shared_examples 'unrecognized features handling' do
+  it 'warns about unrecognized features' do
+    stub_proxy_response('features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}], 'unrecognized_features' => ['NewFeature'])
+    expect(Puppet).to receive(:warning).with(/Proxy proxy.example.com has features not recognized by Foreman: NewFeature/)
+    trigger
+  end
+
+  it 'does not warn when unrecognized features list is empty' do
+    stub_proxy_response('features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}], 'unrecognized_features' => [])
+    expect(Puppet).not_to receive(:warning)
+    trigger
+  end
+
+  it 'does not warn when unrecognized_features key is absent' do
+    stub_proxy_response('features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}])
+    expect(Puppet).not_to receive(:warning)
+    trigger
+  end
+
+  it 'does not crash when unrecognized_features is nil' do
+    stub_proxy_response('features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}], 'unrecognized_features' => nil)
+    expect(Puppet).not_to receive(:warning)
+    expect { trigger }.not_to raise_error
+  end
+
+  it 'warns about multiple unrecognized features' do
+    stub_proxy_response('features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}], 'unrecognized_features' => ['FeatureA', 'FeatureB'])
+    expect(Puppet).to receive(:warning).with(/FeatureA, FeatureB/)
+    trigger
+  end
+
+  it 'warns about unrecognized features and still raises on missing expected features' do
+    stub_proxy_response('features' => [{'name' => 'TFTP'}], 'unrecognized_features' => ['NewFeature'])
+    expect(Puppet).to receive(:warning).with(/NewFeature/)
+    expect { trigger }.to raise_error(Puppet::Error, /failed to load one or more features \(Logs\)/)
+  end
+end
+
 describe Puppet::Type.type(:foreman_smartproxy).provider(:rest_v3) do
   let(:resource) do
     Puppet::Type.type(:foreman_smartproxy).new(
@@ -20,26 +58,32 @@ describe Puppet::Type.type(:foreman_smartproxy).provider(:rest_v3) do
   end
 
   describe '#create' do
-    it 'sends POST request' do
+    def stub_proxy_response(body)
       expect(provider).to receive(:request).with(:post, 'api/v2/smart_proxies', {}, kind_of(String)).and_return(
-        double(:code => '201', :body => {'features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}]}.to_json)
+        double(:code => '201', :body => body.to_json)
       )
+    end
+
+    def trigger
+      provider.create
+    end
+
+    it 'sends POST request' do
+      stub_proxy_response('features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}])
       provider.create
     end
 
     it 'raises error if features do not match' do
-      expect(provider).to receive(:request).with(:post, 'api/v2/smart_proxies', {}, kind_of(String)).and_return(
-        double(:code => '201', :body => {'features' => [{'name' => 'TFTP'}]}.to_json)
-      )
+      stub_proxy_response('features' => [{'name' => 'TFTP'}])
       expect { provider.create }.to raise_error(Puppet::Error, /Proxy proxy.example.com has failed to load one or more features \(Logs\)/)
     end
 
     it 'does not raise an error if a superset of expected features are enabled' do
-      expect(provider).to receive(:request).with(:post, 'api/v2/smart_proxies', {}, kind_of(String)).and_return(
-        double(:code => '201', :body => {'features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}, {'name' => 'Other'}]}.to_json)
-      )
+      stub_proxy_response('features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}, {'name' => 'Other'}])
       provider.create
     end
+
+    it_behaves_like 'unrecognized features handling'
   end
 
   describe '#destroy' do
@@ -105,52 +149,60 @@ describe Puppet::Type.type(:foreman_smartproxy).provider(:rest_v3) do
 
   describe '#refresh_features!' do
     context 'with features in response' do
-      it 'sends PUT request to /refresh, raises no error' do
+      def stub_proxy_response(body)
         expect(provider).to receive(:id).and_return(1)
         expect(provider).to receive(:request).with(:put, 'api/v2/smart_proxies/1/refresh').and_return(
-          double(:code => '200', :body => {'features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}]}.to_json)
+          double(:code => '200', :body => body.to_json)
         )
+      end
+
+      def trigger
+        provider.refresh_features!
+      end
+
+      it 'sends PUT request to /refresh, raises no error' do
+        stub_proxy_response('features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}])
         provider.refresh_features!
       end
 
       it 'raises error if features do not match' do
-        expect(provider).to receive(:id).and_return(1)
-        expect(provider).to receive(:request).with(:put, 'api/v2/smart_proxies/1/refresh').and_return(
-          double(:code => '200', :body => {'features' => [{'name' => 'TFTP'}]}.to_json)
-        )
+        stub_proxy_response('features' => [{'name' => 'TFTP'}])
         expect { provider.refresh_features! }.to raise_error(Puppet::Error, /Proxy proxy.example.com has failed to load one or more features \(Logs\)/)
       end
 
       it 'does not raise an error if a superset of expected features are enabled' do
-        expect(provider).to receive(:id).and_return(1)
-        expect(provider).to receive(:request).with(:put, 'api/v2/smart_proxies/1/refresh').and_return(
-          double(:code => '200', :body => {'features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}, {'name' => 'Other'}]}.to_json)
-        )
+        stub_proxy_response('features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}, {'name' => 'Other'}])
         provider.refresh_features!
       end
+
+      it_behaves_like 'unrecognized features handling'
     end
 
     context 'without features in refresh response re-fetches proxy' do
-      it 'sends PUT request to /refresh, raises no error' do
+      def stub_refresh_and_refetch(refetched_proxy)
         expect(provider).to receive(:id).and_return(1)
         expect(provider).to receive(:request).with(:put, 'api/v2/smart_proxies/1/refresh').and_return(
           double(:code => '200', :body => {}.to_json)
         )
         expect(provider).to receive(:request).with(:get, 'api/v2/smart_proxies', :search => 'name="proxy.example.com"').and_return(
-          double('response', :body => {:results => [{:id => 1, :name => 'proxy.example.com', 'features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}]}]}.to_json, :code => '200')
+          double('response', :body => {:results => [{:id => 1, :name => 'proxy.example.com'}.merge(refetched_proxy)]}.to_json, :code => '200')
         )
+      end
+
+      it 'sends PUT request to /refresh, raises no error' do
+        stub_refresh_and_refetch('features' => [{'name' => 'TFTP'}, {'name' => 'Logs'}])
         provider.refresh_features!
       end
 
       it 'raises error if features do not match' do
-        expect(provider).to receive(:id).and_return(1)
-        expect(provider).to receive(:request).with(:put, 'api/v2/smart_proxies/1/refresh').and_return(
-          double(:code => '200', :body => {}.to_json)
-        )
-        expect(provider).to receive(:request).with(:get, 'api/v2/smart_proxies', :search => 'name="proxy.example.com"').and_return(
-          double('response', :body => {:results => [{:id => 1, :name => 'proxy.example.com', 'features' => [{'name' => 'TFTP'}]}]}.to_json, :code => '200')
-        )
+        stub_refresh_and_refetch('features' => [{'name' => 'TFTP'}])
         expect { provider.refresh_features! }.to raise_error(Puppet::Error, /Proxy proxy.example.com has failed to load one or more features \(Logs\)/)
+      end
+
+      it 'warns about unrecognized features after re-fetch and still validates' do
+        stub_refresh_and_refetch('features' => [{'name' => 'TFTP'}], 'unrecognized_features' => ['NewFeature'])
+        expect(Puppet).to receive(:warning).with(/NewFeature/)
+        expect { provider.refresh_features! }.to raise_error(Puppet::Error, /failed to load one or more features \(Logs\)/)
       end
     end
   end

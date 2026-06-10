@@ -33,7 +33,12 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v3, :parent => Puppet::Type
       raise Puppet::Error.new(error_string)
     end
 
-    validate_features!(resource[:features], features_list(JSON.load(r.body)))
+    body = JSON.load(r.body)
+    unless body
+      raise Puppet::Error.new("Proxy #{resource[:name]}: Foreman API returned empty response body after creating proxy")
+    end
+
+    validate_features!(body)
   end
 
   def destroy
@@ -84,17 +89,30 @@ Puppet::Type.type(:foreman_smartproxy).provide(:rest_v3, :parent => Puppet::Type
     # Replace proxy/feature list cache: pre-#19476 versions have limited responses, clear cache and re-fetch for them
     @proxy = body.key?('features') ? body : nil
 
-    validate_features!(resource[:features], features_list(proxy))
+    validate_features!(proxy) if proxy
   end
 
   private
 
   def features_list(proxy)
-    proxy['features'].map { |ft| ft['name'] }.sort
+    features = proxy['features']
+    unless features.is_a?(Array)
+      Puppet.err("Proxy #{resource[:name]}: Expected 'features' to be an array, got #{features.class}")
+      return []
+    end
+    features.map { |ft| ft['name'] }.compact.sort
   end
 
-  def validate_features!(expected, actual)
-    missing_features = expected - actual
-    raise Puppet::Error.new("Proxy #{resource[:name]} has failed to load one or more features (#{missing_features.join(", ")}), check /var/log/foreman-proxy/proxy.log for configuration errors") unless missing_features.empty?
+  def validate_features!(proxy_data)
+    unrecognized = Array(proxy_data['unrecognized_features'])
+    if unrecognized.any?
+      Puppet.warning("Proxy #{resource[:name]} has features not recognized by Foreman: #{unrecognized.join(', ')}. If these features come from a Smart Proxy plugin, make sure Foreman has the plugin installed too.")
+    end
+
+    actual = features_list(proxy_data)
+    missing = resource[:features] - actual
+    unless missing.empty?
+      raise Puppet::Error.new("Proxy #{resource[:name]} has failed to load one or more features (#{missing.join(', ')}), check /var/log/foreman-proxy/proxy.log for configuration errors")
+    end
   end
 end
