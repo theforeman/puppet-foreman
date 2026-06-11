@@ -74,7 +74,6 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
           }
 
           include foreman::cli::katello
-          include foreman::cli::virt_who_configure
           include foreman::cli::rh_cloud
           PUPPET
         end
@@ -82,7 +81,7 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
 
       it_behaves_like 'hammer'
 
-      ['katello', 'foreman_virt_who_configure', 'foreman_rh_cloud'].each do |plugin|
+      ['katello', 'foreman_rh_cloud'].each do |plugin|
         describe package("rubygem-hammer_cli_#{plugin}") do
           it { is_expected.to be_installed }
         end
