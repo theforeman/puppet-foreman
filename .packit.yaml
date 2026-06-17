@@ -41,6 +41,7 @@ srpm_build_deps:
   - wget
   - make
   - gcc
+  - libffi-devel
   - ruby
   - ruby-devel
   - rubygem-bundler
