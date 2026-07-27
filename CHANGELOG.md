@@ -1,5 +1,18 @@
 # Changelog
 
+## [30.0.0](https://github.com/theforeman/puppet-foreman/tree/30.0.0) (2026-07-28)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/29.3.0...30.0.0)
+
+**Breaking changes:**
+
+- Drop hammer\_cli\_foreman\_virt\_who\_configure [\#1285](https://github.com/theforeman/puppet-foreman/pull/1285) ([adamruzicka](https://github.com/adamruzicka))
+
+**Implemented enhancements:**
+
+- Fixes [\#39415](https://projects.theforeman.org/issues/39415) - Warn about unrecognized smart proxy features [\#1284](https://github.com/theforeman/puppet-foreman/pull/1284) ([adamruzicka](https://github.com/adamruzicka))
+- puppet/redis: Allow 13.x [\#1283](https://github.com/theforeman/puppet-foreman/pull/1283) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [29.3.0](https://github.com/theforeman/puppet-foreman/tree/29.3.0) (2026-06-08)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/29.2.0...29.3.0)
@@ -16,7 +29,7 @@
 
 - puppet/extlib: Allow 8.x [\#1278](https://github.com/theforeman/puppet-foreman/pull/1278) ([bastelfreak](https://github.com/bastelfreak))
 
-## [29.1.0](https://github.com/theforeman/puppet-foreman/tree/29.1.0) (2026-04-29)
+## [29.1.0](https://github.com/theforeman/puppet-foreman/tree/29.1.0) (2026-04-30)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/29.0.1...29.1.0)
 
@@ -52,6 +65,10 @@
 
 - Add Rocky/OracleLinux 9 support [\#1250](https://github.com/theforeman/puppet-foreman/pull/1250) ([bastelfreak](https://github.com/bastelfreak))
 - Add openbolt plugin support [\#1249](https://github.com/theforeman/puppet-foreman/pull/1249) ([bastelfreak](https://github.com/bastelfreak))
+
+## [27.3.0](https://github.com/theforeman/puppet-foreman/tree/27.3.0) (2025-11-24)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/28.0.0...27.3.0)
 
 ## [28.0.0](https://github.com/theforeman/puppet-foreman/tree/28.0.0) (2025-11-06)
 
