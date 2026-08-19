@@ -3,5 +3,7 @@
 class foreman::database::postgresql::encoding {
   if $facts['os']['family'] == 'RedHat' {
     stdlib::ensure_packages(['glibc-langpack-en'])
+  } elsif $facts['os']['family'] == 'Debian' {
+    stdlib::ensure_packages(['locales-all'])
   }
 }
