@@ -8,8 +8,8 @@ describe 'foreman' do
 
       if os_facts[:os]['family'] == 'RedHat'
         it { should contain_package('glibc-langpack-en').that_comes_before('Postgresql::Server::Db[foreman]') }
-      else
-        it { should_not contain_package('glibc-langpack-en') }
+      elsif os_facts[:os]['family'] == 'Debian'
+        it { should contain_package('locales-all').that_comes_before('Postgresql::Server::Db[foreman]') }
       end
 
       describe 'with db_manage set to false' do
