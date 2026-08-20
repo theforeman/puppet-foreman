@@ -76,8 +76,7 @@ describe 'foreman' do
 
         # apache
         it 'should contain foreman::config::apache' do
-          should contain_class('foreman::config::apache')
-            .with_keycloak(false)
+          should contain_class('foreman::config::apache').without_external_authentication
         end
 
         it do
@@ -227,7 +226,6 @@ describe 'foreman' do
             initial_admin_timezone: 'Hawaii',
             initial_organization: 'acme',
             initial_location: 'acme',
-            ipa_authentication: false,
             http_keytab: '/etc/httpd/conf.keytab',
             pam_service: 'foreman',
             ipa_manage_sssd: true,
@@ -247,7 +245,7 @@ describe 'foreman' do
             email_smtp_password: 'secret',
             email_reply_address: 'noreply@foreman.domain',
             email_subject_prefix: '[prefix]',
-            keycloak: true,
+            external_authentication: 'keycloak',
             keycloak_app_name: 'cloak-app',
             keycloak_realm: 'myrealm',
             provisioning_ct_location: '/usr/bin/myct',
@@ -261,7 +259,7 @@ describe 'foreman' do
         it { should contain_package('foreman-dynflow-sidekiq').with_ensure('1.12') }
         it do
           is_expected.to contain_class('foreman::config::apache')
-            .with_keycloak(true)
+            .with_external_authentication('keycloak')
             .with_keycloak_app_name('cloak-app')
             .with_keycloak_realm('myrealm')
         end

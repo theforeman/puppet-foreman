@@ -44,9 +44,7 @@
 #
 # $initial_location::             Name of an initial location
 #
-# $ipa_authentication::           Enable configuration for external authentication via IPA
-#
-# $ipa_authentication_api::       Enable configuration for external authentication via IPA for API
+# $external_authentication::      Type of external authentication to use
 #
 # === Advanced parameters:
 #
@@ -132,7 +130,7 @@
 #
 # $pam_service::                  PAM service used for host-based access control in IPA
 #
-# $ipa_manage_sssd::              If ipa_authentication is true, should the installer manage SSSD? You can disable it
+# $ipa_manage_sssd::              If external_authentication is ipa or ipa_with_api, should the installer manage SSSD? You can disable it
 #                                 if you use another module for SSSD configuration
 #
 # $ipa_sssd_default_realm::       If ipa_manage_sssd is true, set default_domain_suffix option in sssd configuration to this value
@@ -206,10 +204,6 @@
 #
 # === Keycloak parameters:
 #
-# $keycloak::                     Enable Keycloak support. Note this is limited
-#                                 to configuring Apache and still relies on manually
-#                                 running keycloak-httpd-client-install
-#
 # $keycloak_app_name::            The app name as passed to keycloak-httpd-client-install
 #
 # $keycloak_realm::               The realm as passed to keycloak-httpd-client-install
@@ -261,8 +255,7 @@ class foreman (
   Optional[String] $initial_admin_timezone = undef,
   Optional[String] $initial_organization = undef,
   Optional[String] $initial_location = undef,
-  Boolean $ipa_authentication = false,
-  Boolean $ipa_authentication_api = false,
+  Optional[Enum['ipa', 'ipa_with_api', 'keycloak']] $external_authentication = undef,
   Optional[Stdlib::Absolutepath] $http_keytab = undef,
   Boolean $gssapi_local_name = true,
   String $pam_service = 'foreman',
@@ -305,7 +298,6 @@ class foreman (
   Integer[0] $foreman_service_puma_threads_max = 5,
   Optional[Integer[0]] $foreman_service_puma_workers = undef,
   Hash[String, Any] $rails_cache_store = { 'type' => 'redis' },
-  Boolean $keycloak = false,
   String[1] $keycloak_app_name = 'foreman-openidc',
   String[1] $keycloak_realm = 'ssl-realm',
   Boolean $register_in_foreman = true,
@@ -335,16 +327,8 @@ class foreman (
 
   if $apache {
     Class['foreman::database'] -> Class['apache::service']
-    if $ipa_authentication and $keycloak {
-      fail("${facts['networking']['hostname']}: External authentication via IPA and Keycloak are mutually exclusive.")
-    }
-    if !$ipa_authentication and $ipa_authentication_api {
-      fail("${facts['networking']['hostname']}: External authentication for API via IPA requires general external authentication to be enabled.")
-    }
-  } elsif $ipa_authentication {
-    fail("${facts['networking']['hostname']}: External authentication via IPA can only be enabled when Apache is used.")
-  } elsif $keycloak {
-    fail("${facts['networking']['hostname']}: External authentication via Keycloak can only be enabled when Apache is used.")
+  } elsif $external_authentication {
+    fail("${facts['networking']['hostname']}: External authentication can only be enabled when Apache is used.")
   }
 
   if $foreman::register_in_foreman {
