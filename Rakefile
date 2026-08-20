@@ -6,10 +6,6 @@
 begin
   require 'voxpupuli/test/rake'
 rescue LoadError
-  begin
-    require 'puppetlabs_spec_helper/rake_tasks'
-  rescue LoadError
-  end
 end
 
 # load optional tasks for acceptance
@@ -19,7 +15,7 @@ begin
 rescue LoadError
 else
   # We use fixtures in our modules, which is not the default
-  task :beaker => 'spec_prep'
+  task :beaker => 'fixtures:prep'
 end
 
 # blacksmith isn't always present, e.g. on Travis with --without development
