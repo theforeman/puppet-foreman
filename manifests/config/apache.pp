@@ -106,7 +106,7 @@ class foreman::config::apache (
   Optional[Stdlib::Absolutepath] $ssl_chain = undef,
   Optional[Stdlib::Absolutepath] $ssl_cert = undef,
   Optional[Stdlib::Absolutepath] $ssl_key = undef,
-  Variant[Undef, Enum[''], Stdlib::Absolutepath] $ssl_crl = undef,
+  Optional[Variant[Enum[''], Stdlib::Absolutepath]] $ssl_crl = undef,
   Optional[String] $ssl_protocol = undef,
   Enum['none','optional','require','optional_no_ca'] $ssl_verify_client = 'optional',
   Optional[String] $user = undef,

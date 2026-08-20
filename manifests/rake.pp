@@ -16,7 +16,7 @@ define foreman::rake (
   Optional[Integer[0]] $timeout  = undef,
   String[1] $user = $foreman::user,
   Stdlib::Absolutepath $app_root = $foreman::app_root,
-  Variant[Undef, String[1], Array[String[1]]] $unless = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $unless = undef,
 ) {
   exec { "foreman-rake-${title}":
     command     => "/usr/sbin/foreman-rake ${title}",

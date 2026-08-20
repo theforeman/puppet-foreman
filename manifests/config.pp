@@ -259,8 +259,8 @@ class foreman::config {
         ]
 
         $sssd_changes = $sssd_ifp_extra_attributes + ($foreman::ipa_sssd_default_realm ? {
-            undef => [],
-            default => ["set target[.='sssd']/default_domain_suffix '${$foreman::ipa_sssd_default_realm}'"],
+          undef => [],
+          default => ["set target[.='sssd']/default_domain_suffix '${$foreman::ipa_sssd_default_realm}'"],
         })
 
         augeas { 'sssd-ifp-extra-attributes':
