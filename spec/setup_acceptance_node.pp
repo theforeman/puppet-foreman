@@ -7,8 +7,10 @@ if $facts['os']['family'] == 'RedHat' {
     baseurl  => "http://yum.theforeman.org/katello/nightly/katello/el${facts['os']['release']['major']}/x86_64/",
     gpgcheck => 0,
   }
+  $candlepin = if $facts['os']['release']['major'] == '9' { '4.8' } else { '5.0' }
   yumrepo { 'candlepin':
-    baseurl  => "https://yum.theforeman.org/candlepin/4.4/el${facts['os']['release']['major']}/x86_64/",
+    name     => "Candlepin ${candlepin}",
+    baseurl  => "https://yum.theforeman.org/candlepin/${candlepin}/el${facts['os']['release']['major']}/x86_64/",
     gpgcheck => 0,
   }
 }
