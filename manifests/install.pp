@@ -47,4 +47,9 @@ class foreman::install {
   if $foreman::register_in_foreman {
     contain foreman::providers
   }
+
+  package { 'oauth':
+    ensure   => installed,
+    provider => 'puppet_gem',
+  }
 }

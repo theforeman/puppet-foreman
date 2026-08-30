@@ -6,6 +6,8 @@ describe 'foreman' do
       let(:facts) { facts }
       let(:params) { {} }
 
+      it { is_expected.to contain_package('oauth').with_provider('puppet_gem') }
+
       describe 'with version' do
         let(:params) { super().merge(version: 'latest') }
         it { should_not contain_foreman__repos('foreman') }
