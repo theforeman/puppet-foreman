@@ -42,6 +42,7 @@ containing the type and options specfic to the backend.
 The default is the file backend, configured via `{'type' => 'file'}`. To
 setup for redis use a hash similar to `{'type' => 'redis', 'urls' => ['localhost:8479/4'], 'options' => {'compress' => 'true', 'namespace' => 'foreman'}}`
 where `urls` takes an array of redis urls which get prepended with `redis://`
+(or `rediss://` when `'ssl' => true` is set, to connect to redis over TLS)
 and `options` using a hash with options from [rails](https://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-store)
 falling back to `{'compress' => 'true', 'namespace' => 'foreman'}` if no
 option is provided.
@@ -58,6 +59,18 @@ class { 'foreman':
       'compress' => 'true',
       'namespace' => 'foreman'
     }
+  }
+}
+```
+
+To connect to an external redis over SSL/TLS, set `ssl` to `true`:
+
+```puppet
+class { 'foreman':
+  rails_cache_store => {
+    'type' => 'redis',
+    'urls' => ['redis.example.com:6380/4'],
+    'ssl'  => true,
   }
 }
 ```

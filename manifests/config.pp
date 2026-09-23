@@ -23,7 +23,11 @@ class foreman::config {
 
   if $foreman::rails_cache_store['type'] == 'redis' {
     if $foreman::rails_cache_store['urls'] {
-      $redis_cache_urls = prefix($foreman::rails_cache_store['urls'], 'redis://')
+      $redis_scheme = $foreman::rails_cache_store['ssl'] ? {
+        true    => 'rediss://',
+        default => 'redis://',
+      }
+      $redis_cache_urls = prefix($foreman::rails_cache_store['urls'], $redis_scheme)
     } else {
       include redis
       $redis_cache_urls = ["redis://localhost:${redis::port}/4"]
