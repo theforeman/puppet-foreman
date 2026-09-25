@@ -308,6 +308,34 @@ describe 'foreman::config::apache' do
               .with_proxy_add_headers(false)
           end
         end
+
+        describe 'with registration admission control' do
+          let(:params) do
+            super().merge(registration_admission_max: 600)
+          end
+
+          it { should compile.with_all_deps }
+          it { should contain_class('apache::mod::proxy_balancer') }
+          it { should contain_apache__mod('lbmethod_byrequests') }
+          it do
+            should contain_file("#{http_dir}/conf.d/05-foreman-ssl.d/registration_throttle.conf")
+              .with_content(%r{<Proxy balancer://foreman-registration>})
+          end
+          it do
+            should contain_file("#{http_dir}/conf.d/05-foreman-ssl.d/registration_throttle.conf")
+              .with_content(%r{BalancerMember .* max=600})
+          end
+        end
+
+        describe 'with admission control disabled' do
+          let(:params) do
+            super().merge(registration_admission_max: 0)
+          end
+
+          it { should compile.with_all_deps }
+          it { should_not contain_class('apache::mod::proxy_balancer') }
+          it { should_not contain_file("#{http_dir}/conf.d/05-foreman-ssl.d/registration_throttle.conf") }
+        end
       end
     end
   end

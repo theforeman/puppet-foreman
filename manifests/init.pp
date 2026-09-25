@@ -184,6 +184,11 @@
 #                                         If not set, the value is dynamically calculated based on available number of
 #                                         CPUs and memory.
 #
+# $registration_admission_max::   Maximum concurrent registration connections (/rhsm,
+#                                 /register) forwarded to Puma via an Apache balancer pool.
+#                                 Excess requests queue in Apache instead of overwhelming the
+#                                 application thread pool. Set to 0 to disable.
+#
 # $rails_cache_store::            Set rails cache store
 #
 # $register_in_foreman::          Register host in Foreman
@@ -304,6 +309,7 @@ class foreman (
   Optional[Integer[0]] $foreman_service_puma_threads_min = undef,
   Integer[0] $foreman_service_puma_threads_max = 5,
   Optional[Integer[0]] $foreman_service_puma_workers = undef,
+  Integer[0] $registration_admission_max = 150,
   Hash[String, Any] $rails_cache_store = { 'type' => 'redis' },
   Boolean $keycloak = false,
   String[1] $keycloak_app_name = 'foreman-openidc',
