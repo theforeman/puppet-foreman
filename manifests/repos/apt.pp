@@ -8,19 +8,16 @@ define foreman::repos::apt (
 ) {
   include apt
 
-  apt::key { $name:
-    ensure => refreshed,
-    id     => $key,
-    source => $key_location,
-  }
-
   apt::source { $name:
     repos    => $repo,
     location => $location,
     include  => {
       src => false,
     },
-    require  => Apt::Key['foreman'],
+    key      => {
+      'name'   => "${name}.asc",
+      'source' => $key_location,
+    },
   }
 
   apt::source { "${name}-plugins":
@@ -30,6 +27,9 @@ define foreman::repos::apt (
     include  => {
       src => false,
     },
-    require  => Apt::Key['foreman'],
+    key      => {
+      'name'   => "${name}-plugins.asc",
+      'source' => $key_location,
+    },
   }
 }
