@@ -17,7 +17,7 @@ define foreman::repos::apt (
     key      => {
       'name'   => "${name}.asc",
       'source' => $key_location,
-    }
+    },
   }
 
   apt::source { "${name}-plugins":
@@ -30,6 +30,6 @@ define foreman::repos::apt (
     key      => {
       'name'   => "${name}-plugins.asc",
       'source' => $key_location,
-    }
+    },
   }
 }
