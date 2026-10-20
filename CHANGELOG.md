@@ -1,5 +1,23 @@
 # Changelog
 
+## [31.0.0](https://github.com/theforeman/puppet-foreman/tree/31.0.0) (2026-10-23)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/30.0.0...31.0.0)
+
+**Breaking changes:**
+
+- Drop testing on puppet [\#1291](https://github.com/theforeman/puppet-foreman/pull/1291) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- puppet/systemd: Allow 10.x & puppetlabs/stdlib: Allow 10.x [\#1295](https://github.com/theforeman/puppet-foreman/pull/1295) ([bastelfreak](https://github.com/bastelfreak))
+- Allow SSL for rails\_cache\_store redis [\#1293](https://github.com/theforeman/puppet-foreman/pull/1293) ([Jilano5](https://github.com/Jilano5))
+- Add EL 10 support [\#1289](https://github.com/theforeman/puppet-foreman/pull/1289) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Fixes [\#39187](https://projects.theforeman.org/issues/39187) - Ensure PostgreSQL locale on Debian [\#1288](https://github.com/theforeman/puppet-foreman/pull/1288) ([jakduch](https://github.com/jakduch))
+
 ## [30.0.0](https://github.com/theforeman/puppet-foreman/tree/30.0.0) (2026-07-28)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/29.3.0...30.0.0)
