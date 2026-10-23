@@ -86,6 +86,11 @@
 # @param keycloak_realm
 #   The realm as passed to keycloak-httpd-client-install
 #
+# @param registration_admission_max
+#   Maximum concurrent registration connections (/rhsm, /register) to
+#   the Puma backend via an Apache balancer pool. Smooths burst arrivals
+#   during high-concurrency registration. Set to 0 to disable.
+#
 # @param request_headers_to_unset A list of HTTP headers coming from
 #   the client that will be unset and hence not passed to the
 #   application.
@@ -118,6 +123,7 @@ class foreman::config::apache (
   Boolean $keycloak = false,
   String[1] $keycloak_app_name = 'foreman-openidc',
   String[1] $keycloak_realm = 'ssl-realm',
+  Integer[0] $registration_admission_max = 0,
   Array[String[1]] $request_headers_to_unset = [
     'REMOTE-USER',
     'REMOTE_USER',
@@ -260,6 +266,38 @@ class foreman::config::apache (
       owner  => 'root',
       group  => 'root',
       mode   => '0640',
+    }
+  }
+
+  if $registration_admission_max > 0 {
+    include apache::mod::proxy_balancer
+    apache::mod { 'lbmethod_byrequests': }
+
+    $registration_throttle_content = epp(
+      'foreman/registration_throttle.epp',
+      {
+        proxy_backend              => $_proxy_backend,
+        registration_admission_max => $registration_admission_max,
+        proxy_params               => $proxy_params,
+      }
+    )
+
+    file { "${apache::confd_dir}/${priority}-foreman.d/registration_throttle.conf":
+      ensure  => file,
+      content => $registration_throttle_content,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      notify  => Class['apache::service'],
+    }
+
+    file { "${apache::confd_dir}/${priority}-foreman-ssl.d/registration_throttle.conf":
+      ensure  => file,
+      content => $registration_throttle_content,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      notify  => Class['apache::service'],
     }
   }
 
