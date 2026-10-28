@@ -1,5 +1,13 @@
 # Changelog
 
+## [31.1.0](https://github.com/theforeman/puppet-foreman/tree/31.1.0) (2026-10-28)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/31.0.0...31.1.0)
+
+**Implemented enhancements:**
+
+- puppet/systemd: Allow 11.x [\#1298](https://github.com/theforeman/puppet-foreman/pull/1298) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [31.0.0](https://github.com/theforeman/puppet-foreman/tree/31.0.0) (2026-10-23)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/30.0.0...31.0.0)
