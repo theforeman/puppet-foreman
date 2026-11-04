@@ -38,7 +38,7 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
 
     it_behaves_like 'hammer'
 
-    ['ansible', 'bootdisk', 'discovery', 'google', 'puppet', 'remote_execution', 'salt', 'ssh', 'tasks', 'templates', 'webhooks'].each do |plugin|
+    ['ansible', 'bootdisk', 'discovery', 'google', 'puppet', 'remote_execution', 'salt', 'tasks', 'templates', 'webhooks'].each do |plugin|
       package_name = case fact('os.family')
                      when 'RedHat'
                        "rubygem-hammer_cli_foreman_#{plugin}"
@@ -51,6 +51,19 @@ describe 'Scenario: install foreman-cli + plugins without foreman' do
       describe package(package_name) do
         it { is_expected.to be_installed }
       end
+    end
+
+    ssh_package = case fact('os.family')
+                  when 'RedHat'
+                    'rubygem-hammer_cli_foreman_ssh'
+                  when 'Debian'
+                    'ruby-hammer-cli-foreman-ssh'
+                  else
+                    'ssh'
+                  end
+
+    describe package(ssh_package) do
+      it { is_expected.not_to be_installed }
     end
 
     if fact('os.family') == 'RedHat'
