@@ -2,15 +2,12 @@
 # @api private
 define foreman::repos::apt (
   Variant[Enum['nightly'], Pattern['^\d+\.\d+$']] $repo,
-  String $key = '5B7C3E5A735BCB4D615829DC0BDDA991FD7AAC8A',
   Stdlib::HTTPUrl $key_location = 'https://deb.theforeman.org/foreman.asc',
   Stdlib::HTTPUrl $location = 'https://deb.theforeman.org/',
 ) {
   include apt
 
-  apt::key { $name:
-    ensure => refreshed,
-    id     => $key,
+  apt::keyring { "${name}.asc":
     source => $key_location,
   }
 
@@ -20,7 +17,8 @@ define foreman::repos::apt (
     include  => {
       src => false,
     },
-    require  => Apt::Key['foreman'],
+    keyring  => "/etc/apt/keyrings/${name}.asc",
+    require  => Apt::Keyring["${name}.asc"],
   }
 
   apt::source { "${name}-plugins":
@@ -30,6 +28,7 @@ define foreman::repos::apt (
     include  => {
       src => false,
     },
-    require  => Apt::Key['foreman'],
+    keyring  => "/etc/apt/keyrings/${name}.asc",
+    require  => Apt::Keyring["${name}.asc"],
   }
 }
