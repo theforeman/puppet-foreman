@@ -22,16 +22,27 @@ describe 'foreman::repos::apt' do
 
     it 'should add the 3.13 repo' do
       should contain_apt__source('foreman')
-        .with_location('https://deb.theforeman.org/')
-        .with_repos('3.13')
+        .with_source_format('sources')
+        .with_location(['https://deb.theforeman.org/'])
+        .with_repos(['3.13'])
 
-      should contain_file('/etc/apt/sources.list.d/foreman.list')
-        .with_content(%r{deb \[signed-by=/etc/apt/keyrings/foreman\.asc\] https://deb\.theforeman\.org/ bookworm 3\.13})
+      should contain_file('/etc/apt/sources.list.d/foreman.sources')
+        .with_content(%r{^URIs:\s+https://deb\.theforeman\.org/\s*$})
+        .with_content(%r{^Suites:\s+bookworm\s*$})
+        .with_content(%r{^Components:\s+3\.13\s*$})
+        .with_content(%r{^Signed-By:\s+/etc/apt/keyrings/foreman\.asc\s*$})
+        .without_content(%r{^Types:.*deb-src})
 
       should contain_apt__source('foreman-plugins')
-        .with_location('https://deb.theforeman.org/')
-        .with_release('plugins')
-        .with_repos('3.13')
+        .with_source_format('sources')
+        .with_location(['https://deb.theforeman.org/'])
+        .with_release(['plugins'])
+        .with_repos(['3.13'])
+
+      should contain_apt__setting('list-foreman').with_ensure('absent')
+      should contain_apt__setting('list-foreman-plugins').with_ensure('absent')
+      should contain_file('/etc/apt/sources.list.d/foreman.list').with_ensure('absent')
+      should contain_file('/etc/apt/sources.list.d/foreman-plugins.list').with_ensure('absent')
     end
 
     it { should contain_apt__keyring(apt_keyring_title).with_source(apt_keyring_source) }
@@ -44,16 +55,27 @@ describe 'foreman::repos::apt' do
 
     it 'should add the nightly repo' do
       should contain_apt__source('foreman')
-        .with_location('https://deb.theforeman.org/')
-        .with_repos('nightly')
+        .with_source_format('sources')
+        .with_location(['https://deb.theforeman.org/'])
+        .with_repos(['nightly'])
 
-      should contain_file('/etc/apt/sources.list.d/foreman.list')
-        .with_content(%r{deb \[signed-by=/etc/apt/keyrings/foreman\.asc\] https://deb\.theforeman\.org/ bookworm nightly})
+      should contain_file('/etc/apt/sources.list.d/foreman.sources')
+        .with_content(%r{^URIs:\s+https://deb\.theforeman\.org/\s*$})
+        .with_content(%r{^Suites:\s+bookworm\s*$})
+        .with_content(%r{^Components:\s+nightly\s*$})
+        .with_content(%r{^Signed-By:\s+/etc/apt/keyrings/foreman\.asc\s*$})
+        .without_content(%r{^Types:.*deb-src})
 
       should contain_apt__source('foreman-plugins')
-        .with_location('https://deb.theforeman.org/')
-        .with_release('plugins')
-        .with_repos('nightly')
+        .with_source_format('sources')
+        .with_location(['https://deb.theforeman.org/'])
+        .with_release(['plugins'])
+        .with_repos(['nightly'])
+
+      should contain_apt__setting('list-foreman').with_ensure('absent')
+      should contain_apt__setting('list-foreman-plugins').with_ensure('absent')
+      should contain_file('/etc/apt/sources.list.d/foreman.list').with_ensure('absent')
+      should contain_file('/etc/apt/sources.list.d/foreman-plugins.list').with_ensure('absent')
     end
 
     it { should contain_apt__keyring(apt_keyring_title).with_source(apt_keyring_source) }
