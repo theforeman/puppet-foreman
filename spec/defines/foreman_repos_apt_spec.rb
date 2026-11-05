@@ -7,12 +7,12 @@ describe 'foreman::repos::apt' do
     on_supported_os['debian-12-x86_64']
   end
 
-  let(:apt_key) do
-    '5B7C3E5A735BCB4D615829DC0BDDA991FD7AAC8A'
+  let(:apt_keyring_title) do
+    "foreman.asc"
   end
 
-  let(:apt_key_title) do
-    "foreman"
+  let(:apt_keyring_source) do
+    "https://deb.theforeman.org/foreman.asc"
   end
 
   context 'with repo => 3.13' do
@@ -26,7 +26,7 @@ describe 'foreman::repos::apt' do
         .with_repos('3.13')
 
       should contain_file('/etc/apt/sources.list.d/foreman.list')
-        .with_content(%r{deb https://deb\.theforeman\.org/ bookworm 3\.13})
+        .with_content(%r{deb \[signed-by=/etc/apt/keyrings/foreman\.asc\] https://deb\.theforeman\.org/ bookworm 3\.13})
 
       should contain_apt__source('foreman-plugins')
         .with_location('https://deb.theforeman.org/')
@@ -34,7 +34,7 @@ describe 'foreman::repos::apt' do
         .with_repos('3.13')
     end
 
-    it { should contain_apt_key(apt_key_title).with_id(apt_key) }
+    it { should contain_apt__keyring(apt_keyring_title).with_source(apt_keyring_source) }
   end
 
   context 'with repo => nightly' do
@@ -48,7 +48,7 @@ describe 'foreman::repos::apt' do
         .with_repos('nightly')
 
       should contain_file('/etc/apt/sources.list.d/foreman.list')
-        .with_content(%r{deb https://deb\.theforeman\.org/ bookworm nightly})
+        .with_content(%r{deb \[signed-by=/etc/apt/keyrings/foreman\.asc\] https://deb\.theforeman\.org/ bookworm nightly})
 
       should contain_apt__source('foreman-plugins')
         .with_location('https://deb.theforeman.org/')
@@ -56,6 +56,6 @@ describe 'foreman::repos::apt' do
         .with_repos('nightly')
     end
 
-    it { should contain_apt_key(apt_key_title).with_id(apt_key) }
+    it { should contain_apt__keyring(apt_keyring_title).with_source(apt_keyring_source) }
   end
 end
