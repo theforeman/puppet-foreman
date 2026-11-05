@@ -1,0 +1,11 @@
+<%- | String $proxy_backend, Integer $registration_admission_max, Hash $proxy_params | -%>
+
+# Registration admission control: limit concurrent /rhsm and /register
+# requests to Puma capacity via a shared balancer pool.
+<Proxy balancer://foreman-registration>
+    BalancerMember <%= $proxy_backend %> retry=<%= $proxy_params['retry'] %> timeout=900 max=<%= $registration_admission_max %>
+</Proxy>
+ProxyPass /rhsm balancer://foreman-registration/rhsm
+ProxyPassReverse /rhsm balancer://foreman-registration/rhsm
+ProxyPass /register balancer://foreman-registration/register
+ProxyPassReverse /register balancer://foreman-registration/register
