@@ -185,6 +185,7 @@ class foreman::config {
       keycloak           => $foreman::keycloak,
       keycloak_app_name  => $foreman::keycloak_app_name,
       keycloak_realm     => $foreman::keycloak_realm,
+      registration_admission_max => $foreman::registration_admission_max,
     }
 
     contain foreman::config::apache
