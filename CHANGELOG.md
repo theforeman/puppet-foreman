@@ -1,5 +1,20 @@
 # Changelog
 
+## [32.0.0](https://github.com/theforeman/puppet-foreman/tree/32.0.0) (2026-11-09)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman/compare/31.1.0...32.0.0)
+
+**Breaking changes:**
+
+- Require puppetlabs/apt 10 or newer for APT repository configuration.
+- Uninstall hammer plugin for ssh [\#1301](https://github.com/theforeman/puppet-foreman/pull/1301) ([lzap](https://github.com/lzap))
+
+**Implemented enhancements:**
+
+- move apt repo to deb822 format; correct spec accordingly [\#1304](https://github.com/theforeman/puppet-foreman/pull/1304) ([alaunay](https://github.com/alaunay))
+- Add support for Debian 13 and Ubuntu 24.04 [\#1303](https://github.com/theforeman/puppet-foreman/pull/1303) ([evgeni](https://github.com/evgeni))
+- Add foreman\_location & foreman\_organization type & provider [\#1300](https://github.com/theforeman/puppet-foreman/pull/1300) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [31.1.0](https://github.com/theforeman/puppet-foreman/tree/31.1.0) (2026-10-28)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman/compare/31.0.0...31.1.0)
