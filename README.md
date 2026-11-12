@@ -110,6 +110,45 @@ Foreman's database. The `rest_v3` provider uses the API with Ruby's HTTP library
 and hostgroups can be assigned to locations/organizations.
 The type currently doesn't support other properties such as `environment`, `puppet classes` etc.
 
+`foreman_domain` and `foreman_subnet` can create and destroy domains and
+subnets through the Foreman API. They only create or destroy; existing
+resources are not modified.
+
+Smart proxy and domain references (`dns_id`, `dhcp_id`, `tftp_id`,
+`httpboot_id`, `template_id`, `bmc_id` and `domain_ids`) accept either a
+numeric ID or a string of the form `search=<query>`. The query is a Foreman
+search (for example `search=name=proxy.example.com`) and is resolved to the ID
+of the first match. It is an error if nothing matches.
+
+A subnet is looked up by its `name`, so use the same name each run.
+
+```puppet
+foreman_domain { 'test.example.com':
+  ensure          => present,
+  base_url        => $foreman::foreman_url,
+  consumer_key    => $foreman::oauth_consumer_key,
+  consumer_secret => $foreman::oauth_consumer_secret,
+  effective_user  => $foreman::oauth_effective_user,
+  ssl_ca          => $foreman::server_ssl_chain,
+  dns_id          => "search=name=${facts['networking']['fqdn']}",
+}
+
+foreman_subnet { '192.168.1.0':
+  ensure          => present,
+  base_url        => $foreman::foreman_url,
+  consumer_key    => $foreman::oauth_consumer_key,
+  consumer_secret => $foreman::oauth_consumer_secret,
+  effective_user  => $foreman::oauth_effective_user,
+  ssl_ca          => $foreman::server_ssl_chain,
+  network_type    => 'IPv4',
+  network         => '192.168.1.0',
+  cidr            => 24,
+  mask            => '255.255.255.0',
+  domain_ids      => ['search=name=test.example.com'],
+  dhcp_id         => "search=name=${facts['networking']['fqdn']}",
+}
+```
+
 ## Foreman ENC via hiera
 
 There is a function `foreman::enc` to retrieve the ENC data. This returns the
